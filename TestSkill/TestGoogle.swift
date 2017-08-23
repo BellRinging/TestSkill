@@ -14,10 +14,7 @@ class TestGoogle: UIViewController ,GIDSignInUIDelegate{
         let im = UIActivityIndicatorView()
         return im
     }()
-    let signInButton : GIDSignInButton = {
-        let bn = GIDSignInButton()
-        return bn
-    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

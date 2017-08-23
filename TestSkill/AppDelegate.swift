@@ -17,28 +17,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        //Firebase
         FirebaseApp.configure()
+        
+        //Google API
+        configGoogleAPI()
+        //Facebook
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         window?.frame = UIScreen.main.bounds
         window?.makeKeyAndVisible()
-        window?.rootViewController = TestGoogle()
+        window?.rootViewController = ProfileSetupController()
         
 //            UINavigationController(rootViewController: LoginController())
         
-        var configureError: NSError?
-        GGLContext.sharedInstance().configureWithError(&configureError)
-        assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
-        GIDSignIn.sharedInstance().delegate = self
+        
+        
 
         return true
     }
     
     
+    func configGoogleAPI(){
+        var configureError: NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        GIDSignIn.sharedInstance().delegate = self
+    }
+    
+ 
+    
+    
+    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         
-//        print("Did Sign in\(error.localizedDescription)")
         if (error == nil) {
             // Perform any operations on signed in user here.
             let userId = user.userID                  // For client-side use only!
@@ -76,7 +89,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
                                           sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!,
                                           annotation: options[UIApplicationOpenURLOptionsKey.annotation])
         return SDKApplicationDelegate.shared.application(app, open: url, options: options)
-//        return GIDSignIn.sharedInstance().handle(url, sourceApplication: app, annotation: <#T##Any!#>)
     }
 
     

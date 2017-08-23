@@ -7,13 +7,20 @@
 //
 
 import UIKit
+import FacebookCore
+import FacebookLogin
+import SwiftyJSON
+
+
+
+
 
 
 protocol SignControllerDelegrate {
     func successLogin()
 }
 
-class SiginViewController: UIViewController {
+class SiginViewController: UIViewController   {
     
     
     
@@ -22,8 +29,8 @@ class SiginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addDefaultGradient()
-        observeKeyboardNotifications()
         setupView()
+        GIDSignIn.sharedInstance().uiDelegate = self
     }
     
     func setupView(){
@@ -38,7 +45,22 @@ class SiginViewController: UIViewController {
         view.addSubview(forgetPasswordButton)
         forgetPasswordButton.Anchor(top: registerButton.bottomAnchor, left: view.leftAnchor , right: nil, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
         
+        view.addSubview(signInButton)
+        signInButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        
+        
+        let button = LoginButton(readPermissions: [ .publicProfile ,.email ])
+        
+        view.addSubview(button)
+        button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        
+        button.delegate = self
     }
+    
+    let myActivityIndicator : UIActivityIndicatorView = {
+        let im = UIActivityIndicatorView()
+        return im
+    }()
     
     lazy var stackView : UIStackView = {
         let sv = UIStackView()
@@ -67,7 +89,10 @@ class SiginViewController: UIViewController {
     }
     
     
-    
+    let signInButton : GIDSignInButton = {
+        let bn = GIDSignInButton()
+        return bn
+    }()
     
     let emailField : PaddingTextField = {
         let tv = PaddingTextField()
@@ -75,6 +100,7 @@ class SiginViewController: UIViewController {
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
+        tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         return tv
     }()
     
@@ -89,16 +115,7 @@ class SiginViewController: UIViewController {
         return tv
     }()
     
-//    lazy var bottomView : UIView = {
-//        let temp = UIView()
-//        temp.addSubview(self.forgetPasswordButton)
-//        temp.addSubview(self.joinNowButton)
-//        
-//        self.forgetPasswordButton.Anchor(top: temp.topAnchor, left: temp.leftAnchor, right: nil, bottom: nil, topPadding: 10, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
-//        self.joinNowButton.Anchor(top: temp.topAnchor, left: nil, right: temp.rightAnchor, bottom: nil, topPadding: 10, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
-//        return temp
-//    }()
-    
+
     let forgetPasswordButton : UIButton = {
         let bn = UIButton()
         let text = NSAttributedString(string: "Forget the Password", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
@@ -141,39 +158,41 @@ class SiginViewController: UIViewController {
     func handleRegister(){
         print("Register")
         
-        
-        
-        
-//        guard let
-        
-        
     }
     
-    fileprivate func observeKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: .UIKeyboardWillShow, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
-    }
-    
-    func keyboardHide() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            print("keyboard Hide")
-//            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-    }
-    
-    func keyboardShow() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            print("keyboard Show")
-//            let y: CGFloat = UIDevice.current.orientation.isLandscape ? 0 : 0
-//            self.view.frame = CGRect(x: 0, y: y, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-    }
+//    fileprivate func observeKeyboardNotifications() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: .UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
+//    }
+//    
+//    func keyboardHide() {
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//            print("keyboard Hide")
+////            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+//            
+//        }, completion: nil)
+//    }
+//    
+//    func keyboardShow() {
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//            print("keyboard Show")
+////            let y: CGFloat = UIDevice.current.orientation.isLandscape ? 0 : 0
+////            self.view.frame = CGRect(x: 0, y: y, width: self.view.frame.width, height: self.view.frame.height)
+//            
+//        }, completion: nil)
+//    }
     
     
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+
+ 
+    
+ 
+
+    
+  
+
 }

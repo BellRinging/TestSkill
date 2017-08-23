@@ -14,7 +14,7 @@ import FirebaseAuth
 class RegisterViewController: UIViewController {
     
     
-    
+    var errorMessage = ""
     weak var delegrate :LoginController?
     
     override func viewDidLoad() {
@@ -178,29 +178,7 @@ class RegisterViewController: UIViewController {
     
     
     
-    
-    func handleRegister(){
-        print("Register")
         
-        guard let email = emailField.text , let password = passwordField.text ,let firstName = firstNameField.text ,let lastName = lastNameField.text else {
-            print("email/Name/password cant be null")
-            return
-        }
-        
-    
-        
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-            if (error != nil){
-                print("Some bad happen when create user")
-                return
-            }
-            guard let uid = user?.uid else {
-                return
-            }
-                print("User created and uid : \(uid)")
-        }
-    }
-    
     
     
     

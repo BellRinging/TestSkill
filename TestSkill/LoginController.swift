@@ -80,13 +80,7 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     }
    
 
-    func handleRegister(){
-        let vc = RegisterViewController()
-        vc.delegrate = self
-        self.present(vc, animated: true, completion: nil)
-//        navigationController?.pushViewController(vc, animated: true)
-    }
-    
+
         
     
     let siginButton : UIButton = {
@@ -128,6 +122,12 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         self.present(vc, animated: true, completion: nil)
     }
     
+    func handleRegister(){
+        let vc = RegisterViewController()
+        vc.delegrate = self
+        self.present(vc, animated: true, completion: nil)
+        //        navigationController?.pushViewController(vc, animated: true)
+    }
     
     
 }

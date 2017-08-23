@@ -13,6 +13,8 @@
 		EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B531F3CA772001A9BC0 /* LoginCell.swift */; };
 		EB215B561F3CA820001A9BC0 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B551F3CA820001A9BC0 /* Page.swift */; };
 		EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3708AA1F40A3420022315A /* SiginViewController.swift */; };
+		EB538A401F461D7D0007C29D /* SiginFacebookExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB538A3F1F461D7D0007C29D /* SiginFacebookExtension.swift */; };
+		EB538A421F461E160007C29D /* SiginGoogleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB538A411F461E160007C29D /* SiginGoogleExtension.swift */; };
 		EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */; };
 		EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */; };
 		EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */; };
@@ -33,9 +35,12 @@
 		EB579EC51F1CE963002E31A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC41F1CE963002E31A7 /* User.swift */; };
 		EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC61F1D062B002E31A7 /* RegisterController.swift */; };
 		EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */; };
+		EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */; };
+		EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */; };
+		EBAF65A51F4D5ABF00FC05C1 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF65A21F4D5ABF00FC05C1 /* FloatLabelTextField.swift */; };
+		EBAF65A61F4D5ABF00FC05C1 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF65A31F4D5ABF00FC05C1 /* FloatLabelTextView.swift */; };
 		EBB950851F446288005D62E2 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB950841F446288005D62E2 /* SwiftyJSON.framework */; };
 		EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB950871F449069005D62E2 /* TestGoogle.swift */; };
-		EBD12B781F41C1F6004D57FD /* TestFacebookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD12B771F41C1F6004D57FD /* TestFacebookViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +52,8 @@
 		EB215B531F3CA772001A9BC0 /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		EB215B551F3CA820001A9BC0 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		EB3708AA1F40A3420022315A /* SiginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginViewController.swift; sourceTree = "<group>"; };
+		EB538A3F1F461D7D0007C29D /* SiginFacebookExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginFacebookExtension.swift; sourceTree = "<group>"; };
+		EB538A411F461E160007C29D /* SiginGoogleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginGoogleExtension.swift; sourceTree = "<group>"; };
 		EB579E931F1CD3FA002E31A7 /* TestSkill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestSkill.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -69,10 +76,13 @@
 		EB579EC41F1CE963002E31A7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EB579EC61F1D062B002E31A7 /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
+		EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterAction.swift; sourceTree = "<group>"; };
+		EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfitSetupController.swift; sourceTree = "<group>"; };
+		EBAF65A21F4D5ABF00FC05C1 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FloatLabelTextField.swift; path = ../FloatLabelFields/FloatLabelTextField.swift; sourceTree = "<group>"; };
+		EBAF65A31F4D5ABF00FC05C1 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FloatLabelTextView.swift; path = ../FloatLabelFields/FloatLabelTextView.swift; sourceTree = "<group>"; };
 		EBB950841F446288005D62E2 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "Pods/../build/Debug-iphoneos/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SignInExampleSwift-Bridging-Header.h"; sourceTree = "<group>"; };
 		EBB950871F449069005D62E2 /* TestGoogle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestGoogle.swift; sourceTree = "<group>"; };
-		EBD12B771F41C1F6004D57FD /* TestFacebookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFacebookViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +107,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		EB538A3E1F461D5E0007C29D /* Signin */ = {
+			isa = PBXGroup;
+			children = (
+				EB3708AA1F40A3420022315A /* SiginViewController.swift */,
+				EB538A3F1F461D7D0007C29D /* SiginFacebookExtension.swift */,
+				EB538A411F461E160007C29D /* SiginGoogleExtension.swift */,
+			);
+			name = Signin;
+			sourceTree = "<group>";
+		};
 		EB579E8A1F1CD3FA002E31A7 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +138,7 @@
 		EB579E951F1CD3FA002E31A7 /* TestSkill */ = {
 			isa = PBXGroup;
 			children = (
+				EBAF65A41F4D5ABF00FC05C1 /* FloatLabelFields */,
 				EB611FC81F3756EF00FEB44D /* BookmarkController */,
 				EB611FC71F3756C200FEB44D /* Supporting */,
 				EB611FC61F37568B00FEB44D /* CommonObject */,
@@ -171,11 +192,13 @@
 		EB611FC41F3755AF00FEB44D /* LoginViewController */ = {
 			isa = PBXGroup;
 			children = (
+				EB538A3E1F461D5E0007C29D /* Signin */,
 				EB187C581F1E284D00F7A12D /* LoginController.swift */,
 				EB579EC61F1D062B002E31A7 /* RegisterController.swift */,
+				EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */,
 				EB215B511F3CA715001A9BC0 /* LoginCollection.swift */,
 				EB215B531F3CA772001A9BC0 /* LoginCell.swift */,
-				EB3708AA1F40A3420022315A /* SiginViewController.swift */,
+				EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */,
 			);
 			name = LoginViewController;
 			sourceTree = "<group>";
@@ -197,7 +220,6 @@
 				EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */,
 				EB579EBC1F1CDFBB002E31A7 /* CustomImageView.swift */,
 				EB579EC01F1CE4ED002E31A7 /* Extension.swift */,
-				EBD12B771F41C1F6004D57FD /* TestFacebookViewController.swift */,
 				EBB950871F449069005D62E2 /* TestGoogle.swift */,
 			);
 			name = CommonObject;
@@ -221,6 +243,16 @@
 				EB579EB01F1CDB58002E31A7 /* BookmarkViewController.swift */,
 			);
 			name = BookmarkController;
+			sourceTree = "<group>";
+		};
+		EBAF65A41F4D5ABF00FC05C1 /* FloatLabelFields */ = {
+			isa = PBXGroup;
+			children = (
+				EBAF65A21F4D5ABF00FC05C1 /* FloatLabelTextField.swift */,
+				EBAF65A31F4D5ABF00FC05C1 /* FloatLabelTextView.swift */,
+			);
+			name = FloatLabelFields;
+			path = "../../../../Downloads/FloatLabelFields-master/FloatLabelExample";
 			sourceTree = "<group>";
 		};
 		EF72192366AFA7304B4B195B /* Frameworks */ = {
@@ -387,12 +419,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */,
+				EBAF65A61F4D5ABF00FC05C1 /* FloatLabelTextView.swift in Sources */,
+				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
 				EB579EC11F1CE4ED002E31A7 /* Extension.swift in Sources */,
 				EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */,
+				EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */,
 				EB579EBF1F1CE3DB002E31A7 /* SinglePhotoCell.swift in Sources */,
 				EB579EAD1F1CD8F6002E31A7 /* SearchViewController.swift in Sources */,
+				EBAF65A51F4D5ABF00FC05C1 /* FloatLabelTextField.swift in Sources */,
 				EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */,
-				EBD12B781F41C1F6004D57FD /* TestFacebookViewController.swift in Sources */,
 				EB579EAF1F1CDABA002E31A7 /* AddPostController.swift in Sources */,
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
@@ -401,6 +436,7 @@
 				EB579EBB1F1CDFA0002E31A7 /* HomeCell.swift in Sources */,
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,
 				EB579EC51F1CE963002E31A7 /* User.swift in Sources */,
+				EB538A421F461E160007C29D /* SiginGoogleExtension.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
@@ -409,6 +445,7 @@
 				EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */,
 				EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */,
 				EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */,
+				EB538A401F461D7D0007C29D /* SiginFacebookExtension.swift in Sources */,
 				EB579EAB1F1CD83D002E31A7 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
