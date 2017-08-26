@@ -35,15 +35,15 @@ class SiginViewController: UIViewController   {
     
     func setupView(){
         view.addSubview(stackView)
-        stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 20   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-        stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2).isActive = true
-        view.addSubview(registerButton)
-        registerButton.Anchor(top: stackView.bottomAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 18   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        stackView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        view.addSubview(normalSignInButton)
+        normalSignInButton.Anchor(top: stackView.bottomAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
         view.addSubview(joinNowButton)
-        joinNowButton.Anchor(top: registerButton.bottomAnchor, left: nil , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        joinNowButton.Anchor(top: normalSignInButton.bottomAnchor, left: nil , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         
         view.addSubview(forgetPasswordButton)
-        forgetPasswordButton.Anchor(top: registerButton.bottomAnchor, left: view.leftAnchor , right: nil, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
+        forgetPasswordButton.Anchor(top: normalSignInButton.bottomAnchor, left: view.leftAnchor , right: nil, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
         
         view.addSubview(signInButton)
         signInButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
@@ -94,24 +94,27 @@ class SiginViewController: UIViewController   {
         return bn
     }()
     
-    let emailField : PaddingTextField = {
-        let tv = PaddingTextField()
-        tv.placeholder = "Email"
+    let emailField : FloatLabelTextField = {
+        let tv = FloatLabelTextField()
+        tv.fakePlaceholder = "Email"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
+        tv.rightViewMode = UITextFieldViewMode.never
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         return tv
     }()
     
     
-    let passwordField : PaddingTextField = {
-        let tv = PaddingTextField()
-        tv.placeholder = "Password"
+    let passwordField : FloatLabelTextField = {
+        let tv = FloatLabelTextField()
+        tv.fakePlaceholder = "Password"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.isSecureTextEntry = true
         tv.backgroundColor = UIColor.white
+        tv.rightViewMode = .whileEditing
+        tv.rightView = tv.rightButton
         return tv
     }()
     
@@ -144,7 +147,7 @@ class SiginViewController: UIViewController   {
         return bn
     }()
     
-    let registerButton : UIButton = {
+    let normalSignInButton : UIButton = {
         let bn = UIButton()
         let text = NSAttributedString(string: "Sign In", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
@@ -156,7 +159,11 @@ class SiginViewController: UIViewController   {
     
     
     func handleRegister(){
-        print("Register")
+//        print("Register")
+        let error = PopupDialog()
+        error.message = "Name is notok "
+        error.delegrate = self
+        error.showDialog()
         
     }
     

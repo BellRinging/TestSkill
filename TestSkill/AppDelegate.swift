@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
         
         window?.frame = UIScreen.main.bounds
         window?.makeKeyAndVisible()
-        window?.rootViewController = ProfileSetupController()
+        window?.rootViewController = LoginController()
         
 //            UINavigationController(rootViewController: LoginController())
         

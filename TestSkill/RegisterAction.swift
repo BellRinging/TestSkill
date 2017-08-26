@@ -15,24 +15,34 @@ extension RegisterViewController {
   
     
     func handleRegister(){
-    
+        let error = PopupDialog()
+        error.delegrate = self
+
         guard let email = validField(emailField, "Email is required.Please enter your email"),
             let password = validField(passwordField,"Password is required.Please enter your number"),
-            let firstName = validField(firstNameField, "Frist name is required.Please enter your first name "),
-            let lastName  = validField(lastNameField,   "Last name is required.Please enter you last name") else {
-                self.showPopUpDialog(message: errorMessage)
+            let _ = validField(firstNameField, "Frist name is required.Please enter your first name "),
+            let _  = validField(lastNameField,   "Last name is required.Please enter you last name") else {
+//                let error = PopupDialog()
+                error.message = errorMessage
+                error.showDialog()
                 return
         }
         
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-            if (error != nil){
-                self.showPopUpDialog(message: "Some bad happen when create user")
+        Auth.auth().createUser(withEmail: email, password: password) { (user, err) in
+            
+            if let err = err{
+                error.message = err.localizedDescription
+                error.messageLabel.sizeToFit()
+                error.showDialog()
+//                self.showPopUpDialog(message: "Some bad happen when create user")
+                print(err)
                 return
             }
-            guard let uid = user?.uid else {
+            
+            guard let _ = user?.uid else {
                 return
             }
-            print("User create")
+            print("User created")
         }
     }
     

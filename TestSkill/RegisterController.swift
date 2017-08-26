@@ -25,8 +25,8 @@ class RegisterViewController: UIViewController {
     
     func setupView(){
         view.addSubview(stackView)
-        stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 20   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-        stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6).isActive = true
+        stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 18   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        stackView.heightAnchor.constraint(equalToConstant: 400).isActive = true
     }
     
     lazy var stackView : UIStackView = {
@@ -62,9 +62,9 @@ class RegisterViewController: UIViewController {
     }
     
     
-    let firstNameField : PaddingTextField = {
-        let tv = PaddingTextField()
-        tv.placeholder = "First Name"
+    let firstNameField : FloatLabelTextField = {
+        let tv = FloatLabelTextField()
+        tv.fakePlaceholder = "First Name"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
@@ -72,20 +72,9 @@ class RegisterViewController: UIViewController {
         return tv
     }()
     
-    let lastNameField : PaddingTextField = {
-        let tv = PaddingTextField()
-        tv.placeholder = "Last Name"
-        tv.spellCheckingType = .no
-        tv.autocorrectionType = .no
-        tv.backgroundColor = UIColor.white
-        tv.addBottomBorder(UIColor.gray, thickness: 0.5)
-        return tv
-    }()
-    
-    
-    let emailField : PaddingTextField = {
-        let tv = PaddingTextField()
-        tv.placeholder = "Email"
+    let lastNameField : FloatLabelTextField = {
+        let tv = FloatLabelTextField()
+        tv.fakePlaceholder = "Last Name"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
@@ -94,9 +83,20 @@ class RegisterViewController: UIViewController {
     }()
     
     
-    let passwordField : PaddingTextField = {
-        let tv = PaddingTextField()
-        tv.placeholder = "Password"
+    let emailField : FloatLabelTextField = {
+        let tv = FloatLabelTextField()
+        tv.fakePlaceholder = "Email"
+        tv.spellCheckingType = .no
+        tv.autocorrectionType = .no
+        tv.backgroundColor = UIColor.white
+        tv.addBottomBorder(UIColor.gray, thickness: 0.5)
+        return tv
+    }()
+    
+    
+    let passwordField : FloatLabelTextField = {
+        let tv = FloatLabelTextField()
+        tv.fakePlaceholder = "Password"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.isSecureTextEntry = true
@@ -175,12 +175,6 @@ class RegisterViewController: UIViewController {
         passwordField.isEnabled = true
         signInButton.isEnabled = true
     }
-    
-    
-    
-        
-    
-    
     
     override var prefersStatusBarHidden: Bool {
         return true
