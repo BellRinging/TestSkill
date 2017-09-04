@@ -7,13 +7,71 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
+    
+    
+    var user : User? {
+        didSet{
+            print("Did set user")
+            checkIfProfitSetup()
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.red
-        
+//        view.backgroundColor = UIColor.red
         setupTabBar()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.checkIfProfitSetup()
+    }
+    
+    func showLoginPage(){
+        let loginController = LoginController()
+        loginController.delegrate = self
+        self.present(loginController, animated: true, completion: nil)
+    }
+    
+    func showProfileSetupPage(name : String){
+        let profile = ProfileSetupController()
+        profile.userName = name
+        let nav = UINavigationController(rootViewController: profile)
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+ 
+    func checkIfProfitSetup(){
+        
+        print("Check if user login ")
+        guard let user = Auth.auth().currentUser else {
+            print("User not login")
+            perform(#selector(showLoginPage), with: self, afterDelay: 0.01)
+            return
+        }
+        
+        
+        
+        print("Check if user profile setup")
+        let ref = Database.database().reference().child("users")
+        ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let userDictionary = snapshot.value as? [String: Any] {
+                print("User Profile already setup \(userDictionary)")
+            } else {
+                print("User Profile not setup")
+                self.perform(#selector(self.showProfileSetupPage(name: user.email!)), with: self, afterDelay: 0.01)
+            }
+            
+        }) { (err) in
+            print("Failed to fetch user for posts:", err)
+        }
         
     }
     

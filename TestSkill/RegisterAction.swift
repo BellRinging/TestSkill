@@ -14,49 +14,56 @@ extension RegisterViewController {
     
   
     
-    func handleRegister(){
+    
+    func showError(message : String){
         let error = PopupDialog()
         error.delegrate = self
+        error.message = message
+        error.messageLabel.sizeToFit()
+        error.showDialog()
+    }
+    
+    func handleRegister(){
 
         guard let email = validField(emailField, "Email is required.Please enter your email"),
             let password = validField(passwordField,"Password is required.Please enter your number"),
-            let _ = validField(firstNameField, "Frist name is required.Please enter your first name "),
-            let _  = validField(lastNameField,   "Last name is required.Please enter you last name") else {
-//                let error = PopupDialog()
-                error.message = errorMessage
-                error.showDialog()
+            let username = validField(userNameField, "User name is required.Please enter your username ") else {
+                self.showError(message: errorMessage)
                 return
         }
         
+        print("Create login into firebase")
         Auth.auth().createUser(withEmail: email, password: password) { (user, err) in
             
             if let err = err{
-                error.message = err.localizedDescription
-                error.messageLabel.sizeToFit()
-                error.showDialog()
-//                self.showPopUpDialog(message: "Some bad happen when create user")
-                print(err)
+                self.showError(message: err.localizedDescription)
                 return
             }
             
-            guard let _ = user?.uid else {
+            guard let uid = user?.uid else {
                 return
             }
+            
             print("User created")
+            let dict = ["user_name": username,"email":email,"id":uid]
+            guard let mainTabbarController = self.delegrate?.delegrate else {return}
+            
+            
+            print("Dismiss the login controller")
+            self.dismiss(animated: true, completion: nil)
+            self.delegrate?.dismiss(animated: true, completion: nil)
+            print("Set User")
+            mainTabbarController.user = User(dict: dict)
         }
     }
     
 
-    func validField(_ field:UITextField, _ message:String) -> String?
-    {
-        if let fieldValue = field.text, fieldValue != ""
-        { return fieldValue }
+    func validField(_ field:UITextField, _ message:String) -> String?{
+        if let fieldValue = field.text, fieldValue != "" { return fieldValue }
         errorMessage = message
         return nil
     }
-    
-   
-    
+
     
     func showPopUpDialog(message : String){
         let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)

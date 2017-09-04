@@ -11,10 +11,10 @@ struct User {
     
     init(dict : Dictionary<String, Any>){
         self.id = dict["id"] as? String ?? ""
-        self.name = dict["name"] as? String ?? ""
-        self.imageUrl = dict["imageUrl"] as? String ?? ""
+        self.name = dict["user_name"] as? String ?? ""
+        self.imageUrl = dict["image_url"] as? String ?? ""
         self.firstName = dict["first_name"] as? String ?? ""
-        self.lastName = dict["lastName"] as? String ?? ""
+        self.lastName = dict["last_name"] as? String ?? ""
         self.email = dict["email"] as? String ?? ""
         
     }

@@ -13,6 +13,8 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     let cellId = "CellId"
     
     
+    weak var delegrate : MainTabBarController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

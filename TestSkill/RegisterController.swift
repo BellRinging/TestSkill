@@ -26,7 +26,7 @@ class RegisterViewController: UIViewController {
     func setupView(){
         view.addSubview(stackView)
         stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 18   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-        stackView.heightAnchor.constraint(equalToConstant: 400).isActive = true
+        stackView.heightAnchor.constraint(equalToConstant: 350).isActive = true
     }
     
     lazy var stackView : UIStackView = {
@@ -34,8 +34,8 @@ class RegisterViewController: UIViewController {
         sv.axis = .vertical
         sv.distribution = .fillEqually
         sv.addArrangedSubview(self.crossImageView)
-        sv.addArrangedSubview(self.firstNameField)
-        sv.addArrangedSubview(self.lastNameField)
+        sv.addArrangedSubview(self.userNameField)
+//        sv.addArrangedSubview(self.lastNameField)
         sv.addArrangedSubview(self.emailField)
         sv.addArrangedSubview(self.passwordField)
         sv.addArrangedSubview(self.warrentLabel)
@@ -62,9 +62,9 @@ class RegisterViewController: UIViewController {
     }
     
     
-    let firstNameField : FloatLabelTextField = {
+    let userNameField : FloatLabelTextField = {
         let tv = FloatLabelTextField()
-        tv.fakePlaceholder = "First Name"
+        tv.fakePlaceholder = "User Name"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
@@ -72,15 +72,15 @@ class RegisterViewController: UIViewController {
         return tv
     }()
     
-    let lastNameField : FloatLabelTextField = {
-        let tv = FloatLabelTextField()
-        tv.fakePlaceholder = "Last Name"
-        tv.spellCheckingType = .no
-        tv.autocorrectionType = .no
-        tv.backgroundColor = UIColor.white
-        tv.addBottomBorder(UIColor.gray, thickness: 0.5)
-        return tv
-    }()
+//    let lastNameField : FloatLabelTextField = {
+//        let tv = FloatLabelTextField()
+//        tv.fakePlaceholder = "Last Name"
+//        tv.spellCheckingType = .no
+//        tv.autocorrectionType = .no
+//        tv.backgroundColor = UIColor.white
+//        tv.addBottomBorder(UIColor.gray, thickness: 0.5)
+//        return tv
+//    }()
     
     
     let emailField : FloatLabelTextField = {
@@ -160,8 +160,8 @@ class RegisterViewController: UIViewController {
     
     
     func lockTextField(){
-        firstNameField.isEnabled = false
-        lastNameField.isEnabled = false
+        userNameField.isEnabled = false
+//        lastNameField.isEnabled = false
         emailField.isEnabled = false
         passwordField.isEnabled = false
         signInButton.isEnabled = false
@@ -169,8 +169,8 @@ class RegisterViewController: UIViewController {
     }
 
     func unlockTextField(){
-        firstNameField.isEnabled = true
-        lastNameField.isEnabled = true
+        userNameField.isEnabled = true
+//        lastNameField.isEnabled = true
         emailField.isEnabled = true
         passwordField.isEnabled = true
         signInButton.isEnabled = true

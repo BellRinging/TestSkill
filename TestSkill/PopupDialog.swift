@@ -26,7 +26,7 @@ class PopupDialog: UIView {
         return lb
     }()
     
-    let crossButton : UIButton = {
+    lazy var crossButton : UIButton = {
         let bn = UIButton()
         bn.setImage(#imageLiteral(resourceName: "icons8-Delete-48"), for: .normal)
         bn.imageView?.contentMode = .scaleToFill
@@ -36,7 +36,7 @@ class PopupDialog: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        print("init")
+//        print("init")
         let width = UIScreen.main.bounds.width
         self.frame = CGRect(x: 0, y: -self.popupDialogHeight, width: width, height: self.popupDialogHeight)
         self.backgroundColor = UIColor.white
@@ -101,6 +101,10 @@ class PopupDialog: UIView {
             removeView = nil
             removeView?.removeFromSuperview()
         })
+    }
+    
+    deinit {
+        print("Destroy Dialog")
     }
     
     

@@ -166,28 +166,7 @@ class SiginViewController: UIViewController   {
         error.showDialog()
         
     }
-    
-//    fileprivate func observeKeyboardNotifications() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: .UIKeyboardWillShow, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
-//    }
-//    
-//    func keyboardHide() {
-//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-//            print("keyboard Hide")
-////            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-//            
-//        }, completion: nil)
-//    }
-//    
-//    func keyboardShow() {
-//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-//            print("keyboard Show")
-////            let y: CGFloat = UIDevice.current.orientation.isLandscape ? 0 : 0
-////            self.view.frame = CGRect(x: 0, y: y, width: self.view.frame.width, height: self.view.frame.height)
-//            
-//        }, completion: nil)
-//    }
+
     
     
     override var prefersStatusBarHidden: Bool {

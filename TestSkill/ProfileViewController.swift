@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
@@ -20,7 +21,27 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(ProfileHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
         collectionView?.register(SinglePhotoCell.self, forCellWithReuseIdentifier: cellID)
-//        print("ABC")
+        
+        let barButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        navigationItem.leftBarButtonItem = barButton
+        
+        self.navigationItem.leftBarButtonItem = barButton
+        
+    }
+    
+    
+    func handleLogout(){
+        if let user = Auth.auth().currentUser?.uid {
+            print(user)
+            do {
+                try Auth.auth().signOut()
+            }catch {
+            
+            }
+        }
+        let tabBar = tabBarController as? MainTabBarController
+        tabBar?.checkIfProfitSetup()
+        print("Logout")
         
     }
     
