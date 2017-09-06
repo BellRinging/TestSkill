@@ -66,7 +66,7 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
                 print("User Profile already setup \(userDictionary)")
             } else {
                 print("User Profile not setup")
-                self.perform(#selector(self.showProfileSetupPage(name: user.email!)), with: self, afterDelay: 0.01)
+                self.showProfileSetupPage(name: user.email!)
             }
             
         }) { (err) in
