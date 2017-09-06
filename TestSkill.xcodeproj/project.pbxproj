@@ -13,8 +13,6 @@
 		EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B531F3CA772001A9BC0 /* LoginCell.swift */; };
 		EB215B561F3CA820001A9BC0 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B551F3CA820001A9BC0 /* Page.swift */; };
 		EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3708AA1F40A3420022315A /* SiginViewController.swift */; };
-		EB538A401F461D7D0007C29D /* SiginFacebookExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB538A3F1F461D7D0007C29D /* SiginFacebookExtension.swift */; };
-		EB538A421F461E160007C29D /* SiginGoogleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB538A411F461E160007C29D /* SiginGoogleExtension.swift */; };
 		EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */; };
 		EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */; };
 		EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */; };
@@ -41,6 +39,8 @@
 		EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB950871F449069005D62E2 /* TestGoogle.swift */; };
 		EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */; };
 		EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */; };
+		EBDDA62E1F6038B900663485 /* SiginFacebookExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA62C1F6038B900663485 /* SiginFacebookExtension.swift */; };
+		EBDDA62F1F6038B900663485 /* SiginGoogleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA62D1F6038B900663485 /* SiginGoogleExtension.swift */; };
 		EBFBE1791F5085CF00937EC6 /* PopupDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFBE1781F5085CF00937EC6 /* PopupDialog.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,8 +53,6 @@
 		EB215B531F3CA772001A9BC0 /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		EB215B551F3CA820001A9BC0 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		EB3708AA1F40A3420022315A /* SiginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginViewController.swift; sourceTree = "<group>"; };
-		EB538A3F1F461D7D0007C29D /* SiginFacebookExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginFacebookExtension.swift; sourceTree = "<group>"; };
-		EB538A411F461E160007C29D /* SiginGoogleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginGoogleExtension.swift; sourceTree = "<group>"; };
 		EB579E931F1CD3FA002E31A7 /* TestSkill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestSkill.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -84,6 +82,8 @@
 		EBB950871F449069005D62E2 /* TestGoogle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestGoogle.swift; sourceTree = "<group>"; };
 		EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
+		EBDDA62C1F6038B900663485 /* SiginFacebookExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginFacebookExtension.swift; sourceTree = "<group>"; };
+		EBDDA62D1F6038B900663485 /* SiginGoogleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginGoogleExtension.swift; sourceTree = "<group>"; };
 		EBFBE1781F5085CF00937EC6 /* PopupDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDialog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,9 +112,9 @@
 		EB538A3E1F461D5E0007C29D /* Signin */ = {
 			isa = PBXGroup;
 			children = (
+				EBDDA62C1F6038B900663485 /* SiginFacebookExtension.swift */,
+				EBDDA62D1F6038B900663485 /* SiginGoogleExtension.swift */,
 				EB3708AA1F40A3420022315A /* SiginViewController.swift */,
-				EB538A3F1F461D7D0007C29D /* SiginFacebookExtension.swift */,
-				EB538A411F461E160007C29D /* SiginGoogleExtension.swift */,
 			);
 			name = Signin;
 			sourceTree = "<group>";
@@ -428,6 +428,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBDDA62E1F6038B900663485 /* SiginFacebookExtension.swift in Sources */,
 				EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */,
 				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
 				EB579EC11F1CE4ED002E31A7 /* Extension.swift in Sources */,
@@ -445,8 +446,8 @@
 				EB579EBB1F1CDFA0002E31A7 /* HomeCell.swift in Sources */,
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,
 				EB579EC51F1CE963002E31A7 /* User.swift in Sources */,
-				EB538A421F461E160007C29D /* SiginGoogleExtension.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
+				EBDDA62F1F6038B900663485 /* SiginGoogleExtension.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
 				EB579EBD1F1CDFBB002E31A7 /* CustomImageView.swift in Sources */,
@@ -455,7 +456,6 @@
 				EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */,
 				EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */,
 				EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */,
-				EB538A401F461D7D0007C29D /* SiginFacebookExtension.swift in Sources */,
 				EBFBE1791F5085CF00937EC6 /* PopupDialog.swift in Sources */,
 				EB579EAB1F1CD83D002E31A7 /* HomeViewController.swift in Sources */,
 			);

@@ -45,7 +45,7 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
         
         view.addSubview(userNameLabel)
         userNameLabel.Anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
-
+userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         view.addSubview(firstNameField)
         firstNameField.Anchor(top: userNameLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
@@ -83,6 +83,9 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
     
     let userNameLabel : UILabel = {
         let lb = UILabel()
+        lb.textAlignment = .center
+        lb.textColor = UIColor.white
+        lb.font = UIFont.boldSystemFont(ofSize: 20)
         return lb
     }()
     
