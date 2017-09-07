@@ -13,12 +13,12 @@ import FirebaseDatabase
 class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
     
     
-    var user : User? {
-        didSet{
-            print("Did set user")
-            checkIfProfitSetup()
-        }
-    }
+//    var user : User? {
+//        didSet{
+////            print("Did set user")
+////            checkIfProfitSetup()
+//        }
+//    }
     
     
     override func viewDidLoad() {
@@ -66,7 +66,8 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
                 print("User Profile already setup \(userDictionary)")
             } else {
                 print("User Profile not setup")
-                self.showProfileSetupPage(name: user.email!)
+                let displayname = user.displayName ?? ""
+                self.showProfileSetupPage(name: displayname)
             }
             
         }) { (err) in

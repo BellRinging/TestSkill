@@ -72,17 +72,6 @@ class RegisterViewController: UIViewController {
         return tv
     }()
     
-//    let lastNameField : FloatLabelTextField = {
-//        let tv = FloatLabelTextField()
-//        tv.fakePlaceholder = "Last Name"
-//        tv.spellCheckingType = .no
-//        tv.autocorrectionType = .no
-//        tv.backgroundColor = UIColor.white
-//        tv.addBottomBorder(UIColor.gray, thickness: 0.5)
-//        return tv
-//    }()
-    
-    
     let emailField : FloatLabelTextField = {
         let tv = FloatLabelTextField()
         tv.fakePlaceholder = "Email"
@@ -161,7 +150,6 @@ class RegisterViewController: UIViewController {
     
     func lockTextField(){
         userNameField.isEnabled = false
-//        lastNameField.isEnabled = false
         emailField.isEnabled = false
         passwordField.isEnabled = false
         signInButton.isEnabled = false
@@ -170,7 +158,6 @@ class RegisterViewController: UIViewController {
 
     func unlockTextField(){
         userNameField.isEnabled = true
-//        lastNameField.isEnabled = true
         emailField.isEnabled = true
         passwordField.isEnabled = true
         signInButton.isEnabled = true

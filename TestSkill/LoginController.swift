@@ -20,9 +20,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         
   
         pageControl.numberOfPages = pages.count
-//        view.addGradientColor(colorFrom: UIColor.mainColor(), colorTo: UIColor.secondColor(), startPosition: CGPoint(x:0,y:1), endPosition: CGPoint(x:1,y:0.4))
-        
-//        view.backgroundColor = UIColor.white
         setupView()
     }
     

@@ -51,10 +51,6 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         firstNameField.Anchor(top: userNameLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
         view.addSubview(lastNameField)
         lastNameField.Anchor(top: firstNameField.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
-        
-//        view.addSubview(createProfileButton)
-//        createProfileButton.Anchor(top: lastNameField.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
-        
     }
     
     
@@ -98,7 +94,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
         tv.titleTextColour = UIColor.black
-        tv.titleActiveTextColour = UIColor.black
+//        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         tv.clearButtonMode = UITextFieldViewMode.always
    
@@ -112,27 +108,32 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
         tv.titleTextColour = UIColor.black
-        tv.titleActiveTextColour = UIColor.black
+//        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         tv.clearButtonMode = UITextFieldViewMode.always
         
         return tv
     }()
     
+    func updateUserImage(url : String){
+        guard let user = Auth.auth().currentUser else {return }
+        let changeRequest = user.createProfileChangeRequest()
+        changeRequest.photoURL = URL(string: url)
+        changeRequest.commitChanges(completion: { (error) in
+            print("Updated Profile Image")
+        })
+    }
+  
     
     func handleCreation(){
+        
         
         guard let uid = Auth.auth().currentUser?.uid else {return }
         guard let firstName = firstNameField.text else { return }
         guard let lastName = lastNameField.text else { return }
-//        print(lastName)
         guard let email = Auth.auth().currentUser?.email else { return }
-//        print(email)
-//        guard let name = Auth.auth().currentUser?. else { return }
         
-//        print(name)
-        
-        let ref = Storage.storage().reference().child("profile_images").child("\(uid).jpg")
+        let ref = Storage.storage().reference().child("profile_images").child(uid).child("profilePic.jpg")
         if let profileImage = self.imageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
                 if (error != nil){
@@ -140,15 +141,15 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                     return
                 }
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
-                    let values = ["id":uid , "name": "Peter", "last_name": lastName, "first_name": firstName, "email": email, "imageUrl": profileImageURL]
-                    
+                    self.updateUserImage(url: profileImageURL)
+                    let values = [ "last_name": lastName, "first_name": firstName, "email": email]
                     self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
                 }
             })
         }
-
-        
     }
+    
+    
     
     
     fileprivate func registerUserIntoDatabaseWithUID( values: [String: AnyObject]) {
