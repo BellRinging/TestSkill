@@ -7,8 +7,21 @@
 //
 
 import UIKit
+import Firebase
 
 class ProfileHeaderCell: UICollectionViewCell {
+    
+    var user : User?{
+        didSet{
+//            print("Set the profile image")
+            if let urlString = Auth.auth().currentUser?.photoURL?.absoluteString {
+                print("Url \(urlString)")
+                profileImage.loadImage(urlString)
+            }
+            
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()

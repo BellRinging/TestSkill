@@ -49,6 +49,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-TestSkill.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,6 +82,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>41FA54D12162DAD51D02FC58A2CD5034</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>44CAD6CE523055ED339E87154473A254</key>
 		<dict>
 			<key>primary</key>
@@ -97,22 +107,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>936249A2613715926B1AD8691DE1A1DE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>A7FEAA14E89971698ACA148F7F7202F2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
+		<key>C00BFD915B1D55760CBFEBB562093BC5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C5B451AF3AE21C1F17379767F83C1F6A</key>
+		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -123,6 +128,11 @@
 			<true/>
 		</dict>
 		<key>E4DD95323C54A78F879DAB0F1508B8E7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FBFA272442DFD37E5EEF9E960491800E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

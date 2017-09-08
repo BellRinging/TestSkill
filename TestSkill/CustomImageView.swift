@@ -16,15 +16,17 @@ class CustomImageView: UIImageView {
         
         lastUrl = urlString
         guard let url = URL(string: urlString) else {return}
+//        print("load image \(url)")
         
         
         
         URLSession.shared.dataTask(with: url) { (data, respond, error) in
             if let err = error {
-                print("Load Image Error \(err)")
+                print(err.localizedDescription)
                 return
             }
-            
+            print(self.lastUrl)
+            print(url.absoluteString)
             if self.lastUrl != url.absoluteString {
                 return
             }
@@ -36,7 +38,7 @@ class CustomImageView: UIImageView {
             DispatchQueue.main.async {
                 self.image = image
             }
-        }
+        }.resume()
     }
     
 }

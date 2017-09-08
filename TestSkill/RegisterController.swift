@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import MBProgressHUD
 
 
 
@@ -21,7 +22,10 @@ class RegisterViewController: UIViewController {
         super.viewDidLoad()
         view.addDefaultGradient()
         setupView()
+        
     }
+    
+    var progressIcon : MBProgressHUD?
     
     func setupView(){
         view.addSubview(stackView)

@@ -10,6 +10,7 @@ import UIKit
 import FirebaseStorage
 import FirebaseAuth
 import FirebaseDatabase
+import MBProgressHUD
 
 class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate ,UINavigationControllerDelegate {
     
@@ -64,8 +65,15 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         im.isUserInteractionEnabled = true
         return im
     }()
-    
-    
+//    
+    lazy var progressIcon : MBProgressHUD = {
+        let prog = MBProgressHUD.showAdded(to: self.view, animated: true)
+        prog.labelText = "Loading"
+        prog.isUserInteractionEnabled = false
+        return prog
+    }()
+//
+//    
     let createProfileButton : UIButton = {
         let bn = UIButton()
         let text = NSAttributedString(string: "Create Profile Now", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
@@ -127,7 +135,8 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
     
     func handleCreation(){
         
-        
+//    MBProgressHUD.showAdded(to: self.view, animated: true)
+        progressIcon.show(animated: true)
         guard let uid = Auth.auth().currentUser?.uid else {return }
         guard let firstName = firstNameField.text else { return }
         guard let lastName = lastNameField.text else { return }
@@ -138,6 +147,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
                 if (error != nil){
                     print("some bad happend in put image to server")
+                    self.progressIcon.hide(animated: true)
                     return
                 }
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
@@ -161,15 +171,15 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
             
             if err != nil {
                 print(err!)
+                self.progressIcon.hide(animated: true)
                 return
             }
-            
-            //            self.messagesController?.fetchUserAndSetupNavBarTitle()
-            //            self.messagesController?.navigationItem.title = values["name"] as? String
+
             let user = User(dict: values)
             print(user)
-            //            self.messagesController?.setupNavBarWithUser(user)
-            
+
+//                MBProgressHUD.hide(for: <#T##UIView#>, animated: <#T##Bool#>)
+            self.progressIcon.hide(animated: true)
             self.dismiss(animated: true, completion: nil)
         })
     }

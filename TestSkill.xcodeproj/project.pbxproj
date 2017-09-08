@@ -117,6 +117,16 @@
 			name = ProfileSetup;
 			sourceTree = "<group>";
 		};
+		EB3D0A0B1F6239DF005AC4EB /* LoginPage */ = {
+			isa = PBXGroup;
+			children = (
+				EB187C581F1E284D00F7A12D /* LoginController.swift */,
+				EB215B511F3CA715001A9BC0 /* LoginCollection.swift */,
+				EB215B531F3CA772001A9BC0 /* LoginCell.swift */,
+			);
+			name = LoginPage;
+			sourceTree = "<group>";
+		};
 		EB538A3E1F461D5E0007C29D /* Signin */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,8 +172,6 @@
 				EB579EA81F1CD4D4002E31A7 /* MainTabBarController.swift */,
 				EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */,
 				EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */,
-				EB579EB41F1CDEDC002E31A7 /* ProfileViewController.swift */,
-				EB579EB61F1CDF43002E31A7 /* ProfileHeaderCell.swift */,
 				EB579EB81F1CDF7D002E31A7 /* CommentCell.swift */,
 				EB579EBA1F1CDFA0002E31A7 /* HomeCell.swift */,
 				EB579EAC1F1CD8F6002E31A7 /* SearchViewController.swift */,
@@ -188,6 +196,8 @@
 		EB611FC21F37558900FEB44D /* UserProfileController */ = {
 			isa = PBXGroup;
 			children = (
+				EB579EB41F1CDEDC002E31A7 /* ProfileViewController.swift */,
+				EB579EB61F1CDF43002E31A7 /* ProfileHeaderCell.swift */,
 			);
 			name = UserProfileController;
 			sourceTree = "<group>";
@@ -202,12 +212,10 @@
 		EB611FC41F3755AF00FEB44D /* LoginViewController */ = {
 			isa = PBXGroup;
 			children = (
+				EB3D0A0B1F6239DF005AC4EB /* LoginPage */,
 				EB3D0A0A1F611120005AC4EB /* ProfileSetup */,
 				EB65793D1F51C2BC007B1810 /* Register */,
 				EB538A3E1F461D5E0007C29D /* Signin */,
-				EB187C581F1E284D00F7A12D /* LoginController.swift */,
-				EB215B511F3CA715001A9BC0 /* LoginCollection.swift */,
-				EB215B531F3CA772001A9BC0 /* LoginCell.swift */,
 			);
 			name = LoginViewController;
 			sourceTree = "<group>";
@@ -369,7 +377,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9E087BF58E3D32C5CDA9D7A3 /* [CP] Copy Pods Resources */ = {

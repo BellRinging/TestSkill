@@ -17,8 +17,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-  
         pageControl.numberOfPages = pages.count
         setupView()
     }
@@ -115,7 +113,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     
     
     func handleLogin(){
-        
         let vc = SiginViewController()
         vc.delegrate = self
         self.present(vc, animated: true, completion: nil)

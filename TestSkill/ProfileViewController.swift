@@ -29,6 +29,11 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView?.reloadData()
+    }
+    
     
     func handleLogout(){
         if let user = Auth.auth().currentUser?.uid {
@@ -67,8 +72,14 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        if kind == UICollectionElementKindSectionHeader {
+        print("Config the header cell")
         let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
+        if let user = Auth.auth().currentUser{
+            let dict = ["id": user.uid , "email":user.email , "user_name": user.displayName]
+            let userObject = User(dict: dict)
+            cell.user = userObject
+        }
+        
          cell.backgroundColor = UIColor.white
             return cell
 //        }

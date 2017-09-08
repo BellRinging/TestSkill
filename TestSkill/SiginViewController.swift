@@ -10,11 +10,7 @@ import UIKit
 import FacebookCore
 import FacebookLogin
 import SwiftyJSON
-
-
-
-
-
+import Firebase
 
 protocol SignControllerDelegrate {
     func successLogin()
@@ -22,7 +18,7 @@ protocol SignControllerDelegrate {
 
 class SiginViewController: UIViewController   {
     
-    
+    var errorMessage = ""
     
     weak var delegrate :LoginController?
     
@@ -151,20 +147,32 @@ class SiginViewController: UIViewController   {
         let bn = UIButton()
         let text = NSAttributedString(string: "Sign In", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
-        bn.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        bn.addTarget(self, action: #selector(SignInByEmail), for: .touchUpInside)
         bn.layer.borderWidth = 0.5
         bn.layer.borderColor = UIColor.white.cgColor
         return bn
     }()
     
     
-    func handleRegister(){
-//        print("Register")
-        let error = PopupDialog()
-        error.message = "Name is notok "
-        error.delegrate = self
-        error.showDialog()
+    func SignInByEmail(){
+        print("SignIn by Email")
         
+        guard let email = validField(emailField, "Email is required.Please enter your email"),
+            let password = validField(passwordField,"Password is required.Please enter your number") else {
+                self.showError(message: errorMessage)
+                return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if let err = error {
+                self.showError(message: err.localizedDescription)
+                return
+            }
+            print("User is login")
+            self.dismiss(animated: true, completion: nil)
+            self.delegrate?.dismiss(animated: true, completion: nil)
+//            dismiss(animated: true, completion: nil)
+        }
     }
 
     
@@ -174,10 +182,23 @@ class SiginViewController: UIViewController   {
     }
     
 
- 
+    func validField(_ field:UITextField, _ message:String) -> String?{
+        if let fieldValue = field.text, fieldValue != "" { return fieldValue }
+        errorMessage = message
+        return nil
+    }
+
     
  
 
+    func showError(message : String){
+        let error = PopupDialog()
+        error.delegrate = self
+        error.message = message
+        error.messageLabel.sizeToFit()
+        error.showDialog()
+    }
+    
     
   
 

@@ -19,9 +19,7 @@ extension LoginController {
         return 0
     }
     
-    
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pages.count
     }

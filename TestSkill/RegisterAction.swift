@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseAuth
+import MBProgressHUD
 
 
 extension RegisterViewController {
@@ -24,11 +25,17 @@ extension RegisterViewController {
 
     
     func handleRegister(){
+        
 
+            progressIcon = MBProgressHUD.showAdded(to: self.view, animated: true)
+            progressIcon?.isUserInteractionEnabled = false
+            progressIcon?.labelText = "Loading"
+        progressIcon?.show(animated: true)
         guard let email = validField(emailField, "Email is required.Please enter your email"),
             let password = validField(passwordField,"Password is required.Please enter your number"),
             let username = validField(userNameField, "User name is required.Please enter your username ") else {
                 self.showError(message: errorMessage)
+                self.progressIcon?.hide(animated: true)
                 return
         }
         
@@ -37,10 +44,12 @@ extension RegisterViewController {
             
             if let err = err{
                 self.showError(message: err.localizedDescription)
+                self.progressIcon?.hide(animated: true)
                 return
             }
             
             guard let uid = user?.uid else {
+                self.progressIcon?.hide(animated: true)
                 return
             }
             
@@ -51,6 +60,7 @@ extension RegisterViewController {
     
     func updateDisplayName(name:String ){
         guard let user = Auth.auth().currentUser else {
+            self.progressIcon?.hide(animated: true)
             return
         }
         let changeRequest = user.createProfileChangeRequest()
@@ -65,16 +75,9 @@ extension RegisterViewController {
         print("Dismiss the login controller")
         self.dismiss(animated: true, completion: nil)
         self.delegrate?.dismiss(animated: true, completion: nil)
-        guard let email = emailField.text,
-            let username = userNameField.text ,
-            let uid = Auth.auth().currentUser?.uid else {
-                return
+        DispatchQueue.main.async {
+            self.progressIcon?.hide(animated: true)
         }
-//        print("Set User")
-//        let dict = ["user_name": username,"email":email,"id":uid]
-//        if let mainTabbarController = self.delegrate?.delegrate as? MainTabBarController! {
-//            mainTabbarController.user = User(dict: dict)
-//        }
         
     }
     
