@@ -31,7 +31,6 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
            setupView()
     }
     
-
     
     
     func setupView(){
@@ -179,14 +178,13 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
             print(user)
 
 //                MBProgressHUD.hide(for: <#T##UIView#>, animated: <#T##Bool#>)
-            self.progressIcon.hide(animated: true)
+//            self.progressIcon.hide(animated: true)
+            Utility.hideProgress()
             self.dismiss(animated: true, completion: nil)
         })
     }
     
 
-    
-    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         var selectedImageFromPicker: UIImage?

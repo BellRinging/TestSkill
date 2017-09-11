@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import MBProgressHUD
 
 class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         
@@ -52,6 +53,7 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
             
             if let userDictionary = snapshot.value as? [String: Any] {
                 print("User Profile already setup")
+                Utility.hideProgress()
             } else {
                 print("User Profile not setup")
                 let displayname = user.displayName ?? ""
@@ -61,8 +63,8 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         }) { (err) in
             print("Failed to fetch user for posts:", err)
         }
-        
     }
+    
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewControllers?.index(of: viewController) == 2 {

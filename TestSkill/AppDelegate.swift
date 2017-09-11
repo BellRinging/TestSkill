@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FacebookCore
+import MBProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
@@ -86,6 +87,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
                                           annotation: options[UIApplicationOpenURLOptionsKey.annotation])
         return SDKApplicationDelegate.shared.application(app, open: url, options: options)
     }
+    
+    func showProgress(){
+        guard let mainWindow = UIApplication.shared.delegate?.window else { return }
+        let progressIcon = MBProgressHUD.showAdded(to: mainWindow!, animated: true)
+        progressIcon.labelText = "Loading"
+        progressIcon.isUserInteractionEnabled = false
+        //tempView
+        let tempView = UIView(frame: (mainWindow?.frame)!)
+        tempView.backgroundColor = UIColor(white: 0.3, alpha: 0.5)
+        tempView.tag = 999
+        mainWindow?.addSubview(tempView)
+        progressIcon.show(animated: true)
+    }
+    
+    func hideProgress(){
+        guard let mainWindow = UIApplication.shared.delegate?.window else { return }
+        MBProgressHUD.hideAllHUDs(for: mainWindow!, animated: true)
+        let view = mainWindow?.viewWithTag(999)
+        view?.removeFromSuperview()
+    }
+    
+    
 
     
 }

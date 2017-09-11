@@ -15,6 +15,8 @@ import MBProgressHUD
 class RegisterViewController: UIViewController {
     
     
+    
+    
     var errorMessage = ""
     weak var delegrate :LoginController?
     
@@ -93,6 +95,7 @@ class RegisterViewController: UIViewController {
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.isSecureTextEntry = true
+        tv.rightViewMode = .always
         tv.backgroundColor = UIColor.white
         return tv
     }()

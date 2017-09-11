@@ -33,6 +33,7 @@
 		EB579EC51F1CE963002E31A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC41F1CE963002E31A7 /* User.swift */; };
 		EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC61F1D062B002E31A7 /* RegisterController.swift */; };
 		EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */; };
+		EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA420231F667A0F0010BFC7 /* Utility.swift */; };
 		EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */; };
 		EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */; };
 		EBB950851F446288005D62E2 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB950841F446288005D62E2 /* SwiftyJSON.framework */; };
@@ -75,6 +76,7 @@
 		EB579EC41F1CE963002E31A7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EB579EC61F1D062B002E31A7 /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
+		EBA420231F667A0F0010BFC7 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterAction.swift; sourceTree = "<group>"; };
 		EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfitSetupController.swift; sourceTree = "<group>"; };
 		EBB950841F446288005D62E2 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "Pods/../build/Debug-iphoneos/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				EB579EC01F1CE4ED002E31A7 /* Extension.swift */,
 				EBB950871F449069005D62E2 /* TestGoogle.swift */,
 				EBFBE1781F5085CF00937EC6 /* PopupDialog.swift */,
+				EBA420231F667A0F0010BFC7 /* Utility.swift */,
 			);
 			name = CommonObject;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
 				EB579EC31F1CE721002E31A7 /* Post.swift in Sources */,
+				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,
 				EB579EB71F1CDF43002E31A7 /* ProfileHeaderCell.swift in Sources */,
 				EB579EBB1F1CDFA0002E31A7 /* HomeCell.swift in Sources */,
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,

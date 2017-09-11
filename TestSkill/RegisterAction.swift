@@ -21,21 +21,13 @@ extension RegisterViewController {
         error.showDialog()
     }
     
-    
-
-    
     func handleRegister(){
-        
-
-            progressIcon = MBProgressHUD.showAdded(to: self.view, animated: true)
-            progressIcon?.isUserInteractionEnabled = false
-            progressIcon?.labelText = "Loading"
-        progressIcon?.show(animated: true)
+        Utility.showProgress()
         guard let email = validField(emailField, "Email is required.Please enter your email"),
             let password = validField(passwordField,"Password is required.Please enter your number"),
             let username = validField(userNameField, "User name is required.Please enter your username ") else {
                 self.showError(message: errorMessage)
-                self.progressIcon?.hide(animated: true)
+                Utility.hideProgress()
                 return
         }
         
@@ -44,12 +36,12 @@ extension RegisterViewController {
             
             if let err = err{
                 self.showError(message: err.localizedDescription)
-                self.progressIcon?.hide(animated: true)
+                Utility.hideProgress()
                 return
             }
             
             guard let uid = user?.uid else {
-                self.progressIcon?.hide(animated: true)
+                Utility.hideProgress()
                 return
             }
             
@@ -60,12 +52,17 @@ extension RegisterViewController {
     
     func updateDisplayName(name:String ){
         guard let user = Auth.auth().currentUser else {
-            self.progressIcon?.hide(animated: true)
+            Utility.hideProgress()
             return
         }
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.displayName = name
         changeRequest.commitChanges(completion: { (error) in
+            if let err = error {
+                print(err.localizedDescription)
+                Utility.hideProgress()
+                return
+            }
             print("Updated Display Name")
             self.dismissLogin()
         })
@@ -75,10 +72,6 @@ extension RegisterViewController {
         print("Dismiss the login controller")
         self.dismiss(animated: true, completion: nil)
         self.delegrate?.dismiss(animated: true, completion: nil)
-        DispatchQueue.main.async {
-            self.progressIcon?.hide(animated: true)
-        }
-        
     }
     
 
