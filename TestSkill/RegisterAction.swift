@@ -13,13 +13,7 @@ import MBProgressHUD
 
 extension RegisterViewController {
     
-    func showError(message : String){
-        let error = PopupDialog()
-        error.delegrate = self
-        error.message = message
-        error.messageLabel.sizeToFit()
-        error.showDialog()
-    }
+
     
     func handleRegister(){
         Utility.showProgress()
@@ -82,17 +76,5 @@ extension RegisterViewController {
     }
 
     
-    func showPopUpDialog(message : String){
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let alertAction = UIAlertAction(title: "OK!", style: UIAlertActionStyle.default)
-        {
-            (UIAlertAction) -> Void in
-        }
-        alert.addAction(alertAction)
-        present(alert, animated: true)
-        {
-            () -> Void in
-        }
-        
-    }
+
 }

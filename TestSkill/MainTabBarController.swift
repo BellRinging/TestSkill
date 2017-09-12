@@ -15,7 +15,6 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = UIColor.red
         setupTabBar()
         
     }
@@ -51,14 +50,16 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         let ref = Database.database().reference().child("users")
         ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
-            if let userDictionary = snapshot.value as? [String: Any] {
+            if let _ = snapshot.value as? [String: Any] {
                 print("User Profile already setup")
                 Utility.hideProgress()
             } else {
                 print("User Profile not setup")
                 let displayname = user.displayName ?? ""
                 self.showProfileSetupPage(name: displayname)
+                Utility.hideProgress()
             }
+//            Utility.hideProgress()
             
         }) { (err) in
             print("Failed to fetch user for posts:", err)

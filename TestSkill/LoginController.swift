@@ -33,11 +33,7 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         cv.isPagingEnabled = true
-        //        cv.backgroundColor = UIColor.red
         cv.addDefaultGradient()
-      
-       
-        
         cv.register(LoginCell.self, forCellWithReuseIdentifier: self.cellId)
         cv.delegate = self
         cv.dataSource = self

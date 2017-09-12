@@ -27,10 +27,17 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         
         self.navigationItem.leftBarButtonItem = barButton
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleProfileChange), name: ProfileSetupController.updateProfile, object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("View Will appear")
+    }
+    
+    func handleProfileChange(){
+        print("From Profile Setup Page")
         collectionView?.reloadData()
     }
     
@@ -72,7 +79,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        print("Config the header cell")
+        print("Config the header cell")
         let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
         if let user = Auth.auth().currentUser{
             let dict = ["id": user.uid , "email":user.email , "user_name": user.displayName]

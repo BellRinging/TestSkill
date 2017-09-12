@@ -15,7 +15,7 @@
 import UIKit
 
 @IBDesignable class FloatLabelTextField: UITextField {
-	let animationDuration = 0.3
+	let animationDuration = 0.5
 	var title = UILabel()
     var isShowingTitle : Bool = false
     var placeHolderYPostion : CGFloat = 0.0
@@ -40,13 +40,13 @@ import UIKit
     func handleSwitch(){
         
         
-        if rightButton.titleLabel?.text == "Show " {
+        if rightButton.titleLabel?.text == "Show  " {
             self.isSecureTextEntry = false
-            rightButton.setTitle("Hide ", for: .normal)
+            rightButton.setTitle("Hide  ", for: .normal)
             rightButton.sizeToFit()
         }else {
             self.isSecureTextEntry = true
-            rightButton.setTitle("Show ", for: .normal)
+            rightButton.setTitle("Show  ", for: .normal)
             rightButton.sizeToFit()
         }
     }

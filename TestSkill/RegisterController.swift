@@ -95,7 +95,9 @@ class RegisterViewController: UIViewController {
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.isSecureTextEntry = true
-        tv.rightViewMode = .always
+//        self.rightViewMode = .always
+        tv.rightView = tv.rightButton
+        tv.rightViewMode = .whileEditing
         tv.backgroundColor = UIColor.white
         return tv
     }()
@@ -172,5 +174,13 @@ class RegisterViewController: UIViewController {
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func showError(message : String){
+        let error = PopupDialog()
+        error.delegrate = self
+        error.message = message
+        error.messageLabel.sizeToFit()
+        error.showDialog()
     }
 }

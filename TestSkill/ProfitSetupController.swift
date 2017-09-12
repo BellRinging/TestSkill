@@ -128,14 +128,14 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         changeRequest.photoURL = URL(string: url)
         changeRequest.commitChanges(completion: { (error) in
             print("Updated Profile Image")
+            NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+            
         })
     }
   
     
     func handleCreation(){
-        
-//    MBProgressHUD.showAdded(to: self.view, animated: true)
-        progressIcon.show(animated: true)
+        Utility.showProgress()
         guard let uid = Auth.auth().currentUser?.uid else {return }
         guard let firstName = firstNameField.text else { return }
         guard let lastName = lastNameField.text else { return }
@@ -146,7 +146,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
                 if (error != nil){
                     print("some bad happend in put image to server")
-                    self.progressIcon.hide(animated: true)
+                    Utility.hideProgress()
                     return
                 }
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
@@ -174,17 +174,15 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                 return
             }
 
-            let user = User(dict: values)
-            print(user)
-
-//                MBProgressHUD.hide(for: <#T##UIView#>, animated: <#T##Bool#>)
-//            self.progressIcon.hide(animated: true)
+//            let user = User(dict: values)
+//            print(user)
             Utility.hideProgress()
             self.dismiss(animated: true, completion: nil)
         })
     }
     
 
+    static let updateProfile = NSNotification.Name(rawValue: "UpdateProfile")
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         var selectedImageFromPicker: UIImage?
@@ -203,6 +201,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
     func handleTapImage(){
         print("tap Image")
         let controller = UIImagePickerController()
+        controller.allowsEditing = true
         controller.delegate = self
         self.present(controller, animated: true, completion: nil)
     }
