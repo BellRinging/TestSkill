@@ -13,6 +13,7 @@
 		EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B531F3CA772001A9BC0 /* LoginCell.swift */; };
 		EB215B561F3CA820001A9BC0 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B551F3CA820001A9BC0 /* Page.swift */; };
 		EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3708AA1F40A3420022315A /* SiginViewController.swift */; };
+		EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */; };
 		EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */; };
 		EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */; };
 		EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */; };
@@ -54,6 +55,9 @@
 		EB215B531F3CA772001A9BC0 /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		EB215B551F3CA820001A9BC0 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		EB3708AA1F40A3420022315A /* SiginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginViewController.swift; sourceTree = "<group>"; };
+		EB48ADDB1F69089300D109AA /* TestSkill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestSkill.entitlements; sourceTree = "<group>"; };
+		EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Alerts.m"; sourceTree = "<group>"; };
+		EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Alerts.h"; sourceTree = "<group>"; };
 		EB579E931F1CD3FA002E31A7 /* TestSkill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestSkill.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -160,6 +164,7 @@
 		EB579E951F1CD3FA002E31A7 /* TestSkill */ = {
 			isa = PBXGroup;
 			children = (
+				EB48ADDB1F69089300D109AA /* TestSkill.entitlements */,
 				EBDDA6271F5EBF3A00663485 /* FloatLabel */,
 				EB611FC81F3756EF00FEB44D /* BookmarkController */,
 				EB611FC71F3756C200FEB44D /* Supporting */,
@@ -249,6 +254,8 @@
 		EB611FC71F3756C200FEB44D /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */,
+				EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */,
 				EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */,
 				EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */,
 				EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */,
@@ -328,8 +335,14 @@
 				TargetAttributes = {
 					EB579E921F1CD3FA002E31A7 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 97FWFY4T59;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -454,6 +467,7 @@
 				EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */,
 				EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */,
 				EB579EBF1F1CE3DB002E31A7 /* SinglePhotoCell.swift in Sources */,
+				EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */,
 				EB579EAD1F1CD8F6002E31A7 /* SearchViewController.swift in Sources */,
 				EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */,
 				EB579EAF1F1CDABA002E31A7 /* AddPostController.swift in Sources */,
@@ -597,6 +611,8 @@
 			baseConfigurationReference = 490B503289F94BA60C70C937 /* Pods-TestSkill.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TestSkill/TestSkill.entitlements;
+				DEVELOPMENT_TEAM = 97FWFY4T59;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/SwiftyJSON",
@@ -616,6 +632,8 @@
 			baseConfigurationReference = 7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TestSkill/TestSkill.entitlements;
+				DEVELOPMENT_TEAM = 97FWFY4T59;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/SwiftyJSON",

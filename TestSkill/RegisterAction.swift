@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseAuth
 import MBProgressHUD
+import Firebase
 
 
 extension RegisterViewController {
@@ -40,15 +41,11 @@ extension RegisterViewController {
             }
             
             print("User created")
-            self.updateDisplayName(name: username )
+            self.updateDisplayName(user!, name: username )
         }
     }
     
-    func updateDisplayName(name:String ){
-        guard let user = Auth.auth().currentUser else {
-            Utility.hideProgress()
-            return
-        }
+    func updateDisplayName(_ user: Firebase.User , name:String ){
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.displayName = name
         changeRequest.commitChanges(completion: { (error) in

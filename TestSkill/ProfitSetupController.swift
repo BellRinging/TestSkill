@@ -123,6 +123,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
     }()
     
     func updateUserImage(url : String){
+        print("upload user image")
         guard let user = Auth.auth().currentUser else {return }
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.photoURL = URL(string: url)
@@ -141,6 +142,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         guard let lastName = lastNameField.text else { return }
         guard let email = Auth.auth().currentUser?.email else { return }
         
+        print("before enter")
         let ref = Storage.storage().reference().child("profile_images").child(uid).child("profilePic.jpg")
         if let profileImage = self.imageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
@@ -149,6 +151,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                     Utility.hideProgress()
                     return
                 }
+                print("upload image")
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
                     self.updateUserImage(url: profileImageURL)
                     let values = [ "last_name": lastName, "first_name": firstName, "email": email]

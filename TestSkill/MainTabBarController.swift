@@ -52,6 +52,7 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
             
             if let _ = snapshot.value as? [String: Any] {
                 print("User Profile already setup")
+                NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
                 Utility.hideProgress()
             } else {
                 print("User Profile not setup")

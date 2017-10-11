@@ -10,6 +10,7 @@ import Foundation
 import FacebookCore
 import FacebookLogin
 import SwiftyJSON
+import Firebase
 
 
 
@@ -22,11 +23,9 @@ extension SiginViewController :LoginButtonDelegate{
             
             init(rawResponse: Any?) {
                 let abc = rawResponse as? NSDictionary
-                print(abc)
                 if let json = JSON(abc) as? JSON{
                     user = User(json: json)
-//                    print(user)
-                    
+                    print("return from response")
                 }
             }
         }
@@ -44,7 +43,6 @@ extension SiginViewController :LoginButtonDelegate{
         
         let connection = GraphRequestConnection()
         connection.add(MyProfileRequest()) { response, result in
-            
             switch result {
             case .success(let response):
                 guard let user = response.user else {return}
@@ -63,17 +61,14 @@ extension SiginViewController :LoginButtonDelegate{
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         if result != nil{
+            print("User is logined by facebook")
             let accessToken = AccessToken.current
             guard let accessTokenString = accessToken?.authenticationToken else { return }
-            
-//                        let credentials = FIRFacebookAuthProvider.credential(withAccessToken: accessTokenString)
-//            
-//                        Auth.auth().signIn(with: credentials, completion: { (user, error) in
-//                            print("Login with facebook auth")
-//                            self.getEmail()
-//                        })
-            
-            
+            let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+            Auth.auth().signIn(with: credentials, completion: { (user, error) in
+                print("Login to fairbase with facebook auth")
+                self.getEmail()
+            })
             
         }else {
             print("Fail to login")
