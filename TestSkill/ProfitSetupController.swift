@@ -137,13 +137,16 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
     
     func handleCreation(){
         Utility.showProgress()
-        guard let uid = Auth.auth().currentUser?.uid else {return }
+        
+        guard let user = Auth.auth().currentUser else {return }
+        print("before enter1")
         guard let firstName = firstNameField.text else { return }
+        print("before enter2")
         guard let lastName = lastNameField.text else { return }
-        guard let email = Auth.auth().currentUser?.email else { return }
+      
         
         print("before enter")
-        let ref = Storage.storage().reference().child("profile_images").child(uid).child("profilePic.jpg")
+        let ref = Storage.storage().reference().child("profile_images").child(user.uid).child("profilePic.jpg")
         if let profileImage = self.imageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
                 if (error != nil){
@@ -154,8 +157,21 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                 print("upload image")
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
                     self.updateUserImage(url: profileImageURL)
-                    let values = [ "last_name": lastName, "first_name": firstName, "email": email]
-                    self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
+                    
+                    print(user.providerData)
+                    for info in user.providerData {
+                        if (info.providerID == FacebookAuthProviderID){
+                            let values = [ "last_name": lastName, "first_name": firstName]
+                            self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
+                        }else {
+                            guard let email = Auth.auth().currentUser?.email else { return }
+                            let values = [ "last_name": lastName, "first_name": firstName, "email": email]
+                            self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
+                        }
+                    }
+                    
+                    
+                    
                 }
             })
         }
