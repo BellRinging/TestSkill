@@ -1,16 +1,4 @@
-//
-//  FloatLabelTextField.swift
-//  FloatLabelFields
-//
-//  Created by Fahim Farook on 28/11/14.
-//  Copyright (c) 2014 RookSoft Ltd. All rights reserved.
-//
-//  Original Concept by Matt D. Smith
-//  http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction?list=users
-//
-//  Objective-C version by Jared Verdi
-//  https://github.com/jverdi/JVFloatLabeledTextField
-//
+
 
 import UIKit
 
@@ -19,6 +7,8 @@ import UIKit
 	var title = UILabel()
     var isShowingTitle : Bool = false
     var placeHolderYPostion : CGFloat = 0.0
+    var firstSet : Int = 1
+    var defaultFont : UIFont = UIFont.systemFont(ofSize: 12)
     
     
     let leftPadding : UIView = {
@@ -31,20 +21,21 @@ import UIKit
 	
     let rightButton : UIButton = {
         let paddingView = UIButton(type: .system)
-        paddingView.setTitle("Show ", for: .normal)
+        paddingView.setTitle("Show  ", for: .normal)
         paddingView.addTarget(self, action: #selector(handleSwitch), for: .touchUpInside)
         paddingView.sizeToFit()
         return paddingView
     }()
     
     func handleSwitch(){
-        
-        
+        print(rightButton.titleLabel?.text )
         if rightButton.titleLabel?.text == "Show  " {
+            print("true")
             self.isSecureTextEntry = false
             rightButton.setTitle("Hide  ", for: .normal)
             rightButton.sizeToFit()
         }else {
+            print("false")
             self.isSecureTextEntry = true
             rightButton.setTitle("Show  ", for: .normal)
             rightButton.sizeToFit()
@@ -56,7 +47,6 @@ import UIKit
 	override var accessibilityLabel:String? {
 		get {
 			if let txt = text , txt.isEmpty {
-
 				return title.text
 			} else {
 				return text
@@ -74,7 +64,7 @@ import UIKit
         }
     }
 	
-	var titleFont:UIFont = UIFont.boldSystemFont(ofSize: 14){
+	var titleFont:UIFont = UIFont.boldSystemFont(ofSize: 12){
 		didSet {
 			title.font = titleFont
 			title.sizeToFit()
@@ -97,7 +87,7 @@ import UIKit
 		}
 	}
 	
-	@IBInspectable var titleActiveTextColour:UIColor! {
+	@IBInspectable var titleActiveTextColour:UIColor = UIColor.green {
 		didSet {
 			if isFirstResponder {
 				title.textColor = titleActiveTextColour
@@ -118,19 +108,18 @@ import UIKit
 	
 	// MARK:- Overrides
 	override func layoutSubviews() {
+        print("layoutsubviews")
 		super.layoutSubviews()
-		setTitlePositionForTextAlignment()
-		let isResp = isFirstResponder
-		if let txt = text , !txt.isEmpty && isResp {
+		if let txt = text , !txt.isEmpty  {
 			title.textColor = titleActiveTextColour
 		} else {
 			title.textColor = titleTextColour
 		}
 		if let txt = text , txt.isEmpty {
-			hideTitle(isResp)
+			hideTitle()
 		} else {
             if (!isShowingTitle){
-                showTitle(isResp)
+                showTitle()
             }
 			
 		}
@@ -165,15 +154,16 @@ import UIKit
 	}
 	
 	fileprivate func setup() {
+        if (firstSet==1){
+            firstSet = 0
+            defaultFont = self.font!
+        }
 		borderStyle = UITextBorderStyle.none
 		titleActiveTextColour = tintColor
-		title.font = titleFont
-		title.textColor = titleTextColour
+		title.font = self.font
 		self.addSubview(title)
         self.leftViewMode = .always
         self.leftView = leftPadding
-//        self.rightViewMode = .always
-//        self.rightView = rightButton
 	}
 
 	fileprivate func maxTopInset()->CGFloat {
@@ -184,45 +174,33 @@ import UIKit
 		return 0
 	}
 	
-	fileprivate func setTitlePositionForTextAlignment() {
-		let r = textRect(forBounds: bounds)
-		let x = r.origin.x
-		title.frame = CGRect(x:x, y:title.frame.origin.y , width:title.frame.size.width , height:title.frame.size.height)
-	}
-	
-	fileprivate func showTitle(_ animated:Bool) {
-//        print("showTitle")
+	fileprivate func showTitle() {
+        print("showTitle")
         isShowingTitle = true
-        guard let font2 = self.font else {return}
-        self.titleFont = font2
-        let posY = (self.bounds.height - font2.lineHeight) / 2 - titleYPadding
+        self.titleFont = defaultFont
+        let posY = (self.bounds.height - self.titleFont.lineHeight) / 2 - titleYPadding
         var r = self.textRect(forBounds: self.bounds)
         r.origin.y = posY
-        titleTextColour = UIColor.gray
         title.frame = r
         
-		let dur = animated ? animationDuration : 0
+		let dur =  animationDuration
 		UIView.animate(withDuration: dur, delay:0, options: [UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveLinear], animations:{
-				var r = self.textRect(forBounds: self.bounds)
-				r.origin.y = self.titleYPadding
-				self.title.frame = r
-            self.titleFont = UIFont.boldSystemFont(ofSize: 12)
-            self.titleTextColour = UIColor.black
+			var r = self.textRect(forBounds: self.bounds)
+            r.origin.y = self.titleYPadding
+            self.title.font  = UIFont.boldSystemFont(ofSize: 12)
+            self.title.frame = r
+            print(r)
 			}, completion:nil)
 	}
 	
-	fileprivate func hideTitle(_ animated:Bool) {
-//        print("hideTitle")
+	fileprivate func hideTitle() {
+        print("hideTitle")
         isShowingTitle = false
-        guard let font2 = self.font else {
-            return
-        }
-		let dur = animated ? animationDuration : 0
+		let dur = animationDuration
 		UIView.animate(withDuration: dur, delay:0, options: [UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveLinear], animations:{
-            self.titleFont = font2
-            self.titleTextColour = UIColor.gray
-            let r = self.textRect(forBounds: self.bounds)
-			self.title.frame = r
+            self.titleFont = self.defaultFont
+			self.title.frame = self.textRect(forBounds: self.bounds)
         }, completion: nil)
+       
 	}
 }
