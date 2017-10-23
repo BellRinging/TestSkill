@@ -1,17 +1,12 @@
-//
-//  LoginController.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 17/7/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
 import UIKit
 import Firebase
 
 class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout ,SignControllerDelegrate {
-    let cellId = "CellId"
+    func successLogin() {
+        
+    }
     
+    let cellId = "CellId"
     
     weak var delegrate : MainTabBarController?
     
@@ -19,12 +14,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         super.viewDidLoad()
         pageControl.numberOfPages = pages.count
         setupView()
-    }
-    
-    
-    
-    func successLogin(){
-        print("Success Login")
     }
     
     lazy var collectionView : UICollectionView = {
@@ -37,8 +26,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         cv.register(LoginCell.self, forCellWithReuseIdentifier: self.cellId)
         cv.delegate = self
         cv.dataSource = self
-   
-        //        cv.addGradientColor(colorFrom: UIColor.mainColor(), colorTo: UIColor.secondColor(), startPosition: CGPoint(x:0,y:1), endPosition: CGPoint(x:1,y:0.4))
         return cv
     }()
     
@@ -50,32 +37,20 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         ]
         
     let pageControl : UIPageControl = {
-     let pc = UIPageControl()
+        let pc = UIPageControl()
         pc.currentPageIndicatorTintColor = UIColor.white
-//        pc.pageIndicatorTintColor = UIColor.gray
         return pc
     }()
     
-       
     func setupView(){
-        
-        
         view.addSubview(collectionView)
-        
         collectionView.Anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topPadding: 0  , leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height:0)
-        
-        
         view.addSubview(stackView)
         stackView.Anchor(top: nil, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topPadding: 0  , leftPadding: 8, rightPadding: 8, bottomPadding: 8, width: 0, height:100)
-        
         view.addSubview(pageControl)
-          pageControl.Anchor(top: nil, left: view.leftAnchor, right: view.rightAnchor, bottom: stackView.topAnchor, topPadding: 0  , leftPadding: 8, rightPadding: 8, bottomPadding: 8, width: 0, height:0)
+        pageControl.Anchor(top: nil, left: view.leftAnchor, right: view.rightAnchor, bottom: stackView.topAnchor, topPadding: 0  , leftPadding: 8, rightPadding: 8, bottomPadding: 8, width: 0, height:0)
     }
    
-
-
-        
-    
     let siginButton : UIButton = {
         let bn = UIButton()
         let text = NSAttributedString(string: "Sign in", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 20),NSForegroundColorAttributeName:UIColor.white])
@@ -83,7 +58,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         bn.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return bn
     }()
-    
     
     let registerButton : UIButton = {
         let bn = UIButton()
@@ -98,7 +72,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     
     lazy var stackView : UIStackView = {
         let sv = UIStackView()
-//        sv.alignment = .center
         sv.axis = .vertical
         sv.distribution = .fillEqually
         sv.addArrangedSubview(self.registerButton)
@@ -118,7 +91,6 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
         let vc = RegisterViewController()
         vc.delegrate = self
         self.present(vc, animated: true, completion: nil)
-        //        navigationController?.pushViewController(vc, animated: true)
     }
     
     

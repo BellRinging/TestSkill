@@ -34,8 +34,8 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
     
     
     func setupView(){
-        
-        let barButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleCreation))
+        navigationItem.titleView?.addDefaultGradient()
+        let barButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleProfileCreation))
         navigationItem.rightBarButtonItem = barButton
         
         
@@ -64,26 +64,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         im.isUserInteractionEnabled = true
         return im
     }()
-//    
-    lazy var progressIcon : MBProgressHUD = {
-        let prog = MBProgressHUD.showAdded(to: self.view, animated: true)
-        prog.labelText = "Loading"
-        prog.isUserInteractionEnabled = false
-        return prog
-    }()
-//
-//    
-    let createProfileButton : UIButton = {
-        let bn = UIButton()
-        let text = NSAttributedString(string: "Create Profile Now", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
-        bn.setAttributedTitle(text, for: .normal)
-        bn.addTarget(self, action: #selector(handleCreation), for: .touchUpInside)
-        bn.layer.borderWidth = 0.5
-        bn.layer.borderColor = UIColor.white.cgColor
-        return bn
-    }()
- 
-    
+
     let userNameLabel : UILabel = {
         let lb = UILabel()
         lb.textAlignment = .center
@@ -91,8 +72,6 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         lb.font = UIFont.boldSystemFont(ofSize: 20)
         return lb
     }()
-    
-    
     
     let firstNameField : FloatLabelTextField = {
         let tv = FloatLabelTextField()
@@ -104,7 +83,6 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
 //        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         tv.clearButtonMode = UITextFieldViewMode.always
-   
         return tv
     }()
     
@@ -135,14 +113,22 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
     }
   
     
-    func handleCreation(){
+    func handleProfileCreation(){
         Utility.showProgress()
         
         guard let user = Auth.auth().currentUser else {return }
         print("before enter1")
+
         guard let firstName = firstNameField.text else { return }
         print("before enter2")
         guard let lastName = lastNameField.text else { return }
+        
+        guard let _ = Utility.validField(firstNameField, "Email is required.Please enter your email"),
+            let _ = Utility.validField(lastNameField,"Password is required.Please enter your number") else {
+                Utility.showError(self,message: Utility.errorMessage!)
+                Utility.hideProgress()
+                return
+        }
       
         
         print("before enter")
@@ -189,7 +175,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
             
             if err != nil {
                 print(err!)
-                self.progressIcon.hide(animated: true)
+                Utility.hideProgress()
                 return
             }
 

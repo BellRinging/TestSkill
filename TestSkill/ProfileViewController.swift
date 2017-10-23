@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FacebookLogin
 
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
@@ -43,8 +44,20 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     func handleLogout(){
-        if let user = Auth.auth().currentUser?.uid {
-            print(user)
+        if let user = Auth.auth().currentUser {
+            for info in (user.providerData) {
+//                   print("========\(info)" )
+//                print("========\(user.providerData)" )
+//                 print("========\(user.providerData.count)" )
+//                print("========\(user.providerData)" )
+                switch info.providerID {
+                case FacebookAuthProviderID:
+                    let loginManager = LoginManager()
+                    loginManager.logOut()
+                default:
+                    break
+                }
+            }
             do {
                 try Auth.auth().signOut()
             }catch {

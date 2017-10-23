@@ -16,7 +16,6 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,13 +59,10 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
                 self.showProfileSetupPage(name: displayname)
                 Utility.hideProgress()
             }
-//            Utility.hideProgress()
-            
         }) { (err) in
             print("Failed to fetch user for posts:", err)
         }
     }
-    
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewControllers?.index(of: viewController) == 2 {
@@ -75,8 +71,6 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
             return true
         }
     }
-    
-    
     
     func setupTabBar(){
     
@@ -98,8 +92,6 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
        })
     
     }
-    
-    
     
     func templateController(_ selectedImage : UIImage , unselectedImage : UIImage ,rootController : UIViewController = UIViewController()) -> UINavigationController{
   
