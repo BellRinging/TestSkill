@@ -46,7 +46,21 @@ class Utility {
             () -> Void in
         }
     }
-
     
+    static var errorMessage : String?
+    
+    static func validField(_ field:UITextField, _ message:String) -> String?{
+        if let fieldValue = field.text, fieldValue != "" { return fieldValue }
+        errorMessage = message
+        return nil
+    }
+    
+    static func showError(_ controller:UIViewController,message : String){
+        let error = PopupDialog()
+        error.delegrate = controller
+        error.message = message
+        error.messageLabel.sizeToFit()
+        error.showDialog()
+    }
 
 }

@@ -1,11 +1,3 @@
-//
-//  SiginViewController.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 13/8/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
 import UIKit
 import FacebookCore
 import FacebookLogin
@@ -42,13 +34,13 @@ class SiginViewController: UIViewController   {
         forgetPasswordButton.Anchor(top: normalSignInButton.bottomAnchor, left: view.leftAnchor , right: nil, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
         
         view.addSubview(signInButton)
-        signInButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        signInButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 4, rightPadding: 4, bottomPadding: 0, width: 0, height: 0)
         
         
         let button = LoginButton(readPermissions: [ .publicProfile ,.email ])
         
         view.addSubview(button)
-        button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 40)
         
         button.delegate = self
     }
@@ -157,47 +149,33 @@ class SiginViewController: UIViewController   {
     func SignInByEmail(){
         print("SignIn by Email")
         
-        guard let email = validField(emailField, "Email is required.Please enter your email"),
-            let password = validField(passwordField,"Password is required.Please enter your number") else {
-                self.showError(message: errorMessage)
+        guard let email = Utility.validField(emailField, "Email is required.Please enter your email"),
+            let password = Utility.validField(passwordField,"Password is required.Please enter your number") else {
+                Utility.showError(self,message: errorMessage)
                 return
         }
         
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
-                self.showError(message: err.localizedDescription)
+                Utility.showError(self,message: err.localizedDescription)
                 return
             }
             print("User is login")
-            self.dismiss(animated: true, completion: nil)
-            self.delegrate?.dismiss(animated: true, completion: nil)
-//            dismiss(animated: true, completion: nil)
+            self.dismissLogin()
         }
     }
 
-    
+    func dismissLogin(){
+        print("Dismiss the login controller")
+        self.dismiss(animated: true, completion: nil)
+        self.delegrate?.dismiss(animated: true, completion: nil)
+    }
     
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
 
-    func validField(_ field:UITextField, _ message:String) -> String?{
-        if let fieldValue = field.text, fieldValue != "" { return fieldValue }
-        errorMessage = message
-        return nil
-    }
-
-    
- 
-
-    func showError(message : String){
-        let error = PopupDialog()
-        error.delegrate = self
-        error.message = message
-        error.messageLabel.sizeToFit()
-        error.showDialog()
-    }
     
     
   

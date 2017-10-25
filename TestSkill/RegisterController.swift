@@ -1,11 +1,3 @@
-//
-//  SiginViewController.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 13/8/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
 import UIKit
 import FirebaseAuth
 import MBProgressHUD
@@ -14,17 +6,13 @@ import MBProgressHUD
 
 class RegisterViewController: UIViewController {
     
-    
-    
-    
-    var errorMessage = ""
+
     weak var delegrate :LoginController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addDefaultGradient()
         setupView()
-        
     }
     
     var progressIcon : MBProgressHUD?
@@ -41,7 +29,6 @@ class RegisterViewController: UIViewController {
         sv.distribution = .fillEqually
         sv.addArrangedSubview(self.crossImageView)
         sv.addArrangedSubview(self.userNameField)
-//        sv.addArrangedSubview(self.lastNameField)
         sv.addArrangedSubview(self.emailField)
         sv.addArrangedSubview(self.passwordField)
         sv.addArrangedSubview(self.warrentLabel)
@@ -59,7 +46,6 @@ class RegisterViewController: UIViewController {
         temp.addSubview(ig)
         ig.Anchor(top: temp.topAnchor, left: nil, right: temp.rightAnchor, bottom: nil, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 0  )
         ig.addTarget(self, action: #selector(handleTapCross), for: .touchUpInside)
-        
         return temp
     }()
     
@@ -95,7 +81,6 @@ class RegisterViewController: UIViewController {
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.isSecureTextEntry = true
-//        self.rightViewMode = .always
         tv.rightView = tv.rightButton
         tv.rightViewMode = .whileEditing
         tv.backgroundColor = UIColor.white
@@ -120,7 +105,6 @@ class RegisterViewController: UIViewController {
         sv.addArrangedSubview(self.signInButton)
         return sv
     }()
-    
     
     let siginLabel : UILabel = {
         let lb = UILabel()
@@ -156,31 +140,9 @@ class RegisterViewController: UIViewController {
         return bn
     }()
     
-    
-    func lockTextField(){
-        userNameField.isEnabled = false
-        emailField.isEnabled = false
-        passwordField.isEnabled = false
-        signInButton.isEnabled = false
-        
-    }
-
-    func unlockTextField(){
-        userNameField.isEnabled = true
-        emailField.isEnabled = true
-        passwordField.isEnabled = true
-        signInButton.isEnabled = true
-    }
-    
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
-    func showError(message : String){
-        let error = PopupDialog()
-        error.delegrate = self
-        error.message = message
-        error.messageLabel.sizeToFit()
-        error.showDialog()
-    }
+  
 }

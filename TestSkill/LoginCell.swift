@@ -13,8 +13,6 @@ class LoginCell: UICollectionViewCell {
     var page : Page? {
         didSet{
             guard let page = page else {return }
-            
-            
             let attributedText = NSMutableAttributedString(string: page.title, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightMedium), NSForegroundColorAttributeName: UIColor.textColor()])
             
             attributedText.append(NSAttributedString(string: "\n\n\(page.massage)", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName: UIColor.textColor()]))
@@ -34,7 +32,6 @@ class LoginCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        self.backgroundColor = UIColor.random()
         setupView()
     }
     
@@ -53,7 +50,6 @@ class LoginCell: UICollectionViewCell {
         let im = CustomImageView()
         im.contentMode = .scaleAspectFill
         im.clipsToBounds = true
-        //        im.layer.cornerRadius = 60/2
         return im
     }()
     

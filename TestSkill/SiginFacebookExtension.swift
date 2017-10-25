@@ -1,18 +1,9 @@
-//
-//  SiginExtension.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 18/8/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
 
 import Foundation
 import FacebookCore
 import FacebookLogin
 import SwiftyJSON
 import Firebase
-
-
 
 extension SiginViewController :LoginButtonDelegate{
     
@@ -61,18 +52,32 @@ extension SiginViewController :LoginButtonDelegate{
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         if result != nil{
+            Utility.showProgress()
             print("User is logined by facebook")
             let accessToken = AccessToken.current
             guard let accessTokenString = accessToken?.authenticationToken else { return }
             let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+//            firebaseLogin(credentials)
             Auth.auth().signIn(with: credentials, completion: { (user, error) in
+                Utility.hideProgress()
                 print("Login to fairbase with facebook auth")
                 self.getEmail()
+                self.dismissLogin()
             })
             
         }else {
             print("Fail to login")
         }
+    }
+    
+    func firebaseLogin(_ credentials: AuthCredential) {
+        Utility.showProgress()
+        Auth.auth().signIn(with: credentials, completion: { (user, error) in
+            Utility.hideProgress()
+            print("Login fail  fairbase with facebook auth")
+            self.getEmail()
+            self.dismissLogin()
+        })
     }
     
 }

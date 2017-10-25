@@ -48,6 +48,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         
+        
+        guard let controller = GIDSignIn.sharedInstance().uiDelegate as? SiginViewController else { return }
+        if let error = error {
+            Utility.showError(controller, message: error.localizedDescription)
+            return
+        }
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        controller.firebaseLogin(credential)
+    
+        
         if (error == nil) {
             // Perform any operations on signed in user here.
 //            let userId = user.userID                  // For client-side use only!
@@ -72,8 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
     
     func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
                 withError error: NSError!) {
-        // Perform any operations when the user disconnects from app here.
-        // ...
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -93,7 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
         let progressIcon = MBProgressHUD.showAdded(to: mainWindow!, animated: true)
         progressIcon.labelText = "Loading"
         progressIcon.isUserInteractionEnabled = false
-        //tempView
         let tempView = UIView(frame: (mainWindow?.frame)!)
         tempView.backgroundColor = UIColor(white: 0.3, alpha: 0.5)
         tempView.tag = 999
