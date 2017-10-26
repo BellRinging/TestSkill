@@ -10,7 +10,7 @@ import UIKit
 
 extension UIColor{
     
-    static func rgb(_ red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
     
@@ -19,15 +19,15 @@ extension UIColor{
         let vR = CGFloat(arc4random() % 255)
         let vG = CGFloat(arc4random() % 255)
         let vB = CGFloat(arc4random() % 255)
-        return UIColor.rgb(vR, green: vG, blue: vB)
+        return UIColor.rgb(red: vR, green: vG, blue: vB)
     }
     
     static func mainColor() ->UIColor{
-        return UIColor.rgb(19, green: 106, blue: 138)
+        return UIColor.rgb(red: 19, green: 106, blue: 138)
     }
     
     static func secondColor() ->UIColor{
-        return UIColor.rgb(38, green: 120, blue: 113)
+        return UIColor.rgb(red: 38, green: 120, blue: 113)
     }
     
     static func textColor() ->UIColor{
