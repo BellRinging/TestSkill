@@ -1,4 +1,4 @@
-//
+
 //  HomeViewController.swift
 //  SnookerGambling
 //
@@ -19,7 +19,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: SharePhotoController.updateFeedNotificationName, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: SearchViewController.updateFeedNotificationName, object: nil)
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(HomeViewControllerCell.self, forCellWithReuseIdentifier: cellId)
         let refreshControl = UIRefreshControl()

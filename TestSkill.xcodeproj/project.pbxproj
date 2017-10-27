@@ -9,17 +9,23 @@
 /* Begin PBXBuildFile section */
 		394E6055A2E84994640212ED /* Pods_TestSkill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */; };
 		EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB187C581F1E284D00F7A12D /* LoginController.swift */; };
+		EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */; };
+		EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */; };
+		EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC9631FA23701004800D4 /* HomeViewControllerCell.swift */; };
+		EB1CC9661FA23B9A004800D4 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC9651FA23B9A004800D4 /* Comment.swift */; };
 		EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B511F3CA715001A9BC0 /* LoginCollection.swift */; };
 		EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B531F3CA772001A9BC0 /* LoginCell.swift */; };
 		EB215B561F3CA820001A9BC0 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB215B551F3CA820001A9BC0 /* Page.swift */; };
 		EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3708AA1F40A3420022315A /* SiginViewController.swift */; };
+		EB4DFD8D1FA229AD00145275 /* SearchContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4DFD8C1FA229AD00145275 /* SearchContainerView.swift */; };
+		EB4DFD8F1FA229E100145275 /* SearchViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4DFD8E1FA229E100145275 /* SearchViewControllerCell.swift */; };
+		EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4DFD901FA229F900145275 /* SearchExtemsion.swift */; };
 		EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */; };
 		EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */; };
 		EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */; };
 		EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */; };
 		EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EA81F1CD4D4002E31A7 /* MainTabBarController.swift */; };
 		EB579EAB1F1CD83D002E31A7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */; };
-		EB579EAD1F1CD8F6002E31A7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EAC1F1CD8F6002E31A7 /* SearchViewController.swift */; };
 		EB579EAF1F1CDABA002E31A7 /* AddPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */; };
 		EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EB01F1CDB58002E31A7 /* BookmarkViewController.swift */; };
 		EB579EB31F1CDEA9002E31A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB579EB21F1CDEA9002E31A7 /* GoogleService-Info.plist */; };
@@ -34,6 +40,7 @@
 		EB579EC51F1CE963002E31A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC41F1CE963002E31A7 /* User.swift */; };
 		EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC61F1D062B002E31A7 /* RegisterController.swift */; };
 		EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */; };
+		EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */; };
 		EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA420231F667A0F0010BFC7 /* Utility.swift */; };
 		EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */; };
 		EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */; };
@@ -51,11 +58,18 @@
 		490B503289F94BA60C70C937 /* Pods-TestSkill.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.release.xcconfig"; sourceTree = "<group>"; };
 		EB187C581F1E284D00F7A12D /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
+		EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewControllerCell.swift; sourceTree = "<group>"; };
+		EB1CC9631FA23701004800D4 /* HomeViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerCell.swift; sourceTree = "<group>"; };
+		EB1CC9651FA23B9A004800D4 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		EB215B511F3CA715001A9BC0 /* LoginCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCollection.swift; sourceTree = "<group>"; };
 		EB215B531F3CA772001A9BC0 /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		EB215B551F3CA820001A9BC0 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		EB3708AA1F40A3420022315A /* SiginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginViewController.swift; sourceTree = "<group>"; };
 		EB48ADDB1F69089300D109AA /* TestSkill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestSkill.entitlements; sourceTree = "<group>"; };
+		EB4DFD8C1FA229AD00145275 /* SearchContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchContainerView.swift; sourceTree = "<group>"; };
+		EB4DFD8E1FA229E100145275 /* SearchViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerCell.swift; sourceTree = "<group>"; };
+		EB4DFD901FA229F900145275 /* SearchExtemsion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchExtemsion.swift; sourceTree = "<group>"; };
 		EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Alerts.m"; sourceTree = "<group>"; };
 		EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Alerts.h"; sourceTree = "<group>"; };
 		EB579E931F1CD3FA002E31A7 /* TestSkill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestSkill.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,7 +79,6 @@
 		EB579EA21F1CD3FA002E31A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB579EA81F1CD4D4002E31A7 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		EB579EAC1F1CD8F6002E31A7 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPostController.swift; sourceTree = "<group>"; };
 		EB579EB01F1CDB58002E31A7 /* BookmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		EB579EB21F1CDEA9002E31A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -80,6 +93,7 @@
 		EB579EC41F1CE963002E31A7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EB579EC61F1D062B002E31A7 /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
+		EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPhotoView.swift; sourceTree = "<group>"; };
 		EBA420231F667A0F0010BFC7 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterAction.swift; sourceTree = "<group>"; };
 		EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfitSetupController.swift; sourceTree = "<group>"; };
@@ -113,6 +127,15 @@
 				7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		EB1CC95E1FA2367E004800D4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */,
+				EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */,
+			);
+			name = Common;
 			sourceTree = "<group>";
 		};
 		EB3D0A0A1F611120005AC4EB /* ProfileSetup */ = {
@@ -164,6 +187,7 @@
 		EB579E951F1CD3FA002E31A7 /* TestSkill */ = {
 			isa = PBXGroup;
 			children = (
+				EB1CC95E1FA2367E004800D4 /* Common */,
 				EB48ADDB1F69089300D109AA /* TestSkill.entitlements */,
 				EBDDA6271F5EBF3A00663485 /* FloatLabel */,
 				EB611FC81F3756EF00FEB44D /* BookmarkController */,
@@ -178,10 +202,8 @@
 				EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */,
 				EB579EA81F1CD4D4002E31A7 /* MainTabBarController.swift */,
 				EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */,
-				EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */,
 				EB579EB81F1CDF7D002E31A7 /* CommentCell.swift */,
 				EB579EBA1F1CDFA0002E31A7 /* HomeCell.swift */,
-				EB579EAC1F1CD8F6002E31A7 /* SearchViewController.swift */,
 			);
 			path = TestSkill;
 			sourceTree = "<group>";
@@ -189,6 +211,7 @@
 		EB611FC01F37556D00FEB44D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -196,6 +219,9 @@
 		EB611FC11F37557D00FEB44D /* SearchViewController */ = {
 			isa = PBXGroup;
 			children = (
+				EB4DFD8C1FA229AD00145275 /* SearchContainerView.swift */,
+				EB4DFD8E1FA229E100145275 /* SearchViewControllerCell.swift */,
+				EB4DFD901FA229F900145275 /* SearchExtemsion.swift */,
 			);
 			name = SearchViewController;
 			sourceTree = "<group>";
@@ -212,6 +238,8 @@
 		EB611FC31F3755A200FEB44D /* HomeViewController */ = {
 			isa = PBXGroup;
 			children = (
+				EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */,
+				EB1CC9631FA23701004800D4 /* HomeViewControllerCell.swift */,
 			);
 			name = HomeViewController;
 			sourceTree = "<group>";
@@ -233,6 +261,7 @@
 				EB579EC21F1CE721002E31A7 /* Post.swift */,
 				EB579EC41F1CE963002E31A7 /* User.swift */,
 				EB215B551F3CA820001A9BC0 /* Page.swift */,
+				EB1CC9651FA23B9A004800D4 /* Comment.swift */,
 			);
 			name = DataObject;
 			sourceTree = "<group>";
@@ -462,32 +491,39 @@
 			files = (
 				EBDDA62E1F6038B900663485 /* SiginFacebookExtension.swift in Sources */,
 				EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */,
+				EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */,
 				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
 				EB579EC11F1CE4ED002E31A7 /* Extension.swift in Sources */,
+				EB1CC9661FA23B9A004800D4 /* Comment.swift in Sources */,
 				EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */,
 				EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */,
 				EB579EBF1F1CE3DB002E31A7 /* SinglePhotoCell.swift in Sources */,
 				EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */,
-				EB579EAD1F1CD8F6002E31A7 /* SearchViewController.swift in Sources */,
 				EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */,
 				EB579EAF1F1CDABA002E31A7 /* AddPostController.swift in Sources */,
+				EB4DFD8F1FA229E100145275 /* SearchViewControllerCell.swift in Sources */,
 				EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */,
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
 				EB579EC31F1CE721002E31A7 /* Post.swift in Sources */,
 				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,
 				EB579EB71F1CDF43002E31A7 /* ProfileHeaderCell.swift in Sources */,
+				EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */,
+				EB4DFD8D1FA229AD00145275 /* SearchContainerView.swift in Sources */,
 				EB579EBB1F1CDFA0002E31A7 /* HomeCell.swift in Sources */,
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,
 				EB579EC51F1CE963002E31A7 /* User.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
 				EBDDA62F1F6038B900663485 /* SiginGoogleExtension.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
+				EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
 				EB579EBD1F1CDFBB002E31A7 /* CustomImageView.swift in Sources */,
 				EB579EB91F1CDF7D002E31A7 /* CommentCell.swift in Sources */,
 				EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */,
 				EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */,
+				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
+				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */,
 				EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */,
 				EBFBE1791F5085CF00937EC6 /* PopupDialog.swift in Sources */,

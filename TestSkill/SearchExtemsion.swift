@@ -6,7 +6,7 @@
 //  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
 //
 
-extension SearchContainerView : UISearchBarDelegate ,UICollectionViewDelegateFlowLayout{
+extension SearchViewController : UISearchBarDelegate ,UICollectionViewDelegateFlowLayout{
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         

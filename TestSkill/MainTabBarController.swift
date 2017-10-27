@@ -66,6 +66,9 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewControllers?.index(of: viewController) == 2 {
+//            let vc = AddPho
+//            let nav = UINavigationController(rootViewController: <#T##UIViewController#>)
+            
             return false
         }else{
             return true
@@ -82,10 +85,9 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
        
         let profile = templateController(#imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected"), rootController: ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
-    
         let bookmark = templateController(#imageLiteral(resourceName: "ribbon"), unselectedImage: #imageLiteral(resourceName: "ribbon"), rootController: BookmarkViewController(collectionViewLayout: UICollectionViewFlowLayout()))
     
-        viewControllers = [profile,home,search,add,bookmark]
+        viewControllers = [profile,search,add,home,bookmark]
         tabBar.tintColor = UIColor.black
        tabBar.items?.forEach({ (item) in
             item.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)

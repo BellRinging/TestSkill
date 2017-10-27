@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 extension UIColor{
     
@@ -102,5 +103,56 @@ extension UIView{
         borderView.Anchor(top: nil, left: self.leftAnchor, right: self.rightAnchor, bottom: self.bottomAnchor, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: thickness)
         
     }
+
     
+}
+
+extension Database {
+    
+    static func fetchUserWithUID(uid: String, completion: @escaping (User) -> ()) {
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let userDictionary = snapshot.value as? [String: Any] else { return }
+            let user = User(dict: userDictionary as [String:AnyObject])
+            completion(user)
+        }) { (err) in
+            print("Failed to fetch user for posts:", err)
+        }
+    }
+}
+
+extension Date {
+    func timeAgoDisplay() -> String {
+        let secondsAgo = Int(Date().timeIntervalSince(self))
+        
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        let month = 4 * week
+        
+        let quotient: Int
+        let unit: String
+        if secondsAgo < minute {
+            quotient = secondsAgo
+            unit = "second"
+        } else if secondsAgo < hour {
+            quotient = secondsAgo / minute
+            unit = "min"
+        } else if secondsAgo < day {
+            quotient = secondsAgo / hour
+            unit = "hour"
+        } else if secondsAgo < week {
+            quotient = secondsAgo / day
+            unit = "day"
+        } else if secondsAgo < month {
+            quotient = secondsAgo / week
+            unit = "week"
+        } else {
+            quotient = secondsAgo / month
+            unit = "month"
+        }
+        
+        return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
+        
+    }
 }

@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class SearchContainerView: UICollectionViewController   {
+class SearchViewController: UICollectionViewController   {
     
     
     var filteredUsers = [User]()

@@ -13,10 +13,10 @@ class CommentViewControllerCell: UICollectionViewCell {
     var comment:Comment?{
         didSet{
             guard let nameText = comment?.user.name else {return}
-            guard let url = comment?.user.profileImageUrl else {return}
+            guard let url = comment?.user.imageUrl else {return}
             guard let commentText = comment?.comment else {return}
             //            print(commentText)
-            profileImage.loadImage(urlString: url)
+            profileImage.loadImage(url)
             guard let timeAgo = comment?.creationDate else {return}
             setupDisplayText(name: nameText, comment: commentText ,timeAgo: timeAgo.timeAgoDisplay())
         }
@@ -57,9 +57,10 @@ class CommentViewControllerCell: UICollectionViewCell {
     func setupViewLayout(){
         
         addSubview(profileImage)
-        profileImage.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        profileImage.Anchor(top: topAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 40, height: 40)
+        
         addSubview(username)
-        username.anchor(top: topAnchor, left: profileImage.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0)
+        username.Anchor(top: topAnchor, left: profileImage.rightAnchor, right: rightAnchor, bottom: bottomAnchor, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 8, width: 0, height: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {

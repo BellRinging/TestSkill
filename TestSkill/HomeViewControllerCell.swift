@@ -33,10 +33,10 @@ class HomeViewControllerCell: UICollectionViewCell {
     var post : Post? {
         didSet{
             guard let name = post?.user.name ,let url = post?.imageUrl  else {return }
-            mainImage.loadImage(urlString: url)
+            mainImage.loadImage(url)
             nameLabel.text = name
-            guard let picUrl = post?.user.profileImageUrl else {return }
-            profileImage.loadImage(urlString: picUrl)
+            guard let picUrl = post?.user.imageUrl else {return }
+            profileImage.loadImage(picUrl)
             setupAttributedCaption()
             guard let like =  post?.hasLiked else { return }
             //            print("Caption : \(post?.caption) has like \(like)")
@@ -112,10 +112,12 @@ class HomeViewControllerCell: UICollectionViewCell {
     }()
     
     fileprivate func setupAttributedCaption() {
-        guard let post = self.post ,let username = post.user.name  else { return }
+        guard let post = self.post  else { return }
         
         
-        let temp = NSMutableAttributedString(string: "\(username)", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
+        
+        
+        let temp = NSMutableAttributedString(string: "\(post.user.name)", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
         
         temp.append(NSAttributedString(string: " \(post.caption)", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.black]))
         
