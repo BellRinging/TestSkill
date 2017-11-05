@@ -25,8 +25,8 @@ class CustomImageView: UIImageView {
                 print(err.localizedDescription)
                 return
             }
-            print(self.lastUrl)
-            print(url.absoluteString)
+//            print(self.lastUrl)
+//            print(url.absoluteString)
             if self.lastUrl != url.absoluteString {
                 return
             }

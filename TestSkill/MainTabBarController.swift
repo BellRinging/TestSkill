@@ -12,10 +12,12 @@ import FirebaseDatabase
 import MBProgressHUD
 
 class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
-        
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
+        //Save to the static for common use
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -29,37 +31,36 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         self.present(loginController, animated: true, completion: nil)
     }
     
-    func showProfileSetupPage(name : String){
+    func showProfileSetupPage(){
         let profile = ProfileSetupController()
-        profile.userName = name
         let nav = UINavigationController(rootViewController: profile)
         self.present(nav, animated: true, completion: nil)
     }
     
- 
     func checkIfProfitSetup(){
-        
+   
         print("Check if user login ")
         guard let user = Auth.auth().currentUser else {
             print("User not login")
             perform(#selector(showLoginPage), with: self, afterDelay: 0.01)
             return
         }
+        Utility.firebaseUser = user
         print("Check if user profile setup")
         let ref = Database.database().reference().child("users")
         ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            
             if let _ = snapshot.value as? [String: Any] {
                 print("User Profile already setup")
-                NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+                //First login cant get the
+//                NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
                 Utility.hideProgress()
             } else {
                 print("User Profile not setup")
-                let displayname = user.displayName ?? ""
-                self.showProfileSetupPage(name: displayname)
+                self.showProfileSetupPage()
                 Utility.hideProgress()
             }
         }) { (err) in
+            Utility.hideProgress()
             print("Failed to fetch user for posts:", err)
         }
     }

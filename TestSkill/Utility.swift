@@ -8,6 +8,8 @@
 
 import UIKit
 import MBProgressHUD
+import FirebaseAuth
+import Firebase
 
 class Utility {
     
@@ -48,6 +50,10 @@ class Utility {
     }
     
     static var errorMessage : String?
+    
+    static var firebaseUser : Firebase.User?
+    
+    static var user : User?
     
     static func validField(_ field:UITextField, _ message:String) -> String?{
         if let fieldValue = field.text, fieldValue != "" { return fieldValue }

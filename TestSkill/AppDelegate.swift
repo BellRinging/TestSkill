@@ -57,7 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
-        controller.firebaseLogin(credential)
     
         
         if (error == nil) {
@@ -65,18 +64,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
 //            let userId = user.userID                  // For client-side use only!
 //            let idToken = user.authentication.idToken // Safe to send to the server
 //            let fullName = user.profile.name
-//            let givenName = user.profile.givenName
-//            let familyName = user.profile.familyName
-//            let email = user.profile.email
+            let givenName = user.profile.givenName
+            let familyName = user.profile.familyName
+            let email = user.profile.email
             
+            let dimension = round(100 * UIScreen.main.scale)
+            let pic = user.profile.imageURL(withDimension: UInt(dimension))
             print("User have sign in into google \(user)")
-//            print(userId)
-//            print(idToken)
-//            print(fullName)
-//            print(givenName)
-//            print(familyName)
-//            print(email)
-            
+            let dict = ["first_name": givenName,"last_name": familyName, "email":email  ,"name": givenName ,"img_url":pic?.absoluteURL] as [String : Any]
+            let user = User(dict: dict)
+            Utility.user = user
+            controller.firebaseLogin(credential,provider: "Google")
         } else {
             print("\(error.localizedDescription)")
         }
@@ -97,27 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
                                           annotation: options[UIApplicationOpenURLOptionsKey.annotation])
         return SDKApplicationDelegate.shared.application(app, open: url, options: options)
     }
-    
-    func showProgress(){
-        guard let mainWindow = UIApplication.shared.delegate?.window else { return }
-        let progressIcon = MBProgressHUD.showAdded(to: mainWindow!, animated: true)
-        progressIcon.labelText = "Loading"
-        progressIcon.isUserInteractionEnabled = false
-        let tempView = UIView(frame: (mainWindow?.frame)!)
-        tempView.backgroundColor = UIColor(white: 0.3, alpha: 0.5)
-        tempView.tag = 999
-        mainWindow?.addSubview(tempView)
-        progressIcon.show(animated: true)
-    }
-    
-    func hideProgress(){
-        guard let mainWindow = UIApplication.shared.delegate?.window else { return }
-        MBProgressHUD.hideAllHUDs(for: mainWindow!, animated: true)
-        let view = mainWindow?.viewWithTag(999)
-        view?.removeFromSuperview()
-    }
-    
-    
 
     
 }

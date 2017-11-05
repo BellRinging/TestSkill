@@ -9,13 +9,14 @@
 import UIKit
 import FirebaseAuth
 import FacebookLogin
+import Firebase
 
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
     let headerID = "headerID"
     let cellID = "cellID"
     let post = [Post]()
-   
+    var user : User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,40 +35,44 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("View Will appear")
+        
+     
+//        print("View Will appear")
     }
     
     func handleProfileChange(){
-        print("From Profile Setup Page")
-        collectionView?.reloadData()
+        print("handle profile change \(Utility.user)")
+        if (Utility.user == nil) {
+            if let uid = Auth.auth().currentUser?.uid{
+                Database.fetchUserWithUID(uid: uid, completion: { userObject in
+                    print("get user from db \(userObject)")
+                    self.user = userObject
+                })
+            }
+        }
+       self.collectionView?.reloadData()
+     
     }
     
     
     func handleLogout(){
-        if let user = Auth.auth().currentUser {
-            for info in (user.providerData) {
-//                   print("========\(info)" )
-//                print("========\(user.providerData)" )
-//                 print("========\(user.providerData.count)" )
-//                print("========\(user.providerData)" )
-                switch info.providerID {
-                case FacebookAuthProviderID:
-                    let loginManager = LoginManager()
-                    loginManager.logOut()
-                default:
-                    break
-                }
-            }
-            do {
-                try Auth.auth().signOut()
-            }catch {
+        guard let user = Utility.firebaseUser ,let providerID = user.providerData.first?.providerID  else {return }
+        
+        if (providerID == FacebookAuthProviderID ){
+            let loginManager = LoginManager()
+            loginManager.logOut()
+        }else if (providerID == GoogleAuthProviderID){
             
-            }
+        }
+        
+        do {
+            try Auth.auth().signOut()
+        }catch {
+        
         }
         let tabBar = tabBarController as? MainTabBarController
         tabBar?.checkIfProfitSetup()
         print("Logout")
-        
     }
     
 
@@ -92,15 +97,10 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        print("Config the header cell")
+//        print("Config the header cell")
         let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
-        if let user = Auth.auth().currentUser{
-            let dict = ["id": user.uid , "email":user.email , "user_name": user.displayName]
-            let userObject = User(dict: dict)
-            cell.user = userObject
-        }
-        
          cell.backgroundColor = UIColor.white
+        cell.user = self.user
             return cell
 //        }
     }

@@ -15,16 +15,32 @@ import MBProgressHUD
 class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate ,UINavigationControllerDelegate {
     
     
-    var userName : String? {
+    var user : User?{
         didSet{
-            userNameLabel.text = userName
+            userNameLabel.text = user?.name
+            firstNameField.text = user?.firstName
+            lastNameField.text = user?.lastName
+            emailField.text = user?.email
+            if let url = user?.imageUrl {
+                imageView.loadImage(url)
+            }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let user = Utility.user {
+            self.user = user
+        }else {
+            if let firebaseUser = Utility.firebaseUser {
+                print("URL \(firebaseUser.photoURL)")
+                let url = firebaseUser.photoURL?.absoluteString
+                let dict = ["name": firebaseUser.displayName,"img_url": url,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
+                let userObject = User(dict: dict)
+                self.user = userObject
+            }
+        }
         view.addDefaultGradient()
-      
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +67,9 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         firstNameField.Anchor(top: userNameLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
         view.addSubview(lastNameField)
         lastNameField.Anchor(top: firstNameField.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
+        
+        view.addSubview(emailField)
+        emailField.Anchor(top: lastNameField.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
     }
     
     
@@ -93,45 +112,43 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
         tv.titleTextColour = UIColor.black
-//        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         tv.clearButtonMode = UITextFieldViewMode.always
         
         return tv
     }()
     
-    func updateUserImage(url : String){
-        print("upload user image")
-        guard let user = Auth.auth().currentUser else {return }
-        let changeRequest = user.createProfileChangeRequest()
-        changeRequest.photoURL = URL(string: url)
-        changeRequest.commitChanges(completion: { (error) in
-            print("Updated Profile Image")
-            NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
-            
-        })
-    }
-  
+    let emailField : FloatLabelTextField = {
+        let tv = FloatLabelTextField()
+        tv.fakePlaceholder = "Email"
+        tv.spellCheckingType = .no
+        tv.autocorrectionType = .no
+        tv.backgroundColor = UIColor.white
+        tv.titleTextColour = UIColor.black
+        //        tv.titleActiveTextColour = UIColor.black
+        tv.addBottomBorder(UIColor.gray, thickness: 0.5)
+        tv.clearButtonMode = UITextFieldViewMode.always
+        return tv
+    }()
     
     func handleProfileCreation(){
         Utility.showProgress()
         
         guard let user = Auth.auth().currentUser else {return }
-        print("before enter1")
-
-        guard let firstName = firstNameField.text else { return }
-        print("before enter2")
-        guard let lastName = lastNameField.text else { return }
         
-        guard let _ = Utility.validField(firstNameField, "Email is required.Please enter your email"),
-            let _ = Utility.validField(lastNameField,"Password is required.Please enter your number") else {
+        guard
+            let _ = Utility.validField(firstNameField, "First Name is required.Please enter your email"),
+            let _ = Utility.validField(lastNameField,"Password is required.Please enter ") ,
+            let _ = Utility.validField(emailField,"Email is required.Please enter") else {
                 Utility.showError(self,message: Utility.errorMessage!)
                 Utility.hideProgress()
                 return
         }
       
-        
-        print("before enter")
+        guard let firstName = firstNameField.text else { return }
+        guard let lastName = lastNameField.text else { return }
+        guard let email = emailField.text else { return }
+    
         let ref = Storage.storage().reference().child("profile_images").child(user.uid).child("profilePic.jpg")
         if let profileImage = self.imageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
@@ -142,22 +159,9 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                 }
                 print("upload image")
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
-                    self.updateUserImage(url: profileImageURL)
-                    
-                    print(user.providerData)
-                    for info in user.providerData {
-                        if (info.providerID == FacebookAuthProviderID){
-                            let values = [ "last_name": lastName, "first_name": firstName]
-                            self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
-                        }else {
-                            guard let email = Auth.auth().currentUser?.email else { return }
-                            let values = [ "last_name": lastName, "first_name": firstName, "email": email]
-                            self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
-                        }
-                    }
-                    
-                    
-                    
+                    let values = [ "last_name": lastName, "first_name": firstName ,"email" : email , "img_url" : profileImageURL , "name" : self.userNameLabel.text ,"id" : user.uid]
+                    self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
+                    NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
                 }
             })
         }
@@ -170,7 +174,6 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         guard let uid = Auth.auth().currentUser?.uid else {return }
         let ref = Database.database().reference()
         let usersReference = ref.child("users").child(uid)
-        
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
             
             if err != nil {
@@ -178,9 +181,6 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                 Utility.hideProgress()
                 return
             }
-
-//            let user = User(dict: values)
-//            print(user)
             Utility.hideProgress()
             self.dismiss(animated: true, completion: nil)
         })

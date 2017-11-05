@@ -12,14 +12,14 @@ import Foundation
 class SearchViewControllerCell: UICollectionViewCell {
     
     
-//    var user : User?{
-//        didSet{
-//            username.text = user?.name
-//            guard let urlString = user?.profileImageUrl else {return}
-//            profileImage.loadImage(urlString: urlString)
-//        }
-//    }
-//
+    var user : User?{
+        didSet{
+            username.text = user?.name
+            guard let urlString = user?.imageUrl else {return}
+            profileImage.loadImage(urlString)
+        }
+    }
+    
     let profileImage : CustomImageView = {
         let imageView = CustomImageView()
         imageView.clipsToBounds = true

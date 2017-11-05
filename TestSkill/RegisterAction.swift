@@ -39,10 +39,17 @@ extension RegisterViewController {
                 Utility.hideProgress()
                 return
             }
-            
-            print("User created")
+            let userObject = self.createUserObject()
             self.updateDisplayName(user!, name: username )
+            print("User created")
         }
+    }
+    
+    
+    func createUserObject() -> User{
+        let dict = ["name" : userNameField.text , "email" : emailField.text]
+        let user = User(dict: dict)
+        return user
     }
     
     func updateDisplayName(_ user: Firebase.User , name:String ){

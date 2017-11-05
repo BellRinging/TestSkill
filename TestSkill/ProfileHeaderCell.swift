@@ -11,21 +11,19 @@ import Firebase
 
 class ProfileHeaderCell: UICollectionViewCell {
     
-    var user : User?{
+    
+    var user : User? {
         didSet{
-//            print("Set the profile image")
-            if let urlString = Auth.auth().currentUser?.photoURL?.absoluteString {
-                print("Url \(urlString)")
-                profileImage.loadImage(urlString)
-            }
-            
+            guard let url = user?.imageUrl else {return}
+            profileImage.loadImage(url)
         }
     }
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
-        
+      
     }
     
     func setupView(){
@@ -50,8 +48,6 @@ class ProfileHeaderCell: UICollectionViewCell {
         
         profileImage.Anchor(top: topAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 80, height: 80)
         topStackView.Anchor(top: topAnchor, left: profileImage.rightAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-//        followingLabel.Anchor(top: topAnchor, left: likeLabel.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
-//        followerLabel.Anchor(top: topAnchor, left: followingLabel.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
         bottomStackView.Anchor(top: nil, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 30)
         editProfitAndFollow.Anchor(top: topStackView.bottomAnchor, left: profileImage.rightAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 30)
         
