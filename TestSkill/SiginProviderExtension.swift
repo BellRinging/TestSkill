@@ -90,7 +90,7 @@ extension SiginViewController : GIDSignInUIDelegate {
     
     
     func sign(inWillDispatch signIn: GIDSignIn!, error: Error!) {
-        myActivityIndicator.stopAnimating()
+//        myActivityIndicator.stopAnimating()
     }
     
     func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {

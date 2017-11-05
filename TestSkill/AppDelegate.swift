@@ -69,9 +69,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
             let email = user.profile.email
             
             let dimension = round(100 * UIScreen.main.scale)
-            let pic = user.profile.imageURL(withDimension: UInt(dimension))
+            let pic = user.profile.imageURL(withDimension: UInt(dimension)).absoluteString
             print("User have sign in into google \(user)")
-            let dict = ["first_name": givenName,"last_name": familyName, "email":email  ,"name": givenName ,"img_url":pic?.absoluteURL] as [String : Any]
+            let dict = ["first_name": givenName,"last_name": familyName, "email":email  ,"name": givenName ,"img_url":pic] as [String : Any]
             let user = User(dict: dict)
             Utility.user = user
             controller.firebaseLogin(credential,provider: "Google")

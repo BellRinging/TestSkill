@@ -42,15 +42,14 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     func handleProfileChange(){
         print("handle profile change \(Utility.user)")
-        if (Utility.user == nil) {
-            if let uid = Auth.auth().currentUser?.uid{
-                Database.fetchUserWithUID(uid: uid, completion: { userObject in
-                    print("get user from db \(userObject)")
-                    self.user = userObject
-                })
-            }
+
+        if let uid = Auth.auth().currentUser?.uid{
+            Database.fetchUserWithUID(uid: uid, completion: { userObject in
+                self.user = userObject
+               self.collectionView?.reloadData()
+            })
         }
-       self.collectionView?.reloadData()
+    
      
     }
     
@@ -72,6 +71,8 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         }
         let tabBar = tabBarController as? MainTabBarController
         tabBar?.checkIfProfitSetup()
+        Utility.user = nil
+        Utility.firebaseUser = nil
         print("Logout")
     }
     
