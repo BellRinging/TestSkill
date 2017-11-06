@@ -36,11 +36,12 @@ class Utility {
         view?.removeFromSuperview()
     }
     
-    static func showPopUpDialog(viewController:UIViewController, message : String){
+    static func showPopUpDialog(viewController:UIViewController, message : String ,completion: @escaping (UIAlertAction) -> ()){
         let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK!", style: UIAlertActionStyle.default)
         {
-            (UIAlertAction) -> Void in
+            (action) -> Void in
+            completion(action)
         }
         alert.addAction(alertAction)
         viewController.present(alert, animated: true)

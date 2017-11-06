@@ -155,7 +155,12 @@ import UIKit
         if (firstSet==1){
             firstSet = 0
             defaultFont = self.font!
+//            print("Default font : \(self.font) height : \(self.font?.lineHeight)")
         }
+        
+        self.spellCheckingType = .no
+        self.autocorrectionType = .no
+        self.autocapitalizationType = .none
         borderStyle = UITextBorderStyle.none
         titleActiveTextColour = tintColor
         title.font = self.font
@@ -176,18 +181,21 @@ import UIKit
 //        print("showTitle")
         isShowingTitle = true
         self.titleFont = defaultFont
-        let posY = (self.bounds.height - self.titleFont.lineHeight) / 2 - titleYPadding
+//        print("title font : \(titleFont)")
+        let posY = (self.bounds.height - self.titleFont.lineHeight) / 2
+//        print("titleFont height : \(self.titleFont.lineHeight)")
         var r = self.textRect(forBounds: self.bounds)
         r.origin.y = posY
         title.frame = r
+//        print("start position : \(title.frame)")
         
         let dur =  animationDuration
         UIView.animate(withDuration: dur, delay:0, options: [UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveLinear], animations:{
             var r = self.textRect(forBounds: self.bounds)
-            r.origin.y = self.titleYPadding
+            r.origin.y = 0
             self.title.font  = UIFont.boldSystemFont(ofSize: 12)
             self.title.frame = r
-//            print(r)
+//            print("textRect \(self.title.frame)")
         }, completion:nil)
     }
     

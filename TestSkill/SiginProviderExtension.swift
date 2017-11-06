@@ -52,7 +52,10 @@ extension SiginViewController :LoginButtonDelegate{
             switch result {
             case .failed(let error):
                 Utility.hideProgress()
-                Utility.showPopUpDialog(viewController: self, message: "Fail to login facebook")
+                Utility.showPopUpDialog(viewController: self, message: "Fail to login facebook",completion: {
+                    action in
+                    
+                })
                 return
             case .cancelled:
                 Utility.hideProgress()

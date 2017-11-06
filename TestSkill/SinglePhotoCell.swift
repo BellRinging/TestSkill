@@ -14,6 +14,13 @@ class SinglePhotoCell: UICollectionViewCell {
         setupView()
     }
     
+    var post : Post? {
+        didSet{
+            guard let url = post?.imageUrl else {return}
+            image.loadImage(url)
+        }
+    }
+    
     let image : CustomImageView = {
        let im = CustomImageView()
         im.contentMode = .scaleAspectFill

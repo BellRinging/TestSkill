@@ -17,6 +17,7 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
+        self.delegate = self
         //Save to the static for common use
     }
     
@@ -51,8 +52,7 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let _ = snapshot.value as? [String: Any] {
                 print("User Profile already setup")
-                //First login cant get the
-//                NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+                NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
                 Utility.hideProgress()
             } else {
                 print("User Profile not setup")
@@ -67,9 +67,9 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewControllers?.index(of: viewController) == 2 {
-//            let vc = AddPho
-//            let nav = UINavigationController(rootViewController: <#T##UIViewController#>)
-            
+            let vc = AddPhotoController(collectionViewLayout: UICollectionViewFlowLayout())
+            let nav = UINavigationController(rootViewController: vc)
+            self.present(nav, animated: true, completion: nil)
             return false
         }else{
             return true

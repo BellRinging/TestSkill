@@ -49,6 +49,11 @@
 		EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */; };
 		EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */; };
 		EBDDA62E1F6038B900663485 /* SiginProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */; };
+		EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */; };
+		EBE3558F1FB05FD900F64AD4 /* AddPhotoAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE3558C1FB05FD900F64AD4 /* AddPhotoAction.swift */; };
+		EBE355901FB05FD900F64AD4 /* AddPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE3558D1FB05FD900F64AD4 /* AddPhotoController.swift */; };
+		EBE355911FB05FD900F64AD4 /* AddPhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE3558E1FB05FD900F64AD4 /* AddPhotoExtension.swift */; };
+		EBE355931FB0603400F64AD4 /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE355921FB0603300F64AD4 /* SharePhotoController.swift */; };
 		EBFBE1791F5085CF00937EC6 /* PopupDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFBE1781F5085CF00937EC6 /* PopupDialog.swift */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +107,11 @@
 		EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginProviderExtension.swift; sourceTree = "<group>"; };
+		EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgetPasswordController.swift; sourceTree = "<group>"; };
+		EBE3558C1FB05FD900F64AD4 /* AddPhotoAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoAction.swift; sourceTree = "<group>"; };
+		EBE3558D1FB05FD900F64AD4 /* AddPhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoController.swift; sourceTree = "<group>"; };
+		EBE3558E1FB05FD900F64AD4 /* AddPhotoExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoExtension.swift; sourceTree = "<group>"; };
+		EBE355921FB0603300F64AD4 /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
 		EBFBE1781F5085CF00937EC6 /* PopupDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDialog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -196,6 +206,7 @@
 				EB611FC21F37558900FEB44D /* UserProfileController */,
 				EB611FC11F37557D00FEB44D /* SearchViewController */,
 				EB611FC01F37556D00FEB44D /* View */,
+				EBE3558B1FB05FB200F64AD4 /* AddPhotoController */,
 				EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */,
 				EB579EA81F1CD4D4002E31A7 /* MainTabBarController.swift */,
 				EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */,
@@ -244,6 +255,7 @@
 		EB611FC41F3755AF00FEB44D /* LoginViewController */ = {
 			isa = PBXGroup;
 			children = (
+				EBE355881FB0498500F64AD4 /* ForgetPassword */,
 				EB3D0A0B1F6239DF005AC4EB /* LoginPage */,
 				EB3D0A0A1F611120005AC4EB /* ProfileSetup */,
 				EB65793D1F51C2BC007B1810 /* Register */,
@@ -315,6 +327,25 @@
 				EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */,
 			);
 			name = FloatLabel;
+			sourceTree = "<group>";
+		};
+		EBE355881FB0498500F64AD4 /* ForgetPassword */ = {
+			isa = PBXGroup;
+			children = (
+				EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */,
+			);
+			name = ForgetPassword;
+			sourceTree = "<group>";
+		};
+		EBE3558B1FB05FB200F64AD4 /* AddPhotoController */ = {
+			isa = PBXGroup;
+			children = (
+				EBE355921FB0603300F64AD4 /* SharePhotoController.swift */,
+				EBE3558C1FB05FD900F64AD4 /* AddPhotoAction.swift */,
+				EBE3558D1FB05FD900F64AD4 /* AddPhotoController.swift */,
+				EBE3558E1FB05FD900F64AD4 /* AddPhotoExtension.swift */,
+			);
+			name = AddPhotoController;
 			sourceTree = "<group>";
 		};
 		EF72192366AFA7304B4B195B /* Frameworks */ = {
@@ -492,6 +523,7 @@
 				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
 				EB579EC11F1CE4ED002E31A7 /* Extension.swift in Sources */,
 				EB1CC9661FA23B9A004800D4 /* Comment.swift in Sources */,
+				EBE355901FB05FD900F64AD4 /* AddPhotoController.swift in Sources */,
 				EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */,
 				EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */,
 				EB579EBF1F1CE3DB002E31A7 /* SinglePhotoCell.swift in Sources */,
@@ -502,6 +534,8 @@
 				EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */,
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
+				EBE3558F1FB05FD900F64AD4 /* AddPhotoAction.swift in Sources */,
+				EBE355911FB05FD900F64AD4 /* AddPhotoExtension.swift in Sources */,
 				EB579EC31F1CE721002E31A7 /* Post.swift in Sources */,
 				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,
 				EB579EB71F1CDF43002E31A7 /* ProfileHeaderCell.swift in Sources */,
@@ -511,12 +545,14 @@
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,
 				EB579EC51F1CE963002E31A7 /* User.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
+				EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
 				EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
 				EB579EBD1F1CDFBB002E31A7 /* CustomImageView.swift in Sources */,
 				EB579EB91F1CDF7D002E31A7 /* CommentCell.swift in Sources */,
 				EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */,
+				EBE355931FB0603400F64AD4 /* SharePhotoController.swift in Sources */,
 				EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,

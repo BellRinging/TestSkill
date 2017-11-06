@@ -59,6 +59,7 @@ class RegisterViewController: UIViewController {
         tv.fakePlaceholder = "User Name"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
+        tv.autocapitalizationType = .none
         tv.backgroundColor = UIColor.white
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         return tv
@@ -69,6 +70,7 @@ class RegisterViewController: UIViewController {
         tv.fakePlaceholder = "Email"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
+        tv.autocapitalizationType = .none
         tv.backgroundColor = UIColor.white
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         return tv
@@ -80,6 +82,7 @@ class RegisterViewController: UIViewController {
         tv.fakePlaceholder = "Password"
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
+        tv.autocapitalizationType = .none
         tv.isSecureTextEntry = true
         tv.rightView = tv.rightButton
         tv.rightViewMode = .whileEditing

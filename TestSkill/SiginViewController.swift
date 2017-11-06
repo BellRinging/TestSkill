@@ -116,6 +116,9 @@ class SiginViewController: UIViewController   {
     }()
     
     func handleForgetPassword(){
+        
+        let vc = ForgetPasswordController()
+        self.present(vc, animated: true, completion: nil)
         print("forgetpassword")
     }
     

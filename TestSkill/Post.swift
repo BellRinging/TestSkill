@@ -35,13 +35,13 @@ class Post {
     
     var hasLiked = false
     
-    init(user: User, dictionary: [String: Any]) {
+    init(user: User, dict: [String: Any]) {
         self.likeCount = 1
         self.user = user
-        self.imageUrl = dictionary["imageUrl"] as? String ?? ""
-        self.caption = dictionary["caption"] as? String ?? ""
-        self.id = dictionary["id"] as? String ?? ""
-        let secondsFrom1970 = dictionary["creationDate"] as? Double ?? 0
+        self.imageUrl = dict["imageUrl"] as? String ?? ""
+        self.caption = dict["caption"] as? String ?? ""
+        self.id = dict["id"] as? String ?? ""
+        let secondsFrom1970 = dict["creationDate"] as? Double ?? 0
         self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
     }
 }

@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         
-        
+        Utility.showProgress()
         guard let controller = GIDSignIn.sharedInstance().uiDelegate as? SiginViewController else { return }
         if let error = error {
             Utility.showError(controller, message: error.localizedDescription)

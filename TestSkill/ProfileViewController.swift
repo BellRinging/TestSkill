@@ -15,7 +15,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     let headerID = "headerID"
     let cellID = "cellID"
-    let post = [Post]()
+    var posts = [Post]()
     var user : User?
     
     override func viewDidLoad() {
@@ -35,9 +35,26 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
      
 //        print("View Will appear")
+    }
+    
+    func fetchPost(user: User){
+        print("fetchPost \(user.id)")
+        let ref = Database.database().reference().child("posts").child(user.id)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            print(snapshot)
+            guard let dict = snapshot.value as? [String:Any] else {return }
+            print(dict.count)
+            dict.forEach({ (key,value) in
+               
+                guard let postDict = value as? [String: Any] else {return}
+                let post = Post(user: user , dict: postDict as [String : AnyObject])
+                self.posts.append(post)
+                
+            })
+            self.collectionView?.reloadData()
+        })
     }
     
     func handleProfileChange(){
@@ -46,9 +63,12 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         if let uid = Auth.auth().currentUser?.uid{
             Database.fetchUserWithUID(uid: uid, completion: { userObject in
                 self.user = userObject
-               self.collectionView?.reloadData()
+                Utility.user = userObject
+//                self.collectionView?.reloadData()
+                self.fetchPost(user: userObject)
             })
         }
+        
     
      
     }
@@ -78,7 +98,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return posts.count
     }
     
     
@@ -89,7 +109,8 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SinglePhotoCell
-        cell.backgroundColor = UIColor.green
+//        cell.backgroundColor = UIColor.green
+        cell.post = posts[indexPath.item]
         
         return cell
         
@@ -98,7 +119,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        print("Config the header cell")
+        print("Config the header cell")
         let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
          cell.backgroundColor = UIColor.white
         cell.user = self.user

@@ -114,7 +114,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
             let ref = Database.database().reference().child("posts").child(uid)
             ref.observe(.childAdded, with: { (snapsnot) in
                 guard let dictionary = snapsnot.value as? [String: Any] else { return }
-                var post = Post(user: user, dictionary: dictionary)
+                var post = Post(user: user, dict: dictionary)
                 post.id = snapsnot.key
                 guard let currentId = Auth.auth().currentUser?.uid else {return }
                 Database.database().reference().child("likes").child(snapsnot.key).child(currentId).observeSingleEvent(of: .value, with: { (snapshot) in

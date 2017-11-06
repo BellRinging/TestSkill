@@ -98,7 +98,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
-        tv.titleTextColour = UIColor.black
+//        tv.titleTextColour = UIColor.black
 //        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         tv.clearButtonMode = UITextFieldViewMode.always
@@ -111,7 +111,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
-        tv.titleTextColour = UIColor.black
+//        tv.titleTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         tv.clearButtonMode = UITextFieldViewMode.always
         
@@ -124,7 +124,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
-        tv.titleTextColour = UIColor.black
+//        tv.titleTextColour = UIColor.black
         //        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         tv.clearButtonMode = UITextFieldViewMode.always

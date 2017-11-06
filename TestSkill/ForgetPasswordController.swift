@@ -17,8 +17,8 @@ class ForgetPasswordController: UIViewController   {
         view.addSubview(stackView)
         stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 18   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         stackView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        view.addSubview(normalSignInButton)
-        normalSignInButton.Anchor(top: stackView.bottomAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
+        view.addSubview(sendRequestButton)
+        sendRequestButton.Anchor(top: stackView.bottomAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
     }
 
     
@@ -59,7 +59,7 @@ class ForgetPasswordController: UIViewController   {
         return tv
     }()
     
-    let normalSignInButton : UIButton = {
+    let sendRequestButton : UIButton = {
         let bn = UIButton()
         let text = NSAttributedString(string: "Send Request", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
@@ -81,11 +81,10 @@ class ForgetPasswordController: UIViewController   {
                 Utility.showError(self,message: err.localizedDescription)
                 return
             }
-            Utility.showPopUpDialog(self, message: "Email Sent" ,completion: {
-                        self.dismiss(animated: true, completion: nil)
+            
+            Utility.showPopUpDialog(viewController: self, message: "Send", completion: { (action) in
+                self.dismiss(animated: true, completion: nil)
             })
-    
-    
         }
         
     }
