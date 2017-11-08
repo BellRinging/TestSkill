@@ -18,6 +18,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     var posts = [Post]()
     var user : User?
     var headerCell : ProfileHeaderCell?
+    var isUpdating = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,20 +38,26 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("view will appear")
+      
+        handleProfileChange()
+        
+        
     }
     
     func fetchPost(user: User){
         print("fetchPost from user \(user.id)")
         posts = [Post]()
         let ref = Database.database().reference().child("posts").child(user.id)
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.queryOrdered(byChild: "creationDate")
+            .observeSingleEvent(of: .value, with: { (snapshot) in
             if let dict = snapshot.value as? [String:Any] {
                 dict.forEach({ (key,value) in
                    
                     guard let postDict = value as? [String: Any] else {return}
                     let post = Post(user: user , dict: postDict as [String : AnyObject])
-                    self.posts.insert(post, at: 0)
-//                    print("Post added : \(post.imageUrl)")
+                    self.posts.append(post)
+                    print("Post added : \(post.imageUrl)")
+                    self.isUpdating = false
                 })
             }
             self.collectionView?.reloadData()
@@ -59,6 +66,11 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     func handleProfileChange(){
         print("handle profile change")
+        if (!isUpdating){
+            isUpdating = true
+        }else {
+            return
+        }
         if let uid = Auth.auth().currentUser?.uid{
             Database.fetchUserWithUID(uid: uid, completion: { userObject in
                 self.user = userObject
@@ -99,12 +111,10 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("didselect")
+        print("didselect item \(posts[indexPath.item].imageUrl)")
         let vc = DisplayPhotoView()
-//        print("2")
         let post = posts[indexPath.item] as Post
         vc.imageUrl = post.imageUrl
-//        print("3")
         self.present(vc, animated: true, completion: nil)
 //        print("4")
     }

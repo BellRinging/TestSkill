@@ -11,8 +11,10 @@ class CustomImageView: UIImageView {
         lastUrl = urlString
         self.image = nil
         if let cacheImage = ImageCache[urlString] {
-//            print("get from cache path \(urlString)")
-            self.image = cacheImage
+            print("get from cache path \(urlString)")
+             DispatchQueue.main.async {
+                self.image = cacheImage
+            }
             return
         }
         

@@ -51,7 +51,7 @@ class DisplayPhotoView: UIViewController {
         view.addSubview(cancelButton)
         
         profileImage.Anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
-        cancelButton.Anchor(top: view.topAnchor, left: nil, right: view.rightAnchor, bottom: nil, topPadding: 20, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 30, height: 30)
+        cancelButton.Anchor(top: view.topAnchor, left: nil, right: view.rightAnchor, bottom: nil, topPadding: 20, leftPadding: 0, rightPadding: 20, bottomPadding: 0, width: 40, height: 40)
     }
     
     

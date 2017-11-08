@@ -10,8 +10,6 @@ protocol SignControllerDelegrate {
 
 class SiginViewController: UIViewController   {
     
-    var errorMessage = ""
-    
     weak var delegrate :LoginController?
     
     override func viewDidLoad() {
@@ -154,7 +152,7 @@ class SiginViewController: UIViewController   {
         
         guard let email = Utility.validField(emailField, "Email is required.Please enter your email"),
             let password = Utility.validField(passwordField,"Password is required.Please enter your number") else {
-                Utility.showError(self,message: errorMessage)
+                Utility.showError(self,message: Utility.errorMessage!)
                 return
         }
         

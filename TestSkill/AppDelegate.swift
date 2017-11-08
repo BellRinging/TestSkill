@@ -52,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
         guard let controller = GIDSignIn.sharedInstance().uiDelegate as? SiginViewController else { return }
         if let error = error {
             Utility.showError(controller, message: error.localizedDescription)
+            Utility.hideProgress()
             return
         }
         guard let authentication = user.authentication else { return }
@@ -77,11 +78,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
             controller.firebaseLogin(credential,provider: "Google")
         } else {
             print("\(error.localizedDescription)")
+            Utility.hideProgress()
         }
     }
     
     func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
                 withError error: NSError!) {
+        print("disconnect from google")
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

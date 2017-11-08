@@ -52,10 +52,12 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         if let islogin = UserDefaults.standard.object(forKey: StaticValue.LOGINKEY) as? Bool ,islogin == true{
             print("profile is proper setup")
         }else {
+            
             let ref = Database.database().reference().child("users")
             ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let _ = snapshot.value as? [String: Any] {
                     print("User Profile already setup")
+                    UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
                     NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
                     Utility.hideProgress()
                 } else {
