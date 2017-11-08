@@ -16,6 +16,8 @@ class ProfileHeaderCell: UICollectionViewCell {
         didSet{
             guard let url = user?.imageUrl else {return}
             profileImage.loadImage(url)
+            guard let name = user?.name else {return}
+            nameLabel.text = name
         }
     }
 

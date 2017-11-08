@@ -72,15 +72,18 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
             return
         }
         if let uid = Auth.auth().currentUser?.uid{
-            Database.fetchUserWithUID(uid: uid, completion: { userObject in
+            var id = uid
+            if let userObj = self.user , uid != userObj.id {
+                    id = userObj.id
+            }
+            Database.fetchUserWithUID(uid: id, completion: { userObject in
                 self.user = userObject
                 Utility.user = userObject
                 self.fetchPost(user: userObject)
             })
+            
         }
-        
-    
-     
+
     }
     
     
