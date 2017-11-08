@@ -14,17 +14,10 @@ extension SearchViewController : UISearchBarDelegate ,UICollectionViewDelegateFl
             filteredUsers = users
         }else{
             filteredUsers = users.filter { (user) -> Bool in
-                
-//                if let name = user.name {
-//                    return name.lowercased().contains(searchText.lowercased())
-//                }else {
-//                    return false
-//                }
-                return false
+                let name = user.name
+                return name.lowercased().contains(searchText.lowercased())
             }
         }
-        print("Refresh")
-        print("\(filteredUsers.count)")
         collectionView?.reloadData()
     }
     
@@ -39,7 +32,7 @@ extension SearchViewController : UISearchBarDelegate ,UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SearchViewControllerCell
-//        cell.user = filteredUsers[indexPath.row]
+        cell.user = filteredUsers[indexPath.row]
         //        cell.backgroundColor = UIColor.green
         return cell
     }

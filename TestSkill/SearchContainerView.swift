@@ -23,7 +23,7 @@ class SearchViewController: UICollectionViewController   {
         sb.placeholder = "Enter the User"
         sb.delegate = self
         sb.barTintColor = UIColor(white: 0, alpha: 10)
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         return sb
     }()
     
@@ -43,7 +43,7 @@ class SearchViewController: UICollectionViewController   {
     func setupViewLayout(){
         let navBar = navigationController?.navigationBar
         navBar?.addSubview(searchBar)
-        searchBar.Anchor(top: navBar?.topAnchor, left: navBar?.leftAnchor, right: navBar?.rightAnchor, bottom: nil, topPadding: 0, leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
+        searchBar.Anchor(top: navBar?.topAnchor, left: navBar?.leftAnchor, right: navBar?.rightAnchor, bottom: nil, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 50)
     }
     
     
@@ -70,7 +70,7 @@ class SearchViewController: UICollectionViewController   {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let layout = UICollectionViewFlowLayout()
         let vc = ProfileViewController(collectionViewLayout: layout)
-        vc.user = filteredUsers[indexPath.row]
+        vc.user = filteredUsers[indexPath.item]
         searchBar.isHidden = true
         navigationController?.pushViewController(vc, animated: true)
         

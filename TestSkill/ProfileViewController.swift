@@ -17,6 +17,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     let cellID = "cellID"
     var posts = [Post]()
     var user : User?
+    var headerCell : ProfileHeaderCell?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,36 +36,33 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-     
-//        print("View Will appear")
+        print("view will appear")
     }
     
     func fetchPost(user: User){
-        print("fetchPost \(user.id)")
+        print("fetchPost from user \(user.id)")
+        posts = [Post]()
         let ref = Database.database().reference().child("posts").child(user.id)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            print(snapshot)
-            guard let dict = snapshot.value as? [String:Any] else {return }
-            print(dict.count)
-            dict.forEach({ (key,value) in
-               
-                guard let postDict = value as? [String: Any] else {return}
-                let post = Post(user: user , dict: postDict as [String : AnyObject])
-                self.posts.append(post)
-                
-            })
+            if let dict = snapshot.value as? [String:Any] {
+                dict.forEach({ (key,value) in
+                   
+                    guard let postDict = value as? [String: Any] else {return}
+                    let post = Post(user: user , dict: postDict as [String : AnyObject])
+                    self.posts.insert(post, at: 0)
+//                    print("Post added : \(post.imageUrl)")
+                })
+            }
             self.collectionView?.reloadData()
         })
     }
     
     func handleProfileChange(){
-        print("handle profile change \(Utility.user)")
-
+        print("handle profile change")
         if let uid = Auth.auth().currentUser?.uid{
             Database.fetchUserWithUID(uid: uid, completion: { userObject in
                 self.user = userObject
                 Utility.user = userObject
-//                self.collectionView?.reloadData()
                 self.fetchPost(user: userObject)
             })
         }
@@ -93,7 +91,22 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         tabBar?.checkIfProfitSetup()
         Utility.user = nil
         Utility.firebaseUser = nil
+        self.posts = [Post]()
+        headerCell?.profileImage.image = #imageLiteral(resourceName: "empty-avatar")
+        collectionView?.reloadData()
+        UserDefaults.standard.set(false, forKey: StaticValue.LOGINKEY)
         print("Logout")
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("didselect")
+        let vc = DisplayPhotoView()
+//        print("2")
+        let post = posts[indexPath.item] as Post
+        vc.imageUrl = post.imageUrl
+//        print("3")
+        self.present(vc, animated: true, completion: nil)
+//        print("4")
     }
     
 
@@ -109,6 +122,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SinglePhotoCell
+ 
 //        cell.backgroundColor = UIColor.green
         cell.post = posts[indexPath.item]
         
@@ -119,9 +133,10 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        print("Config the header cell")
+//        print("Config the header cell")
         let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
-         cell.backgroundColor = UIColor.white
+        headerCell = cell
+        cell.backgroundColor = UIColor.white
         cell.user = self.user
             return cell
 //        }
@@ -140,6 +155,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
+    
     
     
     

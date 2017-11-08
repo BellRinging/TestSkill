@@ -161,6 +161,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
                     let values = [ "last_name": lastName, "first_name": firstName ,"email" : email , "img_url" : profileImageURL , "name" : self.userNameLabel.text ,"id" : user.uid]
                     self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
+                    UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
                     NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
                 }
             })

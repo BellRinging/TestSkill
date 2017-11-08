@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		394E6055A2E84994640212ED /* Pods_TestSkill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */; };
+		EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */; };
+		EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */; };
+		EB05CF921FB2E1980039F6FB /* user.txt in Resources */ = {isa = PBXBuildFile; fileRef = EB05CF901FB2E1980039F6FB /* user.txt */; };
+		EB05CF931FB2E1980039F6FB /* item.txt in Resources */ = {isa = PBXBuildFile; fileRef = EB05CF911FB2E1980039F6FB /* item.txt */; };
 		EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB187C581F1E284D00F7A12D /* LoginController.swift */; };
 		EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */; };
 		EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */; };
@@ -61,6 +65,10 @@
 		3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestSkill.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		490B503289F94BA60C70C937 /* Pods-TestSkill.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.release.xcconfig"; sourceTree = "<group>"; };
+		EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
+		EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSampleData.swift; sourceTree = "<group>"; };
+		EB05CF901FB2E1980039F6FB /* user.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = user.txt; sourceTree = "<group>"; };
+		EB05CF911FB2E1980039F6FB /* item.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = item.txt; sourceTree = "<group>"; };
 		EB187C581F1E284D00F7A12D /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
 		EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewControllerCell.swift; sourceTree = "<group>"; };
@@ -212,6 +220,9 @@
 				EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */,
 				EB579EB81F1CDF7D002E31A7 /* CommentCell.swift */,
 				EB579EBA1F1CDFA0002E31A7 /* HomeCell.swift */,
+				EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */,
+				EB05CF911FB2E1980039F6FB /* item.txt */,
+				EB05CF901FB2E1980039F6FB /* user.txt */,
 			);
 			path = TestSkill;
 			sourceTree = "<group>";
@@ -285,6 +296,7 @@
 				EBB950871F449069005D62E2 /* TestGoogle.swift */,
 				EBFBE1781F5085CF00937EC6 /* PopupDialog.swift */,
 				EBA420231F667A0F0010BFC7 /* Utility.swift */,
+				EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */,
 			);
 			name = CommonObject;
 			sourceTree = "<group>";
@@ -427,8 +439,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */,
+				EB05CF921FB2E1980039F6FB /* user.txt in Resources */,
 				EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */,
 				EB579EB31F1CDEA9002E31A7 /* GoogleService-Info.plist in Resources */,
+				EB05CF931FB2E1980039F6FB /* item.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,6 +558,7 @@
 				EB579EBB1F1CDFA0002E31A7 /* HomeCell.swift in Sources */,
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,
 				EB579EC51F1CE963002E31A7 /* User.swift in Sources */,
+				EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
 				EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
@@ -554,6 +569,7 @@
 				EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */,
 				EBE355931FB0603400F64AD4 /* SharePhotoController.swift in Sources */,
 				EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */,
+				EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */,

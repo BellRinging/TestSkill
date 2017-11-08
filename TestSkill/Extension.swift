@@ -112,7 +112,7 @@ extension Database {
     static func fetchUserWithUID(uid: String, completion: @escaping (User) -> ()) {
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let userDictionary = snapshot.value as? [String: Any] else { return }
-            print("\(userDictionary)")
+//            print("\(userDictionary)")
             if userDictionary.count == 0 {
                 print("Cant find any user")
                 return
@@ -161,3 +161,19 @@ extension Date {
         
     }
 }
+
+//extension UserDefaults {
+//        
+//    func isLogin() -> Bool {
+//        return 
+//    }
+//    
+//    func logout() {
+//        self.set(false, forKey: StaticValue.LOGINKEY)
+//    }
+//
+//    func login() {
+//        self.set(true, forKey: StaticValue.LOGINKEY)
+//    }
+//}
+

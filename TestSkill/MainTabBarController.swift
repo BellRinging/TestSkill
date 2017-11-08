@@ -48,20 +48,25 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         }
         Utility.firebaseUser = user
         print("Check if user profile setup")
-        let ref = Database.database().reference().child("users")
-        ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let _ = snapshot.value as? [String: Any] {
-                print("User Profile already setup")
-                NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+
+        if let islogin = UserDefaults.standard.object(forKey: StaticValue.LOGINKEY) as? Bool ,islogin == true{
+            print("profile is proper setup")
+        }else {
+            let ref = Database.database().reference().child("users")
+            ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let _ = snapshot.value as? [String: Any] {
+                    print("User Profile already setup")
+                    NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+                    Utility.hideProgress()
+                } else {
+                    print("User Profile not setup")
+                    self.showProfileSetupPage()
+                    Utility.hideProgress()
+                }
+            }) { (err) in
                 Utility.hideProgress()
-            } else {
-                print("User Profile not setup")
-                self.showProfileSetupPage()
-                Utility.hideProgress()
+                print("Failed to fetch user for posts:", err)
             }
-        }) { (err) in
-            Utility.hideProgress()
-            print("Failed to fetch user for posts:", err)
         }
     }
     

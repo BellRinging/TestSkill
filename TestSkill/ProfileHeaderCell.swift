@@ -15,7 +15,6 @@ class ProfileHeaderCell: UICollectionViewCell {
     var user : User? {
         didSet{
             guard let url = user?.imageUrl else {return}
-            print("load image \(url)")
             profileImage.loadImage(url)
         }
     }
