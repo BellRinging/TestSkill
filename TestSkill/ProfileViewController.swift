@@ -19,6 +19,8 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     var user : User?
     var headerCell : ProfileHeaderCell?
     var isUpdating = false
+    var isScrolling = false
+    var totalNumberOfPost = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,58 +34,93 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         self.navigationItem.leftBarButtonItem = barButton
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleProfileChange), name: ProfileSetupController.updateProfile, object: nil)
-        
+        handleProfileChange()
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(loadMore), for: .valueChanged)
+        collectionView?.refreshControl = refreshControl
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("view will appear")
-      
-        handleProfileChange()
-        
-        
     }
     
-    func fetchPost(user: User){
+    func fetchPost(){
+        guard let user = self.user else { return }
         print("fetchPost from user \(user.id)")
-        posts = [Post]()
+        self.posts = [Post]()
         let ref = Database.database().reference().child("posts").child(user.id)
-        ref.queryOrdered(byChild: "creationDate")
             .observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dict = snapshot.value as? [String:Any] {
-                dict.forEach({ (key,value) in
-                   
-                    guard let postDict = value as? [String: Any] else {return}
-                    let post = Post(user: user , dict: postDict as [String : AnyObject])
-                    self.posts.append(post)
-                    print("Post added : \(post.imageUrl)")
-                    self.isUpdating = false
-                })
-            }
-            self.collectionView?.reloadData()
+                 if let dict = snapshot.value as? [String:Any] {
+                    self.totalNumberOfPost = dict.count
+                    print("Total post count : \(self.totalNumberOfPost)")
+                    self.loadMore()
+                }
         })
     }
     
-    func handleProfileChange(){
-        print("handle profile change")
-        if (!isUpdating){
-            isUpdating = true
+    func loadMore(){
+        guard let user = self.user else {return }
+        let initialDataFeed = posts.count
+        let ref = Database.database().reference().child("posts").child(user.id)
+        var endPosition = Int()
+        if (totalNumberOfPost - initialDataFeed - 24  > 0 ){
+            endPosition = totalNumberOfPost - initialDataFeed
         }else {
+            endPosition = totalNumberOfPost
+        }
+         print("start position :\(totalNumberOfPost - initialDataFeed - 24 ) end position :\(endPosition)" )
+        ref.queryOrderedByKey().queryStarting(atValue: String(totalNumberOfPost - initialDataFeed - 24)).queryEnding(atValue: String(endPosition))
+            .observe(.value, with: { (snapshot) in
+                print("snapshot :\(snapshot.exists())" )
+                if let dict = snapshot.value as? [String:Any] {
+                    print("fetch reasult count :\(dict.count)" )
+                    dict.forEach({ (key,value) in
+                        guard let postDict = value as? [String: Any] else {return}
+                        let post = Post(user: user , dict: postDict as [String : AnyObject])
+                        self.posts.insert(post, at: 24 * Int(self.posts.count/24))
+                        self.posts.sorted(by: { $0.creationDate > $1.creationDate })
+                        print("Post added : \(post.imageUrl)")
+                    })
+                    self.collectionView?.reloadData()
+                    self.isUpdating = false
+                }
+                self.collectionView?.refreshControl?.endRefreshing()
+                print("finish fetch")
+            })
+    
+    }
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        print("scrolling")
+        isScrolling = true
+    }
+    
+
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        print("finish scrolling")
+        isScrolling = false
+    }
+    
+    func handleProfileChange(){
+        print("handle profile change \(isUpdating)")
+        if (isScrolling || isUpdating){
+            print("No refresh when scrolling")
             return
         }
-        if let uid = Auth.auth().currentUser?.uid{
-            var id = uid
-            if let userObj = self.user , uid != userObj.id {
-                    id = userObj.id
-            }
-            Database.fetchUserWithUID(uid: id, completion: { userObject in
+        isUpdating = true
+        guard let uid = Auth.auth().currentUser?.uid else { return}
+        if let userObj = self.user , uid != userObj.id ,userObj.id != "" {
+            Database.fetchUserWithUID(uid: userObj.id , completion: { userObject in
+                self.fetchPost()
+            })
+        }else {
+            Database.fetchUserWithUID(uid: uid, completion: { userObject in
                 self.user = userObject
                 Utility.user = userObject
-                self.fetchPost(user: userObject)
+                self.fetchPost()
             })
-            
         }
-
     }
     
     
@@ -114,7 +151,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("didselect item \(posts[indexPath.item].imageUrl)")
+//        print("didselect item \(indexPath.item) available item \(posts.count) int item \(indexPath.row)")
         let vc = DisplayPhotoView()
         let post = posts[indexPath.item] as Post
         vc.imageUrl = post.imageUrl
@@ -137,6 +174,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SinglePhotoCell
  
 //        cell.backgroundColor = UIColor.green
+//        print("Available : \(posts.count) index : \(indexPath.item) int : \(indexPath.row)")
         cell.post = posts[indexPath.item]
         
         return cell

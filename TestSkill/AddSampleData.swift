@@ -100,7 +100,7 @@ class AddSampleData: UIViewController {
                 let lines = data.components(separatedBy: .newlines)
                 var count = 1000
                 
-                for i in 1...2000 {
+                for i in 2001...8000 {
                     let line = lines[i]
                     if (line != "") {
                         print(line)
