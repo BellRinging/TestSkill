@@ -14,10 +14,13 @@ import Firebase
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
     let headerID = "headerID"
+    let footerID = "footerID"
     let cellID = "cellID"
     var posts = [Post]()
     var user : User?
     var headerCell : ProfileHeaderCell?
+    var footerCell : ProfileFooterCell?
+    var lastRecordUid : String?
     var isUpdating = false
     var isScrolling = false
     var totalNumberOfPost = Int()
@@ -27,6 +30,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(ProfileHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
         collectionView?.register(SinglePhotoCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView?.register(ProfileFooterCell.self, forCellWithReuseIdentifier: footerID)
         
         let barButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         navigationItem.leftBarButtonItem = barButton
@@ -50,7 +54,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         print("fetchPost from user \(user.id)")
         self.posts = [Post]()
         let ref = Database.database().reference().child("posts").child(user.id)
-            .observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
                  if let dict = snapshot.value as? [String:Any] {
                     self.totalNumberOfPost = dict.count
                     print("Total post count : \(self.totalNumberOfPost)")
@@ -62,33 +66,35 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     func loadMore(){
         guard let user = self.user else {return }
         let initialDataFeed = posts.count
-        let ref = Database.database().reference().child("posts").child(user.id)
-        var endPosition = Int()
-        if (totalNumberOfPost - initialDataFeed - 24  > 0 ){
-            endPosition = totalNumberOfPost - initialDataFeed
+        print("Current post count : \(initialDataFeed)")
+        var query : DatabaseQuery
+        if ( totalNumberOfPost < initialDataFeed + 24 ){
+            query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey()
+            footerCell?.status = 1
+            //End of record
         }else {
-            endPosition = totalNumberOfPost
+            query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey().queryLimited(toFirst: 24)
+            footerCell?.status = 0
         }
-         print("start position :\(totalNumberOfPost - initialDataFeed - 24 ) end position :\(endPosition)" )
-        ref.queryOrderedByKey().queryStarting(atValue: String(totalNumberOfPost - initialDataFeed - 24)).queryEnding(atValue: String(endPosition))
-            .observe(.value, with: { (snapshot) in
-                print("snapshot :\(snapshot.exists())" )
-                if let dict = snapshot.value as? [String:Any] {
-                    print("fetch reasult count :\(dict.count)" )
-                    dict.forEach({ (key,value) in
-                        guard let postDict = value as? [String: Any] else {return}
-                        let post = Post(user: user , dict: postDict as [String : AnyObject])
-                        self.posts.insert(post, at: 24 * Int(self.posts.count/24))
-                        self.posts.sorted(by: { $0.creationDate > $1.creationDate })
-                        print("Post added : \(post.imageUrl)")
-                    })
-                    self.collectionView?.reloadData()
-                    self.isUpdating = false
-                }
-                self.collectionView?.refreshControl?.endRefreshing()
-                print("finish fetch")
-            })
-    
+
+        if let lastId = lastRecordUid {
+            query = query.queryStarting(atValue: lastId)
+        }
+        query.observeSingleEvent(of: .value, with: { (snapshot) in
+            print("snapshot :\(snapshot.exists())" )
+            if let dict = snapshot.value as? [String:Any] {
+                print("fetch reasult count :\(dict.count)" )
+                dict.forEach({ (key,value) in
+                    guard let postDict = value as? [String: Any] else {return}
+                    let post = Post(user: user , dict: postDict as [String : AnyObject])
+                    self.posts.insert(post, at: 24 * Int(self.posts.count/24))
+                    print("Post added : \(post.imageUrl)")
+                })
+                self.collectionView?.reloadData()
+                self.isUpdating = false
+            }
+            print("finish fetch")
+        })
     }
     
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -100,6 +106,16 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
 //        print("finish scrolling")
         isScrolling = false
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let  height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            print(" you reached end of the table")
+            loadMore()
+        }
     }
     
     func handleProfileChange(){
@@ -172,25 +188,30 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SinglePhotoCell
- 
-//        cell.backgroundColor = UIColor.green
-//        print("Available : \(posts.count) index : \(indexPath.item) int : \(indexPath.row)")
         cell.post = posts[indexPath.item]
-        
         return cell
-        
-        
     }
     
     
+    
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        print("Config the header cell")
-        let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
-        headerCell = cell
-        cell.backgroundColor = UIColor.white
-        cell.user = self.user
+        
+        
+        print("Config the header cell \(kind)" )
+        
+        if (kind == headerID){
+            let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
+            headerCell = cell
+            cell.backgroundColor = UIColor.white
+            cell.user = self.user
             return cell
-//        }
+        }else{
+            
+            let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerID, for: indexPath)  as! ProfileFooterCell
+            
+            return cell
+            
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -198,6 +219,17 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         let height = 80 + 8 + 8 + 30 + 1 + 20 + 8
         return CGSize(width: view.frame.width, height: CGFloat(height))
     }
+    
+
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+         return CGSize(width: view.frame.width, height: CGFloat(20))
+    }
+    
+    
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
