@@ -20,7 +20,6 @@ class Post {
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let value = snapshot.value as? [String: Any]{
                     self.likeCount = value.count
-                    //                    print("like count \(self.likeCount) for post \(self.caption)" )
                 }else {
                     self.likeCount = 0
                 }

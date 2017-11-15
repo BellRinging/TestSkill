@@ -13,6 +13,7 @@ import Firebase
 
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
+    var fetchSize : Int = 20
     let headerID = "headerID"
     let footerID = "footerID"
     let cellID = "cellID"
@@ -30,7 +31,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(ProfileHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
         collectionView?.register(SinglePhotoCell.self, forCellWithReuseIdentifier: cellID)
-        collectionView?.register(ProfileFooterCell.self, forCellWithReuseIdentifier: footerID)
+        collectionView?.register(ProfileFooterCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: footerID)
         
         let barButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         navigationItem.leftBarButtonItem = barButton
@@ -40,6 +41,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         NotificationCenter.default.addObserver(self, selector: #selector(handleProfileChange), name: ProfileSetupController.updateProfile, object: nil)
         handleProfileChange()
         let refreshControl = UIRefreshControl()
+        
         refreshControl.addTarget(self, action: #selector(loadMore), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
     }
@@ -50,6 +52,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     }
     
     func fetchPost(){
+//        return
         guard let user = self.user else { return }
         print("fetchPost from user \(user.id)")
         self.posts = [Post]()
@@ -64,16 +67,18 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     }
     
     func loadMore(){
+        print("load more")
         guard let user = self.user else {return }
         let initialDataFeed = posts.count
         print("Current post count : \(initialDataFeed)")
+        let fetchSizeOffSet = initialDataFeed == 0 ? 0:1
         var query : DatabaseQuery
-        if ( totalNumberOfPost < initialDataFeed + 24 ){
-            query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey()
+        if ( totalNumberOfPost <= initialDataFeed) {
+            print("No More data")
             footerCell?.status = 1
-            //End of record
+            return
         }else {
-            query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey().queryLimited(toFirst: 24)
+            query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey().queryLimited(toFirst: UInt(fetchSize + fetchSizeOffSet))
             footerCell?.status = 0
         }
 
@@ -81,15 +86,28 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
             query = query.queryStarting(atValue: lastId)
         }
         query.observeSingleEvent(of: .value, with: { (snapshot) in
-            print("snapshot :\(snapshot.exists())" )
             if let dict = snapshot.value as? [String:Any] {
-                print("fetch reasult count :\(dict.count)" )
                 dict.forEach({ (key,value) in
                     guard let postDict = value as? [String: Any] else {return}
                     let post = Post(user: user , dict: postDict as [String : AnyObject])
-                    self.posts.insert(post, at: 24 * Int(self.posts.count/24))
-                    print("Post added : \(post.imageUrl)")
+                    post.id = key
+                    if (self.posts.contains(where: { (post) -> Bool in
+                        guard let id = post.id else {return false}
+                        return id == key
+                    })){
+//                        print("Post reject")
+                    }else{
+//                        print("Post added")
+                        self.posts.append(post)
+                    }
                 })
+                self.posts = self.posts.sorted(by: { $0.id! < $1.id!
+                })
+                self.lastRecordUid = self.posts.last?.id
+                if ( self.totalNumberOfPost <= self.posts.count) {
+                    print("No More data")
+                    self.footerCell?.status = 1
+                }
                 self.collectionView?.reloadData()
                 self.isUpdating = false
             }
@@ -106,9 +124,9 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
 //        print("finish scrolling")
         isScrolling = false
-    }
-    
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if posts.count < fetchSize {
+            return
+        }
         let  height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
@@ -195,22 +213,17 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        
-        print("Config the header cell \(kind)" )
-        
-        if (kind == headerID){
+//        print("Config the header cell \(kind)" )
+        if (kind == UICollectionElementKindSectionHeader){
             let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
             headerCell = cell
             cell.backgroundColor = UIColor.white
             cell.user = self.user
             return cell
         }else{
-            
             let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerID, for: indexPath)  as! ProfileFooterCell
-            
+            footerCell = cell
             return cell
-            
         }
     }
     
@@ -220,13 +233,9 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         return CGSize(width: view.frame.width, height: CGFloat(height))
     }
     
-
-    
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-         return CGSize(width: view.frame.width, height: CGFloat(20))
+        return CGSize(width: view.frame.width, height: CGFloat(40))
     }
-    
     
     
     
