@@ -69,13 +69,20 @@ class SearchViewController: UICollectionViewController   {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let layout = UICollectionViewFlowLayout()
+        
         let vc = ProfileViewController(collectionViewLayout: layout)
         vc.user = filteredUsers[indexPath.item]
         searchBar.isHidden = true
-        navigationController?.pushViewController(vc, animated: true)
         
-        
-        
+        if let nav = navigationController {
+            nav.pushViewController(vc, animated: true)
+            nav.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(handleBack))
+            
+        }
+    }
+    
+    func handleBack(){
+        navigationController?.popViewController(animated: true)
     }
     
     

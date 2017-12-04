@@ -1,11 +1,3 @@
-//
-//  HomeViewController.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 17/7/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
 import UIKit
 import FirebaseAuth
 import FacebookLogin
@@ -26,6 +18,9 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     var isScrolling = false
     var totalNumberOfPost = Int()
     
+    let refreshControl = UIRefreshControl()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = UIColor.white
@@ -34,15 +29,13 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         collectionView?.register(ProfileFooterCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: footerID)
         
         let barButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        navigationItem.leftBarButtonItem = barButton
-        
-        self.navigationItem.leftBarButtonItem = barButton
+        navigationItem.rightBarButtonItem = barButton
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleProfileChange), name: ProfileSetupController.updateProfile, object: nil)
         handleProfileChange()
-        let refreshControl = UIRefreshControl()
+   
         
-        refreshControl.addTarget(self, action: #selector(loadMore), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(fetchPost), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
     }
     
@@ -53,29 +46,44 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     func fetchPost(){
 //        return
-        guard let user = self.user else { return }
+        guard let user = self.user else {
+            isUpdating = false
+            return
+        }
+        refreshControl.endRefreshing()
         print("fetchPost from user \(user.id)")
         self.posts = [Post]()
-        let ref = Database.database().reference().child("posts").child(user.id)
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                 if let dict = snapshot.value as? [String:Any] {
+        self.collectionView?.reloadData()
+        lastRecordUid = nil
+        print(user.id)
+        
+            let ref = Database.database().reference().child("posts").child(user.id)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dict = snapshot.value as? [String:Any] {
                     self.totalNumberOfPost = dict.count
                     print("Total post count : \(self.totalNumberOfPost)")
                     self.loadMore()
+                }else{
+                    self.isUpdating = false
                 }
-        })
+            })
+        
     }
     
     func loadMore(){
-        print("load more")
-        guard let user = self.user else {return }
+//        print("load more")
+        guard let user = self.user else {
+            isUpdating = false
+            return
+        }
         let initialDataFeed = posts.count
-        print("Current post count : \(initialDataFeed)")
+//        print("Current post count : \(initialDataFeed)")
         let fetchSizeOffSet = initialDataFeed == 0 ? 0:1
         var query : DatabaseQuery
         if ( totalNumberOfPost <= initialDataFeed) {
             print("No More data")
             footerCell?.status = 1
+            isUpdating = false
             return
         }else {
             query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey().queryLimited(toFirst: UInt(fetchSize + fetchSizeOffSet))
@@ -85,8 +93,12 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         if let lastId = lastRecordUid {
             query = query.queryStarting(atValue: lastId)
         }
+        print("user id \(user.id)")
+        print("last id \(lastRecordUid)")
         query.observeSingleEvent(of: .value, with: { (snapshot) in
+//            print(snapshot.exists())
             if let dict = snapshot.value as? [String:Any] {
+                  print(dict.count)
                 dict.forEach({ (key,value) in
                     guard let postDict = value as? [String: Any] else {return}
                     let post = Post(user: user , dict: postDict as [String : AnyObject])
@@ -109,8 +121,8 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
                     self.footerCell?.status = 1
                 }
                 self.collectionView?.reloadData()
-                self.isUpdating = false
             }
+            self.isUpdating = false
             print("finish fetch")
         })
     }
@@ -130,7 +142,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         let  height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-        if distanceFromBottom < height {
+        if distanceFromBottom <= height {
             print(" you reached end of the table")
             loadMore()
         }
@@ -138,17 +150,23 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     func handleProfileChange(){
         print("handle profile change \(isUpdating)")
-        if (isScrolling || isUpdating){
+        if ( isUpdating){
             print("No refresh when scrolling")
             return
         }
         isUpdating = true
-        guard let uid = Auth.auth().currentUser?.uid else { return}
+        guard let uid = Auth.auth().currentUser?.uid else {
+            isUpdating = false
+            return
+        }
+        print(uid)
         if let userObj = self.user , uid != userObj.id ,userObj.id != "" {
+            print("load from userobj")
             Database.fetchUserWithUID(uid: userObj.id , completion: { userObject in
                 self.fetchPost()
             })
         }else {
+            print("load from firebase user")
             Database.fetchUserWithUID(uid: uid, completion: { userObject in
                 self.user = userObject
                 Utility.user = userObject
@@ -176,6 +194,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         let tabBar = tabBarController as? MainTabBarController
         tabBar?.checkIfProfitSetup()
         Utility.user = nil
+        self.user = nil
         Utility.firebaseUser = nil
         self.posts = [Post]()
         headerCell?.profileImage.image = #imageLiteral(resourceName: "empty-avatar")
@@ -206,6 +225,8 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SinglePhotoCell
+//        print("Index path size \(indexPath.item)")
+//        print("Post size \(posts.count)")
         cell.post = posts[indexPath.item]
         return cell
     }

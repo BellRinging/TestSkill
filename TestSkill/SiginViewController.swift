@@ -11,13 +11,18 @@ protocol SignControllerDelegrate {
 class SiginViewController: UIViewController   {
     
     weak var delegrate :LoginController?
+    let button = LoginButton(readPermissions: [ .publicProfile ,.email ])
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addDefaultGradient()
         setupView()
         GIDSignIn.sharedInstance().uiDelegate = self
+   
     }
+    
+    
+
     
     func setupView(){
         view.addSubview(stackView)
@@ -35,10 +40,9 @@ class SiginViewController: UIViewController   {
         signInButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 4, rightPadding: 4, bottomPadding: 0, width: 0, height: 0)
         
         
-        let button = LoginButton(readPermissions: [ .publicProfile ,.email ])
-        
+       
         view.addSubview(button)
-        button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 40)
+        button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         
         button.delegate = self
     }
