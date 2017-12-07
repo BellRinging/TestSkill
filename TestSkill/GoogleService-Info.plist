@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>660224651723-930vgvk3g2125t546deqsq4gei3v6cip.apps.googleusercontent.com</string>
+	<string>660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.660224651723-930vgvk3g2125t546deqsq4gei3v6cip</string>
+	<string>com.googleusercontent.apps.660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBpeXwtuPuKFiv8o2T4ts9b06bSYfGJNew</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bellringing.kmconcept.TestSkill</string>
+	<string>com.bellringing.kmconcept.TestSkillTestSkill</string>
 	<key>PROJECT_ID</key>
 	<string>testlearning-6237e</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:660224651723:ios:b010ed9c3dcaecab</string>
+	<string>1:660224651723:ios:b20c22b26c5b4511</string>
 	<key>DATABASE_URL</key>
 	<string>https://testlearning-6237e.firebaseio.com</string>
 </dict>

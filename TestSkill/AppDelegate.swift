@@ -10,9 +10,10 @@ import UIKit
 import Firebase
 import FacebookCore
 import MBProgressHUD
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate ,MessagingDelegate ,UNUserNotificationCenterDelegate{
 
     var window: UIWindow?
 
@@ -31,9 +32,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
         window?.makeKeyAndVisible()
         window?.rootViewController = MainTabBarController()
         
+        attemptRegisterForNotification(application: application)
+        
         return true
     }
     
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
+    }
+    
+    
+    func attemptRegisterForNotification(application : UIApplication){
+        print("Attemp to register APNS")
+        Messaging.messaging().delegate = self
+        if #available(iOS 10.0, *) {
+            print("1")
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { (granted, err) in
+                if let err = err {
+                    print("Fail to request auth",err)
+                    return
+                }
+                if granted {
+                    print("Auth granted")
+                } else {
+                    print("Auth denied")
+                }
+            })
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        
+        application.registerForRemoteNotifications()
+        
+    }
+
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("Registered with token :",fcmToken)
+    }
     
     func configGoogleAPI(){
         var configureError: NSError?
@@ -41,11 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate{
         assert(configureError == nil, "Error configuring Google services: \(configureError)")
         GIDSignIn.sharedInstance().delegate = self
     }
-    
- 
-    
-    
-    
+
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         
         Utility.showProgress()

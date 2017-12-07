@@ -10,6 +10,7 @@ pod 'FacebookLogin'
 pod 'FacebookShare', :git => 'https://github.com/1amageek/facebook-sdk-swift'
 pod 'SwiftyJSON', :git => 'https://github.com/acegreen/SwiftyJSON.git', :branch => 'swift3'
 pod 'MBProgressHUD', '~> 1.0.0'
+pod 'Firebase/Messaging'
 
 
 

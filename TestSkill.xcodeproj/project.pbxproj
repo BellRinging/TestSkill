@@ -32,7 +32,6 @@
 		EB579EAB1F1CD83D002E31A7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */; };
 		EB579EAF1F1CDABA002E31A7 /* AddPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */; };
 		EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EB01F1CDB58002E31A7 /* BookmarkViewController.swift */; };
-		EB579EB31F1CDEA9002E31A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB579EB21F1CDEA9002E31A7 /* GoogleService-Info.plist */; };
 		EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EB41F1CDEDC002E31A7 /* ProfileViewController.swift */; };
 		EB579EB71F1CDF43002E31A7 /* ProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EB61F1CDF43002E31A7 /* ProfileHeaderCell.swift */; };
 		EB579EB91F1CDF7D002E31A7 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EB81F1CDF7D002E31A7 /* CommentCell.swift */; };
@@ -51,6 +50,7 @@
 		EBB950851F446288005D62E2 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB950841F446288005D62E2 /* SwiftyJSON.framework */; };
 		EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB950871F449069005D62E2 /* TestGoogle.swift */; };
 		EBC05D131FBAB28500A3AFBA /* ProfileFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC05D121FBAB28500A3AFBA /* ProfileFooterCell.swift */; };
+		EBC9866A1FD7936A00623F2B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBC986691FD7936A00623F2B /* GoogleService-Info.plist */; };
 		EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */; };
 		EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */; };
 		EBDDA62E1F6038B900663485 /* SiginProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */; };
@@ -94,7 +94,6 @@
 		EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		EB579EAE1F1CDABA002E31A7 /* AddPostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPostController.swift; sourceTree = "<group>"; };
 		EB579EB01F1CDB58002E31A7 /* BookmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
-		EB579EB21F1CDEA9002E31A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EB579EB41F1CDEDC002E31A7 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		EB579EB61F1CDF43002E31A7 /* ProfileHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCell.swift; sourceTree = "<group>"; };
 		EB579EB81F1CDF7D002E31A7 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -114,6 +113,7 @@
 		EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SignInExampleSwift-Bridging-Header.h"; sourceTree = "<group>"; };
 		EBB950871F449069005D62E2 /* TestGoogle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestGoogle.swift; sourceTree = "<group>"; };
 		EBC05D121FBAB28500A3AFBA /* ProfileFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFooterCell.swift; sourceTree = "<group>"; };
+		EBC986691FD7936A00623F2B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginProviderExtension.swift; sourceTree = "<group>"; };
@@ -313,7 +313,7 @@
 				EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */,
 				EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */,
 				EB579EA21F1CD3FA002E31A7 /* Info.plist */,
-				EB579EB21F1CDEA9002E31A7 /* GoogleService-Info.plist */,
+				EBC986691FD7936A00623F2B /* GoogleService-Info.plist */,
 			);
 			name = Supporting;
 			sourceTree = "<group>";
@@ -407,12 +407,21 @@
 				TargetAttributes = {
 					EB579E921F1CD3FA002E31A7 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 97FWFY4T59;
+						DevelopmentTeam = N9G4ZX9GUD;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
 							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.Push = {
 								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
 							};
 						};
 					};
@@ -441,10 +450,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBC9866A1FD7936A00623F2B /* GoogleService-Info.plist in Resources */,
 				EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */,
 				EB05CF921FB2E1980039F6FB /* user.txt in Resources */,
 				EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */,
-				EB579EB31F1CDEA9002E31A7 /* GoogleService-Info.plist in Resources */,
 				EB05CF931FB2E1980039F6FB /* item.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -638,7 +647,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -684,7 +693,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -702,7 +711,7 @@
 				CODE_SIGN_ENTITLEMENTS = TestSkill/TestSkill.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97FWFY4T59;
+				DEVELOPMENT_TEAM = N9G4ZX9GUD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/SwiftyJSON",
@@ -711,7 +720,7 @@
 				INFOPLIST_FILE = TestSkill/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.TestSkill;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.TestSkillTestSkill;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/SignInExampleSwift-Bridging-Header.h";
@@ -727,7 +736,7 @@
 				CODE_SIGN_ENTITLEMENTS = TestSkill/TestSkill.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97FWFY4T59;
+				DEVELOPMENT_TEAM = N9G4ZX9GUD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/SwiftyJSON",
@@ -736,7 +745,7 @@
 				INFOPLIST_FILE = TestSkill/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.TestSkill;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.TestSkillTestSkill;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/SignInExampleSwift-Bridging-Header.h";
