@@ -4,7 +4,6 @@
 //
 //  Created by Kwok Wai Yeung on 6/7/2017.
 //  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
 
 import UIKit
 import FirebaseDatabase
@@ -15,6 +14,11 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     //    let footerId = "footerId"
     let cellId = "cellId"
     var posts = [Post]()
+    
+    var user : User? {
+        didSet{
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,11 +127,12 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
                     } else {
                         post.hasLiked = false
                     }
-                    
-                    self.posts.append(post)
-                    self.posts.sort(by: { (p1, p2) -> Bool in
+                    var tempPost = self.posts
+                    tempPost.append(post)
+                    tempPost.sort(by: { (p1, p2) -> Bool in
                         return p1.creationDate.compare(p2.creationDate) == .orderedDescending
                     })
+                    self.posts = tempPost
                     self.collectionView?.refreshControl?.endRefreshing()
                     self.collectionView?.reloadData()
                 })
@@ -146,21 +151,14 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     func fetchPost(){
         collectionView?.refreshControl?.endRefreshing()
         guard let uid = Auth.auth().currentUser?.uid else {return }
-        //        let queue = DispatchQueue.global()
-        //        queue.sync {
+        
         fetchUserPost(uid: uid)
-        //        }
-        //        print("end fetch")
-        print("end fetch")
-        
-        
-        
+        print("end of fetch post from user ..Start fetch from his following people..")
         let ref = Database.database().reference().child("following").child(uid)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let userIdsDictionary = snapshot.value as? [String: Any] else { return }
             userIdsDictionary.forEach({ (key, value) in
                 self.fetchUserPost(uid:key)
-                
             })
         })
         

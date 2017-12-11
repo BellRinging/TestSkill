@@ -5,7 +5,7 @@ import Firebase
 
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
-    var fetchSize : Int = 20
+    var fetchSize : Int = 40
     let headerID = "headerID"
     let footerID = "footerID"
     let cellID = "cellID"
@@ -42,6 +42,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("view will appear")
+        self.collectionView?.reloadData()
     }
     
     func fetchPost(){

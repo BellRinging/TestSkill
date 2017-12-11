@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.660224651723-930vgvk3g2125t546deqsq4gei3v6cip</string>
+				<string>com.googleusercontent.apps.660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p</string>
 			</array>
 		</dict>
 		<dict>
@@ -37,7 +37,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.bellringing.kmconcept.testskill</string>
+				<string>com.bellringing.kmconcept.TestSkillTestSkill</string>
 			</array>
 		</dict>
 	</array>
