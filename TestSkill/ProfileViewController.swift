@@ -169,9 +169,15 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         }else {
             print("load from firebase user")
             Database.fetchUserWithUID(uid: uid, completion: { userObject in
-                self.user = userObject
-                Utility.user = userObject
-                self.fetchPost()
+                print("userObject",userObject)
+                if userObject.name != "" {
+                    self.user = userObject
+                    Utility.user = userObject
+                    self.fetchPost()
+                }else{
+                    self.isUpdating = false
+                    return
+                }
             })
         }
     }

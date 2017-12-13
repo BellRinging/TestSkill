@@ -21,7 +21,7 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
             firstNameField.text = user?.firstName
             lastNameField.text = user?.lastName
             emailField.text = user?.email
-            if let url = user?.imageUrl {
+            if let url = user?.imageUrl ,url != ""{
                 imageView.loadImage(url)
             }
         }
@@ -34,12 +34,22 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
         }else {
             if let firebaseUser = Utility.firebaseUser {
                 print("URL \(firebaseUser.photoURL)")
-                let url = firebaseUser.photoURL?.absoluteString
-                let dict = ["name": firebaseUser.displayName,"img_url": url,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
-                let userObject = User(dict: dict)
-                self.user = userObject
+                if let url = firebaseUser.photoURL?.absoluteString {
+                    let dict = ["name": firebaseUser.displayName,"img_url": url,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
+                    let userObject = User(dict: dict)
+                    self.user = userObject
+                }else{
+                    let dict = ["name": firebaseUser.displayName,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
+                    let userObject = User(dict: dict)
+                    self.user = userObject
+                }
             }
         }
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
+        
         view.addDefaultGradient()
     }
     
@@ -149,6 +159,8 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         guard let lastName = lastNameField.text else { return }
         guard let email = emailField.text else { return }
     
+        
+        print("Start creation")
         let ref = Storage.storage().reference().child("profile_images").child(user.uid).child("profilePic.jpg")
         if let profileImage = self.imageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
@@ -160,18 +172,27 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                 print("upload image")
                 if let profileImageURL = metaData?.downloadURL()?.absoluteString{
                     let values = [ "last_name": lastName, "first_name": firstName ,"email" : email , "img_url" : profileImageURL , "name" : self.userNameLabel.text ,"id" : user.uid]
-                    self.registerUserIntoDatabaseWithUID(values: values as [String : AnyObject])
-                    UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
-                    NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+                    let quene = DispatchGroup()
+                    quene.enter()
+                    self.registerUserIntoDatabaseWithUID(quene,values: values as [String : AnyObject])
+                    quene.notify(queue: DispatchQueue.main, execute: {
+                        UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
+                        NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+                        Utility.hideProgress()
+                        self.dismiss(animated: true, completion: nil)
+                    })
                 }
             })
+        }else{
+            print("No Image")
+            Utility.hideProgress()
         }
     }
     
     
     
     
-    fileprivate func registerUserIntoDatabaseWithUID( values: [String: AnyObject]) {
+    fileprivate func registerUserIntoDatabaseWithUID(_ group : DispatchGroup, values: [String: AnyObject]) {
         guard let uid = Auth.auth().currentUser?.uid else {return }
         let ref = Database.database().reference()
         let usersReference = ref.child("users").child(uid)
@@ -182,8 +203,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                 Utility.hideProgress()
                 return
             }
-            Utility.hideProgress()
-            self.dismiss(animated: true, completion: nil)
+            group.leave()
         })
     }
     

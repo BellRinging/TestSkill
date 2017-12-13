@@ -12,6 +12,7 @@ import FirebaseDatabase
 class Post {
     
     var likeCount : Int?
+    var hasliked : Bool = false
     
     var id: String? {
         didSet{
@@ -19,9 +20,10 @@ class Post {
             let ref = Database.database().reference().child("likes").child(key)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let value = snapshot.value as? [String: Any]{
-                    self.likeCount = value.count
+                    self.hasliked = true
                 }else {
                     self.likeCount = 0
+                    self.hasliked = false
                 }
             })
         }
@@ -31,8 +33,6 @@ class Post {
     let imageUrl: String
     let caption: String
     let creationDate: Date
-    
-    var hasLiked = false
     
     init(user: User, dict: [String: Any]) {
         self.likeCount = 1

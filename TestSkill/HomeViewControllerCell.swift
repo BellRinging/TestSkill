@@ -12,6 +12,8 @@ import UIKit
 protocol HomePostCellDelegate {
     func didTapComment(post: Post)
     func didLike(for cell: HomeViewControllerCell)
+    func didTagImage(for cell: HomeViewControllerCell)
+    func didShare(for cell: HomeViewControllerCell)
 }
 
 class HomeViewControllerCell: UICollectionViewCell {
@@ -38,15 +40,17 @@ class HomeViewControllerCell: UICollectionViewCell {
             guard let picUrl = post?.user.imageUrl else {return }
             profileImage.loadImage(picUrl)
             setupAttributedCaption()
-            guard let like =  post?.hasLiked else { return }
-            //            print("Caption : \(post?.caption) has like \(like)")
+            guard let like =  post?.hasliked else { return }
+//            print("Caption : \(post?.caption) has like \(like)")
             if like == true {
-                likeButton.setImage(#imageLiteral(resourceName: "redHeart.svg").withRenderingMode(.alwaysOriginal), for: .normal)
+                likeButton.setImage(#imageLiteral(resourceName: "like_selected").withRenderingMode(.alwaysOriginal), for: .normal)
             }else {
                 likeButton.setImage(#imageLiteral(resourceName: "like_unselected").withRenderingMode(.alwaysOriginal), for: .normal)
             }
             guard let likeCount =  post?.likeCount else { return }
             likelabel.text = "\(likeCount) likes"
+            
+            timeLabel.text = post?.creationDate.timeAgoDisplay()
             
         }
     }
@@ -56,37 +60,33 @@ class HomeViewControllerCell: UICollectionViewCell {
         //header part
         addSubview(profileImage)
         profileImage.Anchor(top: topAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 40, height: 40)
-        
-        addSubview(nameLabel)
-        nameLabel.Anchor(top: nil, left: profileImage.rightAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-        
-        nameLabel.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
-        
+//
+        addSubview(stackView)
+        stackView.Anchor(top: nil, left: profileImage.rightAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        stackView.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
+//
         addSubview(mainImage)
         mainImage.Anchor(top: profileImage.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: self.frame.width, height: self.frame.width)
-        
+//
         addSubview(likeButton)
-        likeButton.Anchor(top: mainImage.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 20, height: 20)
-        
+        likeButton.Anchor(top: mainImage.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 30, height: 30)
+
         addSubview(commentButton)
-        commentButton.Anchor(top: mainImage.bottomAnchor, left: likeButton.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 20, height: 20)
-        
+        commentButton.Anchor(top: mainImage.bottomAnchor, left: likeButton.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 30, height: 30)
+
         addSubview(bookmarkButton)
-        bookmarkButton.Anchor(top: mainImage.bottomAnchor, left: nil, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 20, height: 20)
-        
+        bookmarkButton.Anchor(top: mainImage.bottomAnchor, left: nil, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 30, height: 30)
+
         addSubview(shareButton)
-        shareButton.Anchor(top: mainImage.bottomAnchor, left: commentButton.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 20, height: 20)
-        
+        shareButton.Anchor(top: mainImage.bottomAnchor, left: commentButton.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 30, height: 30)
+//
         addSubview(likelabel)
         likelabel.Anchor(top: likeButton.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-        
-        //
+//
+//        //
         addSubview(bottomlabel)
-
-        bottomlabel.Anchor(top: likelabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-        
-        
-        
+////
+        bottomlabel.Anchor(top: likelabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
     }
     
     lazy var likeButton : UIButton = {
@@ -106,10 +106,14 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     let bottomlabel : UILabel = {
         let lb = UILabel()
-        
         lb.numberOfLines = 0
         return lb
     }()
+    
+    func didTagImage(){
+        
+    }
+    
     
     fileprivate func setupAttributedCaption() {
         guard let post = self.post  else { return }
@@ -126,8 +130,7 @@ class HomeViewControllerCell: UICollectionViewCell {
         temp.append(NSAttributedString(string: "View All 3 comments", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.gray]))
         
         
-        temp.append(NSAttributedString(string: "\n\(post.creationDate.timeAgoDisplay())" , attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: 10) ,NSForegroundColorAttributeName:UIColor.gray]))
-        
+
         bottomlabel.attributedText = temp
     }
     
@@ -158,14 +161,17 @@ class HomeViewControllerCell: UICollectionViewCell {
     }()
     
     
-    let stackView : UIStackView = {
+
+    
+    lazy var stackView : UIStackView = {
         let sv = UIStackView()
-        sv.axis = .horizontal
+        sv.axis = .vertical
         sv.distribution = .fillEqually
         sv.backgroundColor = UIColor.red
+        sv.addArrangedSubview(self.nameLabel)
+        sv.addArrangedSubview(self.timeLabel)
         return sv
     }()
-    
     
     
     func handleLike(){
@@ -178,12 +184,17 @@ class HomeViewControllerCell: UICollectionViewCell {
     }
     
     
+    func handleTagImage(){
+        print("Tag Image")
+        delegate?.didTagImage(for: self)
+    }
+    
     func handleBookmark(){
         print("bookmark")
     }
     
     func handleShare(){
-        print("Share")
+        delegate?.didShare(for: self)
     }
     
     let profileImage : CustomImageView = {
@@ -202,15 +213,34 @@ class HomeViewControllerCell: UICollectionViewCell {
         return lb
     }()
     
-    let mainImage : CustomImageView = {
+    let timeLabel : UILabel = {
+        let lb = UILabel()
+        lb.text = "name"
+        lb.font = UIFont.systemFont(ofSize: 12)
+        lb.textColor = UIColor.gray
+        return lb
+    }()
+    
+    lazy var mainImage : CustomImageView = {
         let imageView = CustomImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.image = #imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal)
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTagImage)))
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
-    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        let targetSize = CGSize(width: self.frame.width, height: 100)
+        layoutIfNeeded()
+        let estimatedSize = systemLayoutSizeFitting(targetSize)
+        print("Size for bottom",estimatedSize)
+        var frames = layoutAttributes.frame
+        frames = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: estimatedSize.height)
+        layoutAttributes.frame = frames
+        return layoutAttributes
+    }
     
 }
 
