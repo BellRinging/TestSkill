@@ -10,9 +10,10 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class CommentViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
+class CommentViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout ,UITextViewDelegate{
     
     let cellId = "cellId"
+    let placeHolderText = "Enter the comment"
     
     
     var post: Post?{
@@ -109,12 +110,30 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
     
     
     
-    let commentTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Enter Comment"
+    lazy var commentTextField: UITextView = {
+        let textField = UITextView()
+//        textField.placeholder = "Enter Comment"
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
+//        let placeholderLabel = UILabel()
+        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.delegate = self
+        textField.addSubview(self.placeholderLabel)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.isScrollEnabled = false
+        self.placeholderLabel.Anchor(top: nil, left: textField.leftAnchor, right: nil, bottom: nil, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
+        self.placeholderLabel.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
         return textField
+    }()
+    
+   
+    
+    lazy var placeholderLabel: UILabel = {
+        let placeholderLabel = UILabel()
+        placeholderLabel.text = "Enter some text..."
+        placeholderLabel.textColor = UIColor.lightGray
+//        placeholderLabel.isHidden = !self.commentTextField.text.isEmpty
+        return placeholderLabel
     }()
     
     
@@ -166,5 +185,23 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
     override var canBecomeFirstResponder: Bool {
         return true
     }
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+
+//        let view = textView.subviews.last as? UILabel
+        placeholderLabel.isHidden = !textView.text.isEmpty
+        var frame = containerView.frame
+        frame.size.height = min( 50,textView.contentSize.height)
+        
+        print(textView.frame,textView.contentSize)
+        containerView.frame = frame
+    }
+
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        inputAccessoryView?.resignFirstResponder()
+    }
+    
 }
 

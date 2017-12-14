@@ -13,7 +13,7 @@ import MBProgressHUD
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate ,MessagingDelegate ,UNUserNotificationCenterDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUserNotificationCenterDelegate{
 
     var window: UIWindow?
 
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate ,Messag
     
     func attemptRegisterForNotification(application : UIApplication){
         print("Attemp to register APNS")
-        Messaging.messaging().delegate = self
+//        Messaging.messaging().delegate = self
         if #available(iOS 10.0, *) {
             print("1")
             // For iOS 10 display notification (sent via APNS)
@@ -72,9 +72,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate ,Messag
         
     }
 
-    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-        print("Registered with token :",fcmToken)
-    }
+//    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+//        print("Registered with token :",fcmToken)
+//    }
     
     func configGoogleAPI(){
         var configureError: NSError?

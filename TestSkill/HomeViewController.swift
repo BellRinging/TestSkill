@@ -115,7 +115,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeViewControllerCell
-        cell.contentView.translatesAutoresizingMaskIntoConstraints = false
+//        cell.contentView.translatesAutoresizingMaskIntoConstraints = false
         cell.post = posts[indexPath.row]
         cell.delegate = self
         return cell
@@ -186,41 +186,15 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
             self.collectionView?.reloadData()
         })
     }
-    
+ 
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        var height: CGFloat = 40 + 8 + 8 //username userprofileimageview
-//        height += view.frame.width
-//        height += 50
-//        height += 60
-//
-//        let post = self.posts[indexPath.row]
-//        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
-//        let dummyCell = HomeViewControllerCell(frame: frame)
-//
-//        let lb = UILabel(frame: frame)
-//        let temp = NSMutableAttributedString(string: "\(post.user.name)", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
-//        temp.append(NSAttributedString(string: " \(post.caption)", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.black]))
-//        temp.append(NSAttributedString(string: "\n #funny #abc #noob\n", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.blue]))
-//        temp.append(NSAttributedString(string: "View All 3 comments", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.gray]))
-//        temp.append(NSAttributedString(string: "\n\(post.creationDate.timeAgoDisplay())" , attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: 10) ,NSForegroundColorAttributeName:UIColor.gray]))
-//        dummyCell.bottomlabel.attributedText = temp
-//        lb.attributedText = temp
-//        lb.prefer
-//        print("Lb :" ,lb.frame.height)
-//
-//        let targetSize = CGSize(width: view.frame.width, height: 1000)
-//        let estimatedSize = lb.systemLayoutSizeFitting(targetSize)
-//
-//        let height2 = max(height ,estimatedSize.height)
-//        print("Estimate size: \(estimatedSize.height)")
-//        return CGSize(width: view.frame.width, height: height2)
-//
+//        var height = 8 + 40 + 8 + view.frame.width + 8 + 40 + 8
+//        let post = self.posts[indexPath.item]
+//        height = height + calculatTextHeigh(post: post)
+//        return CGSize(width: self.view.frame.width, height: height)
 //    }
     
-    
-    
-
- 
+  
 }
 
 

@@ -95,7 +95,7 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         
         let bookmark = templateController(#imageLiteral(resourceName: "ribbon"), unselectedImage: #imageLiteral(resourceName: "ribbon"), rootController: BookmarkViewController(collectionViewLayout: UICollectionViewFlowLayout()))
     
-        viewControllers = [profile,search,add,home,bookmark]
+        viewControllers = [home,search,add,profile,bookmark]
         tabBar.tintColor = UIColor.black
        tabBar.items?.forEach({ (item) in
             item.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)

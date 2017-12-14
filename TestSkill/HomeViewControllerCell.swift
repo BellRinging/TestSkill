@@ -57,6 +57,7 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     func setupViewLayout(){
         
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
         //header part
         addSubview(profileImage)
         profileImage.Anchor(top: topAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 40, height: 40)
@@ -86,7 +87,7 @@ class HomeViewControllerCell: UICollectionViewCell {
 //        //
         addSubview(bottomlabel)
 ////
-        bottomlabel.Anchor(top: likelabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        bottomlabel.Anchor(top: likelabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
     }
     
     lazy var likeButton : UIButton = {
@@ -118,9 +119,6 @@ class HomeViewControllerCell: UICollectionViewCell {
     fileprivate func setupAttributedCaption() {
         guard let post = self.post  else { return }
         
-        
-        
-        
         let temp = NSMutableAttributedString(string: "\(post.user.name)", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
         
         temp.append(NSAttributedString(string: " \(post.caption)", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.black]))
@@ -129,9 +127,8 @@ class HomeViewControllerCell: UICollectionViewCell {
         
         temp.append(NSAttributedString(string: "View All 3 comments", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.gray]))
         
-        
-
         bottomlabel.attributedText = temp
+        bottomlabel.sizeToFit()
     }
     
     
@@ -232,15 +229,30 @@ class HomeViewControllerCell: UICollectionViewCell {
     }()
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        let targetSize = CGSize(width: self.frame.width, height: 100)
-        layoutIfNeeded()
-        let estimatedSize = systemLayoutSizeFitting(targetSize)
-        print("Size for bottom",estimatedSize)
-        var frames = layoutAttributes.frame
-        frames = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: estimatedSize.height)
-        layoutAttributes.frame = frames
+//        print(layoutAttributes.size)
+//        setNeedsLayout()
+//        layoutIfNeeded()
+        if let post = post{
+            var height = 8 + 40 + 8 + UIScreen.main.bounds.width + 8 + 40 + 8
+            height = height + calculatTextHeigh(post: post)
+            var newFrame = layoutAttributes.frame
+            newFrame.size.height = height
+            layoutAttributes.frame = newFrame
+        }
+        
         return layoutAttributes
     }
+    
+    fileprivate func calculatTextHeigh(post : Post) -> CGFloat {
+        
+        let targetSize = CGSize(width: UIScreen.main.bounds.width, height: 1000)
+        let estimatedSize = bottomlabel.systemLayoutSizeFitting(targetSize)
+//        print("estimatedSize",estimatedSize.height)
+        return estimatedSize.height
+    }
+    
+  
+    
     
 }
 
