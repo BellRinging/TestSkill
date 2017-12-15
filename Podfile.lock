@@ -13,16 +13,9 @@ PODS:
     - FacebookCore (~> 0.3)
     - FBSDKCoreKit (~> 4.27)
     - FBSDKLoginKit (~> 4.27)
-  - FacebookShare (0.2.0):
-    - Bolts (~> 1.8)
-    - FacebookCore (~> 0.2)
-    - FBSDKCoreKit (~> 4.21)
-    - FBSDKShareKit (~> 4.21)
   - FBSDKCoreKit (4.29.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.29.0):
-    - FBSDKCoreKit
-  - FBSDKShareKit (4.29.0):
     - FBSDKCoreKit
   - Firebase (4.0.4):
     - Firebase/Core (= 4.0.4)
@@ -115,7 +108,6 @@ PODS:
 DEPENDENCIES:
   - FacebookCore
   - FacebookLogin
-  - FacebookShare (from `https://github.com/1amageek/facebook-sdk-swift`)
   - Firebase (~> 4.0.0)
   - Firebase/Auth (~> 4.0.0)
   - Firebase/Core (~> 4.0.0)
@@ -127,16 +119,11 @@ DEPENDENCIES:
   - SwiftyJSON (from `https://github.com/acegreen/SwiftyJSON.git`, branch `swift3`)
 
 EXTERNAL SOURCES:
-  FacebookShare:
-    :git: https://github.com/1amageek/facebook-sdk-swift
   SwiftyJSON:
     :branch: swift3
     :git: https://github.com/acegreen/SwiftyJSON.git
 
 CHECKOUT OPTIONS:
-  FacebookShare:
-    :commit: 3ac76c770e9849285c380f380309d866911d2e93
-    :git: https://github.com/1amageek/facebook-sdk-swift
   SwiftyJSON:
     :commit: 8971384559780e631b041ac91b16734a396d4c14
     :git: https://github.com/acegreen/SwiftyJSON.git
@@ -145,10 +132,8 @@ SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   FacebookCore: 3ffa190a3f1f96cec0e44d3fc221bc322c595ffa
   FacebookLogin: 0af839ea858faef99550d16596b87b4a8e8906e6
-  FacebookShare: d086f7a4610bbbca9cec5e774de450a9b3e1a20b
   FBSDKCoreKit: 6f139173dc63a1deaff4430a55f2fe5bb222d2af
   FBSDKLoginKit: 56a057ca6822535ea0faa25f57a7c41edb697fd4
-  FBSDKShareKit: 18a2cd118aef11dd657fe7e8b64bae5c719088b2
   Firebase: 1492bf04e1b73a7353b4fb2cf5a20bac9692f341
   FirebaseAnalytics: ad41720e3e67fc63fbe3d2948d3e26932a8de311
   FirebaseAuth: ebb6abcbabae00fc47446d690c19ce68d8484fde
@@ -172,6 +157,6 @@ SPEC CHECKSUMS:
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-PODFILE CHECKSUM: 066a73fc43a915869ec3ff36dbaacaff5972a609
+PODFILE CHECKSUM: 40d795e2092e2c66165a49538d1a6c937ad51398
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.4.0.beta.2

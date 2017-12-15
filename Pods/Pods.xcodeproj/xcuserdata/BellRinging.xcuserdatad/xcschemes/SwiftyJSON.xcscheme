@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '322EE6898BC2AF05E9A5CECE7D184CF2'
+               BlueprintIdentifier = 'A4D579CF2CB26A1DDAB82978D584B79A'
                BlueprintName = 'SwiftyJSON'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'SwiftyJSON.framework'>

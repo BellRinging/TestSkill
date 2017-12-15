@@ -158,6 +158,15 @@ class HomeViewControllerCell: UICollectionViewCell {
     }()
     
     
+    lazy var optionButton : UIButton = {
+        let bn = UIButton(type: .system)
+        bn.setImage(#imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), for: .normal)
+        bn.addTarget(self, action: #selector(handleOption), for: .touchUpInside)
+        bn.tintColor = UIColor.blue
+        return bn
+    }()
+    
+    
 
     
     lazy var stackView : UIStackView = {
@@ -170,6 +179,11 @@ class HomeViewControllerCell: UICollectionViewCell {
         return sv
     }()
     
+    func handleOption(){
+        print("handle Option")
+//        let controller = UIAlertController
+//        delegate.didTap
+    }
     
     func handleLike(){
         //        print("Like")
@@ -228,26 +242,27 @@ class HomeViewControllerCell: UICollectionViewCell {
         return imageView
     }()
     
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-//        print(layoutAttributes.size)
-//        setNeedsLayout()
-//        layoutIfNeeded()
-        if let post = post{
-            var height = 8 + 40 + 8 + UIScreen.main.bounds.width + 8 + 40 + 8
-            height = height + calculatTextHeigh(post: post)
-            var newFrame = layoutAttributes.frame
-            newFrame.size.height = height
-            layoutAttributes.frame = newFrame
-        }
-        
-        return layoutAttributes
-    }
+//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+////        print(layoutAttributes)
+////        setNeedsLayout()
+////        layoutIfNeeded()
+//        if let post = post{
+//            var height = 8 + 40 + 8 + UIScreen.main.bounds.width + 8 + 40 + 8
+//            height = height + calculatTextHeigh(post: post)
+//            var newFrame = layoutAttributes.frame
+//            newFrame.size.height = height
+//            layoutAttributes.frame = newFrame
+//        }
+//
+//        return layoutAttributes
+//    }
     
-    fileprivate func calculatTextHeigh(post : Post) -> CGFloat {
+    func calculatTextHeigh(post : Post) -> CGFloat {
         
         let targetSize = CGSize(width: UIScreen.main.bounds.width, height: 1000)
+        self.post = post
         let estimatedSize = bottomlabel.systemLayoutSizeFitting(targetSize)
-//        print("estimatedSize",estimatedSize.height)
+        print("estimatedSize",estimatedSize.height)
         return estimatedSize.height
     }
     

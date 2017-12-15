@@ -10,25 +10,83 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class CommentViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout ,UITextViewDelegate{
+class CommentViewController:
+UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextViewDelegate ,UICollectionViewDelegateFlowLayout {
     
+    //    var collectionview : UICollectionView?
+    var collectionView: UICollectionView!
     let cellId = "cellId"
     let placeHolderText = "Enter the comment"
+    var con : NSLayoutConstraint?
+    var post: Post?
+    var comments  = [Comment]()
     
     
-    var post: Post?{
-        didSet{
-            //            fetchComment()
-        }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+        
+        navigationItem.title = "Comments"
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .white
+        collectionView.alwaysBounceVertical = true
+        collectionView.keyboardDismissMode = .interactive
+        collectionView.register(CommentViewControllerCell.self, forCellWithReuseIdentifier: cellId)
+        setupLayout()
+        fetchComment()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
     }
     
-    var comments  = [Comment]()
+    func keyboardWillAppear(_ sender:NSNotification) {
+        //Do something here
+        let info = sender.userInfo!
+        let keyboardHeight = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.height
+        print("keyboard show")
+        print("heigh",keyboardHeight , view.frame)
+        con?.isActive = false
+        con?.constant = UIScreen.main.bounds.height - keyboardHeight
+        con?.isActive = true
+        print("view frame",view.frame)
+    }
+    
+    func keyboardWillDisappear(_ sender:NSNotification) {
+        print("keyboard hide")
+        con?.isActive = false
+        con?.constant = UIScreen.main.bounds.height
+        con?.isActive = true
+        
+        let indexPath = IndexPath(item: self.comments.count-1, section: 0)
+//        self.collectionView.scrollsToTop = true
+        self.collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+    }
+    
+    
+    
+    func setupLayout(){
+        view.addSubview(collectionView)
+        view.addSubview(containerView)
+        //        collectionView.layer.borderWidth = 1
+        //        collectionView.layer.borderColor = UIColor.brown.cgColor
+        collectionView.Anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: containerView.topAnchor, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
+        
+        containerView.Anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.con = view.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height)
+        view.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
+        self.con?.isActive = true
+        
+        
+    }
+    
+    
+    
+    
     
     func fetchComment(){
         self.comments.removeAll()
-        
-        //        print("fetch comment")
-        
         guard let postId = post?.id else {return}
         let ref = Database.database().reference().child("comments").child(postId)
         
@@ -40,63 +98,36 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
             Database.fetchUserWithUID(uid: uid, completion: { (user) in
                 let comment = Comment(user: user, dictionary: dict)
                 self.comments.append(comment)
-                self.collectionView?.reloadData()
+                self.collectionView.reloadData()
             })
         })
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        navigationItem.title = "Comments"
-        collectionView?.backgroundColor = .white
-        collectionView?.alwaysBounceVertical = true
-        collectionView?.keyboardDismissMode = .interactive
-        collectionView?.register(CommentViewControllerCell.self, forCellWithReuseIdentifier: cellId)
-        
-        
-        collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
-        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
-
-        fetchComment()
-        
-    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentViewControllerCell
+    func collectionView(_ : UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentViewControllerCell
         cell.comment = comments[indexPath.row]
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return comments.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
         let dummyCell = CommentViewControllerCell(frame: frame)
         dummyCell.comment = comments[indexPath.row]
         dummyCell.layoutIfNeeded()
-        
         let targetSize = CGSize(width: view.frame.width, height: 1000)
         let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
-        
         let height = max(40 + 8 + 8, estimatedSize.height)
-        //        print("Estimate size: \(estimatedSize.height)")
         return CGSize(width: view.frame.width, height: height)
     }
     
     func handleSubmit() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        //        print("post id:", self.post?.id ?? "")
-        //        print("Inserting comment:", commentTextField.text ?? "")
-        
         let postId = self.post?.id ?? ""
         let values = ["text": commentTextField.text ?? "", "creationDate": Date().timeIntervalSince1970, "uid": uid] as [String : Any]
-        //        print(postId)
-        
         Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { (err, ref) in
             
             if let err = err {
@@ -104,6 +135,8 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
                 return
             }
             self.commentTextField.text = ""
+            self.commentTextField.resignFirstResponder()
+            self.collectionView.reloadData()
             print("Successfully inserted comment.")
         }
     }
@@ -112,27 +145,26 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
     
     lazy var commentTextField: UITextView = {
         let textField = UITextView()
-//        textField.placeholder = "Enter Comment"
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
-//        let placeholderLabel = UILabel()
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.font = UIFont.systemFont(ofSize: 16)
         textField.delegate = self
         textField.addSubview(self.placeholderLabel)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isScrollEnabled = false
+        //        textField.layer.borderWidth = 1
+        //        textField.layer.borderColor = UIColor.blue.cgColor
         self.placeholderLabel.Anchor(top: nil, left: textField.leftAnchor, right: nil, bottom: nil, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
         self.placeholderLabel.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
         return textField
     }()
     
-   
+    
     
     lazy var placeholderLabel: UILabel = {
         let placeholderLabel = UILabel()
         placeholderLabel.text = "Enter some text..."
         placeholderLabel.textColor = UIColor.lightGray
-//        placeholderLabel.isHidden = !self.commentTextField.text.isEmpty
         return placeholderLabel
     }()
     
@@ -140,8 +172,10 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
     
     lazy var containerView: UIView = {
         let containerView = UIView()
+        //        containerView.layer.borderColor = UIColor.red.cgColor
+        //        containerView.layer.borderWidth = 1
         containerView.backgroundColor = .white
-        containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+        //        containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
         
         let submitButton = UIButton(type: .system)
         submitButton.setTitle("Submit", for: .normal)
@@ -149,59 +183,45 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
         submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
         containerView.addSubview(submitButton)
-        
         submitButton.Anchor(top: containerView.topAnchor, left: nil, right: containerView.rightAnchor, bottom: containerView.bottomAnchor, topPadding: 0, leftPadding: 0, rightPadding: 12, bottomPadding: 0, width: 50, height: 0)
-        
-        
         containerView.addSubview(self.commentTextField)
-        self.commentTextField.Anchor(top: containerView.topAnchor, left: containerView.leftAnchor, right: submitButton.leftAnchor, bottom: containerView.bottomAnchor, topPadding: 0, leftPadding: 12, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
-        
+        self.commentTextField.Anchor(top: containerView.topAnchor, left: containerView.leftAnchor, right: submitButton.leftAnchor, bottom: containerView.bottomAnchor, topPadding: 0, leftPadding: 12, rightPadding: 0, bottomPadding: 0, width: 0)
         let lineSeparatorView = UIView()
         lineSeparatorView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
         containerView.addSubview(lineSeparatorView)
-        
         lineSeparatorView.Anchor(top: containerView.topAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, bottom: nil, topPadding: 0, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: 0, height: 0.5)
-        
         return containerView
     }()
-    
-    override var inputAccessoryView: UIView? {
-        get {
-            return containerView
-        }
-    }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        commentTextField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
-    }
-    
-    override var canBecomeFirstResponder: Bool {
-        return true
+        NotificationCenter.default.removeObserver(self)
     }
     
     
     func textViewDidChange(_ textView: UITextView) {
-
-//        let view = textView.subviews.last as? UILabel
         placeholderLabel.isHidden = !textView.text.isEmpty
-        var frame = containerView.frame
-        frame.size.height = min( 50,textView.contentSize.height)
-        
-        print(textView.frame,textView.contentSize)
-        containerView.frame = frame
     }
-
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        inputAccessoryView?.resignFirstResponder()
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        commentTextField.resignFirstResponder()
     }
+    
+    //    override var inputAccessoryView: UIView? {
+    //        get {
+    //            return containerView
+    //        }
+    //    }
     
 }
+
 

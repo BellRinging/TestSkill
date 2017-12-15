@@ -22,6 +22,8 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         }
     }
     
+    var homeCell : HomeViewControllerCell?
+    
     
     
     override func viewDidLoad() {
@@ -34,8 +36,8 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
         
-        let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
-        layout?.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width, height: 100)
+//        let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
+//        layout?.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width, height: 500)
         setupBarButtom()
         fetchPost()
     }
@@ -49,6 +51,21 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         posts.removeAll()
         collectionView?.reloadData()
         fetchPost()
+    }
+    
+    func didTapOption(for cell: HomeViewControllerCell){
+        
+//        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
+//        let alertAction = UIAlertAction(title: "OK!", style: UIAlertActionStyle.default)
+//        {
+//            (action) -> Void in
+//            completion(action)
+//        }
+//        alert.addAction(alertAction)
+//        viewController.present(alert, animated: true)
+//        {
+//            () -> Void in
+//        }
     }
     
     func didLike(for cell: HomeViewControllerCell){
@@ -115,7 +132,8 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeViewControllerCell
-//        cell.contentView.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.translatesAutoresizingMaskIntoConstraints = false
+//        homeCell = cell
         cell.post = posts[indexPath.row]
         cell.delegate = self
         return cell
@@ -156,7 +174,8 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     func didTapComment(post: Post) {
         //        print(post.caption)
-        let commentsController = CommentViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let commentsController = CommentViewController()
+//        let commentsController = CommentView()
         commentsController.post = post
         navigationController?.pushViewController(commentsController, animated: true)
     }
@@ -187,12 +206,15 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         })
     }
  
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        var height = 8 + 40 + 8 + view.frame.width + 8 + 40 + 8
-//        let post = self.posts[indexPath.item]
-//        height = height + calculatTextHeigh(post: post)
-//        return CGSize(width: self.view.frame.width, height: height)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+         let post = self.posts[indexPath.row]
+            var height = 8 + 40 + 8 + UIScreen.main.bounds.width + 8 + 40 + 8
+        let cell = HomeViewControllerCell()
+            height = height + cell.calculatTextHeigh(post: post)
+//            print(cell.calculatTextHeigh(post: post))
+            return CGSize(width: UIScreen.main.bounds.width, height: height)
+        
+    }
     
   
 }
