@@ -44,6 +44,7 @@
 		EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC61F1D062B002E31A7 /* RegisterController.swift */; };
 		EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */; };
 		EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */; };
+		EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */; };
 		EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA420231F667A0F0010BFC7 /* Utility.swift */; };
 		EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */; };
 		EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */; };
@@ -106,6 +107,7 @@
 		EB579EC61F1D062B002E31A7 /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
 		EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPhotoView.swift; sourceTree = "<group>"; };
+		EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewFixed.swift; sourceTree = "<group>"; };
 		EBA420231F667A0F0010BFC7 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterAction.swift; sourceTree = "<group>"; };
 		EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfitSetupController.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 			children = (
 				EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */,
 				EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */,
+				EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */,
 			);
 			name = FloatLabel;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
+				EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */,
 				EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */,
 				EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */,
 				EBFBE1791F5085CF00937EC6 /* PopupDialog.swift in Sources */,

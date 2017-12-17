@@ -54,18 +54,22 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     }
     
     func didTapOption(for cell: HomeViewControllerCell){
-        
-//        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-//        let alertAction = UIAlertAction(title: "OK!", style: UIAlertActionStyle.default)
-//        {
-//            (action) -> Void in
-//            completion(action)
-//        }
-//        alert.addAction(alertAction)
-//        viewController.present(alert, animated: true)
-//        {
-//            () -> Void in
-//        }
+        let alert = UIAlertController(title: nil, message: "Select action", preferredStyle: UIAlertControllerStyle.actionSheet)
+        let alertAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive)
+        {
+            (action) -> Void in
+//            print("item deleted")
+            guard let indexPath = self.collectionView?.indexPath(for: cell) else { return }
+            self.deleteUserPost(index: indexPath.item)
+        }
+        alert.addAction(alertAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
+        {
+            (action) -> Void in
+            print("Cancel")
+        }
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func didLike(for cell: HomeViewControllerCell){
@@ -156,7 +160,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         group.enter()
         Database.fetchUserWithUID(uid: uid) { (user) in
             let ref = Database.database().reference().child("posts").child(uid)
-            ref.observe(.value, with: { (snapsnot) in
+            ref.observeSingleEvent(of: .value, with: { (snapsnot) in
                 guard let dictionary = snapsnot.value as? [String: Any] else { return }
 //                print("No of post for user:" , dictionary.count ," For user", user.name)
                 dictionary.forEach({ (key,value) in
@@ -170,6 +174,18 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
                 group.leave()
             })
         }
+    }
+    
+    
+    func deleteUserPost(index : Int){
+        guard let postId = self.posts[index].id else {return}
+        let userId = self.posts[index].user.id
+        let ref = Database.database().reference().child("posts").child(userId).child(postId)
+        print("post",postId)
+        print("user",userId)
+        ref.removeValue()
+        posts.remove(at: index)
+        collectionView?.reloadData()
     }
     
     func didTapComment(post: Post) {

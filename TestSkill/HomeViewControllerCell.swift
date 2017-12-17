@@ -14,6 +14,7 @@ protocol HomePostCellDelegate {
     func didLike(for cell: HomeViewControllerCell)
     func didTagImage(for cell: HomeViewControllerCell)
     func didShare(for cell: HomeViewControllerCell)
+    func didTapOption(for cell: HomeViewControllerCell)
 }
 
 class HomeViewControllerCell: UICollectionViewCell {
@@ -61,9 +62,12 @@ class HomeViewControllerCell: UICollectionViewCell {
         //header part
         addSubview(profileImage)
         profileImage.Anchor(top: topAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 40, height: 40)
+        
+        addSubview(optionButton)
+        optionButton.Anchor(top: topAnchor, left: nil, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 30, height: 30)
 //
         addSubview(stackView)
-        stackView.Anchor(top: nil, left: profileImage.rightAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        stackView.Anchor(top: nil, left: profileImage.rightAnchor, right: optionButton.leftAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         stackView.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
 //
         addSubview(mainImage)
@@ -87,7 +91,7 @@ class HomeViewControllerCell: UICollectionViewCell {
 //        //
         addSubview(bottomlabel)
 ////
-        bottomlabel.Anchor(top: likelabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        bottomlabel.Anchor(top: likelabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
     }
     
     lazy var likeButton : UIButton = {
@@ -100,14 +104,22 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     let likelabel : UILabel = {
         let lb = UILabel()
-        //        lb.text = "11 likes"
+        lb.layer.borderColor = UIColor.blue.cgColor
+        lb.layer.borderWidth = 1
         lb.font = UIFont.boldSystemFont(ofSize: 14)
         return lb
     }()
     
-    let bottomlabel : UILabel = {
-        let lb = UILabel()
-        lb.numberOfLines = 0
+    lazy var bottomlabel : UITextViewFixed = {
+        let lb = UITextViewFixed()
+        lb.isUserInteractionEnabled = true
+        lb.isEditable = false
+        lb.isSelectable = false
+        lb.isScrollEnabled = false
+//        lb.numberOfLines = 0
+        lb.layer.borderWidth = 1
+        lb.layer.borderColor = UIColor.red.cgColor
+        lb.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(myMethodToHandleTap(_:))))
         return lb
     }()
     
@@ -118,17 +130,49 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     fileprivate func setupAttributedCaption() {
         guard let post = self.post  else { return }
+        let str = post.user.name + " " + post.caption
+        var resultString = NSMutableAttributedString(string: "")
         
-        let temp = NSMutableAttributedString(string: "\(post.user.name)", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
+        let newLineSplitStr = str.split(separator: "\n", maxSplits: 500, omittingEmptySubsequences: false)
+        print(newLineSplitStr)
+        var lineCount = 0
+        for line in newLineSplitStr {
+            lineCount = lineCount + 1
+            
+//            guard let line = line as? String else {return }
+            print(line)
+            let splitStr = line.split(separator: " ", maxSplits: 500, omittingEmptySubsequences: false)
+            var itemCount = 0
+            for aa in splitStr {
+                itemCount = itemCount + 1
+                let length = resultString.length
+                let aalength = aa.characters.count
+                resultString.append(NSAttributedString(string: "\(aa)" , attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14)]))
+                if itemCount != splitStr.count{
+                    resultString.append(NSAttributedString(string: " " , attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14)]))
+                }
+                if aa.hasPrefix("#"){
+                    let range =  NSRange(location: length, length: aalength)
+                    resultString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blue, range: range)
+                    resultString.addAttribute("Tag", value: aa, range: range)
+                }
+            }
+            if lineCount != newLineSplitStr.count{
+                resultString.append(NSAttributedString(string: "\n" , attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14)]))
+            }
+            
+        }
         
-        temp.append(NSAttributedString(string: " \(post.caption)", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.black]))
         
-        temp.append(NSAttributedString(string: "\n #funny #abc #noob\n", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.blue]))
         
-        temp.append(NSAttributedString(string: "View All 3 comments", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.gray]))
+     
+       
+        bottomlabel.attributedText = resultString
+//        bottomlabel.text = str
         
-        bottomlabel.attributedText = temp
         bottomlabel.sizeToFit()
+        print("bootlab",bottomlabel.frame)
+        
     }
     
     
@@ -181,8 +225,8 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     func handleOption(){
         print("handle Option")
-//        let controller = UIAlertController
-//        delegate.didTap
+        delegate?.didTapOption(for: self)
+        
     }
     
     func handleLike(){
@@ -258,16 +302,50 @@ class HomeViewControllerCell: UICollectionViewCell {
 //    }
     
     func calculatTextHeigh(post : Post) -> CGFloat {
-        
+        print("originSize",bottomlabel.frame)
         let targetSize = CGSize(width: UIScreen.main.bounds.width, height: 1000)
         self.post = post
         let estimatedSize = bottomlabel.systemLayoutSizeFitting(targetSize)
-        print("estimatedSize",estimatedSize.height)
-        return estimatedSize.height
+        print("after",bottomlabel.frame)
+        print("estimatedSize",estimatedSize.height ,bottomlabel.frame)
+        return bottomlabel.frame.height
+//        return 200
     }
     
   
-    
+    func myMethodToHandleTap(_ sender: UITapGestureRecognizer) {
+        
+        let myTextView = sender.view as! UITextView
+        let layoutManager = myTextView.layoutManager
+        
+        // location of tap in myTextView coordinates and taking the inset into account
+        var location = sender.location(in: myTextView)
+        location.x -= myTextView.textContainerInset.left;
+        location.y -= myTextView.textContainerInset.top;
+        
+        // character index at tap location
+        let characterIndex = layoutManager.characterIndex(for: location, in: myTextView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        
+        // if index is valid then do something.
+        if characterIndex < myTextView.textStorage.length {
+            
+            // print the character index
+//            print("character index: \(characterIndex)")
+            
+            // print the character at the index
+            let myRange = NSRange(location: characterIndex, length: 1)
+            let substring = (myTextView.attributedText.string as NSString).substring(with: myRange)
+//            print("character at index: \(substring)")
+            
+            // check if the tap location has a certain attribute
+            let attributeValue = myTextView.attributedText.attribute("Tag", at: characterIndex, effectiveRange: nil) as? String
+            if let value = attributeValue {
+                print("You tapped on Tag and the value is: \(value)")
+            }
+            
+            
+        }
+    }
     
 }
 
