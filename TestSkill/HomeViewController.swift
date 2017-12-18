@@ -35,6 +35,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
+        collectionView?.delegate = self
         
 //        let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
 //        layout?.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width, height: 500)
@@ -232,6 +233,32 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         
     }
     
+    override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        print("End of scrolling")
+        guard let origin = collectionView?.contentOffset else {return}
+        guard let size = collectionView?.bounds.size else {return}
+        
+        let visibleRect = CGRect(origin: origin, size: size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = collectionView?.indexPathForItem(at: visiblePoint)
+        print("indexPath : " , indexPath?.item)
+        
+    }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("End of scrollViewDidEndDecelerating")
+        guard let origin = collectionView?.contentOffset else {return}
+        guard let size = collectionView?.bounds.size else {return}
+        
+        let visibleRect = CGRect(origin: origin, size: size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = collectionView?.indexPathForItem(at: visiblePoint)
+        print("indexPath : " , indexPath?.item)
+        
+        print(" visibleRect : " , visibleRect)
+        print("visiblePoint  : " , visiblePoint)
+        print("visible cell : " , collectionView?.visibleCells)
+    }
   
 }
 

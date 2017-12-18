@@ -134,13 +134,13 @@ class HomeViewControllerCell: UICollectionViewCell {
         var resultString = NSMutableAttributedString(string: "")
         
         let newLineSplitStr = str.split(separator: "\n", maxSplits: 500, omittingEmptySubsequences: false)
-        print(newLineSplitStr)
+//        print(newLineSplitStr)
         var lineCount = 0
         for line in newLineSplitStr {
             lineCount = lineCount + 1
             
 //            guard let line = line as? String else {return }
-            print(line)
+//            print(line)
             let splitStr = line.split(separator: " ", maxSplits: 500, omittingEmptySubsequences: false)
             var itemCount = 0
             for aa in splitStr {
@@ -171,7 +171,7 @@ class HomeViewControllerCell: UICollectionViewCell {
 //        bottomlabel.text = str
         
         bottomlabel.sizeToFit()
-        print("bootlab",bottomlabel.frame)
+//        print("bootlab",bottomlabel.frame)
         
     }
     
@@ -302,12 +302,12 @@ class HomeViewControllerCell: UICollectionViewCell {
 //    }
     
     func calculatTextHeigh(post : Post) -> CGFloat {
-        print("originSize",bottomlabel.frame)
+//        print("originSize",bottomlabel.frame)
         let targetSize = CGSize(width: UIScreen.main.bounds.width, height: 1000)
         self.post = post
         let estimatedSize = bottomlabel.systemLayoutSizeFitting(targetSize)
-        print("after",bottomlabel.frame)
-        print("estimatedSize",estimatedSize.height ,bottomlabel.frame)
+//        print("after",bottomlabel.frame)
+//        print("estimatedSize",estimatedSize.height ,bottomlabel.frame)
         return bottomlabel.frame.height
 //        return 200
     }
