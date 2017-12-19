@@ -26,10 +26,11 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-        
+        view.backgroundColor = UIColor.black
         navigationItem.title = "Comments"
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = UIColor.red
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
@@ -216,12 +217,7 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
         commentTextField.resignFirstResponder()
     }
     
-    //    override var inputAccessoryView: UIView? {
-    //        get {
-    //            return containerView
-    //        }
-    //    }
-    
+
 }
 
 

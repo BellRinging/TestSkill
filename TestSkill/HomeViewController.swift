@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import UserNotifications
 
 class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout , HomePostCellDelegate {
   
@@ -28,8 +29,11 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//self.fetchAllUser()
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: SearchViewController.updateFeedNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: ProfileSetupController.updateProfile, object: nil)
+        
+        
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(HomeViewControllerCell.self, forCellWithReuseIdentifier: cellId)
         let refreshControl = UIRefreshControl()
@@ -56,12 +60,36 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     func didTapOption(for cell: HomeViewControllerCell){
         let alert = UIAlertController(title: nil, message: "Select action", preferredStyle: UIAlertControllerStyle.actionSheet)
+        let editAction = UIAlertAction(title: "Edit", style: UIAlertActionStyle.default){
+            (action) -> Void in
+            guard let indexPath = self.collectionView?.indexPath(for: cell) else { return }
+            
+     
+            
+            let shareView = SharePhotoController()
+            shareView.editFlag = 1
+            shareView.post = cell.post
+            let nav = UINavigationController(rootViewController: shareView)
+            self.present(nav, animated: true, completion: nil)
+        }
+        alert.addAction(editAction)
         let alertAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive)
         {
             (action) -> Void in
-//            print("item deleted")
-            guard let indexPath = self.collectionView?.indexPath(for: cell) else { return }
-            self.deleteUserPost(index: indexPath.item)
+            
+            let alert2 = UIAlertController(title: nil, message: "Confirm to delete?", preferredStyle: UIAlertControllerStyle.alert)
+            let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.destructive){
+                action -> Void in
+                guard let indexPath = self.collectionView?.indexPath(for: cell) else { return }
+                self.deleteUserPost(index: indexPath.item)
+            }
+            let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.default){
+                (action) -> Void in
+                print("Cancel")
+            }
+            alert2.addAction(yesAction)
+            alert2.addAction(noAction)
+            self.present(alert2, animated: true, completion: nil)
         }
         alert.addAction(alertAction)
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
@@ -259,6 +287,39 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         print("visiblePoint  : " , visiblePoint)
         print("visible cell : " , collectionView?.visibleCells)
     }
+    
+//    func fetchAllUser(){
+//
+////        let users = [User]
+//        let ref = Database.database().reference().child("users")
+//        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard let dict = snapshot.value as? [String:Any] else {return }
+//            dict.forEach({ (key,value) in
+//                    guard let token = Utility.fcmToken else {return}
+//                    guard let userProfileDict = value as? [String: Any] else {return}
+//                    let user = User(dict: userProfileDict as [String : AnyObject])
+//                let values = [ "last_name": user.lastName, "first_name": user.firstName ,"email" : user.email , "img_url" : user.imageUrl , "name" :  user.name ,"id" : user.id , "fcmToken" : token]
+//                    print(values)
+//                    self.registerUserIntoDatabaseWithUID(user.id, values: values)
+//            })
+//        })
+//    }
+//
+//    func registerUserIntoDatabaseWithUID(_ uid : String, values: [String: String]) {
+//        let ref = Database.database().reference()
+//        let usersReference = ref.child("users").child(uid)
+//        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+//
+//            if err != nil {
+//                print(err!)
+////                Utility.hideProgress()
+//                return
+//            }else{
+//                print("updated")
+//            }
+//        })
+//    }
+//
   
 }
 

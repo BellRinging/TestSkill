@@ -54,6 +54,8 @@ class Utility {
     
     static var firebaseUser : Firebase.User?
     
+    static var fcmToken : String?
+    
     static var user : User?
     
     static func validField(_ field:UITextField, _ message:String) -> String?{

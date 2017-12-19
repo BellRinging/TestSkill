@@ -13,7 +13,8 @@ import MBProgressHUD
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUserNotificationCenterDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUserNotificationCenterDelegate , MessagingDelegate{
+ 
 
     var window: UIWindow?
 
@@ -44,23 +45,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
     
     func attemptRegisterForNotification(application : UIApplication){
         print("Attemp to register APNS")
-//        Messaging.messaging().delegate = self
+        Messaging.messaging().delegate = self
         if #available(iOS 10.0, *) {
-            print("1")
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
             
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { (granted, err) in
-                if let err = err {
-                    print("Fail to request auth",err)
-                    return
-                }
-                if granted {
-                    print("Auth granted")
-                } else {
-                    print("Auth denied")
-                }
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {granted, err in
+                    if let err = err {
+                        print("err:",err.localizedDescription)
+                    }else {
+                        print("granted")
+                        let fcmToken = Messaging.messaging().fcmToken
+                        Utility.fcmToken = fcmToken
+                        print("FCM token: \(fcmToken ?? "")")
+                    }
             })
         } else {
             let settings: UIUserNotificationSettings =
@@ -69,12 +70,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
         }
         
         application.registerForRemoteNotifications()
+     
         
     }
 
-//    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-//        print("Registered with token :",fcmToken)
-//    }
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("Registered with token :",fcmToken)
+        Utility.fcmToken = fcmToken
+    }
     
     func configGoogleAPI(){
         var configureError: NSError?
@@ -136,8 +139,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
         return SDKApplicationDelegate.shared.application(app, open: url, options: options)
     }
     
-    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let followerId = userInfo["followerId"] as? String {
+            print(followerId)
+            
+            // I want to push the UserProfileController for followerId somehow
+            
+           
+            Database.fetchUserWithUID(uid: followerId, completion: { (user) in
+                let userProfileController = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+                userProfileController.user = user
+                if let mainTabBarController = self.window?.rootViewController as? MainTabBarController {
+                    
+                    mainTabBarController.selectedIndex = 0
+                    
+                    mainTabBarController.presentedViewController?.dismiss(animated: true, completion: nil)
+                    
+                    if let homeNavigationController = mainTabBarController.viewControllers?.first as? UINavigationController {
+                        
+                        homeNavigationController.pushViewController(userProfileController, animated: true)
+                        
+                    }
+                    
+                }
+            })
+        }
+    }
 
+    
+ 
     
 }
 

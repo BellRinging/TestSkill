@@ -11,6 +11,15 @@ import Firebase
 
 class SharePhotoController: UIViewController {
     
+    
+    var editFlag :Int = 0
+    var post :Post?{
+        didSet{
+            textView.text = post?.caption
+            imageView.loadImage(post!.imageUrl)
+        }
+    }
+    
     var selectedImage: UIImage? {
         didSet {
             self.imageView.image = selectedImage
@@ -20,14 +29,26 @@ class SharePhotoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(handleShare))
-        
         setupImageAndTextViews()
+    
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationButtons()
     }
     
-    let imageView: UIImageView = {
-        let iv = UIImageView()
+    fileprivate func setupNavigationButtons() {
+        if (editFlag == 0){
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(handleShare))
+        }else{
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(handleEdit))
+        }
+    
+    }
+    
+    
+    let imageView: CustomImageView = {
+        let iv = CustomImageView()
         iv.backgroundColor = .red
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -84,6 +105,36 @@ class SharePhotoController: UIViewController {
             self.saveToDatabaseWithImageUrl(imageUrl: imageUrl)
         }
     }
+    
+    func handleEdit() {
+        
+        print("Edit")
+        guard let caption = textView.text, caption.characters.count > 0 else { return }
+//        print("Image")
+//        guard let image = selectedImage else { return }
+        print("Post")
+        guard let post = post else { return }
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+         let ref = Database.database().reference().child("posts").child(post.id!)
+        print(post.id)
+          let values = ["imageUrl": post.imageUrl, "caption": caption, "imageWidth": imageView.image?.size.width, "imageHeight": imageView.image?.size.height, "creationDate": Date().timeIntervalSince1970] as [String : Any]
+        
+        ref.updateChildValues(values) { (err, ref) in
+            if let err = err {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                print("Failed to save post to DB", err)
+                return
+            }
+            
+            print("Successfully saved post to DB")
+            self.dismiss(animated: true, completion: nil)
+            
+            NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+        }
+    }
+    
+   
     
     fileprivate func saveToDatabaseWithImageUrl(imageUrl: String) {
         guard let postImage = selectedImage else { return }
