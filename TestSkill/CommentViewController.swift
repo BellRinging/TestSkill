@@ -25,12 +25,14 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.white
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-        view.backgroundColor = UIColor.black
+//        view.backgroundColor = UIColor.black
         navigationItem.title = "Comments"
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = UIColor.red
+//        collectionView.backgroundColor = UIColor.red
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
@@ -128,6 +130,8 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
     func handleSubmit() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let postId = self.post?.id ?? ""
+        print("submit",postId)
+        print("uid",uid)
         let values = ["text": commentTextField.text ?? "", "creationDate": Date().timeIntervalSince1970, "uid": uid] as [String : Any]
         Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { (err, ref) in
             
@@ -205,6 +209,9 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
         NotificationCenter.default.removeObserver(self)
+        con?.isActive = false
+        con?.constant = 0
+        con?.isActive = true
     }
     
     
@@ -217,6 +224,9 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
         commentTextField.resignFirstResponder()
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        commentTextField.resignFirstResponder()
+    }
 
 }
 

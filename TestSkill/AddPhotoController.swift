@@ -1,11 +1,3 @@
-//
-//  PhotoSelectorController.swift
-//  InstagramFirebase
-//
-//  Created by Brian Voong on 3/30/17.
-//  Copyright © 2017 Lets Build That App. All rights reserved.
-//
-
 import UIKit
 import Photos
 
@@ -68,10 +60,6 @@ class AddPhotoController: UICollectionViewController, UICollectionViewDelegateFl
             })
         }
     }
-    
-   
-//    var header: SinglePhotoCell?
-    
   
     
     override var prefersStatusBarHidden: Bool {
@@ -85,6 +73,14 @@ class AddPhotoController: UICollectionViewController, UICollectionViewDelegateFl
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
     }
     
-  
+    func handleNext() {
+        let sharePhotoController = SharePhotoController()
+        sharePhotoController.selectedImage = selectedImage
+        navigationController?.pushViewController(sharePhotoController, animated: true)
+    }
+    
+    func handleCancel() {
+        dismiss(animated: true, completion: nil)
+    }
 }
 

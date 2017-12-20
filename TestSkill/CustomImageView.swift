@@ -11,7 +11,6 @@ class CustomImageView: UIImageView {
         lastUrl = urlString
         self.image = nil
         if let cacheImage = ImageCache[urlString] {
-//            print("get from cache path \(urlString)")
              DispatchQueue.main.async {
                 self.image = cacheImage
             }
@@ -19,14 +18,12 @@ class CustomImageView: UIImageView {
         }
         
         guard let url = URL(string: urlString) else {return}
-//        print("download from internet path \(urlString)")
         URLSession.shared.dataTask(with: url) { (data, respond, error) in
             if let err = error {
                 print(err.localizedDescription)
                 return
             }
             if self.lastUrl != url.absoluteString {
-//                print("not map return")
                 return
             }
             

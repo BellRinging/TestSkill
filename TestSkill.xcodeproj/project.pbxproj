@@ -45,6 +45,10 @@
 		EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */; };
 		EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */; };
 		EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */; };
+		EB94AA061FEA1D1700C41524 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB94AA051FEA1D1700C41524 /* CameraController.swift */; };
+		EB94AA0A1FEA1D5A00C41524 /* CustomAnimationDismisser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB94AA081FEA1D5600C41524 /* CustomAnimationDismisser.swift */; };
+		EB94AA0B1FEA1D5A00C41524 /* CustomAnimationPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB94AA091FEA1D5A00C41524 /* CustomAnimationPresentor.swift */; };
+		EB94AA0D1FEA34B100C41524 /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB94AA0C1FEA34B100C41524 /* PreviewPhotoContainerView.swift */; };
 		EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA420231F667A0F0010BFC7 /* Utility.swift */; };
 		EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */; };
 		EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */; };
@@ -56,7 +60,6 @@
 		EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */; };
 		EBDDA62E1F6038B900663485 /* SiginProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */; };
 		EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */; };
-		EBE3558F1FB05FD900F64AD4 /* AddPhotoAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE3558C1FB05FD900F64AD4 /* AddPhotoAction.swift */; };
 		EBE355901FB05FD900F64AD4 /* AddPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE3558D1FB05FD900F64AD4 /* AddPhotoController.swift */; };
 		EBE355911FB05FD900F64AD4 /* AddPhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE3558E1FB05FD900F64AD4 /* AddPhotoExtension.swift */; };
 		EBE355931FB0603400F64AD4 /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE355921FB0603300F64AD4 /* SharePhotoController.swift */; };
@@ -108,6 +111,10 @@
 		EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
 		EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPhotoView.swift; sourceTree = "<group>"; };
 		EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewFixed.swift; sourceTree = "<group>"; };
+		EB94AA051FEA1D1700C41524 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		EB94AA081FEA1D5600C41524 /* CustomAnimationDismisser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimationDismisser.swift; sourceTree = "<group>"; };
+		EB94AA091FEA1D5A00C41524 /* CustomAnimationPresentor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimationPresentor.swift; sourceTree = "<group>"; };
+		EB94AA0C1FEA34B100C41524 /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
 		EBA420231F667A0F0010BFC7 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterAction.swift; sourceTree = "<group>"; };
 		EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfitSetupController.swift; sourceTree = "<group>"; };
@@ -120,7 +127,6 @@
 		EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginProviderExtension.swift; sourceTree = "<group>"; };
 		EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgetPasswordController.swift; sourceTree = "<group>"; };
-		EBE3558C1FB05FD900F64AD4 /* AddPhotoAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoAction.swift; sourceTree = "<group>"; };
 		EBE3558D1FB05FD900F64AD4 /* AddPhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoController.swift; sourceTree = "<group>"; };
 		EBE3558E1FB05FD900F64AD4 /* AddPhotoExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoExtension.swift; sourceTree = "<group>"; };
 		EBE355921FB0603300F64AD4 /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
@@ -206,6 +212,7 @@
 		EB579E951F1CD3FA002E31A7 /* TestSkill */ = {
 			isa = PBXGroup;
 			children = (
+				EB94AA071FEA1D1E00C41524 /* CaremaController */,
 				EB1CC95E1FA2367E004800D4 /* Common */,
 				EB48ADDB1F69089300D109AA /* TestSkill.entitlements */,
 				EBDDA6271F5EBF3A00663485 /* FloatLabel */,
@@ -337,6 +344,17 @@
 			name = Register;
 			sourceTree = "<group>";
 		};
+		EB94AA071FEA1D1E00C41524 /* CaremaController */ = {
+			isa = PBXGroup;
+			children = (
+				EB94AA051FEA1D1700C41524 /* CameraController.swift */,
+				EB94AA081FEA1D5600C41524 /* CustomAnimationDismisser.swift */,
+				EB94AA091FEA1D5A00C41524 /* CustomAnimationPresentor.swift */,
+				EB94AA0C1FEA34B100C41524 /* PreviewPhotoContainerView.swift */,
+			);
+			name = CaremaController;
+			sourceTree = "<group>";
+		};
 		EBDDA6271F5EBF3A00663485 /* FloatLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,7 +377,6 @@
 			isa = PBXGroup;
 			children = (
 				EBE355921FB0603300F64AD4 /* SharePhotoController.swift */,
-				EBE3558C1FB05FD900F64AD4 /* AddPhotoAction.swift */,
 				EBE3558D1FB05FD900F64AD4 /* AddPhotoController.swift */,
 				EBE3558E1FB05FD900F64AD4 /* AddPhotoExtension.swift */,
 			);
@@ -563,7 +580,6 @@
 				EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */,
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
-				EBE3558F1FB05FD900F64AD4 /* AddPhotoAction.swift in Sources */,
 				EBE355911FB05FD900F64AD4 /* AddPhotoExtension.swift in Sources */,
 				EB579EC31F1CE721002E31A7 /* Post.swift in Sources */,
 				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,
@@ -576,22 +592,26 @@
 				EBC05D131FBAB28500A3AFBA /* ProfileFooterCell.swift in Sources */,
 				EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
+				EB94AA0B1FEA1D5A00C41524 /* CustomAnimationPresentor.swift in Sources */,
 				EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
 				EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
 				EB579EBD1F1CDFBB002E31A7 /* CustomImageView.swift in Sources */,
 				EB579EB91F1CDF7D002E31A7 /* CommentCell.swift in Sources */,
+				EB94AA0D1FEA34B100C41524 /* PreviewPhotoContainerView.swift in Sources */,
 				EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */,
 				EBE355931FB0603400F64AD4 /* SharePhotoController.swift in Sources */,
 				EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */,
 				EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */,
+				EB94AA0A1FEA1D5A00C41524 /* CustomAnimationDismisser.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */,
 				EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */,
 				EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */,
 				EBFBE1791F5085CF00937EC6 /* PopupDialog.swift in Sources */,
+				EB94AA061FEA1D1700C41524 /* CameraController.swift in Sources */,
 				EB579EAB1F1CD83D002E31A7 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

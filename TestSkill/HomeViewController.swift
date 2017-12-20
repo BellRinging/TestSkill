@@ -12,8 +12,6 @@ import UserNotifications
 
 class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout , HomePostCellDelegate {
   
-    //    let headerId = "headerId"
-    //    let footerId = "footerId"
     let cellId = "cellId"
     var posts = [Post]()
     var tempPost = [Post]()
@@ -29,20 +27,13 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//self.fetchAllUser()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: ProfileSetupController.updateProfile, object: nil)
-        
-        
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(HomeViewControllerCell.self, forCellWithReuseIdentifier: cellId)
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
         collectionView?.delegate = self
-        
-//        let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
-//        layout?.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width, height: 500)
         setupBarButtom()
         fetchPost()
     }
@@ -63,9 +54,6 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         let editAction = UIAlertAction(title: "Edit", style: UIAlertActionStyle.default){
             (action) -> Void in
             guard let indexPath = self.collectionView?.indexPath(for: cell) else { return }
-            
-     
-            
             let shareView = SharePhotoController()
             shareView.editFlag = 1
             shareView.post = cell.post
@@ -140,6 +128,9 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     func handleCarema(){
         print("Carema")
+        let vc = CameraController()
+        self.present(vc, animated: true, completion: nil)
+        
     }
     
 
@@ -165,17 +156,10 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeViewControllerCell
-        cell.contentView.translatesAutoresizingMaskIntoConstraints = false
-//        homeCell = cell
         cell.post = posts[indexPath.row]
         cell.delegate = self
         return cell
     }
-//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let vc = DisplayPhotoView()
-//        vc.imageUrl = posts[indexPath.row].imageUrl
-//        self.present(vc, animated: true, completion: nil)
-//    }
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -185,19 +169,20 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     
     func fetchUserPost(_ group:DispatchGroup , uid: String){
-//        print("fretch user post :\(uid)")
+        print("fretch user post :\(uid)")
         group.enter()
         Database.fetchUserWithUID(uid: uid) { (user) in
             let ref = Database.database().reference().child("posts").child(uid)
             ref.observeSingleEvent(of: .value, with: { (snapsnot) in
                 guard let dictionary = snapsnot.value as? [String: Any] else { return }
-//                print("No of post for user:" , dictionary.count ," For user", user.name)
+                print("No of post for user:" , dictionary.count ," For user", user.name)
                 dictionary.forEach({ (key,value) in
                     let dict = value as! [String:Any]
                     var post = Post(user: user, dict: dict)
                     post.id = key
                     guard let currentId = Auth.auth().currentUser?.uid else {return }
                     self.tempPost.append(post)
+                    print(post)
                 })
 //                print("Group leave for user",user.name)
                 group.leave()
@@ -218,10 +203,9 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     }
     
     func didTapComment(post: Post) {
-        //        print(post.caption)
         let commentsController = CommentViewController()
-//        let commentsController = CommentView()
         commentsController.post = post
+//        let commentsController = UIViewController()
         navigationController?.pushViewController(commentsController, animated: true)
     }
     
@@ -287,40 +271,6 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         print("visiblePoint  : " , visiblePoint)
         print("visible cell : " , collectionView?.visibleCells)
     }
-    
-//    func fetchAllUser(){
-//
-////        let users = [User]
-//        let ref = Database.database().reference().child("users")
-//        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-//            guard let dict = snapshot.value as? [String:Any] else {return }
-//            dict.forEach({ (key,value) in
-//                    guard let token = Utility.fcmToken else {return}
-//                    guard let userProfileDict = value as? [String: Any] else {return}
-//                    let user = User(dict: userProfileDict as [String : AnyObject])
-//                let values = [ "last_name": user.lastName, "first_name": user.firstName ,"email" : user.email , "img_url" : user.imageUrl , "name" :  user.name ,"id" : user.id , "fcmToken" : token]
-//                    print(values)
-//                    self.registerUserIntoDatabaseWithUID(user.id, values: values)
-//            })
-//        })
-//    }
-//
-//    func registerUserIntoDatabaseWithUID(_ uid : String, values: [String: String]) {
-//        let ref = Database.database().reference()
-//        let usersReference = ref.child("users").child(uid)
-//        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-//
-//            if err != nil {
-//                print(err!)
-////                Utility.hideProgress()
-//                return
-//            }else{
-//                print("updated")
-//            }
-//        })
-//    }
-//
-  
 }
 
 

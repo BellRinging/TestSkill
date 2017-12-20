@@ -38,12 +38,13 @@ class SharePhotoController: UIViewController {
     }
     
     fileprivate func setupNavigationButtons() {
+        navigationController?.navigationBar.tintColor = .black
         if (editFlag == 0){
                 navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(handleShare))
         }else{
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(handleEdit))
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleEdit))
         }
-    
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
     }
     
     
@@ -108,26 +109,18 @@ class SharePhotoController: UIViewController {
     
     func handleEdit() {
         
-        print("Edit")
         guard let caption = textView.text, caption.characters.count > 0 else { return }
-//        print("Image")
-//        guard let image = selectedImage else { return }
-        print("Post")
         guard let post = post else { return }
+        let userId = post.user.id
         navigationItem.rightBarButtonItem?.isEnabled = false
-        
-         let ref = Database.database().reference().child("posts").child(post.id!)
-        print(post.id)
-          let values = ["imageUrl": post.imageUrl, "caption": caption, "imageWidth": imageView.image?.size.width, "imageHeight": imageView.image?.size.height, "creationDate": Date().timeIntervalSince1970] as [String : Any]
-        
+        let ref = Database.database().reference().child("posts").child(userId).child(post.id!)
+        let values = ["imageUrl": post.imageUrl, "caption": caption, "imageWidth": imageView.image?.size.width, "imageHeight": imageView.image?.size.height, "creationDate": Date().timeIntervalSince1970] as [String : Any]
         ref.updateChildValues(values) { (err, ref) in
             if let err = err {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
                 print("Failed to save post to DB", err)
                 return
             }
-            
-            print("Successfully saved post to DB")
             self.dismiss(animated: true, completion: nil)
             
             NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
@@ -164,5 +157,12 @@ class SharePhotoController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+   
+    
+    func handleCancel() {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
 
