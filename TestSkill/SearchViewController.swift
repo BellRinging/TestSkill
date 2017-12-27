@@ -68,17 +68,29 @@ class SearchViewController: UICollectionViewController   {
     
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let layout = UICollectionViewFlowLayout()
         
-        let vc = ProfileViewController(collectionViewLayout: layout)
-        vc.user = filteredUsers[indexPath.item]
-        searchBar.isHidden = true
-        
+        //point to chatlog
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        let user = users[indexPath.item]
+        chatLogController.user = user
         if let nav = navigationController {
-            nav.pushViewController(vc, animated: true)
-            nav.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(handleBack))
-            
+            searchBar.isHidden = true
+            nav.pushViewController(chatLogController, animated: true)
         }
+        //        navigationController?.pushViewController(chatLogController, animated: true)
+        
+        
+        //point to profile view
+//        let layout = UICollectionViewFlowLayout()
+//        let vc = ProfileViewController(collectionViewLayout: layout)
+//        vc.user = filteredUsers[indexPath.item]
+//        searchBar.isHidden = true
+//
+//        if let nav = navigationController {
+//            nav.pushViewController(vc, animated: true)
+//            nav.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(handleBack))
+//
+//        }
     }
     
     func handleBack(){
