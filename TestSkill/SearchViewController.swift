@@ -1,11 +1,3 @@
-//
-//  searchViewController.swift
-//  SnookerGambling
-//
-//  Created by Kwok Wai Yeung on 1/7/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
@@ -68,29 +60,17 @@ class SearchViewController: UICollectionViewController   {
     
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        //point to chatlog
-        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
-        let user = users[indexPath.item]
-        chatLogController.user = user
-        if let nav = navigationController {
-            searchBar.isHidden = true
-            nav.pushViewController(chatLogController, animated: true)
-        }
-        //        navigationController?.pushViewController(chatLogController, animated: true)
-        
-        
         //point to profile view
-//        let layout = UICollectionViewFlowLayout()
-//        let vc = ProfileViewController(collectionViewLayout: layout)
-//        vc.user = filteredUsers[indexPath.item]
-//        searchBar.isHidden = true
-//
-//        if let nav = navigationController {
-//            nav.pushViewController(vc, animated: true)
-//            nav.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(handleBack))
-//
-//        }
+        let layout = UICollectionViewFlowLayout()
+        let vc = ProfileViewController(collectionViewLayout: layout)
+        vc.user = filteredUsers[indexPath.item]
+        searchBar.isHidden = true
+
+        if let nav = navigationController {
+            nav.pushViewController(vc, animated: true)
+            nav.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(handleBack))
+
+        }
     }
     
     func handleBack(){

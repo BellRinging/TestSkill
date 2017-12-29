@@ -15,7 +15,6 @@ class CommentViewControllerCell: UICollectionViewCell {
             guard let nameText = comment?.user.name else {return}
             guard let url = comment?.user.imageUrl else {return}
             guard let commentText = comment?.comment else {return}
-            //            print(commentText)
             profileImage.loadImage(url)
             guard let timeAgo = comment?.creationDate else {return}
             setupDisplayText(name: nameText, comment: commentText ,timeAgo: timeAgo.timeAgoDisplay())

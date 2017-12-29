@@ -43,6 +43,12 @@
 		EB579EC51F1CE963002E31A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC41F1CE963002E31A7 /* User.swift */; };
 		EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC61F1D062B002E31A7 /* RegisterController.swift */; };
 		EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */; };
+		EB5C051C1FF485400071B85C /* ChatLogCollectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C051B1FF485400071B85C /* ChatLogCollectionExtension.swift */; };
+		EB5C051E1FF488C90071B85C /* ChatLogAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C051D1FF488C90071B85C /* ChatLogAction.swift */; };
+		EB5C05201FF48A650071B85C /* ChatLogImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C051F1FF48A650071B85C /* ChatLogImagePicker.swift */; };
+		EB5C05221FF48C4B0071B85C /* ChatLogTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C05211FF48C4B0071B85C /* ChatLogTextField.swift */; };
+		EB5C05241FF490E70071B85C /* HomeViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C05231FF490E70071B85C /* HomeViewAction.swift */; };
+		EB5C05481FF4D3F30071B85C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C05471FF4D3F30071B85C /* ViewController.swift */; };
 		EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */; };
 		EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */; };
 		EB94AA061FEA1D1700C41524 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB94AA051FEA1D1700C41524 /* CameraController.swift */; };
@@ -116,6 +122,12 @@
 		EB579EC41F1CE963002E31A7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EB579EC61F1D062B002E31A7 /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		EB579EC81F1D0672002E31A7 /* PaddingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
+		EB5C051B1FF485400071B85C /* ChatLogCollectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogCollectionExtension.swift; sourceTree = "<group>"; };
+		EB5C051D1FF488C90071B85C /* ChatLogAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogAction.swift; sourceTree = "<group>"; };
+		EB5C051F1FF48A650071B85C /* ChatLogImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogImagePicker.swift; sourceTree = "<group>"; };
+		EB5C05211FF48C4B0071B85C /* ChatLogTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogTextField.swift; sourceTree = "<group>"; };
+		EB5C05231FF490E70071B85C /* HomeViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewAction.swift; sourceTree = "<group>"; };
+		EB5C05471FF4D3F30071B85C /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EB6D3D601FA37F14005B5D9D /* DisplayPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPhotoView.swift; sourceTree = "<group>"; };
 		EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewFixed.swift; sourceTree = "<group>"; };
 		EB94AA051FEA1D1700C41524 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -169,13 +181,13 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		EB1CC95E1FA2367E004800D4 /* Common */ = {
+		EB1CC95E1FA2367E004800D4 /* CommentController */ = {
 			isa = PBXGroup;
 			children = (
 				EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */,
 				EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */,
 			);
-			name = Common;
+			name = CommentController;
 			sourceTree = "<group>";
 		};
 		EB3D0A0A1F611120005AC4EB /* ProfileSetup */ = {
@@ -228,7 +240,7 @@
 			children = (
 				EBBA9ECB1FF37BF3002B4D14 /* MessageController */,
 				EB94AA071FEA1D1E00C41524 /* CaremaController */,
-				EB1CC95E1FA2367E004800D4 /* Common */,
+				EB1CC95E1FA2367E004800D4 /* CommentController */,
 				EB48ADDB1F69089300D109AA /* TestSkill.entitlements */,
 				EBDDA6271F5EBF3A00663485 /* FloatLabel */,
 				EB611FC81F3756EF00FEB44D /* BookmarkController */,
@@ -286,6 +298,7 @@
 			children = (
 				EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */,
 				EB1CC9631FA23701004800D4 /* HomeViewControllerCell.swift */,
+				EB5C05231FF490E70071B85C /* HomeViewAction.swift */,
 			);
 			name = HomeViewController;
 			sourceTree = "<group>";
@@ -374,12 +387,17 @@
 		EBBA9ECB1FF37BF3002B4D14 /* MessageController */ = {
 			isa = PBXGroup;
 			children = (
+				EB5C05471FF4D3F30071B85C /* ViewController.swift */,
 				EBBA9ECE1FF37C1F002B4D14 /* UserCell.swift */,
 				EBBA9ECC1FF37C16002B4D14 /* ChatMessageCell.swift */,
 				EBBA9ECD1FF37C1B002B4D14 /* ChatInputContainerView.swift */,
 				EBBA9ED21FF37C35002B4D14 /* MessagesController.swift */,
 				EBBA9ED41FF37C79002B4D14 /* NewMessageController.swift */,
 				EBBA9ED61FF37CCB002B4D14 /* ChatLogController.swift */,
+				EB5C051B1FF485400071B85C /* ChatLogCollectionExtension.swift */,
+				EB5C051D1FF488C90071B85C /* ChatLogAction.swift */,
+				EB5C051F1FF48A650071B85C /* ChatLogImagePicker.swift */,
+				EB5C05211FF48C4B0071B85C /* ChatLogTextField.swift */,
 			);
 			name = MessageController;
 			sourceTree = "<group>";
@@ -596,6 +614,7 @@
 				EBDDA62E1F6038B900663485 /* SiginProviderExtension.swift in Sources */,
 				EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */,
 				EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */,
+				EB5C051C1FF485400071B85C /* ChatLogCollectionExtension.swift in Sources */,
 				EBBA9ECA1FF37BA2002B4D14 /* Message.swift in Sources */,
 				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
 				EBBA9ED01FF37C1F002B4D14 /* ChatInputContainerView.swift in Sources */,
@@ -617,8 +636,10 @@
 				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,
 				EB579EB71F1CDF43002E31A7 /* ProfileHeaderCell.swift in Sources */,
 				EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */,
+				EB5C05201FF48A650071B85C /* ChatLogImagePicker.swift in Sources */,
 				EB4DFD8D1FA229AD00145275 /* SearchViewController.swift in Sources */,
 				EBBA9ED31FF37C35002B4D14 /* MessagesController.swift in Sources */,
+				EB5C051E1FF488C90071B85C /* ChatLogAction.swift in Sources */,
 				EB579EBB1F1CDFA0002E31A7 /* HomeCell.swift in Sources */,
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,
 				EB579EC51F1CE963002E31A7 /* User.swift in Sources */,
@@ -630,9 +651,11 @@
 				EBBA9ED11FF37C1F002B4D14 /* UserCell.swift in Sources */,
 				EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
+				EB5C05241FF490E70071B85C /* HomeViewAction.swift in Sources */,
 				EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
 				EB579EBD1F1CDFBB002E31A7 /* CustomImageView.swift in Sources */,
+				EB5C05481FF4D3F30071B85C /* ViewController.swift in Sources */,
 				EB579EB91F1CDF7D002E31A7 /* CommentCell.swift in Sources */,
 				EB94AA0D1FEA34B100C41524 /* PreviewPhotoContainerView.swift in Sources */,
 				EB579EC71F1D062B002E31A7 /* RegisterController.swift in Sources */,
@@ -641,6 +664,7 @@
 				EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */,
 				EB94AA0A1FEA1D5A00C41524 /* CustomAnimationDismisser.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
+				EB5C05221FF48C4B0071B85C /* ChatLogTextField.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EBBA9ECF1FF37C1F002B4D14 /* ChatMessageCell.swift in Sources */,
 				EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */,

@@ -1,0 +1,4 @@
+extension ChatLogController : UITextFieldDelegate {
+    
+    
+}

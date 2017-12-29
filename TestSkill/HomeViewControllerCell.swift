@@ -1,16 +1,9 @@
-//
-//  HomeViewControllerCell.swift
-//  SnookerGambling
-//
-//  Created by Kwok Wai Yeung on 6/7/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
 import UIKit
 
 
 protocol HomePostCellDelegate {
     func didTapComment(post: Post)
+    func didTapChat(user: User)
     func didLike(for cell: HomeViewControllerCell)
     func didTagImage(for cell: HomeViewControllerCell)
     func didShare(for cell: HomeViewControllerCell)
@@ -42,7 +35,6 @@ class HomeViewControllerCell: UICollectionViewCell {
             profileImage.loadImage(picUrl)
             setupAttributedCaption()
             guard let like =  post?.hasliked else { return }
-//            print("Caption : \(post?.caption) has like \(like)")
             if like == true {
                 likeButton.setImage(#imageLiteral(resourceName: "like_selected").withRenderingMode(.alwaysOriginal), for: .normal)
             }else {
@@ -65,14 +57,14 @@ class HomeViewControllerCell: UICollectionViewCell {
         
         addSubview(optionButton)
         optionButton.Anchor(top: topAnchor, left: nil, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 30, height: 30)
-//
+
         addSubview(stackView)
         stackView.Anchor(top: nil, left: profileImage.rightAnchor, right: optionButton.leftAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         stackView.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
-//
+
         addSubview(mainImage)
         mainImage.Anchor(top: profileImage.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 0, rightPadding: 0, bottomPadding: 0, width: self.frame.width, height: self.frame.width)
-//
+
         addSubview(likeButton)
         likeButton.Anchor(top: mainImage.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 30, height: 30)
 
@@ -84,13 +76,17 @@ class HomeViewControllerCell: UICollectionViewCell {
 
         addSubview(shareButton)
         shareButton.Anchor(top: mainImage.bottomAnchor, left: commentButton.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 30, height: 30)
-//
+        
+        addSubview(chatButton)
+        chatButton.Anchor(top: mainImage.bottomAnchor, left: shareButton.rightAnchor, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 30, height: 30)
+        
+
         addSubview(likelabel)
         likelabel.Anchor(top: likeButton.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
-//
-//        //
+
+        
         addSubview(bottomlabel)
-////
+
         bottomlabel.Anchor(top: likelabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
     }
     
@@ -104,8 +100,8 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     let likelabel : UILabel = {
         let lb = UILabel()
-        lb.layer.borderColor = UIColor.blue.cgColor
-        lb.layer.borderWidth = 1
+//        lb.layer.borderColor = UIColor.blue.cgColor
+//        lb.layer.borderWidth = 1
         lb.font = UIFont.boldSystemFont(ofSize: 14)
         return lb
     }()
@@ -117,8 +113,8 @@ class HomeViewControllerCell: UICollectionViewCell {
         lb.isSelectable = false
         lb.isScrollEnabled = false
 //        lb.numberOfLines = 0
-        lb.layer.borderWidth = 1
-        lb.layer.borderColor = UIColor.red.cgColor
+//        lb.layer.borderWidth = 1
+//        lb.layer.borderColor = UIColor.red.cgColor
         lb.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(myMethodToHandleTap(_:))))
         return lb
     }()
@@ -130,8 +126,8 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     fileprivate func setupAttributedCaption() {
         guard let post = self.post  else { return }
-        let str = post.user.name + " " + post.caption
-        var resultString = NSMutableAttributedString(string: "")
+        let str = post.caption
+        var resultString = NSMutableAttributedString(string: "\(post.user.name) ", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
         
         let newLineSplitStr = str.split(separator: "\n", maxSplits: 500, omittingEmptySubsequences: false)
 //        print(newLineSplitStr)
@@ -139,8 +135,6 @@ class HomeViewControllerCell: UICollectionViewCell {
         for line in newLineSplitStr {
             lineCount = lineCount + 1
             
-//            guard let line = line as? String else {return }
-//            print(line)
             let splitStr = line.split(separator: " ", maxSplits: 500, omittingEmptySubsequences: false)
             var itemCount = 0
             for aa in splitStr {
@@ -168,10 +162,7 @@ class HomeViewControllerCell: UICollectionViewCell {
      
        
         bottomlabel.attributedText = resultString
-//        bottomlabel.text = str
-        
         bottomlabel.sizeToFit()
-//        print("bootlab",bottomlabel.frame)
         
     }
     
@@ -181,6 +172,14 @@ class HomeViewControllerCell: UICollectionViewCell {
         let bn = UIButton(type: .system)
         bn.setImage(#imageLiteral(resourceName: "comment").withRenderingMode(.alwaysOriginal), for: .normal)
         bn.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
+        bn.tintColor = UIColor.blue
+        return bn
+    }()
+    
+    lazy var chatButton : UIButton = {
+        let bn = UIButton(type: .system)
+        bn.setImage(#imageLiteral(resourceName: "comment").withRenderingMode(.alwaysOriginal), for: .normal)
+        bn.addTarget(self, action: #selector(handleChat), for: .touchUpInside)
         bn.tintColor = UIColor.blue
         return bn
     }()
@@ -224,13 +223,10 @@ class HomeViewControllerCell: UICollectionViewCell {
     }()
     
     func handleOption(){
-        print("handle Option")
         delegate?.didTapOption(for: self)
-        
     }
     
     func handleLike(){
-        //        print("Like")
         delegate?.didLike(for: self)
     }
     
@@ -238,14 +234,19 @@ class HomeViewControllerCell: UICollectionViewCell {
         delegate?.didTapComment(post: post!)
     }
     
-    
     func handleTagImage(){
-        print("Tag Image")
         delegate?.didTagImage(for: self)
     }
     
     func handleBookmark(){
         print("bookmark")
+    }
+    
+    func handleChat(){
+        print("Chat")
+        if let post = post {
+            delegate?.didTapChat(user: post.user)
+        }
     }
     
     func handleShare(){
@@ -286,30 +287,11 @@ class HomeViewControllerCell: UICollectionViewCell {
         return imageView
     }()
     
-//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-////        print(layoutAttributes)
-////        setNeedsLayout()
-////        layoutIfNeeded()
-//        if let post = post{
-//            var height = 8 + 40 + 8 + UIScreen.main.bounds.width + 8 + 40 + 8
-//            height = height + calculatTextHeigh(post: post)
-//            var newFrame = layoutAttributes.frame
-//            newFrame.size.height = height
-//            layoutAttributes.frame = newFrame
-//        }
-//
-//        return layoutAttributes
-//    }
-    
     func calculatTextHeigh(post : Post) -> CGFloat {
-//        print("originSize",bottomlabel.frame)
         let targetSize = CGSize(width: UIScreen.main.bounds.width, height: 1000)
         self.post = post
         let estimatedSize = bottomlabel.systemLayoutSizeFitting(targetSize)
-//        print("after",bottomlabel.frame)
-//        print("estimatedSize",estimatedSize.height ,bottomlabel.frame)
         return bottomlabel.frame.height
-//        return 200
     }
     
   
@@ -326,13 +308,8 @@ class HomeViewControllerCell: UICollectionViewCell {
         // character index at tap location
         let characterIndex = layoutManager.characterIndex(for: location, in: myTextView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
         
-        // if index is valid then do something.
         if characterIndex < myTextView.textStorage.length {
             
-            // print the character index
-//            print("character index: \(characterIndex)")
-            
-            // print the character at the index
             let myRange = NSRange(location: characterIndex, length: 1)
             let substring = (myTextView.attributedText.string as NSString).substring(with: myRange)
 //            print("character at index: \(substring)")
@@ -342,8 +319,6 @@ class HomeViewControllerCell: UICollectionViewCell {
             if let value = attributeValue {
                 print("You tapped on Tag and the value is: \(value)")
             }
-            
-            
         }
     }
     
