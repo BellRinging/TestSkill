@@ -69,6 +69,9 @@
 		EBBA9ED71FF37CCB002B4D14 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBA9ED61FF37CCB002B4D14 /* ChatLogController.swift */; };
 		EBC05D131FBAB28500A3AFBA /* ProfileFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC05D121FBAB28500A3AFBA /* ProfileFooterCell.swift */; };
 		EBC9866A1FD7936A00623F2B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBC986691FD7936A00623F2B /* GoogleService-Info.plist */; };
+		EBCFACC21FF631BA00F771E9 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCFACC11FF631BA00F771E9 /* TagViewController.swift */; };
+		EBCFACC41FF631F000F771E9 /* TagViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCFACC31FF631F000F771E9 /* TagViewHeader.swift */; };
+		EBCFACC61FF6425C00F771E9 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCFACC51FF6425C00F771E9 /* Tag.swift */; };
 		EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */; };
 		EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */; };
 		EBDDA62E1F6038B900663485 /* SiginProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */; };
@@ -149,6 +152,9 @@
 		EBBA9ED61FF37CCB002B4D14 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		EBC05D121FBAB28500A3AFBA /* ProfileFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFooterCell.swift; sourceTree = "<group>"; };
 		EBC986691FD7936A00623F2B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EBCFACC11FF631BA00F771E9 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
+		EBCFACC31FF631F000F771E9 /* TagViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewHeader.swift; sourceTree = "<group>"; };
+		EBCFACC51FF6425C00F771E9 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		EBDDA6231F5EBF2000663485 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		EBDDA6241F5EBF2000663485 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiginProviderExtension.swift; sourceTree = "<group>"; };
@@ -238,6 +244,7 @@
 		EB579E951F1CD3FA002E31A7 /* TestSkill */ = {
 			isa = PBXGroup;
 			children = (
+				EBCFACC01FF6319900F771E9 /* TagViewController */,
 				EBBA9ECB1FF37BF3002B4D14 /* MessageController */,
 				EB94AA071FEA1D1E00C41524 /* CaremaController */,
 				EB1CC95E1FA2367E004800D4 /* CommentController */,
@@ -323,6 +330,7 @@
 				EB215B551F3CA820001A9BC0 /* Page.swift */,
 				EB1CC9651FA23B9A004800D4 /* Comment.swift */,
 				EBBA9EC91FF37BA2002B4D14 /* Message.swift */,
+				EBCFACC51FF6425C00F771E9 /* Tag.swift */,
 			);
 			name = DataObject;
 			sourceTree = "<group>";
@@ -400,6 +408,15 @@
 				EB5C05211FF48C4B0071B85C /* ChatLogTextField.swift */,
 			);
 			name = MessageController;
+			sourceTree = "<group>";
+		};
+		EBCFACC01FF6319900F771E9 /* TagViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EBCFACC11FF631BA00F771E9 /* TagViewController.swift */,
+				EBCFACC31FF631F000F771E9 /* TagViewHeader.swift */,
+			);
+			name = TagViewController;
 			sourceTree = "<group>";
 		};
 		EBDDA6271F5EBF3A00663485 /* FloatLabel */ = {
@@ -616,6 +633,7 @@
 				EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */,
 				EB5C051C1FF485400071B85C /* ChatLogCollectionExtension.swift in Sources */,
 				EBBA9ECA1FF37BA2002B4D14 /* Message.swift in Sources */,
+				EBCFACC61FF6425C00F771E9 /* Tag.swift in Sources */,
 				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
 				EBBA9ED01FF37C1F002B4D14 /* ChatInputContainerView.swift in Sources */,
 				EB579EC11F1CE4ED002E31A7 /* Extension.swift in Sources */,
@@ -623,6 +641,7 @@
 				EBE355901FB05FD900F64AD4 /* AddPhotoController.swift in Sources */,
 				EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */,
 				EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */,
+				EBCFACC21FF631BA00F771E9 /* TagViewController.swift in Sources */,
 				EB579EBF1F1CE3DB002E31A7 /* SinglePhotoCell.swift in Sources */,
 				EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */,
 				EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */,
@@ -637,6 +656,7 @@
 				EB579EB71F1CDF43002E31A7 /* ProfileHeaderCell.swift in Sources */,
 				EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */,
 				EB5C05201FF48A650071B85C /* ChatLogImagePicker.swift in Sources */,
+				EBCFACC41FF631F000F771E9 /* TagViewHeader.swift in Sources */,
 				EB4DFD8D1FA229AD00145275 /* SearchViewController.swift in Sources */,
 				EBBA9ED31FF37C35002B4D14 /* MessagesController.swift in Sources */,
 				EB5C051E1FF488C90071B85C /* ChatLogAction.swift in Sources */,

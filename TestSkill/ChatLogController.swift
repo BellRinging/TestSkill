@@ -50,7 +50,9 @@ class ChatLogController: UICollectionViewController,UICollectionViewDelegateFlow
     func scrollToLastItem(){
         if self.messages.count > 0 {
             let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-            self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            if indexPath.item != -1 {
+                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            }
         }
     }
     
