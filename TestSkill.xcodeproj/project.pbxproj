@@ -13,7 +13,7 @@
 		EB05CF921FB2E1980039F6FB /* user.txt in Resources */ = {isa = PBXBuildFile; fileRef = EB05CF901FB2E1980039F6FB /* user.txt */; };
 		EB05CF931FB2E1980039F6FB /* item.txt in Resources */ = {isa = PBXBuildFile; fileRef = EB05CF911FB2E1980039F6FB /* item.txt */; };
 		EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB187C581F1E284D00F7A12D /* LoginController.swift */; };
-		EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */; };
+		EB1CC9601FA2368B004800D4 /* CommentViewControllerold.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC95F1FA2368B004800D4 /* CommentViewControllerold.swift */; };
 		EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */; };
 		EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC9631FA23701004800D4 /* HomeViewControllerCell.swift */; };
 		EB1CC9661FA23B9A004800D4 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CC9651FA23B9A004800D4 /* Comment.swift */; };
@@ -68,6 +68,8 @@
 		EBBA9ED51FF37C79002B4D14 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBA9ED41FF37C79002B4D14 /* NewMessageController.swift */; };
 		EBBA9ED71FF37CCB002B4D14 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBA9ED61FF37CCB002B4D14 /* ChatLogController.swift */; };
 		EBC05D131FBAB28500A3AFBA /* ProfileFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC05D121FBAB28500A3AFBA /* ProfileFooterCell.swift */; };
+		EBC110DC2004881A00766D27 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC110DB2004881A00766D27 /* CommentInputView.swift */; };
+		EBC110DE2004886C00766D27 /* CommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC110DD2004886C00766D27 /* CommentController.swift */; };
 		EBC9866A1FD7936A00623F2B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBC986691FD7936A00623F2B /* GoogleService-Info.plist */; };
 		EBCFACC21FF631BA00F771E9 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCFACC11FF631BA00F771E9 /* TagViewController.swift */; };
 		EBCFACC41FF631F000F771E9 /* TagViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCFACC31FF631F000F771E9 /* TagViewHeader.swift */; };
@@ -91,7 +93,7 @@
 		EB05CF901FB2E1980039F6FB /* user.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = user.txt; sourceTree = "<group>"; };
 		EB05CF911FB2E1980039F6FB /* item.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = item.txt; sourceTree = "<group>"; };
 		EB187C581F1E284D00F7A12D /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
+		EB1CC95F1FA2368B004800D4 /* CommentViewControllerold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewControllerold.swift; sourceTree = "<group>"; };
 		EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewControllerCell.swift; sourceTree = "<group>"; };
 		EB1CC9631FA23701004800D4 /* HomeViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerCell.swift; sourceTree = "<group>"; };
 		EB1CC9651FA23B9A004800D4 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -151,6 +153,8 @@
 		EBBA9ED41FF37C79002B4D14 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		EBBA9ED61FF37CCB002B4D14 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		EBC05D121FBAB28500A3AFBA /* ProfileFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFooterCell.swift; sourceTree = "<group>"; };
+		EBC110DB2004881A00766D27 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
+		EBC110DD2004886C00766D27 /* CommentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
 		EBC986691FD7936A00623F2B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EBCFACC11FF631BA00F771E9 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		EBCFACC31FF631F000F771E9 /* TagViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewHeader.swift; sourceTree = "<group>"; };
@@ -190,8 +194,10 @@
 		EB1CC95E1FA2367E004800D4 /* CommentController */ = {
 			isa = PBXGroup;
 			children = (
-				EB1CC95F1FA2368B004800D4 /* CommentViewController.swift */,
+				EB1CC95F1FA2368B004800D4 /* CommentViewControllerold.swift */,
 				EB1CC9611FA236AB004800D4 /* CommentViewControllerCell.swift */,
+				EBC110DB2004881A00766D27 /* CommentInputView.swift */,
+				EBC110DD2004886C00766D27 /* CommentController.swift */,
 			);
 			name = CommentController;
 			sourceTree = "<group>";
@@ -575,7 +581,8 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GTMOAuth2ViewTouch.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -590,6 +597,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
@@ -599,11 +607,17 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
@@ -613,6 +627,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,13 +685,14 @@
 				EBC05D131FBAB28500A3AFBA /* ProfileFooterCell.swift in Sources */,
 				EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
+				EBC110DC2004881A00766D27 /* CommentInputView.swift in Sources */,
 				EBBA9ED51FF37C79002B4D14 /* NewMessageController.swift in Sources */,
 				EB94AA0B1FEA1D5A00C41524 /* CustomAnimationPresentor.swift in Sources */,
 				EBBA9ED11FF37C1F002B4D14 /* UserCell.swift in Sources */,
 				EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
 				EB5C05241FF490E70071B85C /* HomeViewAction.swift in Sources */,
-				EB1CC9601FA2368B004800D4 /* CommentViewController.swift in Sources */,
+				EB1CC9601FA2368B004800D4 /* CommentViewControllerold.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
 				EB579EBD1F1CDFBB002E31A7 /* CustomImageView.swift in Sources */,
 				EB5C05481FF4D3F30071B85C /* ViewController.swift in Sources */,
@@ -685,6 +705,7 @@
 				EB94AA0A1FEA1D5A00C41524 /* CustomAnimationDismisser.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
 				EB5C05221FF48C4B0071B85C /* ChatLogTextField.swift in Sources */,
+				EBC110DE2004886C00766D27 /* CommentController.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EBBA9ECF1FF37C1F002B4D14 /* ChatMessageCell.swift in Sources */,
 				EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */,

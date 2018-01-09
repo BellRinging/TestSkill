@@ -2,6 +2,41 @@ import Firebase
 extension HomeViewController{
     
     
+    func didTapTag(tag: Tag) {
+        
+        let vc = TagViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        vc.tag =  tag
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func didLike(for cell: HomeViewControllerCell){
+        
+        guard let indexPath = collectionView?.indexPath(for: cell) else { return }
+        var post = self.posts[indexPath.item]
+        guard let postId = post.id else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let values = [uid: post.hasliked == true ? 0 : 1]
+        Database.database().reference().child("likes").child(postId).updateChildValues(values) { (err, _) in
+            
+            if let err = err {
+                print("Failed to like post:", err)
+                return
+            }
+            
+            post.hasliked = !post.hasliked
+            print("Successfully liked post.")
+            //            self.posts[indexPath.item] = post
+            guard let count = post.likeCount else {return }
+            if post.hasliked == true {
+                post.likeCount = count + 1
+            }else{
+                post.likeCount = count - 1
+            }
+            self.collectionView?.reloadItems(at: [indexPath])
+            
+        }
+    }
+    
     func didTapChat(user: User) {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
         chatLogController.user = user
@@ -71,7 +106,7 @@ extension HomeViewController{
     
     
     func didTapComment(post: Post) {
-        let commentsController = CommentViewController()
+        let commentsController = CommentController(collectionViewLayout: UICollectionViewFlowLayout())
         
 //        let av = ViewController()
         commentsController.post = post

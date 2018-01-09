@@ -10,6 +10,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     var user : User? {
         didSet{
+            
         }
     }
     
@@ -19,6 +20,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: ProfileSetupController.updateProfile, object: nil)
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(HomeViewControllerCell.self, forCellWithReuseIdentifier: cellId)
@@ -28,38 +30,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         collectionView?.delegate = self
         setupBarButtom()
         fetchPost()
-    }
-    
-
-  
-    
-   
-    func didLike(for cell: HomeViewControllerCell){
         
-        guard let indexPath = collectionView?.indexPath(for: cell) else { return }
-        var post = self.posts[indexPath.item]
-        guard let postId = post.id else { return }
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let values = [uid: post.hasliked == true ? 0 : 1]
-        Database.database().reference().child("likes").child(postId).updateChildValues(values) { (err, _) in
-            
-            if let err = err {
-                print("Failed to like post:", err)
-                return
-            }
-            
-            post.hasliked = !post.hasliked
-            print("Successfully liked post.")
-//            self.posts[indexPath.item] = post
-            guard let count = post.likeCount else {return }
-            if post.hasliked == true {
-                post.likeCount = count + 1
-            }else{
-                post.likeCount = count - 1
-            }
-            self.collectionView?.reloadItems(at: [indexPath])
-            
-        }
     }
 
     func setupBarButtom(){
@@ -127,6 +98,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
         let myGroup = DispatchGroup()
         fetchUserPost(myGroup , uid: uid)
         print("Start fetch from following people..")
+        
         let ref = Database.database().reference().child("following").child(uid)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let userIdsDictionary = snapshot.value as? [String: Any] else { return }

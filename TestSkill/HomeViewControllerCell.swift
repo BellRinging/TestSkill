@@ -8,6 +8,7 @@ protocol HomePostCellDelegate {
     func didTagImage(for cell: HomeViewControllerCell)
     func didShare(for cell: HomeViewControllerCell)
     func didTapOption(for cell: HomeViewControllerCell)
+    func didTapTag(tag:Tag)
 }
 
 class HomeViewControllerCell: UICollectionViewCell {
@@ -318,6 +319,9 @@ class HomeViewControllerCell: UICollectionViewCell {
             let attributeValue = myTextView.attributedText.attribute("Tag", at: characterIndex, effectiveRange: nil) as? String
             if let value = attributeValue {
                 print("You tapped on Tag and the value is: \(value)")
+                let dict = ["name": value]
+                let tag = Tag(dict: dict)
+                delegate?.didTapTag(tag: tag)
             }
         }
     }

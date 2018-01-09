@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseDatabase
+import Firebase
 
 extension UIColor{
     
@@ -110,6 +110,21 @@ extension UIView{
 extension Database {
     
     static func fetchUserWithUID(uid: String, completion: @escaping (User) -> ()) {
+        
+        
+        
+//        Firestore.firestore().document("users").getDocument(completion: { (snapshot, error) in
+//            print(snapshot)
+//            if let user = snapshot.flatMap({ _ in User(dictionary: snapshot?.data()) }) {
+//                                print("user: \(user)")
+//                            } else {
+//                                print("Document does not exist")
+//                            }
+//        })
+
+//        }
+        
+        
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if (!snapshot.exists()){
                 print("Cant find any user")
