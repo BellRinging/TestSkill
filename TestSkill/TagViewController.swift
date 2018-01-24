@@ -32,7 +32,7 @@ class TagViewController: UICollectionViewController ,UICollectionViewDelegateFlo
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(SinglePhotoCell.self, forCellWithReuseIdentifier: cellID)
         collectionView?.register(TagViewHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: headerID)
-        refreshControl.addTarget(self, action: #selector(fetchPost), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(fetchTag), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
     }
     
@@ -43,93 +43,11 @@ class TagViewController: UICollectionViewController ,UICollectionViewDelegateFlo
     }
 //
     
-    func fetchPost(){
+    func fetchTag(){
         
     }
     
-    /*
-    func fetchPost(){
-        //        return
-        guard let tag = self.tag else {
-            isUpdating = false
-            return
-        }
-        refreshControl.endRefreshing()
-        print("fetchPost from tag \(tag.id)")
-        self.posts = [Post]()
-        self.collectionView?.reloadData()
-        lastRecordUid = nil
-        
-        let ref = Database.database().reference().child("tags").child()
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dict = snapshot.value as? [String:Any] {
-                self.totalNumberOfPost = dict.count
-                print("Total post count : \(self.totalNumberOfPost)")
-                self.loadMore()
-            }else{
-                self.isUpdating = false
-            }
-        })
-        
-    }
-//
-    func loadMore(){
-        //        print("load more")
-        guard let user = self.tag else {
-            isUpdating = false
-            return
-        }
-        let initialDataFeed = posts.count
-        let fetchSizeOffSet = initialDataFeed == 0 ? 0:1
-        var query : DatabaseQuery
-        if ( totalNumberOfPost <= initialDataFeed) {
-            print("No More data")
-            footerCell?.status = 1
-            isUpdating = false
-            return
-        }else {
-            query = Database.database().reference().child("tags").child(user.id).queryOrderedByKey().queryLimited(toFirst: UInt(fetchSize + fetchSizeOffSet))
-            footerCell?.status = 0
-        }
-        
-        if let lastId = lastRecordUid {
-            query = query.queryStarting(atValue: lastId)
-        }
-        print("tag id \(tag.id)")
-        print("last id \(lastRecordUid)")
-        query.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dict = snapshot.value as? [String:Any] {
-                print(dict.count)
-                dict.forEach({ (key,value) in
-                    guard let postDict = value as? [String: Any] else {return}
-//                    let post = Post(user: user , dict: postDict as [String : AnyObject])
-                    post.id = key
-                    if (self.posts.contains(where: { (post) -> Bool in
-                        guard let id = post.id else {return false}
-                        return id == key
-                    })){
-                        //                        print("Post reject")
-                    }else{
-                        //                        print("Post added")
-                        self.posts.append(post)
-                    }
-                })
-                self.posts = self.posts.sorted(by: { $0.id! < $1.id!
-                })
-                self.lastRecordUid = self.posts.last?.id
-                if ( self.totalNumberOfPost <= self.posts.count) {
-                    print("No More data")
-                    self.footerCell?.status = 1
-                }
-                self.collectionView?.reloadData()
-            }
-            self.isUpdating = false
-            print("finish fetch")
-        })
-    }
-    */
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        //        print("scrolling")
         isScrolling = true
     }
     
@@ -151,7 +69,6 @@ class TagViewController: UICollectionViewController ,UICollectionViewDelegateFlo
 
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //        print("didselect item \(indexPath.item) available item \(posts.count) int item \(indexPath.row)")
         let vc = DisplayPhotoView()
         let post = posts[indexPath.item] as Post
         vc.imageUrl = post.imageUrl
