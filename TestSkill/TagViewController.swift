@@ -31,8 +31,8 @@ class TagViewController: UICollectionViewController ,UICollectionViewDelegateFlo
         super.viewDidLoad()
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(SinglePhotoCell.self, forCellWithReuseIdentifier: cellID)
-        collectionView?.register(TagViewHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: headerID)
-        refreshControl.addTarget(self, action: #selector(fetchTag), for: .valueChanged)
+        collectionView?.register(TagViewHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: headerID)
+//        refreshControl.addTarget(self, action: #selector(fetchTag), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
     }
     
@@ -41,11 +41,7 @@ class TagViewController: UICollectionViewController ,UICollectionViewDelegateFlo
         print("view will appear")
         self.collectionView?.reloadData()
     }
-//
-    
-    func fetchTag(){
-        
-    }
+
     
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         isScrolling = true
@@ -99,7 +95,7 @@ class TagViewController: UICollectionViewController ,UICollectionViewDelegateFlo
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         //        print("Config the header cell \(kind)" )
-        if (kind == UICollectionElementKindSectionHeader){
+        if (kind == UICollectionView.elementKindSectionHeader){
             let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
             headerCell = cell
             cell.backgroundColor = UIColor.white

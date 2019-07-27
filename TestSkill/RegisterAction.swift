@@ -16,7 +16,7 @@ extension RegisterViewController {
     
 
     
-    func handleRegister(){
+    @objc func handleRegister(){
         Utility.showProgress()
         guard let email = Utility.validField(emailField, "Email is required.Please enter your email"),
             let password = Utility.validField(passwordField,"Password is required.Please enter your number"),
@@ -27,7 +27,7 @@ extension RegisterViewController {
         }
         
         print("Create login into firebase")
-        Auth.auth().createUser(withEmail: email, password: password) { (user, err) in
+        Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
             
             if let err = err{
                 Utility.showError(self,message: err.localizedDescription)
@@ -35,12 +35,14 @@ extension RegisterViewController {
                 return
             }
             
-            guard let uid = user?.uid else {
+            guard let user = result?.user else {
                 Utility.hideProgress()
                 return
+                
             }
+            let  uid = user.uid
             let userObject = self.createUserObject()
-            self.updateDisplayName(user!, name: username )
+            self.updateDisplayName(user, name: username )
             print("User created")
         }
     }

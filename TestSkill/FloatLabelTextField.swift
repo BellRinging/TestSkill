@@ -25,7 +25,7 @@ import UIKit
         return paddingView
     }()
     
-    func handleSwitch(){
+    @objc func handleSwitch(){
 //        print(rightButton.titleLabel?.text )
         if rightButton.titleLabel?.text == "Show  " {
 //            print("true")
@@ -127,7 +127,7 @@ import UIKit
         var r = super.textRect(forBounds: bounds)
         if let txt = text , !txt.isEmpty {
             let top = maxTopInset()
-            r = UIEdgeInsetsInsetRect(r, UIEdgeInsetsMake(top, 0, 0.0, 0.0))
+            r = r.inset(by: UIEdgeInsets(top: top, left: 0, bottom: 0.0, right: 0.0))
         }
         
         return r.integral
@@ -137,7 +137,7 @@ import UIKit
         var r = super.editingRect(forBounds: bounds)
         if let txt = text , !txt.isEmpty {
             let top = maxTopInset()
-            r = UIEdgeInsetsInsetRect(r, UIEdgeInsetsMake(top, 0, 0.0, 0.0))
+            r = r.inset(by: UIEdgeInsets(top: top, left: 0, bottom: 0.0, right: 0.0))
         }
         return r.integral
     }
@@ -161,7 +161,7 @@ import UIKit
         self.spellCheckingType = .no
         self.autocorrectionType = .no
         self.autocapitalizationType = .none
-        borderStyle = UITextBorderStyle.none
+        self.borderStyle = .none
         titleActiveTextColour = tintColor
         title.font = self.font
         self.addSubview(title)
@@ -190,20 +190,23 @@ import UIKit
 //        print("start position : \(title.frame)")
         
         let dur =  animationDuration
-        UIView.animate(withDuration: dur, delay:0, options: [UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveLinear], animations:{
-            var r = self.textRect(forBounds: self.bounds)
-            r.origin.y = 0
-            self.title.font  = UIFont.boldSystemFont(ofSize: 12)
-            self.title.frame = r
+        UIView.animate(withDuration: dur, delay: 0, options: AnimationOptions.beginFromCurrentState, animations: {
+                var r = self.textRect(forBounds: self.bounds)
+                r.origin.y = 0
+                self.title.font  = UIFont.boldSystemFont(ofSize: 12)
+                self.title.frame = r
+        }, completion: nil)
+        
+
+        
 //            print("textRect \(self.title.frame)")
-        }, completion:nil)
     }
     
     fileprivate func hideTitle() {
 //        print("hideTitle")
         isShowingTitle = false
         let dur = animationDuration
-        UIView.animate(withDuration: dur, delay:0, options: [UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveLinear], animations:{
+        UIView.animate(withDuration: dur, delay: 0, options: AnimationOptions.beginFromCurrentState, animations: {
             self.titleFont = self.defaultFont
             self.title.frame = self.textRect(forBounds: self.bounds)
         }, completion: nil)

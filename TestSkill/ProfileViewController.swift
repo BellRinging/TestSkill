@@ -2,6 +2,9 @@ import UIKit
 import FirebaseAuth
 import FacebookLogin
 import Firebase
+import FBSDKLoginKit
+import FirebaseDatabase
+import FacebookCore
 
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
@@ -23,9 +26,9 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = UIColor.white
-        collectionView?.register(ProfileHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
+        collectionView?.register(ProfileHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerID)
         collectionView?.register(SinglePhotoCell.self, forCellWithReuseIdentifier: cellID)
-        collectionView?.register(ProfileFooterCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: footerID)
+        collectionView?.register(ProfileFooterCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerID)
         
         let barButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         navigationItem.rightBarButtonItem = barButton
@@ -44,7 +47,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         self.collectionView?.reloadData()
     }
     
-    func fetchPost(){
+    @objc func fetchPost(){
 //        return
         guard let user = self.user else {
             isUpdating = false
@@ -148,7 +151,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         }
     }
     
-    func handleProfileChange(){
+    @objc func handleProfileChange(){
         print("handle profile change \(isUpdating)")
         if ( isUpdating){
             print("No refresh when scrolling")
@@ -182,7 +185,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     }
     
     
-    func handleLogout(){
+    @objc func handleLogout(){
         guard let user = Utility.firebaseUser ,let providerID = user.providerData.first?.providerID  else {return }
         
         if (providerID == FacebookAuthProviderID ){
@@ -241,7 +244,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 //        print("Config the header cell \(kind)" )
-        if (kind == UICollectionElementKindSectionHeader){
+        if (kind == UICollectionView.elementKindSectionHeader){
             let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)  as! ProfileHeaderCell
             headerCell = cell
             cell.backgroundColor = UIColor.white

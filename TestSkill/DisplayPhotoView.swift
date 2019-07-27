@@ -35,7 +35,7 @@ class DisplayPhotoView: UIViewController {
         return button
     }()
     
-    func handleCancel(){
+    @objc func handleCancel(){
         self.dismiss(animated: true, completion: nil)
     }
     

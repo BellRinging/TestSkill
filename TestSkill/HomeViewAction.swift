@@ -44,8 +44,8 @@ extension HomeViewController{
     }
     
     func didTapOption(for cell: HomeViewControllerCell){
-        let alert = UIAlertController(title: nil, message: "Select action", preferredStyle: UIAlertControllerStyle.actionSheet)
-        let editAction = UIAlertAction(title: "Edit", style: UIAlertActionStyle.default){
+        let alert = UIAlertController(title: nil, message: "Select action", preferredStyle: UIAlertController.Style.actionSheet)
+        let editAction = UIAlertAction(title: "Edit", style: UIAlertAction.Style.default){
             (action) -> Void in
             guard let indexPath = self.collectionView?.indexPath(for: cell) else { return }
             let shareView = SharePhotoController()
@@ -55,17 +55,17 @@ extension HomeViewController{
             self.present(nav, animated: true, completion: nil)
         }
         alert.addAction(editAction)
-        let alertAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive)
+        let alertAction = UIAlertAction(title: "Delete", style: UIAlertAction.Style.destructive)
         {
             (action) -> Void in
             
-            let alert2 = UIAlertController(title: nil, message: "Confirm to delete?", preferredStyle: UIAlertControllerStyle.alert)
-            let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.destructive){
+            let alert2 = UIAlertController(title: nil, message: "Confirm to delete?", preferredStyle: UIAlertController.Style.alert)
+            let yesAction = UIAlertAction(title: "Yes", style: UIAlertAction.Style.destructive){
                 action -> Void in
                 guard let indexPath = self.collectionView?.indexPath(for: cell) else { return }
                 self.deleteUserPost(index: indexPath.item)
             }
-            let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.default){
+            let noAction = UIAlertAction(title: "No", style: UIAlertAction.Style.default){
                 (action) -> Void in
                 print("Cancel")
             }
@@ -74,7 +74,7 @@ extension HomeViewController{
             self.present(alert2, animated: true, completion: nil)
         }
         alert.addAction(alertAction)
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel)
         {
             (action) -> Void in
             print("Cancel")
@@ -117,18 +117,17 @@ extension HomeViewController{
     }
     
     
-    func handleRefresh(){
+    @objc func handleRefresh(){
         posts.removeAll()
         collectionView?.reloadData()
         fetchPost()
     }
     
-    func handleUpdateFeed() {
+    @objc func handleUpdateFeed() {
         handleRefresh()
     }
     
-    
-    func handleCarema(){
+    @objc func handleCarema(){
         print("Carema")
         let vc = CameraController()
         self.present(vc, animated: true, completion: nil)

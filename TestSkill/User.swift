@@ -23,9 +23,9 @@ struct User {
         self.id = json["id"].string ?? ""
         self.name = json["name"].string ?? ""
         self.imageUrl = json["picture"]["data"]["url"].string ?? ""
-    self.firstName = json["first_name"].string ?? ""
-    self.lastName = json["last_name"].string ?? ""
-    self.email = json["email"].string ?? ""
+        self.firstName = json["first_name"].string ?? ""
+        self.lastName = json["last_name"].string ?? ""
+        self.email = json["email"].string ?? ""
     }
  
 }

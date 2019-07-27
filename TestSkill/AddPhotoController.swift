@@ -11,7 +11,7 @@ class AddPhotoController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.backgroundColor = .white
         setupNavigationButtons()
         collectionView?.register(SinglePhotoCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(SinglePhotoCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView?.register(SinglePhotoCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
         fetchPhotos()
     }
@@ -73,13 +73,13 @@ class AddPhotoController: UICollectionViewController, UICollectionViewDelegateFl
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
     }
     
-    func handleNext() {
+    @objc func handleNext() {
         let sharePhotoController = SharePhotoController()
         sharePhotoController.selectedImage = selectedImage
         navigationController?.pushViewController(sharePhotoController, animated: true)
     }
     
-    func handleCancel() {
+    @objc func handleCancel() {
         dismiss(animated: true, completion: nil)
     }
 }

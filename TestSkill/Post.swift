@@ -1,11 +1,3 @@
-//
-//  Post.swift
-//  SnookerGambling
-//
-//  Created by Kwok Wai Yeung on 30/6/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
 import UIKit
 import FirebaseDatabase
 

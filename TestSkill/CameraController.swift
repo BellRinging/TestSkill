@@ -79,7 +79,9 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         output.capturePhoto(with: settings, delegate: self)
     }
     
-    func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
+    
+    
+    func photoOutput(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?, previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
         
         let imageData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: photoSampleBuffer!, previewPhotoSampleBuffer: previewPhotoSampleBuffer!)
         
@@ -102,17 +104,16 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         let captureSession = AVCaptureSession()
         
         //1. setup inputs
-        let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
-        
-        do {
-            let input = try AVCaptureDeviceInput(device: captureDevice!)
-            if captureSession.canAddInput(input) {
-                captureSession.addInput(input)
+            if let captureDevice = AVCaptureDevice.default(for: AVMediaType.video){
+                do {
+                    let input = try AVCaptureDeviceInput(device: captureDevice)
+                    if captureSession.canAddInput(input) {
+                        captureSession.addInput(input)
+                    }
+                } catch let err {
+                    print("Could not setup camera input:", err)
+                }
             }
-        } catch let err {
-            print("Could not setup camera input:", err)
-        }
-        
         //2. setup outputs
         if captureSession.canAddOutput(output) {
             captureSession.addOutput(output)
@@ -120,8 +121,8 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         
         //3. setup output preview
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer?.frame = view.frame
-        view.layer.addSublayer(previewLayer!)
+        previewLayer.frame = view.frame
+        view.layer.addSublayer(previewLayer)
         
         captureSession.startRunning()
     }

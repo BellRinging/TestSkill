@@ -1,8 +1,10 @@
 import UIKit
 import FacebookCore
-import FacebookLogin
 import SwiftyJSON
 import Firebase
+import FBSDKLoginKit
+import FacebookLogin
+import GoogleSignIn
 
 protocol SignControllerDelegrate {
     func successLogin()
@@ -11,7 +13,7 @@ protocol SignControllerDelegrate {
 class SiginViewController: UIViewController   {
     
     weak var delegrate :LoginController?
-    let button = LoginButton(readPermissions: [ .publicProfile ,.email ])
+    let button = FBLoginButton(permissions: [ .publicProfile ,.email ])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +46,7 @@ class SiginViewController: UIViewController   {
         view.addSubview(button)
         button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         
-        button.delegate = self
+        button.delegate = self as! LoginButtonDelegate
     }
     
     let myActivityIndicator : UIActivityIndicatorView = {
@@ -74,7 +76,7 @@ class SiginViewController: UIViewController   {
         return temp
     }()
     
-    func handleTapCross(){
+    @objc func handleTapCross(){
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -90,7 +92,7 @@ class SiginViewController: UIViewController   {
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
-        tv.rightViewMode = UITextFieldViewMode.never
+        tv.rightViewMode = UITextField.ViewMode.never
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         return tv
     }()
@@ -111,20 +113,20 @@ class SiginViewController: UIViewController   {
 
     let forgetPasswordButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Forget the Password", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
+        let text = NSAttributedString(string: "Forget the Password", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),NSAttributedString.Key.foregroundColor:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(handleForgetPassword), for: .touchUpInside)
         return bn
     }()
     
-    func handleForgetPassword(){
+    @objc func handleForgetPassword(){
         
         let vc = ForgetPasswordController()
         self.present(vc, animated: true, completion: nil)
         print("forgetpassword")
     }
     
-    func handleJoinNow(){
+    @objc func handleJoinNow(){
         print("Join Now")
         self.dismiss(animated: true, completion: nil)
         delegrate?.handleRegister()
@@ -134,7 +136,7 @@ class SiginViewController: UIViewController   {
     
     let joinNowButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Join Now", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
+        let text = NSAttributedString(string: "Join Now", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),NSAttributedString.Key.foregroundColor:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(handleJoinNow), for: .touchUpInside)
         return bn
@@ -142,7 +144,7 @@ class SiginViewController: UIViewController   {
     
     let normalSignInButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Sign In", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
+        let text = NSAttributedString(string: "Sign In", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),NSAttributedString.Key.foregroundColor:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(SignInByEmail), for: .touchUpInside)
         bn.layer.borderWidth = 0.5
@@ -151,7 +153,7 @@ class SiginViewController: UIViewController   {
     }()
     
     
-    func SignInByEmail(){
+    @objc func SignInByEmail(){
         print("SignIn by Email")
         
         guard let email = Utility.validField(emailField, "Email is required.Please enter your email"),

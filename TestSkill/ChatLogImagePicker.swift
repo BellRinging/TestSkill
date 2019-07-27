@@ -6,16 +6,21 @@ extension ChatLogController : UIImagePickerControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let videoUrl = info[UIImagePickerControllerMediaURL] as? URL {
-            handleVideoSelectedForUrl(videoUrl)
-        } else {
-            handleImageSelectedForInfo(info as [String : AnyObject])
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let mediaType = info[.mediaType] as? String {
+            if mediaType == "public.image" {
+                handleImageSelectedForInfo(info as [UIImagePickerController.InfoKey : Any])
+            }else{
+                if let videoUrl = info[.mediaURL] as? URL {
+                    handleVideoSelectedForUrl(videoUrl)
+                }
+            }
         }
         dismiss(animated: true, completion: nil)
     }
     
-    func handleUploadTap() {
+    
+    @objc func handleUploadTap() {
         let imagePickerController = UIImagePickerController()
         
         imagePickerController.allowsEditing = true

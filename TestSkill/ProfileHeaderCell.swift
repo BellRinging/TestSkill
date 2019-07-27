@@ -212,7 +212,7 @@ class ProfileHeaderCell: UICollectionViewCell {
         }
     }
     
-    func handleEditProfileOrFollow() {
+    @objc func handleEditProfileOrFollow() {
         print("Execute edit profile / follow / unfollow logic...")
         guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return }
         guard let userId = user?.id else { return }
@@ -298,8 +298,8 @@ class ProfileHeaderCell: UICollectionViewCell {
     
     func setCount(_ count:Int , area : DisplayArea){
         print("Set count for \(area) : \(count)")
-        let attributedText = NSMutableAttributedString(string: "\(count)\n", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "\(area)", attributes: [NSForegroundColorAttributeName: UIColor.lightGray, NSFontAttributeName : UIFont.systemFont(ofSize: 14)]))
+        let attributedText = NSMutableAttributedString(string: "\(count)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: "\(area)", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
         if area == DisplayArea.follower {
             followerLabel.attributedText = attributedText
         }else if(area == DisplayArea.following){

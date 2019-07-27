@@ -60,7 +60,7 @@ class PopupDialog: UIView {
     
     
     
-    func handleTap(){
+    @objc func handleTap(){
         dismissDialog()
     }
     

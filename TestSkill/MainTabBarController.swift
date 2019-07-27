@@ -26,7 +26,7 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
         self.checkIfProfitSetup()
     }
     
-    func showLoginPage(){
+    @objc func showLoginPage(){
         let loginController = LoginController()
         loginController.delegrate = self
         self.present(loginController, animated: true, completion: nil)

@@ -49,7 +49,7 @@ class RegisterViewController: UIViewController {
         return temp
     }()
     
-    func handleTapCross(){
+    @objc func handleTapCross(){
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -120,13 +120,13 @@ class RegisterViewController: UIViewController {
     
     let signInButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Sign In", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 14),NSForegroundColorAttributeName:UIColor.white])
+        let text = NSAttributedString(string: "Sign In ", attributes: [NSAttributedString.Key.foregroundColor :UIColor.white, NSAttributedString.Key.font :UIFont.boldSystemFont(ofSize: 16)])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(handleSwitchSignIn), for: .touchUpInside)
         return bn
     }()
     
-    func handleSwitchSignIn(){
+    @objc func handleSwitchSignIn(){
         print("handle Switch to login")
         self.dismiss(animated: true, completion: nil)
         delegrate?.handleLogin()
@@ -135,7 +135,7 @@ class RegisterViewController: UIViewController {
     
     let registerButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Join Now", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
+      let text = NSAttributedString(string: "Join Now ", attributes: [NSAttributedString.Key.foregroundColor :UIColor.white, NSAttributedString.Key.font :UIFont.boldSystemFont(ofSize: 16)])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         bn.layer.borderWidth = 0.5

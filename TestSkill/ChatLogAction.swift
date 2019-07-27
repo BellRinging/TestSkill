@@ -7,22 +7,31 @@ extension ChatLogController {
     
     func handleVideoSelectedForUrl(_ url: URL) {
         let filename = UUID().uuidString + ".mov"
-        let uploadTask = Storage.storage().reference().child("message_movies").child(filename).putFile(from: url, metadata: nil) { (metadata, error) in
+        let ref = Storage.storage().reference().child("message_movies").child(filename);
+        let uploadTask = ref.putFile(from: url, metadata: nil) { (metadata, error) in
             if error != nil {
                 print("Failed upload of video:", error!)
                 return
             }
-            
-            if let videoUrl = metadata?.downloadURL()?.absoluteString {
-                if let thumbnailImage = self.thumbnailImageForFileUrl(url) {
-                    
-                    self.uploadToFirebaseStorageUsingImage(thumbnailImage, completion: { (imageUrl) in
-                        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": thumbnailImage.size.width as AnyObject, "imageHeight": thumbnailImage.size.height as AnyObject, "videoUrl": videoUrl as AnyObject]
-                        self.sendMessageWithProperties(properties)
-                        
-                    })
+            ref.downloadURL { (url, error) in
+                ref.downloadURL { (url, error) in
+                    if let videoUrl = url as? URL{
+                        if let thumbnailImage = self.thumbnailImageForFileUrl(videoUrl) {
+                            
+                            self.uploadToFirebaseStorageUsingImage(thumbnailImage, completion: { (imageUrl) in
+                                let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": thumbnailImage.size.width as AnyObject, "imageHeight": thumbnailImage.size.height as AnyObject, "videoUrl": videoUrl as AnyObject]
+                                self.sendMessageWithProperties(properties)
+                                
+                            })
+                        }
+                    }
                 }
-            }
+                
+
+                }
+            
+        
+            
         }
         
         uploadTask.observe(.progress) { (snapshot) in
@@ -36,12 +45,14 @@ extension ChatLogController {
         }
     }
     
-    func handleImageSelectedForInfo(_ info: [String: AnyObject]) {
+    func handleImageSelectedForInfo(_ info: [UIImagePickerController.InfoKey : Any]) {
+        
+        
         var selectedImageFromPicker: UIImage?
         
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+        if let editedImage = info[.editedImage] as? UIImage {
             selectedImageFromPicker = editedImage
-        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+        } else if let originalImage = info[.originalImage] as? UIImage {
             
             selectedImageFromPicker = originalImage
         }
@@ -53,16 +64,16 @@ extension ChatLogController {
         }
     }
     
-    func handleKeyboardDidShow() {
+    @objc func handleKeyboardDidShow() {
         scrollToLastItem()
     }
-    
+    @objc  
     func handleSend() {
         let properties = ["text": inputContainerView.inputTextField.text!]
         sendMessageWithProperties(properties as [String : AnyObject])
     }
     
-    func handleZoomOut(_ tapGesture: UITapGestureRecognizer) {
+    @objc func handleZoomOut(_ tapGesture: UITapGestureRecognizer) {
         if let zoomOutImageView = tapGesture.view {
             //need to animate back out to controller
             zoomOutImageView.layer.cornerRadius = 16
@@ -87,7 +98,7 @@ extension ChatLogController {
         
         do {
             
-            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
             return UIImage(cgImage: thumbnailCGImage)
             
         } catch let err {
@@ -102,17 +113,17 @@ extension ChatLogController {
         let imageName = UUID().uuidString
         let ref = Storage.storage().reference().child("message_images").child(imageName)
         
-        if let uploadData = UIImageJPEGRepresentation(image, 0.2) {
+        if let uploadData = image.jpegData(compressionQuality: 0.2) {
             ref.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if error != nil {
                     print("Failed to upload image:", error!)
                     return
                 }
-                
-                if let imageUrl = metadata?.downloadURL()?.absoluteString {
-                    completion(imageUrl)
+                ref.downloadURL { (url, error) in
+                    if let videoUrl = url as? URL{
+                        completion(videoUrl.absoluteString)
+                    }
                 }
-                
             })
         }
     }

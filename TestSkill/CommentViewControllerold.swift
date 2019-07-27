@@ -30,14 +30,14 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
     }
     
     func addObserver(){
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
 
-    func keyboardWillAppear(_ sender:NSNotification) {
+    @objc func keyboardWillAppear(_ sender:NSNotification) {
         //Do something here
         let info = sender.userInfo!
-        let keyboardHeight = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.height
+        let keyboardHeight = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.height
 //        print("keyboard show")
         con?.isActive = false
         con?.constant = UIScreen.main.bounds.height - keyboardHeight
@@ -45,7 +45,7 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
 //        print("view frame",view.frame)
     }
 
-    func keyboardWillDisappear(_ sender:NSNotification) {
+    @objc func keyboardWillDisappear(_ sender:NSNotification) {
 //        print("keyboard hide")
         con?.isActive = false
         con?.constant = UIScreen.main.bounds.height
@@ -53,10 +53,10 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
         perform(#selector(scrollToLast),with: nil, afterDelay: 0.3)
     }
     
-    func scrollToLast(){
+    @objc func scrollToLast(){
         if self.comments.count > 0 {
             let indexPath = IndexPath(item: self.comments.count-1, section: 0)
-            self.collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
+            self.collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.bottom, animated: true)
         }
     }
 
@@ -108,7 +108,7 @@ UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate ,UITextVi
         return CGSize(width: view.frame.width, height: height)
     }
 
-    func handleSubmit() {
+    @objc func handleSubmit() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let postId = self.post?.id ?? ""
 //        print("submit",postId)

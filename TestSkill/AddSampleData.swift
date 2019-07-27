@@ -8,7 +8,9 @@
 
 import Foundation
 import Firebase
-
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class AddSampleData: UIViewController {
     
@@ -38,7 +40,7 @@ class AddSampleData: UIViewController {
         return bn
     }()
     
-    func handleAddUser(){
+    @objc func handleAddUser(){
         print("Add User")
         do {
             try Auth.auth().signOut()
@@ -142,7 +144,7 @@ class AddSampleData: UIViewController {
         
     }
     
-    func handleAddPost(){
+    @objc func handleAddPost(){
         fetchAllUser()
     }
     
@@ -152,9 +154,9 @@ class AddSampleData: UIViewController {
         let email = "dummy\(num)@gmail.com"
         let password = "123456"
         
-        Auth.auth().createUser(withEmail: email, password: password) { (user, err) in
-            
-            self.updateDisplayName(user!, name: name )
+        Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
+            guard let user = result?.user else {return}
+//            self.updateDisplayName(user, name: name )
             print("User created")
         }
     }
@@ -164,44 +166,50 @@ class AddSampleData: UIViewController {
         let email = "dummy\(num)@gmail.com"
         let password = "123456"
         
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-//            self.createProfitObject(user?.uid!)
-            self.createProfitObject(num: num, uid: user!.uid, name: name)
+        
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+            guard let user = result?.user else {return}
+            self.createProfitObject(num: num, uid: user.uid, name: name)
         }
     }
-    
-    func updateDisplayName(_ user: Firebase.User , name:String ){
-        let changeRequest = user.createProfileChangeRequest()
-        changeRequest.displayName = name
-        changeRequest.commitChanges(completion: { (error) in
-            if let err = error {
-                print(err.localizedDescription)
-                return
-            }
-            print("Updated Display Name")
-            do {
-            try Auth.auth().signOut()
-                print("signout")
-            }catch{
-                print(error)
-            }
-        })
-    }
+//
+//    func updateDisplayName(_ user: Any , name:String ){
+//        let changeRequest = user.createProfileChangeRequest()
+//        changeRequest.displayName = name
+//        changeRequest.commitChanges(completion: { (error) in
+//            if let err = error {
+//                print(err.localizedDescription)
+//                return
+//            }
+//            print("Updated Display Name")
+//            do {
+//            try Auth.auth().signOut()
+//                print("signout")
+//            }catch{
+//                print(error)
+//            }
+//        })
+//    }
     
     func createProfitObject(num : Int ,uid : String ,name : String){
         let ref = Storage.storage().reference().child("profile_images").child(uid).child("profilePic.jpg")
-        if let profileImage = UIImage(named: "\(num).jpg"), let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+        if let profileImage = UIImage(named: "\(num).jpg"), let uploadData = profileImage.jpegData(compressionQuality: 0.1) {
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
                 if (error != nil){
                     print("some bad happend in put image to server")
                     return
                 }
                 print("upload image")
-                if let profileImageURL = metaData?.downloadURL()?.absoluteString{
-                    let values = [ "last_name": "Dummy", "first_name": "\(num)" ,"email" : "dummy\(num)@gmail.com" , "img_url" : profileImageURL , "name" : name ,"id" : uid]
-                    print(values)
-                    self.registerUserIntoDatabaseWithUID(uid ,values: values as [String : AnyObject])
+                ref.downloadURL { (url, error) in
+                    if let profileImageURL = url?.absoluteString{
+                                        let values = [ "last_name": "Dummy", "first_name": "\(num)" ,"email" : "dummy\(num)@gmail.com" , "img_url" : profileImageURL , "name" : name ,"id" : uid]
+                                        print(values)
+                                        self.registerUserIntoDatabaseWithUID(uid ,values: values as [String : AnyObject])
+                                    }
                 }
+                
+                
             })
         }
     }

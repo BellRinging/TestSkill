@@ -6,6 +6,5 @@
 //  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
 //
 
-#import <Google/SignIn.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "UIViewController+Alerts.h"

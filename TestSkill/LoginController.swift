@@ -1,5 +1,6 @@
 import UIKit
 import Firebase
+import GoogleSignIn
 
 class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout ,SignControllerDelegrate {
     func successLogin() {
@@ -53,7 +54,7 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
    
     let siginButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Sign in", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 20),NSForegroundColorAttributeName:UIColor.white])
+        let text = NSAttributedString(string: "Sign in", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20),NSAttributedString.Key.foregroundColor:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return bn
@@ -61,7 +62,7 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     
     let registerButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Join Now", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 20),NSForegroundColorAttributeName:UIColor.white])
+        let text = NSAttributedString(string: "Join Now", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20),NSAttributedString.Key.foregroundColor:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         bn.layer.borderWidth = 0.5
@@ -81,13 +82,13 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     }()
     
     
-    func handleLogin(){
+    @objc func handleLogin(){
         let vc = SiginViewController()
         vc.delegrate = self
         self.present(vc, animated: true, completion: nil)
     }
     
-    func handleRegister(){
+    @objc func handleRegister(){
         let vc = RegisterViewController()
         vc.delegrate = self
         self.present(vc, animated: true, completion: nil)

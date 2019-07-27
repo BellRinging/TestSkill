@@ -39,9 +39,9 @@ class CommentViewControllerCell: UICollectionViewCell {
     }()
     
     func setupDisplayText(name:String,comment :String ,timeAgo : String){
-        let text = NSMutableAttributedString(string: name, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
-        text.append(NSAttributedString(string: " \(comment)", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)]))
-        text.append(NSAttributedString(string: "\n \(timeAgo)", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 10),NSForegroundColorAttributeName:UIColor.gray]))
+        let text = NSMutableAttributedString(string: name, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
+        text.append(NSAttributedString(string: " \(comment)", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 12)]))
+        text.append(NSAttributedString(string: "\n \(timeAgo)", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 10),NSAttributedString.Key.foregroundColor:UIColor.gray]))
         
         username.attributedText = text
     }

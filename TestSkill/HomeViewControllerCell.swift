@@ -128,7 +128,7 @@ class HomeViewControllerCell: UICollectionViewCell {
     fileprivate func setupAttributedCaption() {
         guard let post = self.post  else { return }
         let str = post.caption
-        var resultString = NSMutableAttributedString(string: "\(post.user.name) ", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
+        var resultString = NSMutableAttributedString(string: "\(post.user.name) ", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
         
         let newLineSplitStr = str.split(separator: "\n", maxSplits: 500, omittingEmptySubsequences: false)
 //        print(newLineSplitStr)
@@ -141,19 +141,19 @@ class HomeViewControllerCell: UICollectionViewCell {
             for aa in splitStr {
                 itemCount = itemCount + 1
                 let length = resultString.length
-                let aalength = aa.characters.count
-                resultString.append(NSAttributedString(string: "\(aa)" , attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14)]))
+                let aalength = aa.count
+                resultString.append(NSAttributedString(string: "\(aa)" , attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
                 if itemCount != splitStr.count{
-                    resultString.append(NSAttributedString(string: " " , attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14)]))
+                    resultString.append(NSAttributedString(string: " " , attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
                 }
                 if aa.hasPrefix("#"){
                     let range =  NSRange(location: length, length: aalength)
-                    resultString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blue, range: range)
-                    resultString.addAttribute("Tag", value: aa, range: range)
+                    resultString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: range)
+                    resultString.addAttribute(NSAttributedString.Key(rawValue: "Tag"), value: aa, range: range)
                 }
             }
             if lineCount != newLineSplitStr.count{
-                resultString.append(NSAttributedString(string: "\n" , attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 14)]))
+                resultString.append(NSAttributedString(string: "\n" , attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
             }
             
         }
@@ -223,34 +223,34 @@ class HomeViewControllerCell: UICollectionViewCell {
         return sv
     }()
     
-    func handleOption(){
+    @objc func handleOption(){
         delegate?.didTapOption(for: self)
     }
     
-    func handleLike(){
+    @objc func handleLike(){
         delegate?.didLike(for: self)
     }
     
-    func handleComment(){
+    @objc func handleComment(){
         delegate?.didTapComment(post: post!)
     }
     
-    func handleTagImage(){
+    @objc func handleTagImage(){
         delegate?.didTagImage(for: self)
     }
     
-    func handleBookmark(){
+    @objc func handleBookmark(){
         print("bookmark")
     }
     
-    func handleChat(){
+    @objc func handleChat(){
         print("Chat")
         if let post = post {
             delegate?.didTapChat(user: post.user)
         }
     }
     
-    func handleShare(){
+    @objc func handleShare(){
         delegate?.didShare(for: self)
     }
     
@@ -296,7 +296,7 @@ class HomeViewControllerCell: UICollectionViewCell {
     }
     
   
-    func myMethodToHandleTap(_ sender: UITapGestureRecognizer) {
+    @objc func myMethodToHandleTap(_ sender: UITapGestureRecognizer) {
         
         let myTextView = sender.view as! UITextView
         let layoutManager = myTextView.layoutManager
@@ -316,13 +316,13 @@ class HomeViewControllerCell: UICollectionViewCell {
 //            print("character at index: \(substring)")
             
             // check if the tap location has a certain attribute
-            let attributeValue = myTextView.attributedText.attribute("Tag", at: characterIndex, effectiveRange: nil) as? String
-            if let value = attributeValue {
-                print("You tapped on Tag and the value is: \(value)")
-                let dict = ["name": value]
-                let tag = Tag(dict: dict)
-                delegate?.didTapTag(tag: tag)
-            }
+//            let attributeValue = myTextView.attributedText.attribute("Tag", at: characterIndex, effectiveRange: nil) as? String
+//            if let value = attributeValue {
+//                print("You tapped on Tag and the value is: \(value)")
+//                let dict = ["name": value]
+//                let tag = Tag(dict: dict)
+//                delegate?.didTapTag(tag: tag)
+//            }
         }
     }
     

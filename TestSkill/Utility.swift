@@ -37,8 +37,8 @@ class Utility {
     }
     
     static func showPopUpDialog(viewController:UIViewController, message : String ,completion: @escaping (UIAlertAction) -> ()){
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let alertAction = UIAlertAction(title: "OK!", style: UIAlertActionStyle.default)
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK!", style: .default)
         {
             (action) -> Void in
             completion(action)

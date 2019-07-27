@@ -73,7 +73,7 @@ class SearchViewController: UICollectionViewController   {
         }
     }
     
-    func handleBack(){
+    @objc func handleBack(){
         navigationController?.popViewController(animated: true)
     }
     

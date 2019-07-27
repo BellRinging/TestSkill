@@ -40,7 +40,7 @@ class ChatInputContainerView: UIView, UITextFieldDelegate {
         uploadImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
         
-        sendButton.setTitle("Send", for: UIControlState())
+        sendButton.setTitle("Send", for: UIControl.State())
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         
         //what is handleSend?

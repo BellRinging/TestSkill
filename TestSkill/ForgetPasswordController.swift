@@ -43,7 +43,7 @@ class ForgetPasswordController: UIViewController   {
         return temp
     }()
     
-    func handleTapCross(){
+    @objc func handleTapCross(){
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -54,14 +54,14 @@ class ForgetPasswordController: UIViewController   {
         tv.spellCheckingType = .no
         tv.autocorrectionType = .no
         tv.backgroundColor = UIColor.white
-        tv.rightViewMode = UITextFieldViewMode.never
+        tv.rightViewMode = UITextField.ViewMode.never
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
         return tv
     }()
     
     let sendRequestButton : UIButton = {
         let bn = UIButton()
-        let text = NSAttributedString(string: "Send Request", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 16),NSForegroundColorAttributeName:UIColor.white])
+        let text = NSAttributedString(string: "Send Request", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),NSAttributedString.Key.foregroundColor:UIColor.white])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(RequestForPasswordByEmail), for: .touchUpInside)
         bn.layer.borderWidth = 0.5
@@ -70,7 +70,7 @@ class ForgetPasswordController: UIViewController   {
     }()
     
     
-    func RequestForPasswordByEmail(){
+    @objc func RequestForPasswordByEmail(){
         print("SignIn by Email")
         guard let email = Utility.validField(emailField, "Email is required.Please enter your email") else {
                 Utility.showError(self,message: Utility.errorMessage!)

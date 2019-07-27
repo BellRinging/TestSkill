@@ -5,7 +5,7 @@
 //  Created by Kwok Wai Yeung on 16/8/2017.
 //  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
 //
-
+import GoogleSignIn
 import UIKit
 
 class TestGoogle: UIViewController ,GIDSignInUIDelegate{
@@ -56,7 +56,7 @@ class TestGoogle: UIViewController ,GIDSignInUIDelegate{
         GIDSignIn.sharedInstance().uiDelegate = self
     }
     
-    func handleCustomGoogleSign() {
+    @objc func handleCustomGoogleSign() {
         GIDSignIn.sharedInstance().signIn()
     }
 }

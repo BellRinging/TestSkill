@@ -34,8 +34,8 @@ class ViewController: UIViewController ,UICollectionViewDataSource ,UICollection
         collectionView?.register(CommentViewControllerCell.self, forCellWithReuseIdentifier: cellId)
         setupLayout()
         fetchComment()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: Notification.Name.UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: Notification.Name.UIResponder.keyboardWillShowNotification, object: nil)
 //        view.addSubview(collectionView!)
 //        collectionView?.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 //        collectionView?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -179,7 +179,7 @@ class ViewController: UIViewController ,UICollectionViewDataSource ,UICollection
     func keyboardWillAppear(_ sender:NSNotification) {
 //        //Do something here
         let info = sender.userInfo!
-        let keyboardHeight = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.height
+        let keyboardHeight = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.height
         print("keyboard show")
         
         let const = view.constraints
@@ -192,7 +192,7 @@ class ViewController: UIViewController ,UICollectionViewDataSource ,UICollection
         con?.isActive = true
     }
 //
-    func keyboardWillDisappear(_ sender:NSNotification) {
+    @objc func keyboardWillDisappear(_ sender:NSNotification) {
         print("keyboard hide")
         con?.isActive = false
 ////        con?.constant = UIScreen.main.bounds.height

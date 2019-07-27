@@ -13,15 +13,14 @@ class LoginCell: UICollectionViewCell {
     var page : Page? {
         didSet{
             guard let page = page else {return }
-            let attributedText = NSMutableAttributedString(string: page.title, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightMedium), NSForegroundColorAttributeName: UIColor.textColor()])
+            let attributedText = NSMutableAttributedString(string: page.title, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.medium), NSAttributedString.Key.foregroundColor: UIColor.textColor()])
             
-            attributedText.append(NSAttributedString(string: "\n\n\(page.massage)", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName: UIColor.textColor()]))
+            attributedText.append(NSAttributedString(string: "\n\n\(page.massage)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textColor()]))
             
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .center
-            
-            let length = attributedText.string.characters.count
-            attributedText.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSRange(location: 0, length: length))
+            let length = attributedText.string.count
+            attributedText.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: length))
             
             textView.attributedText = attributedText
             

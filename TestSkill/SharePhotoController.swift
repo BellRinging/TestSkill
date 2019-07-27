@@ -8,6 +8,9 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
+import FirebaseDatabase
+import FirebaseAuth
 
 class SharePhotoController: UIViewController {
     
@@ -82,16 +85,17 @@ class SharePhotoController: UIViewController {
         
     }
     
-    func handleShare() {
-        guard let caption = textView.text, caption.characters.count > 0 else { return }
+    @objc func handleShare() {
+        guard let caption = textView.text, caption.count > 0 else { return }
         guard let image = selectedImage else { return }
         
-        guard let uploadData = UIImageJPEGRepresentation(image, 0.5) else { return }
+        guard let uploadData = image.jpegData(compressionQuality: 0.5) else { return }
         
         navigationItem.rightBarButtonItem?.isEnabled = false
         
         let filename = NSUUID().uuidString
-        Storage.storage().reference().child("posts").child(filename).putData(uploadData, metadata: nil) { (metadata, err) in
+        let ref = Storage.storage().reference().child("posts").child(filename)
+        ref.putData(uploadData, metadata: nil) { (metadata, err) in
             
             if let err = err {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -99,17 +103,20 @@ class SharePhotoController: UIViewController {
                 return
             }
             
-            guard let imageUrl = metadata?.downloadURL()?.absoluteString else { return }
+            ref.downloadURL { (url, err) in
+                
+                guard let imageUrl = url?.absoluteString else { return }
+                print("Successfully uploaded post image:", imageUrl)
+                self.saveToDatabaseWithImageUrl(imageUrl: imageUrl)
+            }
             
-            print("Successfully uploaded post image:", imageUrl)
             
-            self.saveToDatabaseWithImageUrl(imageUrl: imageUrl)
         }
     }
     
-    func handleEdit() {
+    @objc func handleEdit() {
         
-        guard let caption = textView.text, caption.characters.count > 0 else { return }
+        guard let caption = textView.text, caption.count > 0 else { return }
         guard let post = post else { return }
         let userId = post.user.id
         navigationItem.rightBarButtonItem?.isEnabled = false
@@ -160,7 +167,7 @@ class SharePhotoController: UIViewController {
     
    
     
-    func handleCancel() {
+    @objc func handleCancel() {
         dismiss(animated: true, completion: nil)
     }
     

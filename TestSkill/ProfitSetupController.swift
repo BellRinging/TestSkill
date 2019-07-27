@@ -111,7 +111,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
 //        tv.titleTextColour = UIColor.black
 //        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
-        tv.clearButtonMode = UITextFieldViewMode.always
+        tv.clearButtonMode = UITextField.ViewMode.always
         return tv
     }()
     
@@ -123,7 +123,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         tv.backgroundColor = UIColor.white
 //        tv.titleTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
-        tv.clearButtonMode = UITextFieldViewMode.always
+        tv.clearButtonMode = UITextField.ViewMode.always
         
         return tv
     }()
@@ -137,11 +137,11 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
 //        tv.titleTextColour = UIColor.black
         //        tv.titleActiveTextColour = UIColor.black
         tv.addBottomBorder(UIColor.gray, thickness: 0.5)
-        tv.clearButtonMode = UITextFieldViewMode.always
+        tv.clearButtonMode = UITextField.ViewMode.always
         return tv
     }()
     
-    func handleProfileCreation(){
+    @objc func handleProfileCreation(){
         Utility.showProgress()
         
         guard let user = Auth.auth().currentUser else {return }
@@ -162,7 +162,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         
         print("Start creation")
         let ref = Storage.storage().reference().child("profile_images").child(user.uid).child("profilePic.jpg")
-        if let profileImage = self.imageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+        if let profileImage = self.imageView.image, let uploadData = profileImage.jpegData(compressionQuality: 0.1) {
             ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
                 if (error != nil){
                     print("some bad happend in put image to server")
@@ -170,18 +170,22 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
                     return
                 }
                 print("upload image")
-                if let profileImageURL = metaData?.downloadURL()?.absoluteString{
-                    let values = [ "last_name": lastName, "first_name": firstName ,"email" : email , "img_url" : profileImageURL , "name" : self.userNameLabel.text ,"id" : user.uid]
-                    let quene = DispatchGroup()
-                    quene.enter()
-                    self.registerUserIntoDatabaseWithUID(quene,values: values as [String : AnyObject])
-                    quene.notify(queue: DispatchQueue.main, execute: {
-                        UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
-                        NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
-                        Utility.hideProgress()
-                        self.dismiss(animated: true, completion: nil)
-                    })
+                ref.downloadURL { (url, err) in
+                    if let profileImageURL = url?.absoluteString{
+                                        let values = [ "last_name": lastName, "first_name": firstName ,"email" : email , "img_url" : profileImageURL , "name" : self.userNameLabel.text ,"id" : user.uid]
+                                        let quene = DispatchGroup()
+                                        quene.enter()
+                                        self.registerUserIntoDatabaseWithUID(quene,values: values as [String : AnyObject])
+                                        quene.notify(queue: DispatchQueue.main, execute: {
+                                            UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
+                                            NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+                                            Utility.hideProgress()
+                                            self.dismiss(animated: true, completion: nil)
+                                        })
+                                    }
                 }
+                
+                
             })
         }else{
             print("No Image")
@@ -224,7 +228,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         dismiss(animated: true, completion: nil)
     }
    
-    func handleTapImage(){
+    @objc func handleTapImage(){
         print("tap Image")
         let controller = UIImagePickerController()
         controller.allowsEditing = true

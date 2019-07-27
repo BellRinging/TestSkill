@@ -11,31 +11,36 @@ import Firebase
 import FacebookCore
 import MBProgressHUD
 import UserNotifications
+import GoogleSignIn
+import FBSDKCoreKit
+import FirebaseMessaging
+import FirebaseDatabase
+import FirebaseAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUserNotificationCenterDelegate , MessagingDelegate{
  
 
     var window: UIWindow?
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         //Firebase
-        FirebaseApp.configure()
-        
-        //Google API
-        configGoogleAPI()
-        
-        //Facebook Config
-        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        window?.frame = UIScreen.main.bounds
-        window?.makeKeyAndVisible()
-        window?.rootViewController = MainTabBarController()
-        
-        attemptRegisterForNotification(application: application)
-        
-        return true
+                FirebaseApp.configure()
+                
+                //Google API
+                configGoogleAPI()
+            
+                //Facebook Config
+                ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+                
+                window?.frame = UIScreen.main.bounds
+                window?.makeKeyAndVisible()
+                window?.rootViewController = MainTabBarController()
+                
+                attemptRegisterForNotification(application: application)
+                
+                return true
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -81,8 +86,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
     
     func configGoogleAPI(){
         var configureError: NSError?
-        GGLContext.sharedInstance().configureWithError(&configureError)
-        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+//        GGLContext.sharedInstance().configureWithError(&configureError)
+//        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        
+        GIDSignIn.sharedInstance()?.clientID = "660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p"
         GIDSignIn.sharedInstance().delegate = self
     }
 
@@ -128,16 +135,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        AppEventsLogger.activate(application)
+//        AppEventsLogger.activate(application)
+        AppEvents.activateApp()
     }
     
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        GIDSignIn.sharedInstance().handle(url,
-                                          sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!,
-                                          annotation: options[UIApplicationOpenURLOptionsKey.annotation])
-        return SDKApplicationDelegate.shared.application(app, open: url, options: options)
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        
+        guard let urlScheme = url.scheme else { return false }
+        if urlScheme.hasPrefix("fb") {
+            return ApplicationDelegate.shared.application(app, open: url, options: options)
+        }else{
+            return GIDSignIn.sharedInstance().handle(url,
+                                                      sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
+                                                      annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+        }
+        return true
     }
+    
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
@@ -168,10 +184,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
             })
         }
     }
-
-    
- 
-    
 }
 
 

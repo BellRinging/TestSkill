@@ -47,7 +47,7 @@ class ChatLogController: UICollectionViewController,UICollectionViewDelegateFlow
             }, withCancel: nil)
     }
     
-    func scrollToLastItem(){
+    @objc func scrollToLastItem(){
         if self.messages.count > 0 {
             let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
             if indexPath.item != -1 {
@@ -85,7 +85,7 @@ class ChatLogController: UICollectionViewController,UICollectionViewDelegateFlow
     }
     
     func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
