@@ -22,8 +22,14 @@ class AddSampleData: UIViewController {
     func setupView(){
         view.addSubview(addUserButton)
         view.addSubview(addPostButton)
+        view.addSubview(addGroupButton)
+        view.addSubview(addGameButton)
+        view.addSubview(addGameDetailButton)
         addUserButton.Anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
         addPostButton.Anchor(top: addUserButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 8, width: 0, height: 50)
+        addGroupButton.Anchor(top: addPostButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 8, width: 0, height: 50)
+        addGameButton.Anchor(top: addGroupButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 8, width: 0, height: 50)
+        addGameDetailButton.Anchor(top: addGameButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 0, bottomPadding: 8, width: 0, height: 50)
     }
     
     let addUserButton : UIButton = {
@@ -39,6 +45,53 @@ class AddSampleData: UIViewController {
         bn.addTarget(self, action: #selector(handleAddPost), for: .touchUpInside)
         return bn
     }()
+    
+    let addGroupButton : UIButton = {
+        let bn = UIButton()
+        bn.setTitle("Add Group", for: .normal)
+        bn.addTarget(self, action: #selector(handleAddGroup), for: .touchUpInside)
+        return bn
+    }()
+
+    let addGameButton : UIButton = {
+        let bn = UIButton()
+        bn.setTitle("Add Game", for: .normal)
+        bn.addTarget(self, action: #selector(handleAddGame), for: .touchUpInside)
+        return bn
+    }()
+    
+    let addGameDetailButton : UIButton = {
+        let bn = UIButton()
+        bn.setTitle("Add Game Detail", for: .normal)
+        bn.addTarget(self, action: #selector(handleAddGameDetail), for: .touchUpInside)
+        return bn
+    }()
+    
+    
+    
+    @objc func handleAddGroup(){
+        print("Add group")
+        do {
+            try Auth.auth().signOut()
+        }catch{
+            print(error)
+        }
+        let db = Firestore.firestore()     
+        var ref: DocumentReference? = nil
+        ref = db.collection("Group").addDocument(data: [
+            "name": "VietNam",
+            "players": ["A":"users/0AreKjVwMvTztvahS2ZpXLSNnUB2","B":"users/0eUejGOxggUWbTLrCKfE1Nkw8KX2","C":"users/1gfinQ2TxPf8kDzjh35HgIidKzg1","D":"users/N4BVocZNtsbyVr28RQ0qxLmEVD93","E":"users/NBHoFUxUxqWLUq7byTpYDLGKkBA2","G":"users/0AreKjVwMvTztvahS2ZpXLSNnUB2"],
+            "rules": [3:60,4:130,5:190,6:260,7:380,8:510,9:770,10:1020],
+            "rules2": [3:30,4:60,5:100,6:130,7:190,8:260,9:380,10:1020]
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+    }
+    
     
     @objc func handleAddUser(){
         print("Add User")
