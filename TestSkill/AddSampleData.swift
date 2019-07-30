@@ -67,7 +67,52 @@ class AddSampleData: UIViewController {
         return bn
     }()
     
+    @objc func handleAddGame(){
+        print("Add Game")
+        do {
+            try Auth.auth().signOut()
+        }catch{
+            print(error)
+        }
+        let db = Firestore.firestore()     
+        var ref: DocumentReference? = nil
+        ref = db.collection("games").addDocument(data: [
+            "date": "2019/7/16 12:00:00 AM",
+            "location": "CP Home",
+            "results": [A:1230,B:-800,C:270,D:-700 ]
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+    } 
     
+    
+   @objc func handleAddGameDetail(){
+        print("Add Game Detail")
+        do {
+            try Auth.auth().signOut()
+        }catch{
+            print(error)
+        }
+        let db = Firestore.firestore()     
+        var ref: DocumentReference? = nil
+        ref = db.collection("gameDetail").addDocument(data: [
+            "whoWin": "A",
+            "wholose": "B",
+            "game_id":"MOTfxg1rRTVkORip0yvP",
+            "value": 1020,
+            "Remark": "10 fan"
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+    } 
     
     @objc func handleAddGroup(){
         print("Add group")
