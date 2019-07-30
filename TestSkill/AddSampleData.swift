@@ -69,15 +69,10 @@ class AddSampleData: UIViewController {
     
     @objc func handleAddGame(){
         print("Add Game")
-        do {
-            try Auth.auth().signOut()
-        }catch{
-            print(error)
-        }
         let db = Firestore.firestore()     
         var ref: DocumentReference? = nil
         ref = db.collection("games").addDocument(data: [
-            "date": "2019/7/16 12:00:00 AM",
+            "date": new Date("December 10, 2019"),
             "location": "CP Home",
             "results": [A:1230,B:-800,C:270,D:-700 ]
         ]) { err in
@@ -116,13 +111,36 @@ class AddSampleData: UIViewController {
     
     @objc func handleAddGroup(){
         print("Add group")
-        do {
-            try Auth.auth().signOut()
-        }catch{
-            print(error)
-        }
+        var users = [User]()
+        let ref = Database.database().reference().child("users")
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dict = snapshot.value as? [String:Any] else {return }
+            dict.forEach({ (key,value) in
+               
+                guard let userProfileDict = value as? [String: Any] else {return}
+                let user = User(dict: userProfileDict as [String : AnyObject])
+                users.append(user)
+            })
+            self.addPost(users: users)
+            
+        })
+        let docRef = db.collection("users")
+        docRef.getDocument { (document, error) in
+            if let city = document.flatMap({
+                $0.data().flatMap({ (data) in
+                    return City(dictionary: data)
+                })
+            }){ 
+                print("City: \(city)")
+            } else {
+                print("Document does not exist")
+            }
+        
+
         let db = Firestore.firestore()     
         var ref: DocumentReference? = nil
+        let players = 
+        
         ref = db.collection("Group").addDocument(data: [
             "name": "VietNam",
             "players": ["A":"users/0AreKjVwMvTztvahS2ZpXLSNnUB2","B":"users/0eUejGOxggUWbTLrCKfE1Nkw8KX2","C":"users/1gfinQ2TxPf8kDzjh35HgIidKzg1","D":"users/N4BVocZNtsbyVr28RQ0qxLmEVD93","E":"users/NBHoFUxUxqWLUq7byTpYDLGKkBA2","G":"users/0AreKjVwMvTztvahS2ZpXLSNnUB2"],
