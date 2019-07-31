@@ -110,6 +110,8 @@ extension UIView{
 
 extension Database {
     
+    
+    
     static func fetchUserWithUID(uid: String, completion: @escaping (User) -> ()) {
         
         
@@ -182,6 +184,7 @@ extension Date {
         return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
         
     }
+    
 }
 
 //extension UserDefaults {

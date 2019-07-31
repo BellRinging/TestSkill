@@ -71,10 +71,14 @@ class AddSampleData: UIViewController {
         print("Add Game")
         let db = Firestore.firestore()     
         var ref: DocumentReference? = nil
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd HH:mm"
+        let someDateTime = formatter.date(from: "2016/10/08 22:31")
         ref = db.collection("games").addDocument(data: [
-            "date": new Date("December 10, 2019"),
+            "date": someDateTime,
             "location": "CP Home",
-            "results": [A:1230,B:-800,C:270,D:-700 ]
+            "results": ["A":1230,"B":-800,"C":270,"D":-700 ]
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
@@ -110,60 +114,98 @@ class AddSampleData: UIViewController {
     } 
     
     @objc func handleAddGroup(){
-        print("Add group")
-        var users = [User]()
-        let ref = Database.database().reference().child("users")
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let dict = snapshot.value as? [String:Any] else {return }
-            dict.forEach({ (key,value) in
-               
-                guard let userProfileDict = value as? [String: Any] else {return}
-                let user = User(dict: userProfileDict as [String : AnyObject])
-                users.append(user)
-            })
-            self.addPost(users: users)
-            
-        })
-        let docRef = db.collection("users")
-        docRef.getDocument { (document, error) in
-            if let city = document.flatMap({
+//        print("Add group")
+        let db = Firestore.firestore()
+        let userRef = db.collection("users")
+        var players: [String: DocumentReference] = [:]
+        userRef.getDocuments { (snapshot, err) in
+            if let users = snapshot?.documents.flatMap({
                 $0.data().flatMap({ (data) in
-                    return City(dictionary: data)
+                    return User(dict: data)
                 })
-            }){ 
-                print("City: \(city)")
+            }){
+                for user in users {
+                    let ref = db.collection("users").document(user.id)
+                    players[user.name] = ref
+                }
             } else {
                 print("Document does not exist")
             }
+        }
         
-
-        let db = Firestore.firestore()     
-        var ref: DocumentReference? = nil
-        let players = 
-        
-        ref = db.collection("Group").addDocument(data: [
-            "name": "VietNam",
-            "players": ["A":"users/0AreKjVwMvTztvahS2ZpXLSNnUB2","B":"users/0eUejGOxggUWbTLrCKfE1Nkw8KX2","C":"users/1gfinQ2TxPf8kDzjh35HgIidKzg1","D":"users/N4BVocZNtsbyVr28RQ0qxLmEVD93","E":"users/NBHoFUxUxqWLUq7byTpYDLGKkBA2","G":"users/0AreKjVwMvTztvahS2ZpXLSNnUB2"],
-            "rules": [3:60,4:130,5:190,6:260,7:380,8:510,9:770,10:1020],
-            "rules2": [3:30,4:60,5:100,6:130,7:190,8:260,9:380,10:1020]
-        ]) { err in
+        //Add the Group
+        var groupRef: DocumentReference? = nil
+        groupRef = db.collection("Group").addDocument(data: [
+                    "name": "VietNam",
+                    "players": players,
+                    "rules": [3:60,4:130,5:190,6:260,7:380,8:510,9:770,10:1020],
+                    "rules2": [3:30,4:60,5:100,6:130,7:190,8:260,9:380,10:1020]
+                ]) { err in
             if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
+                    print(err.localizedDescription)
+            }else{
+                
+                print("docuemnt id : \(groupRef?.documentID)")
             }
         }
+        
+        //Add the Game
+        for round in 0...10{
+            let someDateTime = self.generateRandomDate(daysBack:365)
+            var gameRef: DocumentReference? = nil
+            var modify2 = 0
+            if Int.random(in: -1...1) > 0 {
+                modify2 = 1
+            }else{
+                modify2 = -1
+            }
+            let number1 = Int.random(in: 0 ... 300) * modify2
+            let number2 = Int.random(in: 0 ... 300) * modify2
+            let number3 = Int.random(in: 0 ... 300) * modify2
+            let number4 = (number1 + number2 + number3) * -1
+            let location = ["CP Home", "Ricky Home"]
+            let area = location.randomElement()
+            gameRef = db.collection("games").addDocument(data: [
+                "date": someDateTime!,
+                "location": area,
+                "results": ["A":1230,"B":-800,"C":270,"D":-700 ]
+            ]) { err in
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    print("Document added with ID: \(gameRef!.documentID)")
+                }
+            }
+            
+        }
+        
+        
+        
+        
     }
+    
+    
+    func generateRandomDate(daysBack: Int)-> Date?{
+                    let day = arc4random_uniform(UInt32(daysBack))+1
+                    let hour = arc4random_uniform(23)
+                    let minute = arc4random_uniform(59)
+                    
+                    let today = Date(timeIntervalSinceNow: 0)
+                    let gregorian  = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
+                    var offsetComponents = DateComponents()
+                    offsetComponents.day = -1 * Int(day - 1)
+                    offsetComponents.hour = -1 * Int(hour)
+                    offsetComponents.minute = -1 * Int(minute)
+                    
+                    let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
+                    return randomDate
+        }
+
+    
     
     
     @objc func handleAddUser(){
         print("Add User")
-        do {
-            try Auth.auth().signOut()
-        }catch{
-            print(error)
-        }
-        
         if let path = Bundle.main.path(forResource: "user", ofType: "txt"){
             do {
                 let data  = try String(contentsOfFile: path, encoding: .utf8)
@@ -374,6 +416,4 @@ class AddSampleData: UIViewController {
 //            NotificationCenter.default.post(name: SharePhotoController.updateFeedNotificationName, object: nil)
         }
     }
-    
-    
 }

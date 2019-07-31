@@ -1,17 +1,13 @@
 import UIKit
 import SwiftyJSON
 
-struct User {
+struct History {
     var id : String
     var name: String
     var firstName: String
     var lastName: String
     var email: String
     var imageUrl : String
-    var group : [UserGroup]?
-    var gameRecord : [GameRecord]?
-    var history : [History]?
-    
     
     init(dict : Dictionary<String, Any>){
         self.id = dict["id"] as? String ?? ""
