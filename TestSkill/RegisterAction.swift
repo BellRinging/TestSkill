@@ -49,8 +49,8 @@ extension RegisterViewController {
     
     
     func createUserObject() -> User{
-        let dict = ["name" : userNameField.text , "email" : emailField.text]
-        let user = User(dict: dict)
+//        let dict = ["name" : userNameField.text , "email" : emailField.text]
+        let user = User(user_id: "", user_name: userNameField.text, first_name: "", last_name: "", email: emailField.text, image_url: "", groups: nil, gameRecord: nil, history: nil)
         return user
     }
     

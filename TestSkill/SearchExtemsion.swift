@@ -13,10 +13,10 @@ extension SearchViewController : UISearchBarDelegate ,UICollectionViewDelegateFl
         if searchText.isEmpty {
             filteredUsers = users
         }else{
-            filteredUsers = users.filter { (user) -> Bool in
-                let name = user.name
-                return name.lowercased().contains(searchText.lowercased())
-            }
+//            filteredUsers = users.filter { (user) -> Bool in
+//                let name = user.user_name
+//                return name.lowercased().contains(searchText.lowercased())
+//            }
         }
         collectionView?.reloadData()
     }

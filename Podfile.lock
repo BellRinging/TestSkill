@@ -163,6 +163,9 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - PromisesObjC (1.2.8)
+  - PromisesSwift (1.2.8):
+    - PromisesObjC (= 1.2.8)
   - Protobuf (3.9.0)
   - SwiftyJSON (5.0.0)
 
@@ -179,6 +182,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - GoogleSignIn
   - MBProgressHUD (~> 1.0.0)
+  - PromisesSwift (~> 1.2)
   - SwiftyJSON
 
 SPEC REPOS:
@@ -211,6 +215,8 @@ SPEC REPOS:
     - leveldb-library
     - MBProgressHUD
     - nanopb
+    - PromisesObjC
+    - PromisesSwift
     - Protobuf
     - SwiftyJSON
 
@@ -243,9 +249,11 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 88bb2cd6dc428694cbccd998799f8ea7ad3ebc3e
+PODFILE CHECKSUM: 33d2d70035769827901f15669762b8b28750a03c
 
 COCOAPODS: 1.7.5

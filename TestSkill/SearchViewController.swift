@@ -48,7 +48,8 @@ class SearchViewController: UICollectionViewController   {
                     print("found myself")
                 }else{
                     guard let userProfileDict = value as? [String: Any] else {return}
-                    let user = User(dict: userProfileDict as [String : AnyObject])
+                   let data = try! JSONSerialization.data(withJSONObject: userProfileDict, options: .prettyPrinted)
+                   var user = try! JSONDecoder.init().decode(User.self, from: data)
                     self.users.append(user)
                 }
                 

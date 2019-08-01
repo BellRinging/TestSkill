@@ -12,8 +12,8 @@ class CommentViewControllerCell: UICollectionViewCell {
     
     var comment:Comment?{
         didSet{
-            guard let nameText = comment?.user.name else {return}
-            guard let url = comment?.user.imageUrl else {return}
+            guard let nameText = comment?.user.user_name else {return}
+            guard let url = comment?.user.image_url else {return}
             guard let commentText = comment?.comment else {return}
             profileImage.loadImage(url)
             guard let timeAgo = comment?.creationDate else {return}

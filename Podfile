@@ -12,6 +12,7 @@ pod 'SwiftyJSON'
 pod 'MBProgressHUD', '~> 1.0.0'
 pod 'Firebase/Messaging'
 pod 'Firebase/Firestore'
+pod 'PromisesSwift', '~> 1.2'
 
    use_frameworks! 
 end

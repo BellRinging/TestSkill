@@ -131,8 +131,8 @@ extension Database {
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if (!snapshot.exists()){
                 print("Cant find any user")
-                let user = User(dict: ["aaa":""])
-                 completion(user )
+            let user = User(user_id: "", user_name: "", first_name: "", last_name: "", email: "", image_url: "", groups: nil, gameRecord: nil, history: nil)
+                 completion(user)
                 return
             }
             guard let userDictionary = snapshot.value as? [String: Any] else { return }
@@ -141,7 +141,9 @@ extension Database {
                 print("Cant find any user")
                 return
             }
-            let user = User(dict: userDictionary as [String:AnyObject])
+//            let user = User(dict: userDictionary as [String:AnyObject])
+            let data = try! JSONSerialization.data(withJSONObject: userDictionary, options: .prettyPrinted)
+            var user = try! JSONDecoder.init().decode(User.self, from: data)
             completion(user)
         }) { (err) in
             print("Failed to fetch user for posts:", err)

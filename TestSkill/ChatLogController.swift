@@ -14,14 +14,14 @@ class ChatLogController: UICollectionViewController,UICollectionViewDelegateFlow
     
     var user: User? {
         didSet {
-            navigationItem.title = user?.name
+            navigationItem.title = user?.user_name
             observeMessages()
         }
     }
 
     func observeMessages() {
         
-        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.user_id else {
             return
         }
         let userMessagesRef = Database.database().reference().child("user-messages").child(uid).child(toId)
@@ -107,7 +107,7 @@ class ChatLogController: UICollectionViewController,UICollectionViewDelegateFlow
     func sendMessageWithProperties(_ properties: [String: AnyObject]) {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let toId = user!.id
+        let toId = user!.user_id
         let fromId = Auth.auth().currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
         

@@ -54,13 +54,13 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
             return
         }
         refreshControl.endRefreshing()
-        print("fetchPost from user \(user.id)")
+        print("fetchPost from user \(user.user_id)")
         self.posts = [Post]()
         self.collectionView?.reloadData()
         lastRecordUid = nil
-        print(user.id)
+        print(user.user_id)
         
-            let ref = Database.database().reference().child("posts").child(user.id)
+            let ref = Database.database().reference().child("posts").child(user.user_id)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dict = snapshot.value as? [String:Any] {
                     self.totalNumberOfPost = dict.count
@@ -89,14 +89,14 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
             isUpdating = false
             return
         }else {
-            query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey().queryLimited(toFirst: UInt(fetchSize + fetchSizeOffSet))
+            query = Database.database().reference().child("posts").child(user.user_id).queryOrderedByKey().queryLimited(toFirst: UInt(fetchSize + fetchSizeOffSet))
             footerCell?.status = 0
         }
 
         if let lastId = lastRecordUid {
             query = query.queryStarting(atValue: lastId)
         }
-        print("user id \(user.id)")
+//        print("user id \(user.user_id)")
         print("last id \(lastRecordUid)")
         query.observeSingleEvent(of: .value, with: { (snapshot) in
 //            print(snapshot.exists())
@@ -163,16 +163,16 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
             return
         }
         print(uid)
-        if let userObj = self.user , uid != userObj.id ,userObj.id != "" {
+        if let userObj = self.user , uid != userObj.user_id ,userObj.user_id != "" {
             print("load from userobj")
-            Database.fetchUserWithUID(uid: userObj.id , completion: { userObject in
+            Database.fetchUserWithUID(uid: userObj.user_id , completion: { userObject in
                 self.fetchPost()
             })
         }else {
             print("load from firebase user")
             Database.fetchUserWithUID(uid: uid, completion: { userObject in
                 print("userObject",userObject)
-                if userObject.name != "" {
+                if userObject.user_name != "" {
                     self.user = userObject
                     Utility.user = userObject
                     self.fetchPost()

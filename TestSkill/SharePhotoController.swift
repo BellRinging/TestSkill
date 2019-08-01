@@ -118,7 +118,7 @@ class SharePhotoController: UIViewController {
         
         guard let caption = textView.text, caption.count > 0 else { return }
         guard let post = post else { return }
-        let userId = post.user.id
+        let userId = post.user.user_id
         navigationItem.rightBarButtonItem?.isEnabled = false
         let ref = Database.database().reference().child("posts").child(userId).child(post.id!)
         let values = ["imageUrl": post.imageUrl, "caption": caption, "imageWidth": imageView.image?.size.width, "imageHeight": imageView.image?.size.height, "creationDate": Date().timeIntervalSince1970] as [String : Any]

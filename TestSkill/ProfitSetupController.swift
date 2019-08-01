@@ -17,11 +17,11 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
     
     var user : User?{
         didSet{
-            userNameLabel.text = user?.name
-            firstNameField.text = user?.firstName
-            lastNameField.text = user?.lastName
+            userNameLabel.text = user?.user_name
+            firstNameField.text = user?.first_name
+            lastNameField.text = user?.last_name
             emailField.text = user?.email
-            if let url = user?.imageUrl ,url != ""{
+            if let url = user?.image_url ,url != ""{
                 imageView.loadImage(url)
             }
         }
@@ -32,18 +32,18 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
         if let user = Utility.user {
             self.user = user
         }else {
-            if let firebaseUser = Utility.firebaseUser {
-                print("URL \(firebaseUser.photoURL)")
-                if let url = firebaseUser.photoURL?.absoluteString {
-                    let dict = ["name": firebaseUser.displayName,"img_url": url,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
-                    let userObject = User(dict: dict)
-                    self.user = userObject
-                }else{
-                    let dict = ["name": firebaseUser.displayName,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
-                    let userObject = User(dict: dict)
-                    self.user = userObject
-                }
-            }
+//            if let firebaseUser = Utility.firebaseUser {
+//                print("URL \(firebaseUser.photoURL)")
+//                if let url = firebaseUser.photoURL?.absoluteString {
+//                    let dict = ["name": firebaseUser.displayName,"img_url": url,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
+//                    let userObject = User(dict: dict)
+//                    self.user = userObject
+//                }else{
+//                    let dict = ["name": firebaseUser.displayName,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
+//                    let userObject = User(dict: dict)
+//                    self.user = userObject
+//                }
+//            }
         }
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.shadowImage = UIImage()

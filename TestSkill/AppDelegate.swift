@@ -122,8 +122,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
             let pic = user.profile.imageURL(withDimension: UInt(dimension)).absoluteString
             print("User have sign in into google \(user)")
             let dict = ["first_name": givenName,"last_name": familyName, "email":email  ,"name": givenName ,"img_url":pic] as [String : Any]
-            let user = User(dict: dict)
-            Utility.user = user
+//            let user = User(dict: dict)
+//            Utility.user = user
             controller.firebaseLogin(credential,provider: "Google")
         } else {
             print("\(error.localizedDescription)")

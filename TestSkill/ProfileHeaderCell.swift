@@ -14,9 +14,9 @@ class ProfileHeaderCell: UICollectionViewCell {
     
     var user : User? {
         didSet{
-            guard let url = user?.imageUrl else {return}
+            guard let url = user?.image_url else {return}
             profileImage.loadImage(url)
-            guard let name = user?.name else {return}
+            guard let name = user?.user_name else {return}
             nameLabel.text = name
             updateCount(area: DisplayArea.follower)
             updateCount(area: DisplayArea.following)
@@ -177,7 +177,7 @@ class ProfileHeaderCell: UICollectionViewCell {
                     Utility.hideProgress()
                     return
                 }
-                print("Successfully Unfollowed user: ", self.user?.name ?? "")
+                print("Successfully Unfollowed user: ", self.user?.user_name ?? "")
                 self.setupButtonStyle(following: false)
                 self.updateCount(area: DisplayArea.follower)
                 Utility.hideProgress()
@@ -204,7 +204,7 @@ class ProfileHeaderCell: UICollectionViewCell {
                     Utility.hideProgress()
                     return
                 }
-                print("Successfully followed user: ", self.user?.name ?? "")
+                print("Successfully followed user: ", self.user?.user_name ?? "")
                 self.setupButtonStyle(following: true)
                 self.updateCount(area: DisplayArea.follower)
                 Utility.hideProgress()
@@ -215,7 +215,7 @@ class ProfileHeaderCell: UICollectionViewCell {
     @objc func handleEditProfileOrFollow() {
         print("Execute edit profile / follow / unfollow logic...")
         guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return }
-        guard let userId = user?.id else { return }
+        guard let userId = user?.user_id else { return }
         if currentLoggedInUserId == userId {
             //edit profile
             self.handleEditProfile()
@@ -257,7 +257,7 @@ class ProfileHeaderCell: UICollectionViewCell {
     func updateButtonStatus(){
         print("Update Button status")
         guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return }
-        guard let userId = user?.id else { return }
+        guard let userId = user?.user_id else { return }
         print(userId)
         if(currentLoggedInUserId == userId) {
             //do nothing 
@@ -279,7 +279,7 @@ class ProfileHeaderCell: UICollectionViewCell {
         print("Update Count for \(area)")
         guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return }
         var id = currentLoggedInUserId
-        if let userId = user?.id , userId != currentLoggedInUserId {
+        if let userId = user?.user_id , userId != currentLoggedInUserId {
             id = userId
         }
         Utility.showProgress()

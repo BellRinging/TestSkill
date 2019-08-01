@@ -29,10 +29,10 @@ class HomeViewControllerCell: UICollectionViewCell {
     
     var post : Post? {
         didSet{
-            guard let name = post?.user.name ,let url = post?.imageUrl  else {return }
+            guard let name = post?.user.user_name ,let url = post?.imageUrl  else {return }
             mainImage.loadImage(url)
             nameLabel.text = name
-            guard let picUrl = post?.user.imageUrl else {return }
+            guard let picUrl = post?.user.image_url else {return }
             profileImage.loadImage(picUrl)
             setupAttributedCaption()
             guard let like =  post?.hasliked else { return }
@@ -128,7 +128,7 @@ class HomeViewControllerCell: UICollectionViewCell {
     fileprivate func setupAttributedCaption() {
         guard let post = self.post  else { return }
         let str = post.caption
-        var resultString = NSMutableAttributedString(string: "\(post.user.name) ", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
+        var resultString = NSMutableAttributedString(string: " ", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
         
         let newLineSplitStr = str.split(separator: "\n", maxSplits: 500, omittingEmptySubsequences: false)
 //        print(newLineSplitStr)

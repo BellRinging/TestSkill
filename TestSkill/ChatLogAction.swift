@@ -41,7 +41,7 @@ extension ChatLogController {
         }
         
         uploadTask.observe(.success) { (snapshot) in
-            self.navigationItem.title = self.user?.name
+            self.navigationItem.title = self.user?.user_name
         }
     }
     

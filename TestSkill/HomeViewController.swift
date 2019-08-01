@@ -61,7 +61,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
             let ref = Database.database().reference().child("posts").child(uid)
             ref.observeSingleEvent(of: .value, with: { (snapsnot) in
                 guard let dictionary = snapsnot.value as? [String: Any] else { return }
-                print("No of post for user:" , dictionary.count ," For user", user.name)
+                print("No of post for user:" , dictionary.count ," For user", user.user_name)
                 dictionary.forEach({ (key,value) in
                     let dict = value as! [String:Any]
                     var post = Post(user: user, dict: dict)
@@ -79,7 +79,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     func deleteUserPost(index : Int){
         guard let postId = self.posts[index].id else {return}
-        let userId = self.posts[index].user.id
+        let userId = self.posts[index].user.user_id
         let ref = Database.database().reference().child("posts").child(userId).child(postId)
 //        print("post",postId)
 //        print("user",userId)

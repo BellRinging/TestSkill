@@ -8,9 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		394E6055A2E84994640212ED /* Pods_TestSkill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */; };
-		E518F60E22F067B10012CC2D /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60D22F067B10012CC2D /* GameRecord.swift */; };
-		E518F61022F067D40012CC2D /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60F22F067D40012CC2D /* Group.swift */; };
-		E518F61222F067DD0012CC2D /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F61122F067DD0012CC2D /* History.swift */; };
+		E518F60E22F067B10012CC2D /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60D22F067B10012CC2D /* Game.swift */; };
+		E518F61022F067D40012CC2D /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60F22F067D40012CC2D /* UserGroup.swift */; };
+		E518F61222F067DD0012CC2D /* UserHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F61122F067DD0012CC2D /* UserHistory.swift */; };
+		E51DB7A522F2995400CD7BFF /* GameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DB7A422F2995400CD7BFF /* GameDetail.swift */; };
+		E51DB7A722F2996000CD7BFF /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DB7A622F2996000CD7BFF /* GameRecord.swift */; };
+		E51DB7A922F3262700CD7BFF /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DB7A822F3262700CD7BFF /* Group.swift */; };
 		EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */; };
 		EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */; };
 		EB05CF921FB2E1980039F6FB /* user.txt in Resources */ = {isa = PBXBuildFile; fileRef = EB05CF901FB2E1980039F6FB /* user.txt */; };
@@ -91,9 +94,12 @@
 		3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestSkill.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		490B503289F94BA60C70C937 /* Pods-TestSkill.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.release.xcconfig"; sourceTree = "<group>"; };
-		E518F60D22F067B10012CC2D /* GameRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameRecord.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/GameRecord.swift; sourceTree = "<group>"; };
-		E518F60F22F067D40012CC2D /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Group.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/Group.swift; sourceTree = "<group>"; };
-		E518F61122F067DD0012CC2D /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = History.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/History.swift; sourceTree = "<group>"; };
+		E518F60D22F067B10012CC2D /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/Game.swift; sourceTree = "<group>"; };
+		E518F60F22F067D40012CC2D /* UserGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserGroup.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/UserGroup.swift; sourceTree = "<group>"; };
+		E518F61122F067DD0012CC2D /* UserHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserHistory.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/UserHistory.swift; sourceTree = "<group>"; };
+		E51DB7A422F2995400CD7BFF /* GameDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameDetail.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/GameDetail.swift; sourceTree = "<group>"; };
+		E51DB7A622F2996000CD7BFF /* GameRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameRecord.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/GameRecord.swift; sourceTree = "<group>"; };
+		E51DB7A822F3262700CD7BFF /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Group.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/Group.swift; sourceTree = "<group>"; };
 		EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSampleData.swift; sourceTree = "<group>"; };
 		EB05CF901FB2E1980039F6FB /* user.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = user.txt; sourceTree = "<group>"; };
@@ -338,9 +344,12 @@
 			isa = PBXGroup;
 			children = (
 				EB579EC41F1CE963002E31A7 /* User.swift */,
-				E518F60D22F067B10012CC2D /* GameRecord.swift */,
-				E518F60F22F067D40012CC2D /* Group.swift */,
-				E518F61122F067DD0012CC2D /* History.swift */,
+				E518F60D22F067B10012CC2D /* Game.swift */,
+				E51DB7A422F2995400CD7BFF /* GameDetail.swift */,
+				E51DB7A622F2996000CD7BFF /* GameRecord.swift */,
+				E518F60F22F067D40012CC2D /* UserGroup.swift */,
+				E51DB7A822F3262700CD7BFF /* Group.swift */,
+				E518F61122F067DD0012CC2D /* UserHistory.swift */,
 				EB579EC21F1CE721002E31A7 /* Post.swift */,
 				EB215B551F3CA820001A9BC0 /* Page.swift */,
 				EB1CC9651FA23B9A004800D4 /* Comment.swift */,
@@ -614,6 +623,8 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
@@ -634,6 +645,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
@@ -669,7 +682,8 @@
 				EBAF65A11F4D490400FC05C1 /* ProfitSetupController.swift in Sources */,
 				EBCFACC21FF631BA00F771E9 /* TagViewController.swift in Sources */,
 				EB579EBF1F1CE3DB002E31A7 /* SinglePhotoCell.swift in Sources */,
-				E518F60E22F067B10012CC2D /* GameRecord.swift in Sources */,
+				E51DB7A522F2995400CD7BFF /* GameDetail.swift in Sources */,
+				E518F60E22F067B10012CC2D /* Game.swift in Sources */,
 				EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */,
 				EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */,
 				EB579EAF1F1CDABA002E31A7 /* AddPostController.swift in Sources */,
@@ -699,7 +713,9 @@
 				EBBA9ED11FF37C1F002B4D14 /* UserCell.swift in Sources */,
 				EBE3558A1FB049BD00F64AD4 /* ForgetPasswordController.swift in Sources */,
 				EBB950881F449069005D62E2 /* TestGoogle.swift in Sources */,
+				E51DB7A922F3262700CD7BFF /* Group.swift in Sources */,
 				EB5C05241FF490E70071B85C /* HomeViewAction.swift in Sources */,
+				E51DB7A722F2996000CD7BFF /* GameRecord.swift in Sources */,
 				EB1CC9601FA2368B004800D4 /* CommentViewControllerold.swift in Sources */,
 				EB579EB51F1CDEDC002E31A7 /* ProfileViewController.swift in Sources */,
 				EB579EBD1F1CDFBB002E31A7 /* CustomImageView.swift in Sources */,
@@ -712,12 +728,12 @@
 				EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */,
 				EB94AA0A1FEA1D5A00C41524 /* CustomAnimationDismisser.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
-				E518F61222F067DD0012CC2D /* History.swift in Sources */,
+				E518F61222F067DD0012CC2D /* UserHistory.swift in Sources */,
 				EB5C05221FF48C4B0071B85C /* ChatLogTextField.swift in Sources */,
 				EBC110DE2004886C00766D27 /* CommentController.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EBBA9ECF1FF37C1F002B4D14 /* ChatMessageCell.swift in Sources */,
-				E518F61022F067D40012CC2D /* Group.swift in Sources */,
+				E518F61022F067D40012CC2D /* UserGroup.swift in Sources */,
 				EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */,
 				EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */,
 				EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */,

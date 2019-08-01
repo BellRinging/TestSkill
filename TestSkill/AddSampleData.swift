@@ -97,43 +97,34 @@ class AddSampleData: UIViewController {
             print(error)
         }
         let db = Firestore.firestore()     
-        var ref: DocumentReference? = nil
-        ref = db.collection("gameDetail").addDocument(data: [
-            "whoWin": "A",
-            "wholose": "B",
-            "game_id":"MOTfxg1rRTVkORip0yvP",
-            "value": 1020,
-            "Remark": "10 fan"
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
+        
     } 
     
     @objc func handleAddGroup(){
-//        print("Add group")
+        
+        print("Add User")
+        var users : [User] = []
         let db = Firestore.firestore()
         let userRef = db.collection("users")
         var players: [String: DocumentReference] = [:]
         userRef.getDocuments { (snapshot, err) in
-            if let users = snapshot?.documents.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dict: data)
-                })
-            }){
-                for user in users {
-                    let ref = db.collection("users").document(user.id)
-                    players[user.name] = ref
-                }
-            } else {
-                print("Document does not exist")
-            }
+//            if let userList = snapshot?.documents.flatMap({
+//                $0.data().flatMap({ (data) in
+//                    return User(dict: data)
+//                })
+//            }){
+//                users = userList
+//                print("Fetch all the user number count : \(users.count)")
+//                for user in users {
+//                    let ref = db.collection("users").document(user.user_id)
+//                    players[user.user_name] = ref
+//                }
+//            } else {
+//                print("Document does not exist")
+//            }
         }
         
-        //Add the Group
+        //Add one Group
         var groupRef: DocumentReference? = nil
         groupRef = db.collection("Group").addDocument(data: [
                     "name": "VietNam",
@@ -144,11 +135,11 @@ class AddSampleData: UIViewController {
             if let err = err {
                     print(err.localizedDescription)
             }else{
-                
+                print("Added the group Vietnam")
                 print("docuemnt id : \(groupRef?.documentID)")
             }
         }
-        
+        /*
         //Add the Game
         for round in 0...10{
             let someDateTime = self.generateRandomDate(daysBack:365)
@@ -165,23 +156,149 @@ class AddSampleData: UIViewController {
             let number4 = (number1 + number2 + number3) * -1
             let location = ["CP Home", "Ricky Home"]
             let area = location.randomElement()
+            var result : [String:DocumentReference] = [:]
+            
+            let randomPickList = randomPick(array: users, number: 4)
+            for num in randomPickList{
+                result[users[num].name] = db.collection("users").document(users[num].id)
+            }
+            
             gameRef = db.collection("games").addDocument(data: [
                 "date": someDateTime!,
                 "location": area,
-                "results": ["A":1230,"B":-800,"C":270,"D":-700 ]
+                "results": result
             ]) { err in
                 if let err = err {
                     print("Error adding document: \(err)")
                 } else {
+                    print("Added 10 games")
                     print("Document added with ID: \(gameRef!.documentID)")
                 }
             }
+        }
+        
+        //Add the Game Detail
+        
+        //get all the game
+        let gameRef = db.collection("game")
+        var games : [Game] = []
+        var playerWin : String
+        var playerLose : String
+        gameRef.getDocuments { (snapshot, err) in
+        if let gameList = snapshot?.documents.flatMap({
+            $0.data().flatMap({ (data) in
+                return Game(dict: data)
+            })
+        }){
+            games = gameList
+        }else{
+            return
+        }
+        guard let selectedGame = games.randomElement() else {
+            return
+        }
+        print("Selected game : \(selectedGame.game_id)")
+        
             
+        guard let whoWin = selectedGame.result.randomElement() else { return}
+        print("Player win : \(whoWin.key)")
+        
+        var whoLose = whoWin
+        while ( whoWin.key == whoLose.key ){
+            whoLose = selectedGame.result.randomElement()!
+        }
+        print("Player lose : \(whoLose.key)")
+        let winType = ["self","other"]
+        let randomWinType = winType.randomElement()
+        let value = Int.random(in: 3...10)
+        
+            let a = db.collection("Group").document(selectedGame.game_id).getDocument { (snapshot, err) in
+            if let data = snapshot?.data() {
+                
+            }
+        }
+//        if randomWinType
+            
+        var randomPlayerLose = Int.random(in: 0...3)
+        while (randomPlayerWin == randomPlayerLose) {
+                randomPlayerLose = Int.random(in: 0...3)
+        }
+            
+        let whoWin = games[randomGame]
+        let randomPlayer = Int.random(in: 0...games.count-1)
+            
+            for user in users {
+                let ref = db.collection("users").document(user.id)
+                players[user.name] = ref
+            }
+        } else {
+            print("Document does not exist")
+        }
+    }
+        
+
+            
+            
+            users = userList
+                print("Fetch all the user number count : \(users.count)")
+                for user in users {
+                    let ref = db.collection("users").document(user.id)
+                    players[user.name] = ref
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+        
+        for gameDetailRound in 0...32{
+            var gameDetailRef: DocumentReference? = nil
+            let randomPickGameList = randomPick(array: users, number: 2)
+                for num in randomPickList{
+                result[users[num].name] = db.collection("users").document(users[num].id)
+            }
+            
+            
+            
+            let randomPickList = randomPick(array: users, number: 2)
+            for num in randomPickList{
+                result[users[num].name] = db.collection("users").document(users[num].id)
+            }
+            var ref: DocumentReference? = nil
+                ref = db.collection("gameDetail").addDocument(data: [
+                    "whoWin": "A",
+                    "wholose": "B",
+                    "game_id":"MOTfxg1rRTVkORip0yvP",
+                    "value": 1020,
+                    "Remark": "10 fan"
+                ]) { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        print("Document added with ID: \(ref!.documentID)")
+                    }
+                }
         }
         
         
+        */
         
         
+    }
+    
+    func randomPick(array:[Any],number : Int)-> [Int]{
+        let count = array.count;
+        var result : [Int] = []
+        var used : [Int] = []
+        for num in 1...number {
+            var random = Int.random(in: 0...count)
+            while (used.firstIndex(of: random) == -1){
+                //elemet exist
+                random = Int.random(in: 0...count)
+            }
+            result.append(random)
+            used.append(random)
+        }
+        return result
     }
     
     
@@ -199,7 +316,7 @@ class AddSampleData: UIViewController {
                     
                     let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
                     return randomDate
-        }
+    }
 
     
     
@@ -242,7 +359,9 @@ class AddSampleData: UIViewController {
             dict.forEach({ (key,value) in
                
                 guard let userProfileDict = value as? [String: Any] else {return}
-                let user = User(dict: userProfileDict as [String : AnyObject])
+                let data = try! JSONSerialization.data(withJSONObject: userProfileDict, options: .prettyPrinted)
+                var user = try! JSONDecoder.init().decode(User.self, from: data)
+//                let user = User(dict: userProfileDict as [String : AnyObject])
                 users.append(user)
             })
             self.addPost(users: users)
@@ -269,7 +388,7 @@ class AddSampleData: UIViewController {
 //                        print(items[0])
 //                        print(items[1])
 //                        print(rand)
-                        self.saveToDatabaseWithImageUrl(imageUrl: items[0], uid: users[Int(rand)].id, caption: items[1])
+                        self.saveToDatabaseWithImageUrl(imageUrl: items[0], uid: users[Int(rand)].user_id, caption: items[1])
                     }
                 }
                 
