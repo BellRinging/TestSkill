@@ -32,7 +32,7 @@ class HomeViewControllerCell: UICollectionViewCell {
             guard let name = post?.user.user_name ,let url = post?.imageUrl  else {return }
             mainImage.loadImage(url)
             nameLabel.text = name
-            guard let picUrl = post?.user.image_url else {return }
+            guard let picUrl = post?.user.img_url else {return }
             profileImage.loadImage(picUrl)
             setupAttributedCaption()
             guard let like =  post?.hasliked else { return }

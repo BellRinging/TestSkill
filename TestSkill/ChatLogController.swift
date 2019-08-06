@@ -107,7 +107,7 @@ class ChatLogController: UICollectionViewController,UICollectionViewDelegateFlow
     func sendMessageWithProperties(_ properties: [String: AnyObject]) {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let toId = user!.user_id
+        let toId = user!.id
         let fromId = Auth.auth().currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
         

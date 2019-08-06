@@ -15,7 +15,7 @@ class SearchViewControllerCell: UICollectionViewCell {
     var user : User?{
         didSet{
             username.text = user?.user_name
-            guard let urlString = user?.image_url else {return}
+            guard let urlString = user?.img_url else {return}
             profileImage.loadImage(urlString)
         }
     }

@@ -60,7 +60,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         lastRecordUid = nil
         print(user.user_id)
         
-            let ref = Database.database().reference().child("posts").child(user.user_id)
+            let ref = Database.database().reference().child("posts").child(user.id)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dict = snapshot.value as? [String:Any] {
                     self.totalNumberOfPost = dict.count
@@ -89,7 +89,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
             isUpdating = false
             return
         }else {
-            query = Database.database().reference().child("posts").child(user.user_id).queryOrderedByKey().queryLimited(toFirst: UInt(fetchSize + fetchSizeOffSet))
+            query = Database.database().reference().child("posts").child(user.id).queryOrderedByKey().queryLimited(toFirst: UInt(fetchSize + fetchSizeOffSet))
             footerCell?.status = 0
         }
 
@@ -165,7 +165,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         print(uid)
         if let userObj = self.user , uid != userObj.user_id ,userObj.user_id != "" {
             print("load from userobj")
-            Database.fetchUserWithUID(uid: userObj.user_id , completion: { userObject in
+            Database.fetchUserWithUID(uid: userObj.id , completion: { userObject in
                 self.fetchPost()
             })
         }else {

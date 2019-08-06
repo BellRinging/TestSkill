@@ -21,7 +21,7 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
             firstNameField.text = user?.first_name
             lastNameField.text = user?.last_name
             emailField.text = user?.email
-            if let url = user?.image_url ,url != ""{
+            if let url = user?.img_url ,url != ""{
                 imageView.loadImage(url)
             }
         }

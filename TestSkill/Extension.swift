@@ -131,7 +131,9 @@ extension Database {
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if (!snapshot.exists()){
                 print("Cant find any user")
-            let user = User(user_id: "", user_name: "", first_name: "", last_name: "", email: "", image_url: "", groups: nil, gameRecord: nil, history: nil)
+//            let user = User(user_id: "", user_name: "", first_name: "", last_name: "", email: "", image_url: "", groups: nil, gameRecord: nil, history: nil)
+                let dict = ["":""]
+                let user = User(dict: dict)
                  completion(user)
                 return
             }

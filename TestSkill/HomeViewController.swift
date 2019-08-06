@@ -79,7 +79,7 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     
     func deleteUserPost(index : Int){
         guard let postId = self.posts[index].id else {return}
-        let userId = self.posts[index].user.user_id
+        let userId = self.posts[index].user.id
         let ref = Database.database().reference().child("posts").child(userId).child(postId)
 //        print("post",postId)
 //        print("user",userId)

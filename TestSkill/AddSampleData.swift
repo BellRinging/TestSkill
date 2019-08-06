@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import Promises
 
 class AddSampleData: UIViewController {
     
@@ -68,78 +69,21 @@ class AddSampleData: UIViewController {
     }()
     
     @objc func handleAddGame(){
-        print("Add Game")
-        let db = Firestore.firestore()     
-        var ref: DocumentReference? = nil
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd HH:mm"
-        let someDateTime = formatter.date(from: "2016/10/08 22:31")
-        ref = db.collection("games").addDocument(data: [
-            "date": someDateTime,
-            "location": "CP Home",
-            "results": ["A":1230,"B":-800,"C":270,"D":-700 ]
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
+
+        //get all users
+        let users = try! await(User.getAllItem().catch{ err in
+            Utility.showError(self, message: err.localizedDescription)
+            print(err.localizedDescription)
             }
-        }
-    } 
-    
-    
-   @objc func handleAddGameDetail(){
-        print("Add Game Detail")
-        do {
-            try Auth.auth().signOut()
-        }catch{
-            print(error)
-        }
-        let db = Firestore.firestore()     
+        )
         
-    } 
-    
-    @objc func handleAddGroup(){
-        
-        print("Add User")
-        var users : [User] = []
-        let db = Firestore.firestore()
-        let userRef = db.collection("users")
-        var players: [String: DocumentReference] = [:]
-        userRef.getDocuments { (snapshot, err) in
-//            if let userList = snapshot?.documents.flatMap({
-//                $0.data().flatMap({ (data) in
-//                    return User(dict: data)
-//                })
-//            }){
-//                users = userList
-//                print("Fetch all the user number count : \(users.count)")
-//                for user in users {
-//                    let ref = db.collection("users").document(user.user_id)
-//                    players[user.user_name] = ref
-//                }
-//            } else {
-//                print("Document does not exist")
-//            }
-        }
-        
-        //Add one Group
-        var groupRef: DocumentReference? = nil
-        groupRef = db.collection("Group").addDocument(data: [
-                    "name": "VietNam",
-                    "players": players,
-                    "rules": [3:60,4:130,5:190,6:260,7:380,8:510,9:770,10:1020],
-                    "rules2": [3:30,4:60,5:100,6:130,7:190,8:260,9:380,10:1020]
-                ]) { err in
-            if let err = err {
-                    print(err.localizedDescription)
-            }else{
-                print("Added the group Vietnam")
-                print("docuemnt id : \(groupRef?.documentID)")
+        //get group
+        let group = try! await(Group.getById(id: "749C7B4D-21ED-40B1-8F28-ACC42E364B7A").catch{ err in
+            Utility.showError(self, message: err.localizedDescription)
+            print(err.localizedDescription)
             }
-        }
-        /*
+        )
+        
         //Add the Game
         for round in 0...10{
             let someDateTime = self.generateRandomDate(daysBack:365)
@@ -154,150 +98,174 @@ class AddSampleData: UIViewController {
             let number2 = Int.random(in: 0 ... 300) * modify2
             let number3 = Int.random(in: 0 ... 300) * modify2
             let number4 = (number1 + number2 + number3) * -1
+            let numList = [number1,number2,number3,number4]
             let location = ["CP Home", "Ricky Home"]
             let area = location.randomElement()
-            var result : [String:DocumentReference] = [:]
+            var result : [String:Int] = [:]
             
-            let randomPickList = randomPick(array: users, number: 4)
+            let randomPickList = self.randomPick(array: users, number: 4)
+            var count = 0
             for num in randomPickList{
-                result[users[num].name] = db.collection("users").document(users[num].id)
+                result[users[num].id] = numList[count]
+                count = count+1
             }
-            
-            gameRef = db.collection("games").addDocument(data: [
-                "date": someDateTime!,
-                "location": area,
-                "results": result
-            ]) { err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    print("Added 10 games")
-                    print("Document added with ID: \(gameRef!.documentID)")
-                }
-            }
+            let groupId = group.group_id
+            let uuid = UUID().uuidString
+            let game = Game(game_id: uuid, group_id: groupId, location: area!, date: someDateTime!, result: result)
+            try! await(game.save().catch{err in
+                Utility.showError(self, message: err.localizedDescription)
+                print(err.localizedDescription)
+            })
         }
+        print("10 games created")
+        
+        
+        
+    } 
+    
+    
+   @objc func handleAddGameDetail(){
+    self.background.async {
         
         //Add the Game Detail
+        let games = try! await(Game.getAllItem().catch{err in
+            Utility.showError(self, message: err.localizedDescription)
+        })
+        guard let selectedGame = games.randomElement() else { return}
+//        print("Selected game : \(selectedGame.game_id)")
+        let groupRule = try! await(Group.getById(id: selectedGame.group_id).catch{err in
+            Utility.showError(self, message: err.localizedDescription)
+        }).rule
+//        print("Rule : \(groupRule)")
         
-        //get all the game
-        let gameRef = db.collection("game")
-        var games : [Game] = []
-        var playerWin : String
-        var playerLose : String
-        gameRef.getDocuments { (snapshot, err) in
-        if let gameList = snapshot?.documents.flatMap({
-            $0.data().flatMap({ (data) in
-                return Game(dict: data)
-            })
-        }){
-            games = gameList
-        }else{
-            return
-        }
-        guard let selectedGame = games.randomElement() else {
-            return
-        }
-        print("Selected game : \(selectedGame.game_id)")
-        
-            
-        guard let whoWin = selectedGame.result.randomElement() else { return}
-        print("Player win : \(whoWin.key)")
-        
-        var whoLose = whoWin
-        while ( whoWin.key == whoLose.key ){
-            whoLose = selectedGame.result.randomElement()!
-        }
-        print("Player lose : \(whoLose.key)")
-        let winType = ["self","other"]
-        let randomWinType = winType.randomElement()
-        let value = Int.random(in: 3...10)
-        
-            let a = db.collection("Group").document(selectedGame.game_id).getDocument { (snapshot, err) in
-            if let data = snapshot?.data() {
-                
-            }
-        }
-//        if randomWinType
-            
-        var randomPlayerLose = Int.random(in: 0...3)
-        while (randomPlayerWin == randomPlayerLose) {
-                randomPlayerLose = Int.random(in: 0...3)
-        }
-            
-        let whoWin = games[randomGame]
-        let randomPlayer = Int.random(in: 0...games.count-1)
-            
-            for user in users {
-                let ref = db.collection("users").document(user.id)
-                players[user.name] = ref
-            }
-        } else {
-            print("Document does not exist")
-        }
-    }
-        
-
-            
-            
-            users = userList
-                print("Fetch all the user number count : \(users.count)")
-                for user in users {
-                    let ref = db.collection("users").document(user.id)
-                    players[user.name] = ref
+        for round in 0...32{
+            guard let whoWin = selectedGame.result.randomElement() else { return}
+//            print("Player win : \(whoWin.key)")
+            let winType = ["self","other"]
+            let randomWinType = winType.randomElement()!
+            var value = 0
+            var credit = 0
+            let remark = Int.random(in: 3...10)
+            var whoLoseList:[String] = []
+            if (randomWinType == "other"){
+                value = groupRule[remark]!
+                credit = value
+                var whoLose = whoWin
+                while ( whoWin.key == whoLose.key ){
+                    whoLose = selectedGame.result.randomElement()!
                 }
-            } else {
-                print("Document does not exist")
-            }
-        }
-        
-        for gameDetailRound in 0...32{
-            var gameDetailRef: DocumentReference? = nil
-            let randomPickGameList = randomPick(array: users, number: 2)
-                for num in randomPickList{
-                result[users[num].name] = db.collection("users").document(users[num].id)
-            }
-            
-            
-            
-            let randomPickList = randomPick(array: users, number: 2)
-            for num in randomPickList{
-                result[users[num].name] = db.collection("users").document(users[num].id)
-            }
-            var ref: DocumentReference? = nil
-                ref = db.collection("gameDetail").addDocument(data: [
-                    "whoWin": "A",
-                    "wholose": "B",
-                    "game_id":"MOTfxg1rRTVkORip0yvP",
-                    "value": 1020,
-                    "Remark": "10 fan"
-                ]) { err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    } else {
-                        print("Document added with ID: \(ref!.documentID)")
+                whoLoseList = [whoLose.key]
+            }else{
+                value = groupRule[remark * 10]!
+                credit = value * 3
+                for (key,value) in selectedGame.result {
+                    if (key == whoWin.key){
+                    }else{
+                        whoLoseList.append(key)
                     }
                 }
+            }
+            let uuid = UUID().uuidString
+            let gameDetail = GameDetail(id: uuid, game_id: selectedGame.game_id, remark: "\(remark) fan", value: value, whoLose: whoLoseList, whoWin: [whoWin.key], winType: randomWinType)
+            print(gameDetail)
+            try! await(gameDetail.save().catch{err in
+                Utility.showError(self, message: err.localizedDescription)
+            })
+            var gameRecord : GameRecord
+            gameRecord = GameRecord(record_id: uuid, game_id: selectedGame.game_id, value: credit)
+            try! await(gameRecord.save(userId: whoWin.key).catch{err in
+                Utility.showError(self, message: err.localizedDescription)
+            })
+            gameRecord.value = value * -1
+            for lose in whoLoseList{
+                try! await(gameRecord.save(userId: lose).catch{err in
+                    Utility.showError(self, message: err.localizedDescription)
+                })
+            }
+        
+            
+            
+            
+            try! await(gameDetail.save().catch{err in
+                Utility.showError(self, message: err.localizedDescription)
+            })
         }
-        
-        
-        */
+        print("success")
         
         
     }
+    }
+    
+    lazy var background: DispatchQueue = {
+          return DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
+      }()
+    
+    @objc func handleAddGroup(){
+        
+        self.background.async {
+            
+            self.loginUser(num: 1 ,name:  "")
+            
+            //get all users
+            let users = try! await(User.getAllItem().catch{ err in
+                Utility.showError(self, message: err.localizedDescription)
+                print(err.localizedDescription)
+                }
+            )
+            
+            //Create group
+            let uuid = UUID().uuidString
+            let rule = [3:60,4:130,5:190,6:260,7:380,8:510,9:770,10:1020
+                                ,30:30,40:60,50:100,60:130,70:190,80:260,90:380,100:510]
+            
+            let players = Dictionary(uniqueKeysWithValues: users.map { ($0.id , $0.name) })
+            let group = Group(group_id: uuid, players: players, rule: rule, group_name: "VietNam")
+            try! await(group.save().catch{ err in
+                Utility.showError(self, message: err.localizedDescription)
+                    print(err.localizedDescription)
+                }
+            )
+            for user in users {
+                let userGroup = UserGroup(group_id: uuid, group_name: "VietNam")
+                try! await(userGroup.save(userId: user.id).catch{ err in
+                    Utility.showError(self, message: err.localizedDescription)
+                    print(err.localizedDescription)
+                    }
+                )
+            }
+            
+            return
+            
+            
+            
+             
+        }
+    }
+
+        
+        
+    
     
     func randomPick(array:[Any],number : Int)-> [Int]{
-        let count = array.count;
+        var count = Int(array.count) - 1
         var result : [Int] = []
         var used : [Int] = []
-        for num in 1...number {
-            var random = Int.random(in: 0...count)
-            while (used.firstIndex(of: random) == -1){
-                //elemet exist
-                random = Int.random(in: 0...count)
-            }
+        var random = Int.random(in: 0...count)
+//        print("random num :\(random)")
+        for num in 1...number{
             result.append(random)
             used.append(random)
+            random = Int.random(in: 0...count)
+            while  true {
+                if let temp = used.firstIndex(of: random){
+                    random = Int.random(in: 0...count)
+//                    print("regen random num :\(random)")
+                }else {
+                    break
+                }
+            }
         }
+        
         return result
     }
     
@@ -315,6 +283,8 @@ class AddSampleData: UIViewController {
                     offsetComponents.minute = -1 * Int(minute)
                     
                     let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
+        
+        
                     return randomDate
     }
 
@@ -388,7 +358,7 @@ class AddSampleData: UIViewController {
 //                        print(items[0])
 //                        print(items[1])
 //                        print(rand)
-                        self.saveToDatabaseWithImageUrl(imageUrl: items[0], uid: users[Int(rand)].user_id, caption: items[1])
+                        self.saveToDatabaseWithImageUrl(imageUrl: items[0], uid: users[Int(rand)].id, caption: items[1])
                     }
                 }
                 
@@ -447,7 +417,8 @@ class AddSampleData: UIViewController {
         
         Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
             guard let user = result?.user else {return}
-            self.createProfitObject(num: num, uid: user.uid, name: name)
+            print("User login")
+//            self.createProfitObject(num: num, uid: user.uid, name: name)
         }
     }
 //

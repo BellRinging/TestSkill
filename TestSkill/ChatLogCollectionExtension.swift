@@ -53,7 +53,7 @@ extension ChatLogController  {
     }
     
     fileprivate func setupCell(_ cell: ChatMessageCell, message: Message) {
-        if let profileImageUrl = self.user?.image_url {
+        if let profileImageUrl = self.user?.img_url {
             cell.profileImageView.loadImage(profileImageUrl)
         }
         
