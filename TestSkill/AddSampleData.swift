@@ -179,20 +179,21 @@ class AddSampleData: UIViewController {
             try! await(gameRecord.save(userId: whoWin.key).catch{err in
                 Utility.showError(self, message: err.localizedDescription)
             })
+            try! await(selectedGame.updateResult(playerId : whoWin.key , value : credit ).catch{err in
+                Utility.showError(self, message: err.localizedDescription)
+            })
+            
             gameRecord.value = value * -1
             for lose in whoLoseList{
                 try! await(gameRecord.save(userId: lose).catch{err in
                     Utility.showError(self, message: err.localizedDescription)
                 })
+                try! await(selectedGame.updateResult(playerId : lose, value : value * -1 ).catch{err in
+                    Utility.showError(self, message: err.localizedDescription)
+                })
             }
            
-        
             
-            
-   
-            try! await(gameDetail.save().catch{err in
-                Utility.showError(self, message: err.localizedDescription)
-            })
         }
         print("success")
         
