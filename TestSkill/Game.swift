@@ -59,4 +59,20 @@ extension Game {
          
           }
       }
+    
+     func updateResult(playerId : String , value : Int ) -> Promise<Game> {
+             
+          return Promise<Game> { (resolve , reject) in
+              let db = Firestore.firestore()
+              let data = ["age": 13,"result.\(id)": FieldValue.increment(Int64(value))]
+              let ref = db.collection("games").document(self.game_id)
+              ref.updateData(data as! [String : Any]) { (err) in
+                  guard err == nil  else {
+                      return reject(err!)
+                  }
+                  resolve(self)
+              }
+         
+          }
+      }
 }
