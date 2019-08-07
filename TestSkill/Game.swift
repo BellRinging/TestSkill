@@ -64,7 +64,7 @@ extension Game {
              
           return Promise<Game> { (resolve , reject) in
               let db = Firestore.firestore()
-              let data = ["age": 13,"result.\(id)": FieldValue.increment(Int64(value))]
+              let data = ["result.\(id)": FieldValue.increment(Int64(value))]
               let ref = db.collection("games").document(self.game_id)
               ref.updateData(data as! [String : Any]) { (err) in
                   guard err == nil  else {
