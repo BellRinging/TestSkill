@@ -103,10 +103,10 @@ class AddSampleData: UIViewController {
             let area = location.randomElement()
             var result : [String:Int] = [:]
             
-            let randomPickList = self.randomPick(array: users, number: 4)
+            let randomPickList : [User] = self.randomPick(array: users, number: 4)
             var count = 0
             for num in randomPickList{
-                result[users[num].id] = numList[count]
+                result[num.id] = numList[count]
                 count = count+1
             }
             let groupId = group.group_id
@@ -118,26 +118,26 @@ class AddSampleData: UIViewController {
             })
         }
         print("10 games created")
-        
-        
-        
     } 
     
     
    @objc func handleAddGameDetail(){
     self.background.async {
         
-        //Add the Game Detail
+        //Radon select a game 
         let games = try! await(Game.getAllItem().catch{err in
             Utility.showError(self, message: err.localizedDescription)
         })
         guard let selectedGame = games.randomElement() else { return}
-//        print("Selected game : \(selectedGame.game_id)")
+        print("Selected Game id : \(selectedGame.game_id)")
+        
+        //Get the game rule
         let groupRule = try! await(Group.getById(id: selectedGame.group_id).catch{err in
             Utility.showError(self, message: err.localizedDescription)
         }).rule
-//        print("Rule : \(groupRule)")
+        print("Rule : \(groupRule)")
         
+        // 
         for round in 0...32{
             guard let whoWin = selectedGame.result.randomElement() else { return}
 //            print("Player win : \(whoWin.key)")
@@ -167,10 +167,13 @@ class AddSampleData: UIViewController {
             }
             let uuid = UUID().uuidString
             let gameDetail = GameDetail(id: uuid, game_id: selectedGame.game_id, remark: "\(remark) fan", value: value, whoLose: whoLoseList, whoWin: [whoWin.key], winType: randomWinType)
-            print(gameDetail)
+//            print(gameDetail)
             try! await(gameDetail.save().catch{err in
                 Utility.showError(self, message: err.localizedDescription)
             })
+            print("Add game detail record \(uuid)")
+            
+            //Update User game records
             var gameRecord : GameRecord
             gameRecord = GameRecord(record_id: uuid, game_id: selectedGame.game_id, value: credit)
             try! await(gameRecord.save(userId: whoWin.key).catch{err in
@@ -182,10 +185,11 @@ class AddSampleData: UIViewController {
                     Utility.showError(self, message: err.localizedDescription)
                 })
             }
+           
         
             
             
-            
+   
             try! await(gameDetail.save().catch{err in
                 Utility.showError(self, message: err.localizedDescription)
             })
@@ -246,14 +250,14 @@ class AddSampleData: UIViewController {
         
     
     
-    func randomPick(array:[Any],number : Int)-> [Int]{
+    func randomPick(array:[Any],number : Int)-> [Any]{
         var count = Int(array.count) - 1
-        var result : [Int] = []
+        var result : [Any] = []
         var used : [Int] = []
         var random = Int.random(in: 0...count)
 //        print("random num :\(random)")
         for num in 1...number{
-            result.append(random)
+            result.append(array[random])
             used.append(random)
             random = Int.random(in: 0...count)
             while  true {
@@ -265,7 +269,6 @@ class AddSampleData: UIViewController {
                 }
             }
         }
-        
         return result
     }
     
