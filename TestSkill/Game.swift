@@ -11,16 +11,32 @@ struct Game: Codable{
     var game_id : String
     var group_id : String
     var location : String
-    var date : Date
+    var date : String
+    var period : String
     var result : [String:Int]
-    
+    var players : [String:String]
 }
 
 extension Game {
     
+    static func delete(id : String ) -> Promise<Void> {
+        let p = Promise<Void> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("games").document(id).delete { (err) in
+                guard err == nil  else {
+                     return reject(err!)
+                 }
+                print("delete : \(id)")
+                return resolve(())
+            }
+        }
+        return p
+    }
+    
 
+    
     static func getAllItem() -> Promise<[Game]> {
-        let p = Promise<[Game]> { (resolve, reject) in
+        let p = Promise<[Game]> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("games")
             var groups : [Game] = []
@@ -64,9 +80,11 @@ extension Game {
              
           return Promise<Game> { (resolve , reject) in
               let db = Firestore.firestore()
-              let data = ["result.\(id)": FieldValue.increment(Int64(value))]
+              let data = ["result.\(playerId)": FieldValue.increment(Int64(value))]
+                
+                print(data)
               let ref = db.collection("games").document(self.game_id)
-              ref.updateData(data as! [String : Any]) { (err) in
+              ref.updateData(data ) { (err) in
                   guard err == nil  else {
                       return reject(err!)
                   }

@@ -29,9 +29,23 @@ struct GameDetail : Codable {
 
 extension GameDetail {
     
+    static func delete(id : String ) -> Promise<Void> {
+        let p = Promise<Void> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("gameDetails").document(id).delete { (err) in
+                guard err == nil  else {
+                     return reject(err!)
+                 }
+                print("delete gameDetails: \(id)")
+                return resolve(())
+            }
+        }
+        return p
+    }
+    
     static func getById(id: String) throws -> Promise<GameDetail>  {
 //        print("get Id")
-        let p = Promise<GameDetail> { (resolve, reject) in
+        let p = Promise<GameDetail> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("gameDetails").document(id)
             ref.getDocument { (snapshot, err) in
@@ -55,7 +69,7 @@ extension GameDetail {
     }
     
     static func getAllItem() -> Promise<[GameDetail]> {
-        let p = Promise<[GameDetail]> { (resolve, reject) in
+        let p = Promise<[GameDetail]> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("gameDetails")
             var groups : [GameDetail] = []

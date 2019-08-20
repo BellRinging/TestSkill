@@ -12,10 +12,24 @@ public struct Group : Codable {
 
 extension Group {
     
-    static func getById(id: String) -> Promise<Group> {
-        let p = Promise<Group> { (resolve, reject) in
+    static func delete(id : String ) -> Promise<Void> {
+        let p = Promise<Void> { (resolve , reject) in
             let db = Firestore.firestore()
-            let ref = db.collection("group").document(id)
+            let ref = db.collection("groups").document(id).delete { (err) in
+                guard err == nil  else {
+                     return reject(err!)
+                 }
+                print("delete Group : \(id)")
+                return resolve(())
+            }
+        }
+        return p
+    }
+    
+    static func getById(id: String) -> Promise<Group> {
+        let p = Promise<Group> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("groups").document(id)
             ref.getDocument { (snapshot, err) in
                 if let err = err{
                    reject(err)
@@ -34,9 +48,9 @@ extension Group {
     }
     
     static func getAllItem() -> Promise<[Group]> {
-        let p = Promise<[Group]> { (resolve, reject) in
+        let p = Promise<[Group]> { (resolve , reject) in
             let db = Firestore.firestore()
-            let ref = db.collection("group")
+            let ref = db.collection("groups")
             var groups : [Group] = []
             ref.getDocuments { (snap, err) in
                 if let err = err{
@@ -65,11 +79,12 @@ extension Group {
             
             let encoded = try! JSONEncoder.init().encode(self)
             let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
-            let ref = db.collection("group").document(self.group_id)
+            let ref = db.collection("groups").document(self.group_id)
             ref.setData(data as! [String : Any]) { (err) in
                 guard err == nil  else {
                     return reject(err!)
                 }
+                print("Add Group \(self.group_id)")
                 resolve(self)
             }
        

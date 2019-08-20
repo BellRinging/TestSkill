@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import Promises
 
 extension UIColor{
     
@@ -107,6 +108,13 @@ extension UIView{
 
     
 }
+/*
+extension Promise {
+    static var void: Promise<Void> {
+        return Promise<Void>(())
+    }
+}
+ */
 
 extension Database {
     

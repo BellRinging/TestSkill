@@ -182,7 +182,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - GoogleSignIn
   - MBProgressHUD (~> 1.0.0)
-  - PromisesSwift (~> 1.2)
+  - PromisesSwift
   - SwiftyJSON
 
 SPEC REPOS:
@@ -254,6 +254,6 @@ SPEC CHECKSUMS:
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 33d2d70035769827901f15669762b8b28750a03c
+PODFILE CHECKSUM: a7c7b1a01ccfc30acf62703a0d70e0bde8147bbe
 
 COCOAPODS: 1.7.5

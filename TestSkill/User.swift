@@ -17,6 +17,7 @@ public struct User : Codable  {
     let history : [UserHistory]?
     let fcmToken : String?
     let name : String
+    var balance : Int?
     
     init(dict : [String:String]) {
         self.user_id = dict["user_id"] ?? ""
@@ -31,6 +32,7 @@ public struct User : Codable  {
         self.fcmToken = ""
         self.name = ""
         self.id = dict["id"] ?? ""
+        self.balance = 0
     }
     
 }
@@ -38,14 +40,18 @@ public struct User : Codable  {
 
 extension User {
     
+
+    
     static func getById(id: String) throws -> Promise<User>  {
 //        print("get Id")
-        let p = Promise<User> { (resolve, reject) in
+        let p = Promise<User> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users").document(id)
             ref.getDocument { (snapshot, err) in
                 if let err = err{
                     reject(err)
+                    
+                    
                 }
 //                print("in the loop")
                 guard let dict = snapshot?.data() else {return}
@@ -64,7 +70,7 @@ extension User {
     }
     
     static func getAllItem() -> Promise<[User]> {
-        let p = Promise<[User]> { (resolve, reject) in
+        let p = Promise<[User]> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users")
             var groups : [User] = []
@@ -105,6 +111,18 @@ extension User {
     }
 
 
-    
-    
+    func updateBalance(userId : String , value : Int ) -> Promise<User>{
+            
+        return Promise<User> { (resolve , reject) in
+             let db = Firestore.firestore()
+             let data = ["balance": FieldValue.increment(Int64(value))]
+             let ref = db.collection("users").document(userId)
+             ref.updateData(data as! [String : Any]) { (err) in
+                 guard err == nil  else {
+                     return reject(err!)
+                 }
+                 resolve(self)
+             }
+         }
+     }
 }

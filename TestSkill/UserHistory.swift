@@ -12,7 +12,8 @@ public struct UserHistory : Codable{
 extension UserHistory {
     
     static func getById(usedId: String , period : String ) -> Promise<UserHistory> {
-        let p = Promise<UserHistory> { (resolve, reject) in
+        
+        let p = Promise<UserHistory> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users").document(usedId).collection("history").document(period)
             ref.getDocument { (snapshot, err) in
@@ -26,10 +27,11 @@ extension UserHistory {
             }
         }
         return p
+ 
     }
     
     static func getAllItembyUser(usedId : String) -> Promise<[UserHistory]> {
-        let p = Promise<[UserHistory]> { (resolve, reject) in
+        let p = Promise<[UserHistory]> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users").document(usedId).collection("history")
             var historys : [UserHistory] = []
@@ -57,7 +59,7 @@ extension UserHistory {
             let encoded = try! JSONEncoder.init().encode(self)
             let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
             let ref = db.collection("users").document(userId).collection("history").document(self.period)
-            ref.setData(data as! [String : Any]) { (err) in
+            ref.updateData(data as! [String : Any]) { (err) in
                 guard err == nil  else {
                     return reject(err!)
                 }

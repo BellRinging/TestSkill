@@ -11,8 +11,38 @@ struct GameRecord : Codable {
 
 extension GameRecord {
     
+    func deleteGameRecord(userId : String ,docId : String ) -> Promise<Void> {
+        let p = Promise<Void> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("users").document(userId).collection("gameRecords").document(docId).delete { (err) in
+                guard err == nil  else {
+                     return reject(err!)
+                 }
+                print("deleteGameRecord: \(docId)")
+                return resolve(())
+            }
+        }
+        return p
+    }
+    
+//
+//    static func delete(id : String ) -> Promise<Void> {
+//        let p = Promise<Void> { (resolve , reject) in
+//            let db = Firestore.firestore()
+//            let ref = db.collection("users").document(id).collection("users").document(id).delete { (err) in
+//                guard err == nil  else {
+//                     return reject(err!)
+//                 }
+//                print("delete : \(id)")
+//                return resolve(())
+//            }
+//        }
+//        return p
+//    }
+    
+    
     static func getById(userId : String , id: String) -> Promise<GameRecord> {
-        let p = Promise<GameRecord> { (resolve, reject) in
+        let p = Promise<GameRecord> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users").document(userId).collection("gameRecords").document(id)
             ref.getDocument { (snapshot, err) in
@@ -29,7 +59,7 @@ extension GameRecord {
     }
     
     static func getAllItem(userId : String) -> Promise<[GameRecord]> {
-        let p = Promise<[GameRecord]> { (resolve, reject) in
+        let p = Promise<[GameRecord]> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users").document(userId).collection("gameRecords")
             var groups : [GameRecord] = []
