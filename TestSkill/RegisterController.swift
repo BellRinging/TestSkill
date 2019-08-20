@@ -128,7 +128,7 @@ class RegisterViewController: UIViewController {
     
     @objc func handleSwitchSignIn(){
         print("handle Switch to login")
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil) 
         delegrate?.handleLogin()
     }
     
