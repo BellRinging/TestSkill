@@ -15,7 +15,7 @@ extension UserGroup {
     static func delete(userId : String ,docId : String ) -> Promise<Void> {
         let p = Promise<Void> { (resolve , reject) in
             let db = Firestore.firestore()
-            let ref = db.collection("users").document(userId).collection("groups").document(docId).delete { (err) in
+            db.collection("users").document(userId).collection("groups").document(docId).delete { (err) in
                 guard err == nil  else {
                      return reject(err!)
                  }
@@ -31,11 +31,13 @@ extension UserGroup {
             let db = Firestore.firestore()
             let ref = db.collection("users").document(userId).collection("groups").document(id)
             ref.getDocument { (snapshot, err) in
-                
+                guard err == nil  else {
+                    return reject(err!)
+                }
                 guard let dict = snapshot?.data() else {return}
                 do {
                     let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
-                    var group = try JSONDecoder.init().decode(UserGroup.self, from: data)
+                    let group = try JSONDecoder.init().decode(UserGroup.self, from: data)
                     resolve(group)
                 }catch{
                     reject(error)
@@ -51,15 +53,19 @@ extension UserGroup {
             let ref = db.collection("users").document(userId).collection("groups")
             var groups : [UserGroup] = []
             ref.getDocuments { (snap, err) in
-                guard let documents = snap?.documents else {return}
-                for doc in documents {
-                    let data = try! JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
-                    var group = try! JSONDecoder.init().decode(UserGroup.self, from: data)
-                    groups.append(group)
+                guard err == nil  else {
+                    return reject(err!)
                 }
-                let background = DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
-                background.async {
+                guard let documents = snap?.documents else {return}
+                do{
+                    for doc in documents {
+                        let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                        let group = try JSONDecoder.init().decode(UserGroup.self, from: data)
+                        groups.append(group)
+                    }
                     resolve(groups)
+                }catch{
+                    reject(error)
                 }
             }
         }
@@ -70,7 +76,6 @@ extension UserGroup {
            
         return Promise<UserGroup> { (resolve , reject) in
             let db = Firestore.firestore()
-            
             let encoded = try! JSONEncoder.init().encode(self)
             let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
             let ref = db.collection("users").document(userId).collection("groups").document(self.group_id)

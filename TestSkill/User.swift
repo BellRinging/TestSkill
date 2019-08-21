@@ -40,28 +40,20 @@ public struct User : Codable  {
 
 extension User {
     
-
-    
     static func getById(id: String) throws -> Promise<User>  {
-//        print("get Id")
         let p = Promise<User> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users").document(id)
             ref.getDocument { (snapshot, err) in
                 if let err = err{
                     reject(err)
-                    
-                    
                 }
-//                print("in the loop")
                 guard let dict = snapshot?.data() else {return}
-//                print(dict)
                 do {
                     let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
                     let group = try JSONDecoder.init().decode(User.self, from: data)
                     resolve(group)
                 }catch{
-                    print("-======= \(error.localizedDescription)" )
                     reject(error)
                 }
             }
@@ -75,7 +67,6 @@ extension User {
             let ref = db.collection("users")
             var groups : [User] = []
             ref.getDocuments { (snap, err) in
-//                print("err : \(err)")
                 guard let documents = snap?.documents else {return}
                 for doc in documents {
                     do {
@@ -83,7 +74,7 @@ extension User {
                         let  group = try JSONDecoder.init().decode(User.self, from: data)
                         groups.append(group)
                     }catch{
-                            reject(error)
+                        reject(error)
                     }
                 }
                 resolve(groups)
@@ -96,7 +87,6 @@ extension User {
            
         return Promise<User> { (resolve , reject) in
             let db = Firestore.firestore()
-            
             let encoded = try! JSONEncoder.init().encode(self)
             let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
             let ref = db.collection("users").document(self.id)
@@ -106,7 +96,6 @@ extension User {
                 }
                 resolve(self)
             }
-       
         }
     }
 

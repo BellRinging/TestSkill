@@ -1,11 +1,6 @@
 import UIKit
-import SwiftyJSON
-//import FirebaseStorage
 import Firebase
 import Promises
-//import FirebaseAuth
-//import FirebaseDatabase
-//import FirebaseStorage
 
 struct Game: Codable{
     var game_id : String
@@ -22,7 +17,7 @@ extension Game {
     static func delete(id : String ) -> Promise<Void> {
         let p = Promise<Void> { (resolve , reject) in
             let db = Firestore.firestore()
-            let ref = db.collection("games").document(id).delete { (err) in
+            db.collection("games").document(id).delete { (err) in
                 guard err == nil  else {
                      return reject(err!)
                  }
@@ -33,15 +28,15 @@ extension Game {
         return p
     }
     
-
-    
     static func getAllItem() -> Promise<[Game]> {
         let p = Promise<[Game]> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("games")
             var groups : [Game] = []
             ref.getDocuments { (snap, err) in
-                //                print("err : \(err)")
+                guard err == nil  else {
+                    return reject(err!)
+                }
                 guard let documents = snap?.documents else {return}
                 for doc in documents {
                     do {
@@ -62,7 +57,6 @@ extension Game {
              
           return Promise<Game> { (resolve , reject) in
               let db = Firestore.firestore()
-              
               let encoded = try! JSONEncoder.init().encode(self)
               let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
               let ref = db.collection("games").document(self.game_id)
@@ -81,8 +75,6 @@ extension Game {
           return Promise<Game> { (resolve , reject) in
               let db = Firestore.firestore()
               let data = ["result.\(playerId)": FieldValue.increment(Int64(value))]
-                
-                print(data)
               let ref = db.collection("games").document(self.game_id)
               ref.updateData(data ) { (err) in
                   guard err == nil  else {
@@ -90,7 +82,6 @@ extension Game {
                   }
                   resolve(self)
               }
-         
           }
       }
 }

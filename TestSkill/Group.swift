@@ -15,7 +15,7 @@ extension Group {
     static func delete(id : String ) -> Promise<Void> {
         let p = Promise<Void> { (resolve , reject) in
             let db = Firestore.firestore()
-            let ref = db.collection("groups").document(id).delete { (err) in
+            db.collection("groups").document(id).delete { (err) in
                 guard err == nil  else {
                      return reject(err!)
                  }
@@ -37,7 +37,7 @@ extension Group {
                 guard let dict = snapshot?.data() else {return}
                 do{
                     let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
-                    var group = try JSONDecoder.init().decode(Group.self, from: data)
+                    let group = try JSONDecoder.init().decode(Group.self, from: data)
                     resolve(group)
                 }catch{
                     reject(error)
@@ -60,7 +60,7 @@ extension Group {
                 for doc in documents {
                     do{
                         let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
-                        var group = try JSONDecoder.init().decode(Group.self, from: data)
+                        let group = try JSONDecoder.init().decode(Group.self, from: data)
                         groups.append(group)
                     }catch{
                         reject(error)
