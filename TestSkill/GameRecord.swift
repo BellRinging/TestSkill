@@ -1,5 +1,4 @@
 import UIKit
-import SwiftyJSON
 import Firebase
 import Promises
 
