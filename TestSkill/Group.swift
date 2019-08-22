@@ -75,7 +75,6 @@ extension Group {
            
         return Promise<Group> { (resolve , reject) in
             let db = Firestore.firestore()
-            
             let encoded = try! JSONEncoder.init().encode(self)
             let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
             let ref = db.collection("groups").document(self.group_id)
@@ -86,9 +85,6 @@ extension Group {
                 print("Add Group \(self.group_id)")
                 resolve(self)
             }
-       
         }
-            
-
     }
 }

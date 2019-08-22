@@ -71,8 +71,6 @@ class AddSampleData: UIViewController {
     
     func getAllUser() -> [User]{
         //get all users
-        
-    
         let users = try! await(User.getAllItem().catch{ err in
             Utility.showError(self, message: err.localizedDescription)
             print(err.localizedDescription)
@@ -94,11 +92,11 @@ class AddSampleData: UIViewController {
     func createRandomGame(users : [User] , group : Group) -> Game{
         let someDateTime = self.generateRandomDate(daysBack:365)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "yyyyMMdd"
         let date = dateFormatter.string(from: someDateTime!)
         dateFormatter.dateFormat = "yyyyMM"
         let period = dateFormatter.string(from: someDateTime!)
-        let modify = [1,-1]
+//        let modify = [1,-1]
 //        let number1 = Int.random(in: 0 ... 300) * modify.randomElement()!
 //        let number2 = Int.random(in: 0 ... 300) * modify.randomElement()!
 //        let number3 = Int.random(in: 0 ... 300) * modify.randomElement()!
@@ -107,17 +105,11 @@ class AddSampleData: UIViewController {
         let numList = [0,0,0,0]
         let location = ["CP Home", "Ricky Home"]
         let area = location.randomElement()!
-        var result : [String:Int] = [:]
         let randomPickList = self.randomPick(array: users, number: 4) as! [User]
-        var players : [String:String] = [:]
-        for user in randomPickList {
-            players[user.id] = user.name
-        }
-        var count = 0
-        for num in randomPickList{
-            result[num.id] = numList[count]
-            count = count+1
-        }
+        let userIdList: [String] = randomPickList.map{ $0.id}
+        let userNameList : [String] = randomPickList.map{$0.name}
+        let players = Dictionary(uniqueKeysWithValues: zip(userIdList,userNameList))
+        let result : [String:Int] = Dictionary(uniqueKeysWithValues: zip(userIdList,numList))
         let groupId = group.group_id
         let uuid = UUID().uuidString
         let game = Game(game_id: uuid, group_id: groupId, location: area, date: date, period : period, result: result ,players : players)
@@ -129,74 +121,79 @@ class AddSampleData: UIViewController {
         let whoWin = game.result.randomElement()!
         let randomWinType = ["self","other"].randomElement()!
         var value = 0
-        var credit = 0
-        let remark = Int.random(in: 3...10)
+        let fanNo = Int.random(in: 3...10)
         var whoLoseList:[String] = []
-
         
         if (randomWinType == "other"){
-            value = groupRule[remark]!
-            credit = value
+            value = groupRule[fanNo]!
             var whoLose = whoWin
             while ( whoWin.key == whoLose.key ){
                 whoLose = game.result.randomElement()!
             }
             whoLoseList = [whoLose.key]
         }else{
-            value = groupRule[remark * 10]!
-            credit = value * 3
-            for (key,value) in game.result {
-                if (key != whoWin.key){
-                    whoLoseList.append(key)
-                }
-            }
+            value = groupRule[fanNo * 10]!
+            whoLoseList = game.result.keys.filter{ $0 != whoWin.key}
         }
         let uuid = UUID().uuidString
-        let gameDetail = GameDetail(id: uuid, game_id: game.game_id, remark: "\(remark) fan", value: value, whoLose: whoLoseList, whoWin: [whoWin.key], winType: randomWinType)
+        let gameDetail = GameDetail(id: uuid, game_id: game.game_id, remark: "\(fanNo) fan", value: value, whoLose: whoLoseList, whoWin: [whoWin.key], winType: randomWinType)
         return gameDetail
     }
     
     func saveGroup(group : Group ,users : [User]) {
-        try! await(group.save().then({ (group) in
+        let _ = try! await(group.save().then{ (group) in
             for user in users {
                 let userGroup = UserGroup(group_id: group.group_id, group_name: "VietNam")
-                try! userGroup.save(userId: user.id)
+                let _ = userGroup.save(userId: user.id)
             }
-        }).catch{ err in
+        }.catch{ err in
             Utility.showError(self, message: err.localizedDescription)
             print(err.localizedDescription)
-            }
-        )
+        })
     }
     
     func saveGameDetail(gameDetail :GameDetail ,game : Game ,users:[User]){
-        try gameDetail.save().then({ detail in
-            let value = detail.value
-            var credit : Int
-            if (detail.winType == "other"){
-                credit = detail.value
-            }else{
-                credit = detail.value * 3
-            }
-            
-        })
-        
+        let _ =  gameDetail.save().then{ detail in
+            self.saveIndivualRecord(detail: detail, game: game, users: users)
+        }.catch{ err in
+            Utility.showError(self, message: err.localizedDescription)
+            print(err.localizedDescription)
+        }
     }
     
-    func saveIndivualRecord(detail : GameDetail ,game : Game ,users: [User] ,credit : Int ,value: Int){
+    func saveIndivualRecord(detail : GameDetail ,game : Game ,users: [User] ){
+        let value = detail.value
+        var credit : Int
+        if (detail.winType == "other"){
+            credit = detail.value
+        }else{
+            credit = detail.value * 3
+        }
         for whoWin in detail.whoWin {
             let gameRecord = GameRecord(record_id: detail.id, game_id: game.game_id, value: credit)
-            try gameRecord.save(userId: whoWin)
-            try game.updateResult(playerId : whoWin , value : credit )
-            let winUser = users.filter ({$0.id == whoWin})[0]
-            try winUser.updateBalance(userId : winUser.id , value : credit )
+            gameRecord.save(userId: whoWin).then { _ in
+                return game.updateResult(playerId : whoWin , value : credit )
+            }.then{ _ in
+                let winUser = users.filter ({$0.id == whoWin})[0]
+                let _ = winUser.updateBalance(userId : winUser.id , value : credit )
+            }.catch{err in
+                Utility.showError(self, message: err.localizedDescription)
+                print(err.localizedDescription)
+            }
         }
         for whoLose in detail.whoLose {
             let gameRecord = GameRecord(record_id: detail.id, game_id: game.game_id, value: value * -1 )
-            try gameRecord.save(userId: whoLose)
-            try game.updateResult(playerId : whoLose, value : detail.value * -1 )
-            let loseUser = users.filter ({$0.id == whoLose})[0]
-            try loseUser.updateBalance(userId : loseUser.id , value : credit * -1)
+            gameRecord.save(userId: whoLose).then{ _ in
+                return game.updateResult(playerId : whoLose, value : detail.value * -1 )
+            }.then{ _ in
+                let loseUser = users.filter ({$0.id == whoLose})[0]
+                let _ = loseUser.updateBalance(userId : loseUser.id , value : credit * -1)
+            }.catch { (err) in
+                Utility.showError(self, message: err.localizedDescription)
+                print(err.localizedDescription)
+            }
+        
+            
         }
     }
     
@@ -213,14 +210,13 @@ class AddSampleData: UIViewController {
             let groupRule = group.rule
             for round in 0...1{
                 let game = self.createRandomGame(users: users, group: group)
-                try! await(game.save().then({ game in
+                let _ =  game.save().then{ game in
                     print("Save Game \(round)")
-                    for nextRound in 0...16{
+                    for _ in 0...16{
                         let gameDetail = self.createGameDetailObject(game: game, groupRule: groupRule)
                         self.saveGameDetail(gameDetail: gameDetail, game: game, users: users)
                     }
-                }))
-                
+                }
             }
            Utility.hideProgress()
         }
@@ -278,17 +274,17 @@ class AddSampleData: UIViewController {
     
     
     func randomPick(array:[Any],number : Int)-> [Any]{
-        var count = Int(array.count) - 1
+        let count = Int(array.count) - 1
         var result : [Any] = []
         var used : [Int] = []
         var random = Int.random(in: 0...count)
 //        print("random num :\(random)")
-        for num in 1...number{
+        for _ in 1...number{
             result.append(array[random])
             used.append(random)
             random = Int.random(in: 0...count)
             while  true {
-                if let temp = used.firstIndex(of: random){
+                if let _ = used.firstIndex(of: random){
                     random = Int.random(in: 0...count)
 //                    print("regen random num :\(random)")
                 }else {
@@ -301,105 +297,76 @@ class AddSampleData: UIViewController {
     
     
     func generateRandomDate(daysBack: Int)-> Date?{
-                    let day = arc4random_uniform(UInt32(daysBack))+1
-                    let hour = arc4random_uniform(23)
-                    let minute = arc4random_uniform(59)
-                    
-                    let today = Date(timeIntervalSinceNow: 0)
-                    let gregorian  = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
-                    var offsetComponents = DateComponents()
-                    offsetComponents.day = -1 * Int(day - 1)
-                    offsetComponents.hour = -1 * Int(hour)
-                    offsetComponents.minute = -1 * Int(minute)
-                    
-                    let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
-        
-                 
-                    return randomDate
+        let day = arc4random_uniform(UInt32(daysBack))+1
+        let hour = arc4random_uniform(23)
+        let minute = arc4random_uniform(59)
+        let today = Date(timeIntervalSinceNow: 0)
+        let gregorian  = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
+        var offsetComponents = DateComponents()
+        offsetComponents.day = -1 * Int(day - 1)
+        offsetComponents.hour = -1 * Int(hour)
+        offsetComponents.minute = -1 * Int(minute)
+        let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
+        return randomDate
     }
 
     
     
     
     @objc func handleAddUser(){
-        print("handleAddUser")
+        print("Reset")
         self.background.async {
             
-            if let groups = try? await(Group.getAllItem()){
+            Group.getAllItem().then{ groups in
                 for group in groups {
-                    try! Group.delete(id: group.group_id).then({
+                    Group.delete(id: group.group_id).then{
                         for (player,_) in group.players {
-                            try! UserGroup.delete(userId: player, docId: group.group_id)
+                            let _ =  UserGroup.delete(userId: player, docId: group.group_id)
                         }
-                    }).catch({ (err) in
+                    }.catch{ (err) in
                         print(err.localizedDescription)
-                    })
-                    
-                    
+                    }
                 }
+            }.catch{ (err) in
+                print(err.localizedDescription)
             }
             
-            
-            print("handleAddUser backgrouptask")
-            if let games = try? await(Game.getAllItem()){
+        
+            Game.getAllItem().then{ games in
                 for game in games {
-                    try! Game.delete(id: game.game_id).catch({ (err) in
+                    let _ = Game.delete(id: game.game_id).catch{ (err) in
                         print(err.localizedDescription)
-                    })
+                    }
                 }
+            }.catch{err in
+                print(err.localizedDescription)
             }
             
-            if let gameDetails = try? await(GameDetail.getAllItem()){
+            GameDetail.getAllItem().then{ gameDetails in
                 for gameDetail in gameDetails {
-                    try! GameDetail.delete(id: gameDetail.id).catch({ (err) in
+                    GameDetail.delete(id: gameDetail.id).catch({ (err) in
                         print(err.localizedDescription)
                     })
                 }
+            }.catch{err in
+                print(err.localizedDescription)
             }
             
-            if let users = try? await(User.getAllItem()){
+            
+            User.getAllItem().then{ users in
                 for user in users {
-                    if let gameRecords = try? await (GameRecord.getAllItem(userId: user.id)){
+                    GameRecord.getAllItem(userId: user.id).then { gameRecords in
                         for gameRecord in gameRecords {
-                            try! gameRecord.deleteGameRecord(userId: user.id, docId: gameRecord.record_id).catch({ (err) in
+                            let _ = gameRecord.deleteGameRecord(userId: user.id, docId: gameRecord.record_id).catch{ (err) in
                                 print(err.localizedDescription)
-                            })
+                            }
                         }
                     }
                 }
             }
         }
-        
-        /*
-        print("Add User")
-        if let path = Bundle.main.path(forResource: "user", ofType: "txt"){
-            do {
-                let data  = try String(contentsOfFile: path, encoding: .utf8)
-                let lines = data.components(separatedBy: .newlines)
-                var count = 1
-                
-                DispatchQueue.main.async {
-                    
-                    lines.map({ (text)  in
-                        if text != "" {
-                            print("create dummy \(count) \(text)")
-                            self.loginUser(num: count ,name:  text)
-                            count = count + 1
-                        }
-                    })
-                
-                }
-            
-            }catch{
-                print(error)
-            }
-            
-        }
-        
-        
-        */
     }
-    
+    /*
     func fetchAllUser(){
         var users = [User]()
         let ref = Database.database().reference().child("users")
@@ -469,9 +436,9 @@ class AddSampleData: UIViewController {
         }
         
     }
-    
+ */
     @objc func handleAddPost(){
-        fetchAllUser()
+//        fetchAllUser()
     }
     
     
@@ -481,7 +448,7 @@ class AddSampleData: UIViewController {
         let password = "123456"
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
-            guard let user = result?.user else {return}
+            guard let _ = result?.user else {return}
 //            self.updateDisplayName(user, name: name )
             print("User created")
         }
@@ -495,9 +462,8 @@ class AddSampleData: UIViewController {
         
         
         Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
-            guard let user = result?.user else {return}
+            guard let _ = result?.user else {return}
             print("User login")
-//            self.createProfitObject(num: num, uid: user.uid, name: name)
         }
     }
 //
