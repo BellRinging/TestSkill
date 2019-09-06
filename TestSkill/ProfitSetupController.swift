@@ -32,22 +32,23 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
         if let user = Utility.user {
             self.user = user
         }else {
-//            if let firebaseUser = Utility.firebaseUser {
-//                print("URL \(firebaseUser.photoURL)")
-//                if let url = firebaseUser.photoURL?.absoluteString {
-//                    let dict = ["name": firebaseUser.displayName,"img_url": url,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
-//                    let userObject = User(dict: dict)
-//                    self.user = userObject
-//                }else{
-//                    let dict = ["name": firebaseUser.displayName,"email" : firebaseUser.email , "id" :firebaseUser.uid ] as [String : Any]
-//                    let userObject = User(dict: dict)
-//                    self.user = userObject
-//                }
-//            }
+            if let firebaseUser = Utility.firebaseUser {
+                let displayName = firebaseUser.displayName ?? ""
+                let email = firebaseUser.email ?? ""
+                if let url = firebaseUser.photoURL?.absoluteString {
+                    let dict = ["name": displayName,"img_url": url,"email" : email , "id" :firebaseUser.uid ]
+                    let userObject = User(dict: dict)
+                    self.user = userObject
+                }else{
+                    let dict = ["name": displayName,"email" : email , "id" :firebaseUser.uid ]
+                    let userObject = User(dict: dict)
+                    self.user = userObject
+                }
+            }
         }
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         
         view.addDefaultGradient()
@@ -141,99 +142,26 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         return tv
     }()
     
-    @objc func handleProfileCreation(){
-        Utility.showProgress()
-        
-        guard let user = Auth.auth().currentUser else {return }
-        
-        guard
-            let _ = Utility.validField(firstNameField, "First Name is required.Please enter your email"),
-            let _ = Utility.validField(lastNameField,"Password is required.Please enter ") ,
-            let _ = Utility.validField(emailField,"Email is required.Please enter") else {
-                Utility.showError(self,message: Utility.errorMessage!)
-                Utility.hideProgress()
-                return
-        }
-      
-        guard let firstName = firstNameField.text else { return }
-        guard let lastName = lastNameField.text else { return }
-        guard let email = emailField.text else { return }
+
     
-        
-        print("Start creation")
-        let ref = Storage.storage().reference().child("profile_images").child(user.uid).child("profilePic.jpg")
-        if let profileImage = self.imageView.image, let uploadData = profileImage.jpegData(compressionQuality: 0.1) {
-            ref.putData(uploadData, metadata: nil, completion: { (metaData, error) in
-                if (error != nil){
-                    print("some bad happend in put image to server")
-                    Utility.hideProgress()
-                    return
-                }
-                print("upload image")
-                ref.downloadURL { (url, err) in
-                    if let profileImageURL = url?.absoluteString{
-                                        let values = [ "last_name": lastName, "first_name": firstName ,"email" : email , "img_url" : profileImageURL , "name" : self.userNameLabel.text ,"id" : user.uid]
-                                        let quene = DispatchGroup()
-                                        quene.enter()
-                                        self.registerUserIntoDatabaseWithUID(quene,values: values as [String : AnyObject])
-                                        quene.notify(queue: DispatchQueue.main, execute: {
-                                            UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
-                                            NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
-                                            Utility.hideProgress()
-                                            self.dismiss(animated: true, completion: nil)
-                                        })
-                                    }
-                }
-                
-                
-            })
-        }else{
-            print("No Image")
-            Utility.hideProgress()
-        }
-    }
-    
-    
-    
-    
-    fileprivate func registerUserIntoDatabaseWithUID(_ group : DispatchGroup, values: [String: AnyObject]) {
-        guard let uid = Auth.auth().currentUser?.uid else {return }
-        let ref = Database.database().reference()
-        let usersReference = ref.child("users").child(uid)
-        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-            
-            if err != nil {
-                print(err!)
-                Utility.hideProgress()
-                return
-            }
-            group.leave()
-        })
-    }
     
 
     static let updateProfile = NSNotification.Name(rawValue: "UpdateProfile")
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        var selectedImageFromPicker: UIImage?
         
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            selectedImageFromPicker = editedImage
-        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            selectedImageFromPicker = originalImage
+        var selectedImage: UIImage?
+
+         if let editedImage = info[.editedImage] as? UIImage {
+             selectedImage = editedImage
+         } else if let originalImage = info[.originalImage] as? UIImage {
+             selectedImage = originalImage
+         }
+        DispatchQueue.main.async {
+            self.imageView.image = selectedImage
         }
-        if let selectedImage = selectedImageFromPicker {
-            imageView.image = selectedImage
-        }
-        dismiss(animated: true, completion: nil)
-    }
-   
-    @objc func handleTapImage(){
-        print("tap Image")
-        let controller = UIImagePickerController()
-        controller.allowsEditing = true
-        controller.delegate = self
-        self.present(controller, animated: true, completion: nil)
+         dismiss(animated: true, completion: nil)
     }
     
     

@@ -26,23 +26,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         //Firebase
-                FirebaseApp.configure()
-//                let db = Firestore.firestore()
-                
-                //Google API
-                configGoogleAPI()
-            
-                //Facebook Config
-                ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-                
-                window?.frame = UIScreen.main.bounds
-                window?.makeKeyAndVisible()
-//                window?.rootViewController = MainTabBarController()
-        window?.rootViewController = AddSampleData()
-                
-                attemptRegisterForNotification(application: application)
-                
-                return true
+        FirebaseApp.configure()
+        
+        //Google API
+        configGoogleAPI()
+        
+        //Facebook Config
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        window?.frame = UIScreen.main.bounds
+        window?.makeKeyAndVisible()
+        window?.rootViewController = FrontController()
+//        window?.rootViewController = AddSampleData()
+        
+        attemptRegisterForNotification(application: application)
+        
+        return true
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -81,13 +80,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
         
     }
 
-    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-        print("Registered with token :",fcmToken)
-        Utility.fcmToken = fcmToken
-    }
+//    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+//        print("Registered with token :",fcmToken)
+//        Utility.fcmToken = fcmToken
+//    }
     
     func configGoogleAPI(){
-        var configureError: NSError?
+//        var configureError: NSError?
 //        GGLContext.sharedInstance().configureWithError(&configureError)
 //        assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
@@ -131,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
         }
     }
     
-    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
+    private func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
                 withError error: NSError!) {
         print("disconnect from google")
     }

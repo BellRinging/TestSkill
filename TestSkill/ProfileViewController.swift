@@ -200,6 +200,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         }catch {
         
         }
+        /*
         let tabBar = tabBarController as? MainTabBarController
         tabBar?.checkIfProfitSetup()
         Utility.user = nil
@@ -210,6 +211,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         collectionView?.reloadData()
         UserDefaults.standard.set(false, forKey: StaticValue.LOGINKEY)
         print("Logout")
+ */
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

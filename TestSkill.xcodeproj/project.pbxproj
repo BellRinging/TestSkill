@@ -14,6 +14,8 @@
 		E51DB7A522F2995400CD7BFF /* GameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DB7A422F2995400CD7BFF /* GameDetail.swift */; };
 		E51DB7A722F2996000CD7BFF /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DB7A622F2996000CD7BFF /* GameRecord.swift */; };
 		E51DB7A922F3262700CD7BFF /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DB7A822F3262700CD7BFF /* Group.swift */; };
+		E583F43D2321338600BFD75D /* FrontController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43C2321338600BFD75D /* FrontController.swift */; };
+		E583F43F23214D6700BFD75D /* ProfitSetupAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */; };
 		EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */; };
 		EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */; };
 		EB05CF921FB2E1980039F6FB /* user.txt in Resources */ = {isa = PBXBuildFile; fileRef = EB05CF901FB2E1980039F6FB /* user.txt */; };
@@ -100,6 +102,8 @@
 		E51DB7A422F2995400CD7BFF /* GameDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameDetail.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/GameDetail.swift; sourceTree = "<group>"; };
 		E51DB7A622F2996000CD7BFF /* GameRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameRecord.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/GameRecord.swift; sourceTree = "<group>"; };
 		E51DB7A822F3262700CD7BFF /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Group.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/Group.swift; sourceTree = "<group>"; };
+		E583F43C2321338600BFD75D /* FrontController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FrontController.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/FrontController.swift; sourceTree = "<group>"; };
+		E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfitSetupAction.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/ProfitSetupAction.swift; sourceTree = "<group>"; };
 		EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSampleData.swift; sourceTree = "<group>"; };
 		EB05CF901FB2E1980039F6FB /* user.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = user.txt; sourceTree = "<group>"; };
@@ -218,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */,
+				E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */,
 			);
 			name = ProfileSetup;
 			sourceTree = "<group>";
@@ -456,6 +461,7 @@
 		EBE355881FB0498500F64AD4 /* ForgetPassword */ = {
 			isa = PBXGroup;
 			children = (
+				E583F43C2321338600BFD75D /* FrontController.swift */,
 				EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */,
 			);
 			name = ForgetPassword;
@@ -727,10 +733,12 @@
 				EB215B521F3CA715001A9BC0 /* LoginCollection.swift in Sources */,
 				EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */,
 				EB94AA0A1FEA1D5A00C41524 /* CustomAnimationDismisser.swift in Sources */,
+				E583F43F23214D6700BFD75D /* ProfitSetupAction.swift in Sources */,
 				EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */,
 				E518F61222F067DD0012CC2D /* UserHistory.swift in Sources */,
 				EB5C05221FF48C4B0071B85C /* ChatLogTextField.swift in Sources */,
 				EBC110DE2004886C00766D27 /* CommentController.swift in Sources */,
+				E583F43D2321338600BFD75D /* FrontController.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EBBA9ECF1FF37C1F002B4D14 /* ChatMessageCell.swift in Sources */,
 				E518F61022F067D40012CC2D /* UserGroup.swift in Sources */,

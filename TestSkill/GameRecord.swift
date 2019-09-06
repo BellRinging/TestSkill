@@ -82,6 +82,7 @@ extension GameRecord {
                 guard err == nil  else {
                     return reject(err!)
                 }
+                print("Save gamerecord \(self.record_id)")
                 resolve(self)
             }
        

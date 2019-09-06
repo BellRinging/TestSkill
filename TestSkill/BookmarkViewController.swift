@@ -7,10 +7,28 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class BookmarkViewController: UICollectionViewController {
+    
+    
+    weak var delegrate : MainTabBarController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
          collectionView?.backgroundColor = UIColor.brown
+        let barButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        navigationItem.rightBarButtonItem = barButton
     }
+    
+    @objc func handleLogout(){
+//        guard let user = Utility.firebaseUser ,let providerID = user.providerData.first?.providerID  else {return }
+
+        try! Auth.auth().signOut()
+        UserDefaults.standard.set(false, forKey: StaticValue.LOGINKEY)
+        delegrate?.dismiss(animated: true, completion: nil)
+        print("Logout")
+        
+    }
+    
 }

@@ -9,7 +9,7 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     
     let cellId = "CellId"
     
-    weak var delegrate : MainTabBarController?
+    weak var delegrate : FrontController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,12 +85,14 @@ class LoginController: UIViewController  ,UICollectionViewDataSource ,UICollecti
     @objc func handleLogin(){
         let vc = SiginViewController()
         vc.delegrate = self
+        vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
     
     @objc func handleRegister(){
         let vc = RegisterViewController()
         vc.delegrate = self
+        vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
     

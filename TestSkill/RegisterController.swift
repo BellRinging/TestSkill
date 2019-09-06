@@ -92,7 +92,7 @@ class RegisterViewController: UIViewController {
     
     let warrentLabel : UILabel = {
         let lb = UILabel()
-        lb.text = "By Clicking Join Now , you agree to Linkin User Agreement \nPrivary Policy and Cookie Policy"
+        lb.text = "By Clicking Register Now , you agree to Linkin User Agreement \nPrivary Policy and Cookie Policy"
         lb.textAlignment = .center
         lb.font = UIFont.systemFont(ofSize: 12)
         lb.numberOfLines = 2
@@ -135,7 +135,7 @@ class RegisterViewController: UIViewController {
     
     let registerButton : UIButton = {
         let bn = UIButton()
-      let text = NSAttributedString(string: "Join Now ", attributes: [NSAttributedString.Key.foregroundColor :UIColor.white, NSAttributedString.Key.font :UIFont.boldSystemFont(ofSize: 16)])
+      let text = NSAttributedString(string: "Register Now ", attributes: [NSAttributedString.Key.foregroundColor :UIColor.white, NSAttributedString.Key.font :UIFont.boldSystemFont(ofSize: 16)])
         bn.setAttributedTitle(text, for: .normal)
         bn.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         bn.layer.borderWidth = 0.5

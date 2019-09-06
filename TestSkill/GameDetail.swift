@@ -84,6 +84,7 @@ extension GameDetail {
                 guard err == nil  else {
                     return reject(err!)
                 }
+                print("Save gamedetail \(self.id)")
                 resolve(self)
             }
        

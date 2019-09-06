@@ -46,7 +46,7 @@ class SiginViewController: UIViewController   {
         view.addSubview(button)
         button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         
-        button.delegate = self as! LoginButtonDelegate
+        button.delegate = self
     }
     
     let myActivityIndicator : UIActivityIndicatorView = {

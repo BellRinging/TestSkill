@@ -39,16 +39,21 @@ public struct User : Codable  {
 
 extension User {
     
-    static func getById(id: String) throws -> Promise<User>  {
-        let p = Promise<User> { (resolve , reject) in
+    static func getById(id: String) -> Promise<User?>  {
+        let p = Promise<User?> { (resolve , reject) in
             let db = Firestore.firestore()
             let ref = db.collection("users").document(id)
             ref.getDocument { (snapshot, err) in
                 if let err = err{
                     reject(err)
                 }
-                guard let dict = snapshot?.data() else {return}
+                guard let dict = snapshot?.data() else {
+                    print("No User found")
+                    resolve(nil)
+                    return
+                }
                 do {
+                    print("have data")
                     let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
                     let group = try JSONDecoder.init().decode(User.self, from: data)
                     resolve(group)
@@ -109,6 +114,7 @@ extension User {
                  guard err == nil  else {
                      return reject(err!)
                  }
+                print("Update balance \(userId) \(value)")
                  resolve(self)
              }
          }

@@ -10,6 +10,7 @@ import Foundation
 import FirebaseAuth
 import MBProgressHUD
 import Firebase
+import Promises
 
 
 extension RegisterViewController {
@@ -18,58 +19,59 @@ extension RegisterViewController {
     
     @objc func handleRegister(){
         Utility.showProgress()
-        guard let email = Utility.validField(emailField, "Email is required.Please enter your email"),
-            let password = Utility.validField(passwordField,"Password is required.Please enter your number"),
-            let username = Utility.validField(userNameField, "User name is required.Please enter your username ") else {
-                Utility.showError(self, message: Utility.errorMessage!)
-                Utility.hideProgress()
-                return
-        }
-        
         print("Create login into firebase")
-        Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
-            
-            if let err = err{
-                Utility.showError(self,message: err.localizedDescription)
-                Utility.hideProgress()
-                return
-            }
-            
-            guard let user = result?.user else {
-                Utility.hideProgress()
-                return
-                
-            }
-            let  uid = user.uid
-            let userObject = self.createUserObject()
-            self.updateDisplayName(user, name: username )
-            print("User created")
+        createUserInDb(email: self.emailField, password: self.passwordField).then {user in
+            let userId = user.uid
+            let dict = ["user_name" : self.userNameField.text!,"email":self.emailField.text!,"user_id": userId]
+            let userObj = User(dict: dict)
+            Utility.user = userObj
+            self.updateDisplayName(user, name: self.userNameField.text!)
+        }.then { _ in
+            self.dismissLogin()
+        }.catch{ err in
+            print("Fail to create login into firebase")
+             Utility.showError(self, message: err.localizedDescription)
+        }.always {
+            Utility.hideProgress()
         }
+     
+    }
+    
+    func createUserInDb(email: UITextField,password : UITextField) -> Promise<FirebaseAuth.User>  {
+        let p = Promise<FirebaseAuth.User> { (resolve , reject) in
+            guard let email = Utility.validField(self.emailField, "Email is required.Please enter your email"),
+                     let password = Utility.validField(self.passwordField,"Password is required.Please enter your number"),
+                     let _ = Utility.validField(self.userNameField, "User name is required.Please enter your username ") else {
+                        let err = NSError(domain: Utility.errorMessage!, code: 777, userInfo: nil)
+                            reject(err)
+
+                         return
+                 }
+            Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
+                guard let user = result?.user else {
+                    reject(err!)
+                    return
+                }
+                resolve(user)
+            }
+        }
+        return p
     }
     
     
-    func createUserObject() -> User{
-        let dict = ["name" : userNameField.text , "email" : emailField.text]
-//        let user = User(user_id: "", user_name: userNameField.text, first_name: "", last_name: "", email: emailField.text, image_url: "", groups: nil, gameRecord: nil, history: nil)
-        let user = User(dict: dict as! [String : String])
-        return user
-    }
-    
-    func updateDisplayName(_ user: Firebase.User , name:String ){
+
+    func updateDisplayName(_ user: Firebase.User , name:String ) {
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.displayName = name
         changeRequest.commitChanges(completion: { (error) in
-            if let err = error {
-                print(err.localizedDescription)
-                Utility.hideProgress()
+            if let _ = error {
                 return
             }
             print("Updated Display Name")
-            self.dismissLogin()
         })
     }
     
-    func dismissLogin(){
+    @objc func dismissLogin(){
         print("Dismiss the login controller")
         self.dismiss(animated: true, completion: nil)
         self.delegrate?.dismiss(animated: true, completion: nil)

@@ -15,25 +15,29 @@ class Utility {
     
     static func showProgress(){
         print("Show Progress")
-        guard let mainWindow = UIApplication.shared.delegate?.window else { return }
-        let progressIcon = MBProgressHUD.showAdded(to: mainWindow!, animated: true)
-        progressIcon.labelText = "Loading"
-        progressIcon.isUserInteractionEnabled = false
-        //tempView
-        
-        let tempView = UIView(frame: (mainWindow?.frame)!)
-        tempView.backgroundColor = UIColor(white: 0, alpha: 0.2)
-        tempView.tag = 999
-        mainWindow?.addSubview(tempView)
-        progressIcon.show(animated: true)
+        DispatchQueue.main.async {
+            guard let mainWindow = UIApplication.shared.delegate?.window else { return }
+            let progressIcon = MBProgressHUD.showAdded(to: mainWindow!, animated: true)
+            progressIcon.labelText = "Loading"
+            progressIcon.isUserInteractionEnabled = false
+            //tempView
+            
+            let tempView = UIView(frame: (mainWindow?.frame)!)
+            tempView.backgroundColor = UIColor(white: 0, alpha: 0.2)
+            tempView.tag = 999
+            mainWindow?.addSubview(tempView)
+            progressIcon.show(animated: true)
+        }
     }
     
     static func hideProgress(){
-        print("hide Progress")
-        guard let mainWindow = UIApplication.shared.delegate?.window else { return }
-        MBProgressHUD.hideAllHUDs(for: mainWindow!, animated: true)
-        let view = mainWindow?.viewWithTag(999)
-        view?.removeFromSuperview()
+        DispatchQueue.main.async {
+            print("hide Progress")
+            guard let mainWindow = UIApplication.shared.delegate?.window else { return }
+            MBProgressHUD.hideAllHUDs(for: mainWindow!, animated: true)
+            let view = mainWindow?.viewWithTag(999)
+            view?.removeFromSuperview()
+        }
     }
     
     static func showPopUpDialog(viewController:UIViewController, message : String ,completion: @escaping (UIAlertAction) -> ()){
@@ -70,6 +74,15 @@ class Utility {
         error.message = message
         error.messageLabel.sizeToFit()
         error.showDialog()
+    }
+    
+    func logMessage(_ message: String,
+                       fileName: String = #file,
+                       functionName: String = #function,
+                       lineNumber: Int = #line,
+                       columnNumber: Int = #column) {
+           
+           print("### \(fileName) - \(message)")
     }
 
 }

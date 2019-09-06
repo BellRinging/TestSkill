@@ -96,12 +96,6 @@ class AddSampleData: UIViewController {
         let date = dateFormatter.string(from: someDateTime!)
         dateFormatter.dateFormat = "yyyyMM"
         let period = dateFormatter.string(from: someDateTime!)
-//        let modify = [1,-1]
-//        let number1 = Int.random(in: 0 ... 300) * modify.randomElement()!
-//        let number2 = Int.random(in: 0 ... 300) * modify.randomElement()!
-//        let number3 = Int.random(in: 0 ... 300) * modify.randomElement()!
-//        let number4 = (number1 + number2 + number3) * -1
-//        let numList = [number1,number2,number3,number4]
         let numList = [0,0,0,0]
         let location = ["CP Home", "Ricky Home"]
         let area = location.randomElement()!
@@ -200,26 +194,31 @@ class AddSampleData: UIViewController {
     
     @objc func handleAddGame(){
         
+            Utility.showProgress()
+        
         
         self.background.async {
-            Utility.showProgress()
+        
             let users = self.getAllUser()
             print("get all user : \(users.count)")
+            
             let group = self.createGroupObject(users: users)
             self.saveGroup(group: group, users: users)
             let groupRule = group.rule
-            for round in 0...1{
+            for round in 0...0{
                 let game = self.createRandomGame(users: users, group: group)
                 let _ =  game.save().then{ game in
                     print("Save Game \(round)")
-                    for _ in 0...16{
+                    for _ in 0...4{
                         let gameDetail = self.createGameDetailObject(game: game, groupRule: groupRule)
                         self.saveGameDetail(gameDetail: gameDetail, game: game, users: users)
                     }
                 }
             }
-           Utility.hideProgress()
+        
         }
+        
+        Utility.hideProgress()
     }
             
     
@@ -366,79 +365,9 @@ class AddSampleData: UIViewController {
             }
         }
     }
-    /*
-    func fetchAllUser(){
-        var users = [User]()
-        let ref = Database.database().reference().child("users")
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let dict = snapshot.value as? [String:Any] else {return }
-            dict.forEach({ (key,value) in
-               
-                guard let userProfileDict = value as? [String: Any] else {return}
-                let data = try! JSONSerialization.data(withJSONObject: userProfileDict, options: .prettyPrinted)
-                var user = try! JSONDecoder.init().decode(User.self, from: data)
-//                let user = User(dict: userProfileDict as [String : AnyObject])
-                users.append(user)
-            })
-            self.addPost(users: users)
-            
-        })
-    }
     
-    func addPost(users: [User]){
-        
-        print(users.count)
-        
-        if let path = Bundle.main.path(forResource: "item", ofType: "txt"){
-            do {
-                let data  = try String(contentsOfFile: path, encoding: .utf8)
-                let lines = data.components(separatedBy: .newlines)
-                var count = 1000
-                
-                for i in 2001...8000 {
-                    let line = lines[i]
-                    if (line != "") {
-                        print(line)
-                        let items = line.components(separatedBy: "\t")
-                        let rand : UInt32 = arc4random_uniform(UInt32(users.count))
-//                        print(items[0])
-//                        print(items[1])
-//                        print(rand)
-                        self.saveToDatabaseWithImageUrl(imageUrl: items[0], uid: users[Int(rand)].id, caption: items[1])
-                    }
-                }
-                
-//                DispatchQueue.main.async {
-//
-//                    lines.map({ (text)  in
-//                        if text != "" {
-////                            print("create dummy \(count) \(text)")
-////                            self.loginUser(num: count ,name:  text)
-//                            let items = text.split(separator: "\t")
-//                            print(items[0])
-//                            print(items[1])
-//
-////                            let rand : UInt32 = arc4random_uniform(UInt32(users.count))
-////                            if let user = users[Int(rand)] as? User {
-////                                print(user.id)
-////                            }
-//
-//                            count = count + 1
-//                        }
-//                    })
-                
-//                }
-//
-            }catch{
-                print(error)
-            }
-            
-        }
-        
-    }
- */
+    
     @objc func handleAddPost(){
-//        fetchAllUser()
     }
     
     
@@ -466,24 +395,6 @@ class AddSampleData: UIViewController {
             print("User login")
         }
     }
-//
-//    func updateDisplayName(_ user: Any , name:String ){
-//        let changeRequest = user.createProfileChangeRequest()
-//        changeRequest.displayName = name
-//        changeRequest.commitChanges(completion: { (error) in
-//            if let err = error {
-//                print(err.localizedDescription)
-//                return
-//            }
-//            print("Updated Display Name")
-//            do {
-//            try Auth.auth().signOut()
-//                print("signout")
-//            }catch{
-//                print(error)
-//            }
-//        })
-//    }
     
     func createProfitObject(num : Int ,uid : String ,name : String){
         let ref = Storage.storage().reference().child("profile_images").child(uid).child("profilePic.jpg")
