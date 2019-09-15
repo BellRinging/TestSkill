@@ -1,6 +1,5 @@
 import UIKit
 import FirebaseAuth
-import FacebookLogin
 import Firebase
 
 class TagViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{

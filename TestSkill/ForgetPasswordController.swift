@@ -1,6 +1,4 @@
 import UIKit
-import FacebookCore
-import FacebookLogin
 import SwiftyJSON
 import Firebase
 

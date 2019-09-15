@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		394E6055A2E84994640212ED /* Pods_TestSkill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */; };
+		E518C1CE232B88CE0013CF80 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = E518C1CD232B88CD0013CF80 /* Classes */; };
+		E518C1D2232B88DD0013CF80 /* FaceBookConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518C1D1232B88DD0013CF80 /* FaceBookConstant.swift */; };
+		E518C1D3232B88DD0013CF80 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518C1CF232B88DB0013CF80 /* LoginManager.swift */; };
+		E518C1D4232B88DD0013CF80 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518C1D0232B88DC0013CF80 /* UserData.swift */; };
 		E518F60E22F067B10012CC2D /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60D22F067B10012CC2D /* Game.swift */; };
 		E518F61022F067D40012CC2D /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60F22F067D40012CC2D /* UserGroup.swift */; };
 		E518F61222F067DD0012CC2D /* UserHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F61122F067DD0012CC2D /* UserHistory.swift */; };
@@ -16,6 +20,7 @@
 		E51DB7A922F3262700CD7BFF /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DB7A822F3262700CD7BFF /* Group.swift */; };
 		E583F43D2321338600BFD75D /* FrontController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43C2321338600BFD75D /* FrontController.swift */; };
 		E583F43F23214D6700BFD75D /* ProfitSetupAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */; };
+		E5992352232DF094008AECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5992351232DF094008AECD6 /* Assets.xcassets */; };
 		EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */; };
 		EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */; };
 		EB05CF921FB2E1980039F6FB /* user.txt in Resources */ = {isa = PBXBuildFile; fileRef = EB05CF901FB2E1980039F6FB /* user.txt */; };
@@ -34,7 +39,6 @@
 		EB4DFD911FA229F900145275 /* SearchExtemsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4DFD901FA229F900145275 /* SearchExtemsion.swift */; };
 		EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */; };
 		EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */; };
-		EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */; };
 		EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */; };
 		EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EA81F1CD4D4002E31A7 /* MainTabBarController.swift */; };
 		EB579EAB1F1CD83D002E31A7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */; };
@@ -96,6 +100,10 @@
 		3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestSkill.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		490B503289F94BA60C70C937 /* Pods-TestSkill.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.release.xcconfig"; sourceTree = "<group>"; };
+		E518C1CD232B88CD0013CF80 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
+		E518C1CF232B88DB0013CF80 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
+		E518C1D0232B88DC0013CF80 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		E518C1D1232B88DD0013CF80 /* FaceBookConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceBookConstant.swift; sourceTree = "<group>"; };
 		E518F60D22F067B10012CC2D /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/Game.swift; sourceTree = "<group>"; };
 		E518F60F22F067D40012CC2D /* UserGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserGroup.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/UserGroup.swift; sourceTree = "<group>"; };
 		E518F61122F067DD0012CC2D /* UserHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserHistory.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/UserHistory.swift; sourceTree = "<group>"; };
@@ -104,6 +112,7 @@
 		E51DB7A822F3262700CD7BFF /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Group.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/Group.swift; sourceTree = "<group>"; };
 		E583F43C2321338600BFD75D /* FrontController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FrontController.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/FrontController.swift; sourceTree = "<group>"; };
 		E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfitSetupAction.swift; path = ../../../../../System/Volumes/Data/Users/kennyyeung/Documents/TestSkill/TestSkill/ProfitSetupAction.swift; sourceTree = "<group>"; };
+		E5992351232DF094008AECD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSampleData.swift; sourceTree = "<group>"; };
 		EB05CF901FB2E1980039F6FB /* user.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = user.txt; sourceTree = "<group>"; };
@@ -125,7 +134,6 @@
 		EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Alerts.h"; sourceTree = "<group>"; };
 		EB579E931F1CD3FA002E31A7 /* TestSkill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestSkill.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB579EA01F1CD3FA002E31A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EB579EA21F1CD3FA002E31A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB579EA81F1CD4D4002E31A7 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
@@ -207,6 +215,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E52106EE232E65D500396F4B /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				E518C1D1232B88DD0013CF80 /* FaceBookConstant.swift */,
+				E518C1CF232B88DB0013CF80 /* LoginManager.swift */,
+				E518C1D0232B88DC0013CF80 /* UserData.swift */,
+			);
+			name = Facebook;
+			sourceTree = "<group>";
+		};
 		EB1CC95E1FA2367E004800D4 /* CommentController */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,6 +258,7 @@
 		EB538A3E1F461D5E0007C29D /* Signin */ = {
 			isa = PBXGroup;
 			children = (
+				E52106EE232E65D500396F4B /* Facebook */,
 				EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */,
 				EB3708AA1F40A3420022315A /* SiginViewController.swift */,
 			);
@@ -278,6 +297,7 @@
 				EB611FC61F37568B00FEB44D /* CommonObject */,
 				EB611FC51F37562600FEB44D /* DataObject */,
 				EB611FC41F3755AF00FEB44D /* LoginViewController */,
+				E518C1CD232B88CD0013CF80 /* Classes */,
 				EB611FC31F3755A200FEB44D /* HomeViewController */,
 				EB611FC21F37558900FEB44D /* UserProfileController */,
 				EB611FC11F37557D00FEB44D /* SearchViewController */,
@@ -382,11 +402,11 @@
 		EB611FC71F3756C200FEB44D /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				E5992351232DF094008AECD6 /* Assets.xcassets */,
 				EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */,
 				EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */,
 				EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */,
 				EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */,
-				EB579E9D1F1CD3FA002E31A7 /* Assets.xcassets */,
 				EB579EA21F1CD3FA002E31A7 /* Info.plist */,
 				EBC986691FD7936A00623F2B /* GoogleService-Info.plist */,
 			);
@@ -567,7 +587,8 @@
 				EBC9866A1FD7936A00623F2B /* GoogleService-Info.plist in Resources */,
 				EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */,
 				EB05CF921FB2E1980039F6FB /* user.txt in Resources */,
-				EB579E9E1F1CD3FA002E31A7 /* Assets.xcassets in Resources */,
+				E518C1CE232B88CE0013CF80 /* Classes in Resources */,
+				E5992352232DF094008AECD6 /* Assets.xcassets in Resources */,
 				EB05CF931FB2E1980039F6FB /* item.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,10 +642,6 @@
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
@@ -643,10 +660,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
@@ -677,9 +690,11 @@
 				EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */,
 				EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */,
 				EB5C051C1FF485400071B85C /* ChatLogCollectionExtension.swift in Sources */,
+				E518C1D3232B88DD0013CF80 /* LoginManager.swift in Sources */,
 				EBBA9ECA1FF37BA2002B4D14 /* Message.swift in Sources */,
 				EBCFACC61FF6425C00F771E9 /* Tag.swift in Sources */,
 				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
+				E518C1D4232B88DD0013CF80 /* UserData.swift in Sources */,
 				EBBA9ED01FF37C1F002B4D14 /* ChatInputContainerView.swift in Sources */,
 				EB579EC11F1CE4ED002E31A7 /* Extension.swift in Sources */,
 				EB1CC9661FA23B9A004800D4 /* Comment.swift in Sources */,
@@ -697,6 +712,7 @@
 				EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */,
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
+				E518C1D2232B88DD0013CF80 /* FaceBookConstant.swift in Sources */,
 				EBE355911FB05FD900F64AD4 /* AddPhotoExtension.swift in Sources */,
 				EB579EC31F1CE721002E31A7 /* Post.swift in Sources */,
 				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,

@@ -1,10 +1,8 @@
 import UIKit
 import FirebaseAuth
-import FacebookLogin
 import Firebase
 import FBSDKLoginKit
 import FirebaseDatabase
-import FacebookCore
 
 class ProfileViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout{
     
@@ -190,7 +188,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         
         if (providerID == FacebookAuthProviderID ){
             let loginManager = LoginManager()
-            loginManager.logOut()
+//            loginManager.logOut()
         }else if (providerID == GoogleAuthProviderID){
             
         }

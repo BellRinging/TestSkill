@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import FacebookCore
 import MBProgressHUD
 import UserNotifications
 import GoogleSignIn
@@ -18,9 +17,9 @@ import FirebaseDatabase
 import FirebaseAuth
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUserNotificationCenterDelegate , MessagingDelegate{
- 
-
+class AppDelegate: UIResponder, UIApplicationDelegate {
+   
+    
     var window: UIWindow?
     
     
@@ -32,18 +31,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
         configGoogleAPI()
         
         //Facebook Config
-        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+//        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
         
         window?.frame = UIScreen.main.bounds
         window?.makeKeyAndVisible()
         window?.rootViewController = FrontController()
 //        window?.rootViewController = AddSampleData()
         
-        attemptRegisterForNotification(application: application)
+//        attemptRegisterForNotification(application: application)
         
         return true
     }
-    
+    /*
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(.alert)
     }
@@ -84,52 +84,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
 //        print("Registered with token :",fcmToken)
 //        Utility.fcmToken = fcmToken
 //    }
-    
+    */
     func configGoogleAPI(){
 //        var configureError: NSError?
 //        GGLContext.sharedInstance().configureWithError(&configureError)
 //        assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
-        GIDSignIn.sharedInstance()?.clientID = "660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p"
-        GIDSignIn.sharedInstance().delegate = self
+//        GIDSignIn.sharedInstance()?.clientID = "660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p"
+//        GIDSignIn.sharedInstance().delegate = self
     }
 
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        
-        Utility.showProgress()
-        guard let controller = GIDSignIn.sharedInstance().uiDelegate as? SiginViewController else { return }
-        if let error = error {
-            Utility.showError(controller, message: error.localizedDescription)
-            Utility.hideProgress()
-            return
-        }
-        guard let authentication = user.authentication else { return }
-        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                       accessToken: authentication.accessToken)
-    
-        
-        if (error == nil) {
-            // Perform any operations on signed in user here.
-//            let userId = user.userID                  // For client-side use only!
-//            let idToken = user.authentication.idToken // Safe to send to the server
-//            let fullName = user.profile.name
-            let givenName = user.profile.givenName
-            let familyName = user.profile.familyName
-            let email = user.profile.email
-            
-            let dimension = round(100 * UIScreen.main.scale)
-            let pic = user.profile.imageURL(withDimension: UInt(dimension)).absoluteString
-            print("User have sign in into google \(user)")
-            let dict = ["first_name": givenName,"last_name": familyName, "email":email  ,"name": givenName ,"img_url":pic] as [String : Any]
-//            let user = User(dict: dict)
-//            Utility.user = user
-            controller.firebaseLogin(credential,provider: "Google")
-        } else {
-            print("\(error.localizedDescription)")
-            Utility.hideProgress()
-        }
-    }
-    
+
     private func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
                 withError error: NSError!) {
         print("disconnect from google")
@@ -141,18 +106,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate  ,UNUse
     }
     
     
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    
+        return  LoginManager.shared.facebookUrlConfiguration(app, open: url,
+                           sourceApplication:
+                           options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+//        guard let urlScheme = url.scheme else { return false }
         
-        
-        guard let urlScheme = url.scheme else { return false }
-        if urlScheme.hasPrefix("fb") {
-            return ApplicationDelegate.shared.application(app, open: url, options: options)
-        }else{
-            return GIDSignIn.sharedInstance().handle(url,
-                                                      sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
-                                                      annotation: options[UIApplication.OpenURLOptionsKey.annotation])
-        }
-        return true
+//            return GIDSignIn.sharedInstance().handle(url,
+//                                                      sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
+//                                                      annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+//        }
+//        return true
     }
     
     

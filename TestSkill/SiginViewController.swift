@@ -1,9 +1,7 @@
 import UIKit
-import FacebookCore
 import SwiftyJSON
 import Firebase
 import FBSDKLoginKit
-import FacebookLogin
 import GoogleSignIn
 
 protocol SignControllerDelegrate {
@@ -13,7 +11,7 @@ protocol SignControllerDelegrate {
 class SiginViewController: UIViewController   {
     
     weak var delegrate :LoginController?
-    let button = FBLoginButton(permissions: [ .publicProfile ,.email ])
+    let button = FBLoginButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,10 +20,7 @@ class SiginViewController: UIViewController   {
         GIDSignIn.sharedInstance().uiDelegate = self
    
     }
-    
-    
 
-    
     func setupView(){
         view.addSubview(stackView)
         stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 18   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
@@ -38,15 +33,18 @@ class SiginViewController: UIViewController   {
         view.addSubview(forgetPasswordButton)
         forgetPasswordButton.Anchor(top: normalSignInButton.bottomAnchor, left: view.leftAnchor , right: nil, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 0, bottomPadding: 0, width: 0, height: 0)
         
-        view.addSubview(signInButton)
-        signInButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 4, rightPadding: 4, bottomPadding: 0, width: 0, height: 0)
-        
-        
+//        view.addSubview(signInButton)
+//        signInButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 4, rightPadding: 4, bottomPadding: 0, width: 0, height: 0)
+//
+//
        
-        view.addSubview(button)
-        button.Anchor(top: signInButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        view.addSubview(facebookButton)
+        facebookButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         
-        button.delegate = self
+        view.addSubview(googleButton)
+                (googleButton).Anchor(top: facebookButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        
+//        button.delegate = self
     }
     
     let myActivityIndicator : UIActivityIndicatorView = {
@@ -85,6 +83,43 @@ class SiginViewController: UIViewController   {
         let bn = GIDSignInButton()
         return bn
     }()
+
+    var facebookButton: UIButton = {
+        let facebookButtonOutlet = UIButton()
+        facebookButtonOutlet.setTitle("Sign in with Facebook", for: UIControl.State.normal)
+        facebookButtonOutlet.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        facebookButtonOutlet.backgroundColor = UIColor(red: 58/255, green: 85/255, blue: 159/255, alpha: 1)
+        facebookButtonOutlet.layer.cornerRadius = 5
+        facebookButtonOutlet.clipsToBounds = true
+        
+        facebookButtonOutlet.setImage( #imageLiteral(resourceName: "icon-facebook"), for: UIControl.State.normal)
+        facebookButtonOutlet.imageView?.contentMode = .scaleAspectFit
+        facebookButtonOutlet.tintColor = .white
+        facebookButtonOutlet.imageEdgeInsets = UIEdgeInsets(top: 12, left: -15, bottom: 12, right: 0)
+        facebookButtonOutlet.addTarget(self, action: #selector(SignInByFacebook), for: .touchUpInside)
+        return facebookButtonOutlet
+        
+        }()
+    
+    
+    var googleButton : UIButton = {
+        let googleButtonOutlet = UIButton()
+
+        googleButtonOutlet.setTitle("Sign in with Google", for: UIControl.State.normal)
+        googleButtonOutlet.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        googleButtonOutlet.backgroundColor = UIColor(red: 223/255, green: 74/255, blue: 50/255, alpha: 1)
+        googleButtonOutlet.layer.cornerRadius = 5
+        googleButtonOutlet.clipsToBounds = true
+        
+        googleButtonOutlet.setImage(UIImage(named: "icon-google") , for: UIControl.State.normal)
+        googleButtonOutlet.imageView?.contentMode = .scaleAspectFit
+        googleButtonOutlet.tintColor = .white
+        googleButtonOutlet.imageEdgeInsets = UIEdgeInsets(top: 12, left: -35, bottom: 12, right: 0)
+        
+        return googleButtonOutlet
+    }()
+    
+    
     
     let emailField : FloatLabelTextField = {
         let tv = FloatLabelTextField()
@@ -151,8 +186,7 @@ class SiginViewController: UIViewController   {
         bn.layer.borderColor = UIColor.white.cgColor
         return bn
     }()
-    
-    
+   
     @objc func SignInByEmail(){
         print("SignIn by Email")
         
