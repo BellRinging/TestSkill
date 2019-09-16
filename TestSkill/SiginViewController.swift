@@ -17,7 +17,9 @@ class SiginViewController: UIViewController   {
         super.viewDidLoad()
         view.addDefaultGradient()
         setupView()
-        GIDSignIn.sharedInstance().uiDelegate = self
+//        GIDSignIn.sharedInstance().uiDelegate = self
+//        GIDSignIn.sharedInstance()?.delegate = self
+       
    
     }
 
@@ -115,7 +117,7 @@ class SiginViewController: UIViewController   {
         googleButtonOutlet.imageView?.contentMode = .scaleAspectFit
         googleButtonOutlet.tintColor = .white
         googleButtonOutlet.imageEdgeInsets = UIEdgeInsets(top: 12, left: -35, bottom: 12, right: 0)
-        
+        googleButtonOutlet.addTarget(self, action: #selector(SignInByGoogle), for: .touchUpInside)
         return googleButtonOutlet
     }()
     

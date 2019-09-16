@@ -9,16 +9,16 @@
 import UIKit
 import Firebase
 import MBProgressHUD
-import UserNotifications
-import GoogleSignIn
 import FBSDKCoreKit
-import FirebaseMessaging
-import FirebaseDatabase
-import FirebaseAuth
+import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-   
+class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
+    
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        return
+    }
     
     var window: UIWindow?
     
@@ -31,7 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configGoogleAPI()
         
         //Facebook Config
-//        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
         
         window?.frame = UIScreen.main.bounds
@@ -43,6 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+ 
+    
     /*
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(.alert)
@@ -86,19 +88,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    }
     */
     func configGoogleAPI(){
-//        var configureError: NSError?
-//        GGLContext.sharedInstance().configureWithError(&configureError)
-//        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+
+        GIDSignIn.sharedInstance()?.clientID = "660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p"
+        GIDSignIn.sharedInstance()?.delegate = self
         
-//        GIDSignIn.sharedInstance()?.clientID = "660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p"
-//        GIDSignIn.sharedInstance().delegate = self
+   
     }
 
-
-    private func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
-                withError error: NSError!) {
-        print("disconnect from google")
-    }
+    
+  
     
     func applicationDidBecomeActive(_ application: UIApplication) {
 //        AppEventsLogger.activate(application)
@@ -109,48 +107,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     
-        return  LoginManager.shared.facebookUrlConfiguration(app, open: url,
-                           sourceApplication:
-                           options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+        
+        return GIDSignIn.sharedInstance().handle(url,
+                                                            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
+                                                            annotation: options[UIApplication.OpenURLOptionsKey.annotation])
 //        guard let urlScheme = url.scheme else { return false }
-        
-//            return GIDSignIn.sharedInstance().handle(url,
-//                                                      sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
-//                                                      annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+//        print(urlScheme)
+//        if urlScheme.starts(with: "fb"){
+//            return  LoginManager.shared.facebookUrlConfiguration(app, open: url,
+//                                                                 sourceApplication:
+//                options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation] ?? "")
+//
+//        }else {
+//
 //        }
-//        return true
     }
     
+
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        let userInfo = response.notification.request.content.userInfo
-        
-        if let followerId = userInfo["followerId"] as? String {
-            print(followerId)
-            
-            // I want to push the UserProfileController for followerId somehow
-            
-           
-            Database.fetchUserWithUID(uid: followerId, completion: { (user) in
-                let userProfileController = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
-                userProfileController.user = user
-                if let mainTabBarController = self.window?.rootViewController as? MainTabBarController {
-                    
-                    mainTabBarController.selectedIndex = 0
-                    
-                    mainTabBarController.presentedViewController?.dismiss(animated: true, completion: nil)
-                    
-                    if let homeNavigationController = mainTabBarController.viewControllers?.first as? UINavigationController {
-                        
-                        homeNavigationController.pushViewController(userProfileController, animated: true)
-                        
-                    }
-                    
-                }
-            })
-        }
-    }
+
+
+//
+//
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//
+//        let userInfo = response.notification.request.content.userInfo
+//
+//        if let followerId = userInfo["followerId"] as? String {
+//            print(followerId)
+//
+//            // I want to push the UserProfileController for followerId somehow
+//
+//
+//            Database.fetchUserWithUID(uid: followerId, completion: { (user) in
+//                let userProfileController = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+//                userProfileController.user = user
+//                if let mainTabBarController = self.window?.rootViewController as? MainTabBarController {
+//
+//                    mainTabBarController.selectedIndex = 0
+//
+//                    mainTabBarController.presentedViewController?.dismiss(animated: true, completion: nil)
+//
+//                    if let homeNavigationController = mainTabBarController.viewControllers?.first as? UINavigationController {
+//
+//                        homeNavigationController.pushViewController(userProfileController, animated: true)
+//
+//                    }
+//
+//                }
+//            })
+//        }
+//    }
 }
 
 

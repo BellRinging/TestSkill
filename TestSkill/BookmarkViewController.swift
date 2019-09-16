@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import GoogleSignIn
 
 class BookmarkViewController: UICollectionViewController {
     
@@ -25,6 +26,7 @@ class BookmarkViewController: UICollectionViewController {
 //        guard let user = Utility.firebaseUser ,let providerID = user.providerData.first?.providerID  else {return }
 
         try! Auth.auth().signOut()
+        GIDSignIn.sharedInstance().signOut()
         UserDefaults.standard.set(false, forKey: StaticValue.LOGINKEY)
         delegrate?.dismiss(animated: true, completion: nil)
         print("Logout")
