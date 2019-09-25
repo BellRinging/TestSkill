@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		394E6055A2E84994640212ED /* Pods_TestSkill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */; };
-		E518C1D2232B88DD0013CF80 /* FaceBookConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518C1D1232B88DD0013CF80 /* FaceBookConstant.swift */; };
-		E518C1D3232B88DD0013CF80 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518C1CF232B88DB0013CF80 /* LoginManager.swift */; };
-		E518C1D4232B88DD0013CF80 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518C1D0232B88DC0013CF80 /* UserData.swift */; };
 		E518F60E22F067B10012CC2D /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60D22F067B10012CC2D /* Game.swift */; };
 		E518F61022F067D40012CC2D /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F60F22F067D40012CC2D /* UserGroup.swift */; };
 		E518F61222F067DD0012CC2D /* UserHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518F61122F067DD0012CC2D /* UserHistory.swift */; };
@@ -20,6 +17,10 @@
 		E583F43D2321338600BFD75D /* FrontController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43C2321338600BFD75D /* FrontController.swift */; };
 		E583F43F23214D6700BFD75D /* ProfitSetupAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */; };
 		E5992352232DF094008AECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5992351232DF094008AECD6 /* Assets.xcassets */; };
+		E7535D63233B8F360042CFDF /* ProviderUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7535D62233B8F360042CFDF /* ProviderUser.swift */; };
+		E759F0902334C1F1009EB368 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759F08F2334C1F1009EB368 /* UserData.swift */; };
+		E759F0922334C331009EB368 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759F0912334C331009EB368 /* LoginManager.swift */; };
+		E759F0942334C3C6009EB368 /* FaceBookConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759F0932334C3C6009EB368 /* FaceBookConstant.swift */; };
 		EB05CF8D1FB2AE4A0039F6FB /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */; };
 		EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */; };
 		EB187C591F1E284D00F7A12D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB187C581F1E284D00F7A12D /* LoginController.swift */; };
@@ -97,9 +98,6 @@
 		3CA6C9B5ADF2A38ED44F36AE /* Pods_TestSkill.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestSkill.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		490B503289F94BA60C70C937 /* Pods-TestSkill.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestSkill.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestSkill/Pods-TestSkill.release.xcconfig"; sourceTree = "<group>"; };
-		E518C1CF232B88DB0013CF80 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
-		E518C1D0232B88DC0013CF80 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
-		E518C1D1232B88DD0013CF80 /* FaceBookConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceBookConstant.swift; sourceTree = "<group>"; };
 		E518F60D22F067B10012CC2D /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		E518F60F22F067D40012CC2D /* UserGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGroup.swift; sourceTree = "<group>"; };
 		E518F61122F067DD0012CC2D /* UserHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHistory.swift; sourceTree = "<group>"; };
@@ -109,6 +107,10 @@
 		E583F43C2321338600BFD75D /* FrontController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontController.swift; sourceTree = "<group>"; };
 		E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitSetupAction.swift; sourceTree = "<group>"; };
 		E5992351232DF094008AECD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E7535D62233B8F360042CFDF /* ProviderUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderUser.swift; sourceTree = "<group>"; };
+		E759F08F2334C1F1009EB368 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		E759F0912334C331009EB368 /* LoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
+		E759F0932334C3C6009EB368 /* FaceBookConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceBookConstant.swift; sourceTree = "<group>"; };
 		EB05CF8C1FB2AE4A0039F6FB /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		EB05CF8E1FB2DFF50039F6FB /* AddSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSampleData.swift; sourceTree = "<group>"; };
 		EB187C581F1E284D00F7A12D /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -212,9 +214,9 @@
 		E52106EE232E65D500396F4B /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
-				E518C1D1232B88DD0013CF80 /* FaceBookConstant.swift */,
-				E518C1CF232B88DB0013CF80 /* LoginManager.swift */,
-				E518C1D0232B88DC0013CF80 /* UserData.swift */,
+				E759F0932334C3C6009EB368 /* FaceBookConstant.swift */,
+				E759F0912334C331009EB368 /* LoginManager.swift */,
+				E759F08F2334C1F1009EB368 /* UserData.swift */,
 			);
 			name = Facebook;
 			sourceTree = "<group>";
@@ -360,6 +362,7 @@
 			isa = PBXGroup;
 			children = (
 				EB579EC41F1CE963002E31A7 /* User.swift */,
+				E7535D62233B8F360042CFDF /* ProviderUser.swift */,
 				E518F60D22F067B10012CC2D /* Game.swift */,
 				E51DB7A422F2995400CD7BFF /* GameDetail.swift */,
 				E51DB7A622F2996000CD7BFF /* GameRecord.swift */,
@@ -678,12 +681,12 @@
 				EB579EC91F1D0672002E31A7 /* PaddingTextField.swift in Sources */,
 				EB1CC9621FA236AB004800D4 /* CommentViewControllerCell.swift in Sources */,
 				EB5C051C1FF485400071B85C /* ChatLogCollectionExtension.swift in Sources */,
-				E518C1D3232B88DD0013CF80 /* LoginManager.swift in Sources */,
+				E759F0922334C331009EB368 /* LoginManager.swift in Sources */,
 				EBBA9ECA1FF37BA2002B4D14 /* Message.swift in Sources */,
 				EBCFACC61FF6425C00F771E9 /* Tag.swift in Sources */,
 				EBAF659F1F4D331F00FC05C1 /* RegisterAction.swift in Sources */,
-				E518C1D4232B88DD0013CF80 /* UserData.swift in Sources */,
 				EBBA9ED01FF37C1F002B4D14 /* ChatInputContainerView.swift in Sources */,
+				E759F0902334C1F1009EB368 /* UserData.swift in Sources */,
 				EB579EC11F1CE4ED002E31A7 /* Extension.swift in Sources */,
 				EB1CC9661FA23B9A004800D4 /* Comment.swift in Sources */,
 				EBE355901FB05FD900F64AD4 /* AddPhotoController.swift in Sources */,
@@ -700,7 +703,6 @@
 				EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */,
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
-				E518C1D2232B88DD0013CF80 /* FaceBookConstant.swift in Sources */,
 				EBE355911FB05FD900F64AD4 /* AddPhotoExtension.swift in Sources */,
 				EB579EC31F1CE721002E31A7 /* Post.swift in Sources */,
 				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,
@@ -745,12 +747,14 @@
 				E583F43D2321338600BFD75D /* FrontController.swift in Sources */,
 				EB1CC9641FA23701004800D4 /* HomeViewControllerCell.swift in Sources */,
 				EBBA9ECF1FF37C1F002B4D14 /* ChatMessageCell.swift in Sources */,
+				E7535D63233B8F360042CFDF /* ProviderUser.swift in Sources */,
 				E518F61022F067D40012CC2D /* UserGroup.swift in Sources */,
 				EB906B091FE6B4B7001A91C7 /* UITextViewFixed.swift in Sources */,
 				EBDDA6251F5EBF2000663485 /* FloatLabelTextField.swift in Sources */,
 				EB579EB11F1CDB58002E31A7 /* BookmarkViewController.swift in Sources */,
 				EBFBE1791F5085CF00937EC6 /* PopupDialog.swift in Sources */,
 				EB94AA061FEA1D1700C41524 /* CameraController.swift in Sources */,
+				E759F0942334C3C6009EB368 /* FaceBookConstant.swift in Sources */,
 				EB579EAB1F1CD83D002E31A7 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,7 +15,7 @@ import MBProgressHUD
 class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate ,UINavigationControllerDelegate {
     
     
-    var user : User?{
+    var user : ProviderUser?{
         didSet{
             userNameLabel.text = user?.user_name
             firstNameField.text = user?.first_name
@@ -29,20 +29,18 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let user = Utility.user {
+        if let user = Utility.providerUser {
             self.user = user
         }else {
             if let firebaseUser = Utility.firebaseUser {
                 let displayName = firebaseUser.displayName ?? ""
                 let email = firebaseUser.email ?? ""
                 if let url = firebaseUser.photoURL?.absoluteString {
-                    let dict = ["name": displayName,"img_url": url,"email" : email , "id" :firebaseUser.uid ]
-                    let userObject = User(dict: dict)
-                    self.user = userObject
+                    let providerUser = ProviderUser(user_name: displayName, first_name: "", last_name: "", email: email, img_url: url)
+                    self.user = providerUser
                 }else{
-                    let dict = ["name": displayName,"email" : email , "id" :firebaseUser.uid ]
-                    let userObject = User(dict: dict)
-                    self.user = userObject
+                    let providerUser = ProviderUser(user_name: displayName, first_name: "", last_name: "", email: email, img_url: nil)
+                    self.user = providerUser
                 }
             }
         }

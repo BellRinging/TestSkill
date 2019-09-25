@@ -96,10 +96,7 @@ public enum NeededFields:String {
     case inspirational_people           = "inspirational_people"                // list, The person's inspirational people
 }
 
-public struct Error {
-    static let facebookNoResult:NSError = NSError(domain: "login", code:998 , userInfo: [NSLocalizedDescriptionKey:"Facebook Permissions Result",                                                                                                              NSLocalizedFailureReasonErrorKey:"No Facebook Permissions not Received"])
-    static let facebookPermissions:NSError = NSError(domain: "login", code: 999, userInfo: [NSLocalizedDescriptionKey:"Facebook Permissions",                                                                                                         NSLocalizedFailureReasonErrorKey:"app requires you to provide additional Facebook Permissions in order to create or use a fb account.  This information is used to create fuller profiles, verify authenticity, and provide support"])
-}
+
 
 public class FacebookConstante: NSObject {
 
@@ -109,13 +106,8 @@ public class FacebookConstante: NSObject {
     static let neededFields = "id, name, first_name, last_name, picture, email, gender, birthday,about"
     
 }
-/*
- Manual Configuration
- 
- Step 1: Configure Facebook App Settings for iOS
- Step 2: Download Facebook SDK Or Pod's for iOS
- Step 3: Add SDK to Project
- Step 4: Configure Xcode Project
- Step 5: Connect App Delegate
- Step 6: Add App Events
- */
+
+public struct FacebookError {
+    static let facebookNoResult:NSError = NSError(domain: "login", code:998 , userInfo: [NSLocalizedDescriptionKey:"Facebook Permissions Result",                                                                                                              NSLocalizedFailureReasonErrorKey:"No Facebook Permissions not Received"])
+    static let facebookPermissions:NSError = NSError(domain: "login", code: 999, userInfo: [NSLocalizedDescriptionKey:"Facebook Permissions",                                                                                                         NSLocalizedFailureReasonErrorKey:"app requires you to provide additional Facebook Permissions in order to create or use a fb account.  This information is used to create fuller profiles, verify authenticity, and provide support"])
+}

@@ -60,7 +60,7 @@ class Utility {
     
     static var fcmToken : String?
     
-    static var user : User?
+    static var providerUser : ProviderUser?
     
     static func validField(_ field:UITextField, _ message:String) -> String?{
         if let fieldValue = field.text, fieldValue != "" { return fieldValue }

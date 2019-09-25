@@ -17,11 +17,16 @@ class SiginViewController: UIViewController   {
         super.viewDidLoad()
         view.addDefaultGradient()
         setupView()
-//        GIDSignIn.sharedInstance().uiDelegate = self
-//        GIDSignIn.sharedInstance()?.delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance()?.delegate = self
        
    
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+          super.viewWillAppear(animated)
+          GIDSignIn.sharedInstance().uiDelegate = self
+      }
 
     func setupView(){
         view.addSubview(stackView)

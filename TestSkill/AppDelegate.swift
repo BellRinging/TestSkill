@@ -13,13 +13,10 @@ import FBSDKCoreKit
 import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        return
-    }
-    
+
     var window: UIWindow?
     
     
@@ -28,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
         FirebaseApp.configure()
         
         //Google API
-        configGoogleAPI()
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         
         //Facebook Config
         LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
@@ -36,15 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
         window?.frame = UIScreen.main.bounds
         window?.makeKeyAndVisible()
         window?.rootViewController = FrontController()
-//        window?.rootViewController = AddSampleData()
         
 //        attemptRegisterForNotification(application: application)
         
         return true
     }
     
- 
     
+
     /*
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(.alert)
@@ -87,40 +83,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
 //        Utility.fcmToken = fcmToken
 //    }
     */
-    func configGoogleAPI(){
-
-        GIDSignIn.sharedInstance()?.clientID = "660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p"
-        GIDSignIn.sharedInstance()?.delegate = self
-        
-   
-    }
-
     
-  
     
     func applicationDidBecomeActive(_ application: UIApplication) {
 //        AppEventsLogger.activate(application)
-        AppEvents.activateApp()
+//        AppEvents.activateApp()
     }
     
     
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     
-        
-        return GIDSignIn.sharedInstance().handle(url,
-                                                            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
-                                                            annotation: options[UIApplication.OpenURLOptionsKey.annotation])
-//        guard let urlScheme = url.scheme else { return false }
-//        print(urlScheme)
-//        if urlScheme.starts(with: "fb"){
-//            return  LoginManager.shared.facebookUrlConfiguration(app, open: url,
-//                                                                 sourceApplication:
-//                options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation] ?? "")
-//
-//        }else {
-//
-//        }
+    
+        guard let urlScheme = url.scheme else { return false }
+        print("Schema \(urlScheme)")
+        var facebookOrGoogle : Bool = false
+        if urlScheme.starts(with: "fb"){
+            let facebookOrGoogle = LoginManager.shared.facebookUrlConfiguration(app, open: url,
+                                                                 sourceApplication:
+                options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation] ?? "")
+
+        }else {
+            facebookOrGoogle = GIDSignIn.sharedInstance().handle(url,
+                                                                        sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
+                                                                        annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+
+        }
+        return facebookOrGoogle
     }
     
 

@@ -21,10 +21,11 @@ extension RegisterViewController {
         Utility.showProgress()
         print("Create login into firebase")
         createUserInDb(email: self.emailField, password: self.passwordField).then {user in
-            let userId = user.uid
-            let dict = ["user_name" : self.userNameField.text!,"email":self.emailField.text!,"user_id": userId]
-            let userObj = User(dict: dict)
-            Utility.user = userObj
+            
+            let name = self.userNameField.text
+            let email = self.emailField.text
+            let providerUser = ProviderUser(user_name: name, first_name: nil, last_name: nil, email: email, img_url: nil)
+            Utility.providerUser = providerUser
             self.updateDisplayName(user, name: self.userNameField.text!)
         }.then { _ in
             self.dismissLogin()

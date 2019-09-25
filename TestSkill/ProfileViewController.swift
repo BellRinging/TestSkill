@@ -172,7 +172,7 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
                 print("userObject",userObject)
                 if userObject.user_name != "" {
                     self.user = userObject
-                    Utility.user = userObject
+//                    Utility.providerUser = userObject
                     self.fetchPost()
                 }else{
                     self.isUpdating = false

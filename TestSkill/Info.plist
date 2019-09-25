@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Would like to user the carema</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -42,13 +40,24 @@
 				<string>com.bellringing.kmconcept.TestSkillTestSkill</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<false/>
 	<key>FacebookAppID</key>
 	<string>466884083684782</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
 	<key>FacebookDisplayName</key>
 	<string>TestSkill</string>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -63,6 +72,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Would like to user the carema</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need to access photo</string>
 	<key>UILaunchStoryboardName</key>
@@ -84,12 +95,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>FacebookAutoLogAppEventsEnabled</key>
-    <false/>
-    <key>FacebookAdvertiserIDCollectionEnabled</key>
-    <false/>
-    <key>FirebaseScreenReportingEnabled</key>
-    <false/>
-    
 </dict>
 </plist>

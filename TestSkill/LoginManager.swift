@@ -9,7 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 
-public class LoginManager: NSObject {
+public class LoginManager {
     
     public static let shared = LoginManager()
     
@@ -18,15 +18,16 @@ public class LoginManager: NSObject {
     public func facebookConfiguration(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?)  {
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
-    
-    
+
+
     public func facebookUrlConfiguration(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return ApplicationDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
-    
+
     public func faceboolUrlConfigurationWithOptions(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return ApplicationDelegate.shared.application(app, open: url , options: options)
     }
+//
     
     public func loginWithFacebook(permission:[ReadPermissions]? = nil,requriedFields:[NeededFields]? = nil,controller:UIViewController,_ loginCompletion:@escaping (AccessToken?, NSError?)->(),_ userDatacompletion:@escaping(AnyObject?, NSError?)->Void)  {
         
@@ -39,7 +40,7 @@ public class LoginManager: NSObject {
                 loginCompletion(nil,nil)
             } else {
                 guard let uResult = result else {
-                    loginCompletion(nil,Error.facebookNoResult)
+                    loginCompletion(nil,FacebookError.facebookNoResult)
                     return
                 }
                 if uResult.declinedPermissions.count == 0 {
@@ -92,6 +93,7 @@ public class LoginManager: NSObject {
         }
         return permissionString
     }
+ 
     
     private func showPopUp(viewController:UIViewController) {
         let alert = UIAlertController(title: "Permissions Declined", message: "please give all permissions needed to sigup user", preferredStyle: UIAlertController.Style.alert)
@@ -134,7 +136,7 @@ public class LoginManager: NSObject {
                 
             }
         }
-
+        
         return userData
     }
     

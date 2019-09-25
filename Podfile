@@ -11,8 +11,6 @@ pod 'MBProgressHUD', '~> 1.0.0'
 pod 'Firebase/Messaging'
 pod 'Firebase/Firestore'
 pod 'PromisesSwift'
-pod 'FBSDKLoginKit' ,'~>5.2.0'
-pod 'FBSDKCoreKit' ,'~>5.2.0'
 
    use_frameworks! 
 end
