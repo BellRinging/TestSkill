@@ -28,13 +28,15 @@ class FrontController: UIViewController {
         let loginController = LoginController()
         loginController.delegrate = self
         loginController.modalPresentationStyle = .fullScreen
+       
         self.present(loginController, animated: true, completion: nil)
     }
     
-    func showMainPage(){
-          let loginController = MainTabBarController()
-          loginController.modalPresentationStyle = .fullScreen
-          self.present(loginController, animated: true, completion: nil)
+    @objc func showMainPage(){
+          let vc = MainTabBarController()
+          print("Show main page")
+          vc.modalPresentationStyle = .fullScreen
+          self.present(vc, animated: true, completion: nil)
       }
     
     func showProfileSetupPage(){
@@ -56,17 +58,19 @@ class FrontController: UIViewController {
         print("Check if user profile setup")
 
         if let islogin = UserDefaults.standard.object(forKey: StaticValue.LOGINKEY) as? Bool ,islogin == true{
-            print("profile is proper setup")
-            self.showMainPage()
+            print("profile is proper setup , show main page")
+            perform(#selector(showMainPage), with: self, afterDelay: 0.01)
+
         }else {
             
             User.getById(id: user.uid).then { user in
                 if let _ = user{
                     print("User Profile already setup")
                     UserDefaults.standard.set(true, forKey: StaticValue.LOGINKEY)
-                    NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
+//                    NotificationCenter.default.post(name: ProfileSetupController.updateProfile, object: nil)
                     self.showMainPage()
                 }else{
+                    print("profile is not yet setup , show register page")
                     self.showProfileSetupPage()
                 }
             }

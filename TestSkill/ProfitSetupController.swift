@@ -29,10 +29,13 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let user = Utility.providerUser {
+        
+        if let user =  UserDefaults.standard.retrieve(object: ProviderUser.self, fromKey: StaticValue.PROVIDERUSER){
+            print("Get user info from stored object")
             self.user = user
         }else {
             if let firebaseUser = Utility.firebaseUser {
+                print("Get user info from firebase")
                 let displayName = firebaseUser.displayName ?? ""
                 let email = firebaseUser.email ?? ""
                 if let url = firebaseUser.photoURL?.absoluteString {
@@ -54,6 +57,7 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
            setupView()
+        
     }
     
     
@@ -65,7 +69,7 @@ class ProfileSetupController : UIViewController ,UIImagePickerControllerDelegate
         
         
         view.addSubview(imageView)
-        imageView.Anchor(top: topLayoutGuide.bottomAnchor, left: nil, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 80 , height: 80)
+        imageView.Anchor(top: topLayoutGuide.bottomAnchor, left: nil, right: nil, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 200 , height: 200)
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         view.addSubview(userNameLabel)
@@ -79,6 +83,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
         
         view.addSubview(emailField)
         emailField.Anchor(top: lastNameField.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
+        emailField.isHidden = true
     }
     
     
@@ -156,6 +161,7 @@ userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = t
          } else if let originalImage = info[.originalImage] as? UIImage {
              selectedImage = originalImage
          }
+        print("image selected :\(selectedImage?.description)")
         DispatchQueue.main.async {
             self.imageView.image = selectedImage
         }

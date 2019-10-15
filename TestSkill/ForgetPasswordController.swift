@@ -69,7 +69,7 @@ class ForgetPasswordController: UIViewController   {
     
     
     @objc func RequestForPasswordByEmail(){
-        print("SignIn by Email")
+        print("Request reset the password by email")
         guard let email = Utility.validField(emailField, "Email is required.Please enter your email") else {
                 Utility.showError(self,message: Utility.errorMessage!)
                 return
@@ -80,7 +80,7 @@ class ForgetPasswordController: UIViewController   {
                 return
             }
             
-            Utility.showPopUpDialog(viewController: self, message: "Send", completion: { (action) in
+            Utility.showPopUpDialog(viewController: self, message: "Request send , please check the email", completion: { (action) in
                 self.dismiss(animated: true, completion: nil)
             })
         }

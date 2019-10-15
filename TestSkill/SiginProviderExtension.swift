@@ -1,6 +1,5 @@
 
 import Foundation
-import SwiftyJSON
 import Firebase
 import GoogleSignIn
 import FirebaseAuth
@@ -13,9 +12,8 @@ extension SiginViewController : GIDSignInDelegate,GIDSignInUIDelegate{
         Utility.hideProgress()
         return
       }else{
-        print("Sign In to Google")
+        print("Sign success by Google , get google info")
         let userId = user.userID                  // For client-side use only!
-//        let idToken = user.authentication.idToken // Safe to send to the server
         let fullName = user.profile.name
         let givenName = user.profile.givenName
         let familyName = user.profile.familyName
@@ -23,7 +21,7 @@ extension SiginViewController : GIDSignInDelegate,GIDSignInUIDelegate{
         let url = user.profile.imageURL(withDimension: 100)?.absoluteString
         
         let providerUser = ProviderUser(user_name: fullName, first_name: givenName, last_name: familyName ,email: email, img_url: url)
-        Utility.providerUser = providerUser
+        UserDefaults.standard.save(customObject: providerUser, inKey: StaticValue.PROVIDERUSER)
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
@@ -35,16 +33,17 @@ extension SiginViewController : GIDSignInDelegate,GIDSignInUIDelegate{
     
     @objc func SignInByGoogle(){
         Utility.showProgress()
-         GIDSignIn.sharedInstance().signIn()
+        GIDSignIn.sharedInstance().signIn()
     }
     
     @objc func SignInByFacebook(){
         Utility.showProgress()
         LoginManager.shared.loginWithFacebook(controller: self, { (token, error) in
            if error == nil {
-               print( token?.userID ?? "",token?.tokenString ?? "")
+               print( "login success to facebook")
            }else {
                 print("Fail to login")
+                Utility.hideProgress()
                 return
             }
             if let accesstoken = token {
@@ -58,7 +57,7 @@ extension SiginViewController : GIDSignInDelegate,GIDSignInUIDelegate{
                if error == nil {
                    if let userData = result as? UserData {
                     let user = ProviderUser(user_name: userData.name, first_name: userData.firstName, last_name: userData.lastName, email: userData.email, img_url: userData.photoUrl)
-                    Utility.providerUser = user
+                    UserDefaults.standard.save(customObject: user, inKey: StaticValue.PROVIDERUSER)
                    } else {
                        print(result ?? "")
                    }
@@ -75,11 +74,8 @@ extension SiginViewController : GIDSignInDelegate,GIDSignInUIDelegate{
                 return
             }
             
-            print("Login by \(provider)")
-//            if(provider == "Facebook"){
-//                self.getUserProfitFromFacebook()
-//            }
-            
+            print("Login Firbase by \(provider)")
+//            UserDefaults.standard.set(true, forKey:  StaticValue.LOGINKEY)
             Utility.hideProgress()
             self.dismissLogin()
         })

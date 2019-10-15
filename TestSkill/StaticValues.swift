@@ -10,4 +10,5 @@ import Foundation
 
 class StaticValue {
     static let LOGINKEY : String = "LOGINKEY"
+    static let PROVIDERUSER : String = "PROVIDERUSER"
 }

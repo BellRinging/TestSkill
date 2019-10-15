@@ -17,7 +17,7 @@ import Firebase
 extension ProfileSetupController {
     
     @objc func handleTapImage(){
-           print("tap Image")
+           print("Change Profile Pic")
            let controller = UIImagePickerController()
            controller.allowsEditing = true
            controller.delegate = self

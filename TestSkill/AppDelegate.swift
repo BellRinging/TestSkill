@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.frame = UIScreen.main.bounds
         window?.makeKeyAndVisible()
         window?.rootViewController = FrontController()
+//                window?.rootViewController = CurrentViewController(collectionViewLayout: UICollectionViewFlowLayout())
         
 //        attemptRegisterForNotification(application: application)
         
@@ -96,10 +97,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
         guard let urlScheme = url.scheme else { return false }
-        print("Schema \(urlScheme)")
+        print("Schema : \(urlScheme)")
         var facebookOrGoogle : Bool = false
         if urlScheme.starts(with: "fb"){
-            let facebookOrGoogle = LoginManager.shared.facebookUrlConfiguration(app, open: url,
+            facebookOrGoogle = LoginManager.shared.facebookUrlConfiguration(app, open: url,
                                                                  sourceApplication:
                 options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation] ?? "")
 
@@ -107,7 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             facebookOrGoogle = GIDSignIn.sharedInstance().handle(url,
                                                                         sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
                                                                         annotation: options[UIApplication.OpenURLOptionsKey.annotation])
-
         }
         return facebookOrGoogle
     }

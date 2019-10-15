@@ -28,6 +28,7 @@ class BookmarkViewController: UICollectionViewController {
         try! Auth.auth().signOut()
         GIDSignIn.sharedInstance().signOut()
         UserDefaults.standard.set(false, forKey: StaticValue.LOGINKEY)
+        UserDefaults.standard.removeObject(forKey: StaticValue.PROVIDERUSER)
         delegrate?.dismiss(animated: true, completion: nil)
         print("Logout")
         

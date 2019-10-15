@@ -1,7 +1,7 @@
 import UIKit
 
 
-public struct ProviderUser {
+public struct ProviderUser : Codable {
    
     let user_name: String?
     let first_name: String?

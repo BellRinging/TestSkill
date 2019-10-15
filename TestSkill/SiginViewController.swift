@@ -1,5 +1,4 @@
 import UIKit
-import SwiftyJSON
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
@@ -11,7 +10,7 @@ protocol SignControllerDelegrate {
 class SiginViewController: UIViewController   {
     
     weak var delegrate :LoginController?
-    let button = FBLoginButton()
+//    let button = FBLoginButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +18,6 @@ class SiginViewController: UIViewController   {
         setupView()
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance()?.delegate = self
-       
    
     }
     
@@ -33,7 +31,7 @@ class SiginViewController: UIViewController   {
         stackView.Anchor(top: view.topAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 18   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         stackView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         view.addSubview(normalSignInButton)
-        normalSignInButton.Anchor(top: stackView.bottomAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
+        normalSignInButton.Anchor(top: stackView.bottomAnchor, left: view.leftAnchor , right: view.rightAnchor, bottom: nil, topPadding: 16   , leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
         view.addSubview(joinNowButton)
         joinNowButton.Anchor(top: normalSignInButton.bottomAnchor, left: nil , right: view.rightAnchor, bottom: nil, topPadding: 8   , leftPadding: 0, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
         
@@ -46,10 +44,10 @@ class SiginViewController: UIViewController   {
 //
        
         view.addSubview(facebookButton)
-        facebookButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+        facebookButton.Anchor(top: forgetPasswordButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 16, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
         
         view.addSubview(googleButton)
-                (googleButton).Anchor(top: facebookButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 0)
+                (googleButton).Anchor(top: facebookButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topPadding: 8, leftPadding: 8, rightPadding: 8, bottomPadding: 0, width: 0, height: 50)
         
 //        button.delegate = self
     }
@@ -102,7 +100,7 @@ class SiginViewController: UIViewController   {
         facebookButtonOutlet.setImage( #imageLiteral(resourceName: "icon-facebook"), for: UIControl.State.normal)
         facebookButtonOutlet.imageView?.contentMode = .scaleAspectFit
         facebookButtonOutlet.tintColor = .white
-        facebookButtonOutlet.imageEdgeInsets = UIEdgeInsets(top: 12, left: -15, bottom: 12, right: 0)
+        facebookButtonOutlet.imageEdgeInsets = UIEdgeInsets(top: 12, left: -35, bottom: 12, right: 0)
         facebookButtonOutlet.addTarget(self, action: #selector(SignInByFacebook), for: .touchUpInside)
         return facebookButtonOutlet
         
@@ -121,7 +119,7 @@ class SiginViewController: UIViewController   {
         googleButtonOutlet.setImage(UIImage(named: "icon-google") , for: UIControl.State.normal)
         googleButtonOutlet.imageView?.contentMode = .scaleAspectFit
         googleButtonOutlet.tintColor = .white
-        googleButtonOutlet.imageEdgeInsets = UIEdgeInsets(top: 12, left: -35, bottom: 12, right: 0)
+        googleButtonOutlet.imageEdgeInsets = UIEdgeInsets(top: 12, left: -50, bottom: 12, right: 0)
         googleButtonOutlet.addTarget(self, action: #selector(SignInByGoogle), for: .touchUpInside)
         return googleButtonOutlet
     }()
@@ -164,8 +162,8 @@ class SiginViewController: UIViewController   {
     @objc func handleForgetPassword(){
         
         let vc = ForgetPasswordController()
+        vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
-        print("forgetpassword")
     }
     
     @objc func handleJoinNow(){
@@ -208,13 +206,13 @@ class SiginViewController: UIViewController   {
                 Utility.showError(self,message: err.localizedDescription)
                 return
             }
-            print("User is login")
+            print("login by email success ,show main page")
+            UserDefaults.standard.set(true, forKey:  StaticValue.LOGINKEY)
             self.dismissLogin()
         }
     }
 
     func dismissLogin(){
-        print("Dismiss the login controller")
         self.dismiss(animated: true, completion: nil)
         self.delegrate?.dismiss(animated: true, completion: nil)
     }

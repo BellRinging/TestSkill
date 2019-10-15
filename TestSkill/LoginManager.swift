@@ -37,7 +37,7 @@ public class LoginManager {
                 loginCompletion(nil,unwrappedError as NSError?)
             } else if (result?.isCancelled)! {
                 self.facebookManger.logOut()
-                loginCompletion(nil,nil)
+                loginCompletion(nil,FacebookError.facebookCancel)
             } else {
                 guard let uResult = result else {
                     loginCompletion(nil,FacebookError.facebookNoResult)

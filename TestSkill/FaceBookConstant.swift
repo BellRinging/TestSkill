@@ -109,5 +109,8 @@ public class FacebookConstante: NSObject {
 
 public struct FacebookError {
     static let facebookNoResult:NSError = NSError(domain: "login", code:998 , userInfo: [NSLocalizedDescriptionKey:"Facebook Permissions Result",                                                                                                              NSLocalizedFailureReasonErrorKey:"No Facebook Permissions not Received"])
+    static let facebookCancel:NSError = NSError(domain: "login", code:997 , userInfo: [NSLocalizedDescriptionKey:"Use Cancel Request",                                                                                                              NSLocalizedFailureReasonErrorKey:"Use Cancel Request"])
     static let facebookPermissions:NSError = NSError(domain: "login", code: 999, userInfo: [NSLocalizedDescriptionKey:"Facebook Permissions",                                                                                                         NSLocalizedFailureReasonErrorKey:"app requires you to provide additional Facebook Permissions in order to create or use a fb account.  This information is used to create fuller profiles, verify authenticity, and provide support"])
+    
+    
 }

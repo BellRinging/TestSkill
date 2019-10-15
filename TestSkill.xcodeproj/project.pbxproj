@@ -17,7 +17,13 @@
 		E583F43D2321338600BFD75D /* FrontController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43C2321338600BFD75D /* FrontController.swift */; };
 		E583F43F23214D6700BFD75D /* ProfitSetupAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */; };
 		E5992352232DF094008AECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5992351232DF094008AECD6 /* Assets.xcassets */; };
+		E72AFFC6233C9CA300157C2D /* CurrentViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72AFFC5233C9CA200157C2D /* CurrentViewCell.swift */; };
+		E72AFFC8233CD77C00157C2D /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72AFFC7233CD77C00157C2D /* GameCell.swift */; };
 		E7535D63233B8F360042CFDF /* ProviderUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7535D62233B8F360042CFDF /* ProviderUser.swift */; };
+		E7535D65233B9D5F0042CFDF /* Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7535D64233B9D5F0042CFDF /* Current.swift */; };
+		E7535D67233C5EB90042CFDF /* CurrentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7535D66233C5EB90042CFDF /* CurrentViewController.swift */; };
+		E7535D69233C5EDE0042CFDF /* CurrentHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7535D68233C5EDE0042CFDF /* CurrentHeaderCell.swift */; };
+		E7535D6B233C5FA30042CFDF /* CurrentFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7535D6A233C5FA30042CFDF /* CurrentFooterCell.swift */; };
 		E759F0902334C1F1009EB368 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759F08F2334C1F1009EB368 /* UserData.swift */; };
 		E759F0922334C331009EB368 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759F0912334C331009EB368 /* LoginManager.swift */; };
 		E759F0942334C3C6009EB368 /* FaceBookConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759F0932334C3C6009EB368 /* FaceBookConstant.swift */; };
@@ -107,7 +113,13 @@
 		E583F43C2321338600BFD75D /* FrontController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontController.swift; sourceTree = "<group>"; };
 		E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitSetupAction.swift; sourceTree = "<group>"; };
 		E5992351232DF094008AECD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E72AFFC5233C9CA200157C2D /* CurrentViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentViewCell.swift; sourceTree = "<group>"; };
+		E72AFFC7233CD77C00157C2D /* GameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCell.swift; sourceTree = "<group>"; };
 		E7535D62233B8F360042CFDF /* ProviderUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderUser.swift; sourceTree = "<group>"; };
+		E7535D64233B9D5F0042CFDF /* Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Current.swift; sourceTree = "<group>"; };
+		E7535D66233C5EB90042CFDF /* CurrentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentViewController.swift; sourceTree = "<group>"; };
+		E7535D68233C5EDE0042CFDF /* CurrentHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentHeaderCell.swift; sourceTree = "<group>"; };
+		E7535D6A233C5FA30042CFDF /* CurrentFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentFooterCell.swift; sourceTree = "<group>"; };
 		E759F08F2334C1F1009EB368 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		E759F0912334C331009EB368 /* LoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		E759F0932334C3C6009EB368 /* FaceBookConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceBookConstant.swift; sourceTree = "<group>"; };
@@ -211,16 +223,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		E52106EE232E65D500396F4B /* Facebook */ = {
-			isa = PBXGroup;
-			children = (
-				E759F0932334C3C6009EB368 /* FaceBookConstant.swift */,
-				E759F0912334C331009EB368 /* LoginManager.swift */,
-				E759F08F2334C1F1009EB368 /* UserData.swift */,
-			);
-			name = Facebook;
-			sourceTree = "<group>";
-		};
 		EB1CC95E1FA2367E004800D4 /* CommentController */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,35 +232,6 @@
 				EBC110DD2004886C00766D27 /* CommentController.swift */,
 			);
 			name = CommentController;
-			sourceTree = "<group>";
-		};
-		EB3D0A0A1F611120005AC4EB /* ProfileSetup */ = {
-			isa = PBXGroup;
-			children = (
-				EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */,
-				E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */,
-			);
-			name = ProfileSetup;
-			sourceTree = "<group>";
-		};
-		EB3D0A0B1F6239DF005AC4EB /* LoginPage */ = {
-			isa = PBXGroup;
-			children = (
-				EB187C581F1E284D00F7A12D /* LoginController.swift */,
-				EB215B511F3CA715001A9BC0 /* LoginCollection.swift */,
-				EB215B531F3CA772001A9BC0 /* LoginCell.swift */,
-			);
-			name = LoginPage;
-			sourceTree = "<group>";
-		};
-		EB538A3E1F461D5E0007C29D /* Signin */ = {
-			isa = PBXGroup;
-			children = (
-				E52106EE232E65D500396F4B /* Facebook */,
-				EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */,
-				EB3708AA1F40A3420022315A /* SiginViewController.swift */,
-			);
-			name = Signin;
 			sourceTree = "<group>";
 		};
 		EB579E8A1F1CD3FA002E31A7 = {
@@ -292,7 +265,7 @@
 				EB611FC71F3756C200FEB44D /* Supporting */,
 				EB611FC61F37568B00FEB44D /* CommonObject */,
 				EB611FC51F37562600FEB44D /* DataObject */,
-				EB611FC41F3755AF00FEB44D /* LoginViewController */,
+				EB611FC41F3755AF00FEB44D /* LoginRelated */,
 				EB611FC31F3755A200FEB44D /* HomeViewController */,
 				EB611FC21F37558900FEB44D /* UserProfileController */,
 				EB611FC11F37557D00FEB44D /* SearchViewController */,
@@ -330,8 +303,13 @@
 			isa = PBXGroup;
 			children = (
 				EBC05D121FBAB28500A3AFBA /* ProfileFooterCell.swift */,
+				E7535D6A233C5FA30042CFDF /* CurrentFooterCell.swift */,
 				EB579EB41F1CDEDC002E31A7 /* ProfileViewController.swift */,
+				E7535D66233C5EB90042CFDF /* CurrentViewController.swift */,
 				EB579EB61F1CDF43002E31A7 /* ProfileHeaderCell.swift */,
+				E7535D68233C5EDE0042CFDF /* CurrentHeaderCell.swift */,
+				E72AFFC5233C9CA200157C2D /* CurrentViewCell.swift */,
+				E72AFFC7233CD77C00157C2D /* GameCell.swift */,
 			);
 			name = UserProfileController;
 			sourceTree = "<group>";
@@ -339,30 +317,39 @@
 		EB611FC31F3755A200FEB44D /* HomeViewController */ = {
 			isa = PBXGroup;
 			children = (
-				EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */,
 				EB1CC9631FA23701004800D4 /* HomeViewControllerCell.swift */,
+				EB579EAA1F1CD83D002E31A7 /* HomeViewController.swift */,
 				EB5C05231FF490E70071B85C /* HomeViewAction.swift */,
 			);
 			name = HomeViewController;
 			sourceTree = "<group>";
 		};
-		EB611FC41F3755AF00FEB44D /* LoginViewController */ = {
+		EB611FC41F3755AF00FEB44D /* LoginRelated */ = {
 			isa = PBXGroup;
 			children = (
-				EBE355881FB0498500F64AD4 /* ForgetPassword */,
-				EB3D0A0B1F6239DF005AC4EB /* LoginPage */,
-				EB3D0A0A1F611120005AC4EB /* ProfileSetup */,
-				EB65793D1F51C2BC007B1810 /* Register */,
-				EB538A3E1F461D5E0007C29D /* Signin */,
+				E7535D62233B8F360042CFDF /* ProviderUser.swift */,
+				E583F43C2321338600BFD75D /* FrontController.swift */,
+				EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */,
+				EB187C581F1E284D00F7A12D /* LoginController.swift */,
+				EB215B511F3CA715001A9BC0 /* LoginCollection.swift */,
+				EB215B531F3CA772001A9BC0 /* LoginCell.swift */,
+				EBAF65A01F4D490400FC05C1 /* ProfitSetupController.swift */,
+				E583F43E23214D6700BFD75D /* ProfitSetupAction.swift */,
+				EB579EC61F1D062B002E31A7 /* RegisterController.swift */,
+				EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */,
+				E759F0932334C3C6009EB368 /* FaceBookConstant.swift */,
+				E759F0912334C331009EB368 /* LoginManager.swift */,
+				E759F08F2334C1F1009EB368 /* UserData.swift */,
+				EBDDA62C1F6038B900663485 /* SiginProviderExtension.swift */,
+				EB3708AA1F40A3420022315A /* SiginViewController.swift */,
 			);
-			name = LoginViewController;
+			name = LoginRelated;
 			sourceTree = "<group>";
 		};
 		EB611FC51F37562600FEB44D /* DataObject */ = {
 			isa = PBXGroup;
 			children = (
 				EB579EC41F1CE963002E31A7 /* User.swift */,
-				E7535D62233B8F360042CFDF /* ProviderUser.swift */,
 				E518F60D22F067B10012CC2D /* Game.swift */,
 				E51DB7A422F2995400CD7BFF /* GameDetail.swift */,
 				E51DB7A622F2996000CD7BFF /* GameRecord.swift */,
@@ -411,17 +398,9 @@
 			isa = PBXGroup;
 			children = (
 				EB579EB01F1CDB58002E31A7 /* BookmarkViewController.swift */,
+				E7535D64233B9D5F0042CFDF /* Current.swift */,
 			);
 			name = BookmarkController;
-			sourceTree = "<group>";
-		};
-		EB65793D1F51C2BC007B1810 /* Register */ = {
-			isa = PBXGroup;
-			children = (
-				EB579EC61F1D062B002E31A7 /* RegisterController.swift */,
-				EBAF659E1F4D331F00FC05C1 /* RegisterAction.swift */,
-			);
-			name = Register;
 			sourceTree = "<group>";
 		};
 		EB94AA071FEA1D1E00C41524 /* CaremaController */ = {
@@ -470,15 +449,6 @@
 				EB906B081FE6B4B7001A91C7 /* UITextViewFixed.swift */,
 			);
 			name = FloatLabel;
-			sourceTree = "<group>";
-		};
-		EBE355881FB0498500F64AD4 /* ForgetPassword */ = {
-			isa = PBXGroup;
-			children = (
-				E583F43C2321338600BFD75D /* FrontController.swift */,
-				EBE355891FB049BD00F64AD4 /* ForgetPasswordController.swift */,
-			);
-			name = ForgetPassword;
 			sourceTree = "<group>";
 		};
 		EBE3558B1FB05FB200F64AD4 /* AddPhotoController */ = {
@@ -696,6 +666,7 @@
 				EB579EBF1F1CE3DB002E31A7 /* SinglePhotoCell.swift in Sources */,
 				E51DB7A522F2995400CD7BFF /* GameDetail.swift in Sources */,
 				E518F60E22F067B10012CC2D /* Game.swift in Sources */,
+				E7535D6B233C5FA30042CFDF /* CurrentFooterCell.swift in Sources */,
 				EB50AE971F876DED003B9264 /* UIViewController+Alerts.m in Sources */,
 				EB3708AB1F40A3420022315A /* SiginViewController.swift in Sources */,
 				EB579EAF1F1CDABA002E31A7 /* AddPostController.swift in Sources */,
@@ -703,6 +674,7 @@
 				EBDDA6261F5EBF2000663485 /* FloatLabelTextView.swift in Sources */,
 				EB579EA91F1CD4D4002E31A7 /* MainTabBarController.swift in Sources */,
 				EB215B541F3CA772001A9BC0 /* LoginCell.swift in Sources */,
+				E7535D69233C5EDE0042CFDF /* CurrentHeaderCell.swift in Sources */,
 				EBE355911FB05FD900F64AD4 /* AddPhotoExtension.swift in Sources */,
 				EB579EC31F1CE721002E31A7 /* Post.swift in Sources */,
 				EBA420241F667A0F0010BFC7 /* Utility.swift in Sources */,
@@ -710,14 +682,18 @@
 				EB6D3D611FA37F14005B5D9D /* DisplayPhotoView.swift in Sources */,
 				EB5C05201FF48A650071B85C /* ChatLogImagePicker.swift in Sources */,
 				EBCFACC41FF631F000F771E9 /* TagViewHeader.swift in Sources */,
+				E72AFFC6233C9CA300157C2D /* CurrentViewCell.swift in Sources */,
 				EB4DFD8D1FA229AD00145275 /* SearchViewController.swift in Sources */,
 				EBBA9ED31FF37C35002B4D14 /* MessagesController.swift in Sources */,
+				E7535D65233B9D5F0042CFDF /* Current.swift in Sources */,
 				EB5C051E1FF488C90071B85C /* ChatLogAction.swift in Sources */,
 				EB579EBB1F1CDFA0002E31A7 /* HomeCell.swift in Sources */,
 				EB215B561F3CA820001A9BC0 /* Page.swift in Sources */,
+				E7535D67233C5EB90042CFDF /* CurrentViewController.swift in Sources */,
 				EB579EC51F1CE963002E31A7 /* User.swift in Sources */,
 				EBC05D131FBAB28500A3AFBA /* ProfileFooterCell.swift in Sources */,
 				EB05CF8F1FB2DFF50039F6FB /* AddSampleData.swift in Sources */,
+				E72AFFC8233CD77C00157C2D /* GameCell.swift in Sources */,
 				EB579E971F1CD3FA002E31A7 /* AppDelegate.swift in Sources */,
 				EBC110DC2004881A00766D27 /* CommentInputView.swift in Sources */,
 				EBBA9ED51FF37C79002B4D14 /* NewMessageController.swift in Sources */,
