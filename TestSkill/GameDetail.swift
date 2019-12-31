@@ -3,8 +3,8 @@ import Promises
 import Firebase
 
 struct GameDetail : Codable {
-    let id : String
-    let game_id : String
+    let gameDetailId : String
+    let gameId : String
     let remark : String
     let value  : Int
     let whoLose : [String]
@@ -73,18 +73,48 @@ extension GameDetail {
         return p
     }
     
+    static func getAllItemById(gameId : String ,pagingSize:Int=40, lastDoc:DocumentSnapshot? = nil) -> Promise<([GameDetail],DocumentSnapshot?)> {
+         let p = Promise<([GameDetail],DocumentSnapshot?)> { (resolve , reject) in
+             let db = Firestore.firestore()
+             let ref = db.collection("gameDetails")
+            var query = ref.limit(to: pagingSize)
+            query = query.order(by: "gameDetails", descending: true)
+            query = query.whereField("gameId", arrayContains: gameId)
+            if let lastDoc = lastDoc {
+                query = query.start(afterDocument: lastDoc)
+            }
+            
+             var groups : [GameDetail] = []
+             ref.getDocuments { (snap, err) in
+                 guard let documents = snap?.documents else {return}
+                let lastDoc : DocumentSnapshot? = documents.last
+                 for doc in documents {
+                     do {
+                         let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                         let  group = try JSONDecoder.init().decode(GameDetail.self, from: data)
+                         groups.append(group)
+                     }catch{
+                         reject(error)
+                     }
+                 }
+                 resolve((groups,lastDoc))
+             }
+         }
+         return p
+    }
+    
     func save() -> Promise<GameDetail> {
            
         return Promise<GameDetail> { (resolve , reject) in
             let db = Firestore.firestore()
             let encoded = try! JSONEncoder.init().encode(self)
             let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
-            let ref = db.collection("gameDetails").document(self.id)
+            let ref = db.collection("gameDetails").document(self.gameDetailId)
             ref.setData(data as! [String : Any]) { (err) in
                 guard err == nil  else {
                     return reject(err!)
                 }
-                print("Save gamedetail \(self.id)")
+                print("Save gamedetail \(self.gameDetailId)")
                 resolve(self)
             }
        

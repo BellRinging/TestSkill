@@ -32,8 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.frame = UIScreen.main.bounds
         window?.makeKeyAndVisible()
+//        window?.rootViewController = GameViewController()
+//        window?.rootViewController = AddSampleData()
+//        window?.rootViewController = CurrentViewController(collectionViewLayout: UICollectionViewFlowLayout())
         window?.rootViewController = FrontController()
-//                window?.rootViewController = CurrentViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        
         
 //        attemptRegisterForNotification(application: application)
         

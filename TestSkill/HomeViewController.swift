@@ -57,23 +57,23 @@ class HomeViewController: UICollectionViewController ,UICollectionViewDelegateFl
     func fetchUserPost(_ group:DispatchGroup , uid: String){
         print("fretch user post :\(uid)")
         group.enter()
-        Database.fetchUserWithUID(uid: uid) { (user) in
-            let ref = Database.database().reference().child("posts").child(uid)
-            ref.observeSingleEvent(of: .value, with: { (snapsnot) in
-                guard let dictionary = snapsnot.value as? [String: Any] else { return }
-                print("No of post for user:" , dictionary.count ," For user", user.user_name)
-                dictionary.forEach({ (key,value) in
-                    let dict = value as! [String:Any]
-                    var post = Post(user: user, dict: dict)
-                    post.id = key
-                    guard let currentId = Auth.auth().currentUser?.uid else {return }
-                    self.tempPost.append(post)
-//                    print(post)
-                })
-//                print("Group leave for user",user.name)
-                group.leave()
-            })
-        }
+//        Database.fetchUserWithUID(uid: uid) { (user) in
+//            let ref = Database.database().reference().child("posts").child(uid)
+//            ref.observeSingleEvent(of: .value, with: { (snapsnot) in
+//                guard let dictionary = snapsnot.value as? [String: Any] else { return }
+//                print("No of post for user:" , dictionary.count ," For user", user.user_name)
+//                dictionary.forEach({ (key,value) in
+//                    let dict = value as! [String:Any]
+//                    var post = Post(user: user, dict: dict)
+//                    post.id = key
+//                    guard let currentId = Auth.auth().currentUser?.uid else {return }
+//                    self.tempPost.append(post)
+////                    print(post)
+//                })
+////                print("Group leave for user",user.name)
+//                group.leave()
+//            })
+//        }
     }
     
     

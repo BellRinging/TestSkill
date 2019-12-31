@@ -163,22 +163,22 @@ class ProfileViewController: UICollectionViewController ,UICollectionViewDelegat
         print(uid)
         if let userObj = self.user , uid != userObj.user_id ,userObj.user_id != "" {
             print("load from userobj")
-            Database.fetchUserWithUID(uid: userObj.id , completion: { userObject in
-                self.fetchPost()
-            })
+//            Database.fetchUserWithUID(uid: userObj.id , completion: { userObject in
+//                self.fetchPost()
+//            })
         }else {
             print("load from firebase user")
-            Database.fetchUserWithUID(uid: uid, completion: { userObject in
-                print("userObject",userObject)
-                if userObject.user_name != "" {
-                    self.user = userObject
-//                    Utility.providerUser = userObject
-                    self.fetchPost()
-                }else{
-                    self.isUpdating = false
-                    return
-                }
-            })
+//            Database.fetchUserWithUID(uid: uid, completion: { userObject in
+//                print("userObject",userObject)
+//                if userObject.user_name != "" {
+//                    self.user = userObject
+////                    Utility.providerUser = userObject
+//                    self.fetchPost()
+//                }else{
+//                    self.isUpdating = false
+//                    return
+//                }
+//            })
         }
     }
     

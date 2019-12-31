@@ -142,50 +142,7 @@ extension Promise {
 }
  */
 
-extension Database {
-    
-    
-    
-    static func fetchUserWithUID(uid: String, completion: @escaping (User) -> ()) {
-        
-        
-        
-//        Firestore.firestore().document("users").getDocument(completion: { (snapshot, error) in
-//            print(snapshot)
-//            if let user = snapshot.flatMap({ _ in User(dictionary: snapshot?.data()) }) {
-//                                print("user: \(user)")
-//                            } else {
-//                                print("Document does not exist")
-//                            }
-//        })
 
-//        }
-        
-        
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            if (!snapshot.exists()){
-                print("Cant find any user")
-//            let user = User(user_id: "", user_name: "", first_name: "", last_name: "", email: "", image_url: "", groups: nil, gameRecord: nil, history: nil)
-                let dict = ["":""]
-                let user = User(dict: dict)
-                 completion(user)
-                return
-            }
-            guard let userDictionary = snapshot.value as? [String: Any] else { return }
-//            print("\(userDictionary)")
-            if userDictionary.count == 0 {
-                print("Cant find any user")
-                return
-            }
-//            let user = User(dict: userDictionary as [String:AnyObject])
-            let data = try! JSONSerialization.data(withJSONObject: userDictionary, options: .prettyPrinted)
-            var user = try! JSONDecoder.init().decode(User.self, from: data)
-            completion(user)
-        }) { (err) in
-            print("Failed to fetch user for posts:", err)
-        }
-    }
-}
 
 extension Date {
     func timeAgoDisplay() -> String {

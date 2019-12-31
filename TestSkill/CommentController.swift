@@ -40,11 +40,11 @@ class CommentController: UICollectionViewController  ,UICollectionViewDelegateFl
         ref.observe(.childAdded, with: { (snapshot) in
             guard let dict = snapshot.value as? [String:Any] else {return}
             guard let uid = dict["uid"] as? String else { return }
-            Database.fetchUserWithUID(uid: uid, completion: { (user) in
-                let comment = Comment(user: user, dictionary: dict)
-                self.comments.append(comment)
-                self.collectionView?.reloadData()
-            })
+//            Database.fetchUserWithUID(uid: uid, completion: { (user) in
+//                let comment = Comment(user: user, dictionary: dict)
+//                self.comments.append(comment)
+//                self.collectionView?.reloadData()
+//            })
         })
     }
 

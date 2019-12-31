@@ -50,7 +50,7 @@ public class LoginManager {
                                 userDatacompletion(nil,unwrappedMeError as NSError?)
                             }else{
                                 if requriedFields == nil {
-                                  userDatacompletion(self.parseUserData(dataResponse: response as AnyObject),nil)
+                                    userDatacompletion(self.parseUserData(dataResponse: response as AnyObject) as AnyObject,nil)
                                   return
                                 }
                                 userDatacompletion(response as AnyObject?,nil)
@@ -102,7 +102,7 @@ public class LoginManager {
     }
     
     private func parseUserData(dataResponse:AnyObject) -> UserData {
-        let userData = UserData()
+        var userData = UserData()
         
         if let about = dataResponse.object(forKey: NeededFields.about.rawValue) as? String {
            userData.about = about

@@ -11,6 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import MBProgressHUD
 import Promises
+import SwiftUI
 
 class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
     
@@ -35,23 +36,23 @@ class MainTabBarController: UITabBarController ,UITabBarControllerDelegate {
     }
     
     func setupTabBar(){
+        guard let user = Auth.auth().currentUser else {
+            return
+        }
+        
         let vc = BookmarkViewController(collectionViewLayout: UICollectionViewFlowLayout())
         vc.delegrate = self
-        let page1 = templateController(#imageLiteral(resourceName: "ribbon"), unselectedImage: #imageLiteral(resourceName: "ribbon"), rootController: vc)
+        let page1 = templateController(UIImage(named: "gear")!.withRenderingMode(.alwaysTemplate), unselectedImage: UIImage(named: "gear")!.withRenderingMode(.alwaysTemplate), rootController: CurrentViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
-        let vc2 = BookmarkViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        vc.delegrate = self
-        let page2 = templateController(#imageLiteral(resourceName: "ribbon"), unselectedImage: #imageLiteral(resourceName: "ribbon"), rootController: vc2)
+        let vc3 = AddSampleData()
+        let page3 = templateController(UIImage(named: "gear")!.withRenderingMode(.alwaysTemplate), unselectedImage: UIImage(named: "gear")!.withRenderingMode(.alwaysTemplate), rootController: vc3)
         
-        let vc3 = BookmarkViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        vc.delegrate = self
-        let page3 = templateController(#imageLiteral(resourceName: "ribbon"), unselectedImage: #imageLiteral(resourceName: "ribbon"), rootController: vc3)
-//
-        viewControllers = [page1,page2,page3]
+        let vc4 = UIHostingController(rootView: TestSwiftUI())
+        viewControllers = [vc4]
         tabBar.tintColor = UIColor.black
-       tabBar.items?.forEach({ (item) in
+        tabBar.items?.forEach({ (item) in
             item.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
-       })
+        })
     
     }
     

@@ -25,6 +25,7 @@ class FrontController: UIViewController {
     }
     
     @objc func showLoginPage(){
+        
         let loginController = LoginController()
         loginController.delegrate = self
         loginController.modalPresentationStyle = .fullScreen
@@ -33,10 +34,12 @@ class FrontController: UIViewController {
     }
     
     @objc func showMainPage(){
-          let vc = MainTabBarController()
-          print("Show main page")
-          vc.modalPresentationStyle = .fullScreen
-          self.present(vc, animated: true, completion: nil)
+        
+            let vc = MainTabBarController()
+            print("Show main page")
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true, completion: nil)
+                
       }
     
     func showProfileSetupPage(){

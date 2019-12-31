@@ -80,13 +80,13 @@ class ViewController: UIViewController ,UICollectionViewDataSource ,UICollection
             
             
             guard let uid = dict["uid"] as? String else { return }
-            Database.fetchUserWithUID(uid: uid, completion: { (user) in
-                let comment = Comment(user: user, dictionary: dict)
-                self.comments.append(comment)
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                }
-            })
+//            Database.fetchUserWithUID(uid: uid, completion: { (user) in
+//                let comment = Comment(user: user, dictionary: dict)
+//                self.comments.append(comment)
+//                DispatchQueue.main.async {
+//                    self.collectionView?.reloadData()
+//                }
+//            })
         })
     }
     
