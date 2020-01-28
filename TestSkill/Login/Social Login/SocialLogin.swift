@@ -1,0 +1,65 @@
+import SwiftUI
+import GoogleSignIn
+import FBSDKLoginKit
+import FirebaseAuth
+import Promises
+
+
+struct SocialLogin: UIViewRepresentable {
+    
+    func makeUIView(context: UIViewRepresentableContext<SocialLogin>) -> UIView {
+        return UIView()
+    }
+    
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<SocialLogin>) {
+        
+    }
+
+    func attemptLoginGoogle() {
+        GIDSignIn.sharedInstance()?.presentingViewController = UIApplication.shared.windows.last?.rootViewController
+        GIDSignIn.sharedInstance()?.signIn()
+    }
+    
+    func attemptLoginFb(){
+        if let vc = UIApplication.shared.windows.last?.rootViewController{
+            LoginManager.shared.loginWithFacebook(controller: vc, { (token, error , userData) in
+                guard let accesstoken = token else {return }
+                let cred = FacebookAuthProvider.credential(withAccessToken: accesstoken)
+                self.firebaseLogin(cred, provider: "facebook" ,user: userData!)
+            })
+        }
+    }
+    
+    func firebaseLogin(_ credentials: AuthCredential , provider:String , user : ProviderUser) {
+        Utility.showProgress()
+        loginToFirebase(credentials).then { tempUser in
+            RegisterHelper.registerUserIntoDatabase(user)
+//            RegisterHelper.updateDisplayName(user)
+            print("Profile created \(provider)")
+            NotificationCenter.default.post(name: .dismissSwiftUI, object: nil)
+        }.catch{ err in
+            print("Fail to create login into firebase")
+            Utility.showError(message: err.localizedDescription)
+        }.always {
+            Utility.hideProgress()
+        }
+       
+    }
+    
+
+    
+    func loginToFirebase(_ credentials: AuthCredential) -> Promise<FirebaseAuth.User> {
+        
+         let p = Promise<FirebaseAuth.User> { (resolve , reject) in
+            Auth.auth().signIn(with: credentials, completion: { (result, err) in
+                guard let user = result?.user else {
+                    reject(err!)
+                    return
+                }
+                resolve(user)
+            })
+        }
+        return p
+    }
+
+}

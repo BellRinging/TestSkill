@@ -10,18 +10,15 @@ import SwiftUI
 
 struct TestSwiftUI: View {
     
-    @EnvironmentObject private var environmentData: EnvironmentData
+    @EnvironmentObject private var environmentData: MyStore
+    @State private var showPopUp = true
     
     var body: some View {
         HStack {
-            
             VStack {
-                Button(action: {
-                    setTest()
-                }) {
+             
                     IndividualScoreDisplay(player: environmentData.displayBoard[0])
-                }
-                
+             
             }
             VStack {
                 IndividualScoreDisplay(player: environmentData.displayBoard[1]).padding()
@@ -35,12 +32,9 @@ struct TestSwiftUI: View {
     }
 }
 
-func setTest(){
-    
-}
 
 struct TestSwiftUI_Previews: PreviewProvider {
     static var previews: some View {
-        TestSwiftUI().environmentObject(EnvironmentData())
+        TestSwiftUI().environmentObject(MyStore())
     }
 }

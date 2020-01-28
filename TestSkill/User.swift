@@ -1,43 +1,75 @@
 import UIKit
 import Firebase
+import FirebaseAuth
 import Promises
 
 
-public struct User : Codable  {
-    let id : String
-    let user_id : String?
-    let user_name: String?
-    let first_name: String?
-    let last_name: String?
-    let email: String?
-    let img_url : String?
-    let groups : [UserGroup]?
-    let gameRecord : [GameRecord]?
-    let history : [UserHistory]?
-    let fcmToken : String?
-    let name : String
-    var balance : Int?
+struct User : Identifiable,Codable,Equatable  {
+    public var  id : String
+    public var  userName: String?
+    public var  firstName: String?
+    public var  lastName: String?
+    public var  email: String
+    public var  imgUrl : String
+    public var balance : Int?
     
-    init(dict : [String:String]) {
-        self.user_id = dict["user_id"] ?? ""
-        self.user_name = dict["user_name"] ?? ""
-        self.first_name = dict["first_name"] ?? ""
-        self.last_name = dict["last_name"] ?? ""
-        self.email = dict["email"] ?? ""
-        self.img_url = dict["image_url"] ?? ""
-        self.groups = nil
-        self.gameRecord = nil
-        self.history = nil
-        self.fcmToken = ""
-        self.name = ""
-        self.id = dict["id"] ?? ""
-        self.balance = 0
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.email == rhs.email
     }
     
+//    init(dict : [String:String]) {
+//        self.id = dict["user_id"] ?? ""
+//        self.userName = dict["user_name"] ?? ""
+//        self.firstName = dict["first_name"] ?? ""
+//        self.lastName = dict["last_name"] ?? ""
+//        self.email = dict["email"] ?? ""
+//        self.imgUrl = dict["image_url"] ?? ""
+//        self.balance = 0
+//    }
+//
+//    enum CodingKeys: CodingKey {
+//        case id
+//        case userName
+//        case firstName
+//        case lastName
+//        case email
+//        case imgUrl
+//        case balance
+//    }
+//
+//    init(){
+//        self.id = ""
+//        self.userName = ""
+//        self.firstName = ""
+//        self.lastName = ""
+//        self.email = ""
+//        self.imgUrl = ""
+//        self.balance = 0
+//    }
+//
+
 }
 
 
 extension User {
+    
+    
+    static func getUserObject() -> Promise<User?>  {
+        let p = Promise<User?>{(resolve , reject) in
+            if true {
+                resolve(nil)
+            }else{
+                let err = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "User not yet login"])
+                reject(err)
+            }
+        }
+        if let user = Auth.auth().currentUser{
+            return self.getById(id: "")
+        }else{
+            return p
+        }
+     }
     
     static func getById(id: String) -> Promise<User?>  {
         let p = Promise<User?> { (resolve , reject) in
@@ -70,6 +102,7 @@ extension User {
             let db = Firestore.firestore()
             let ref = db.collection("users")
             var groups : [User] = []
+            
             ref.getDocuments { (snap, err) in
                 guard let documents = snap?.documents else {return}
                 for doc in documents {
@@ -85,6 +118,7 @@ extension User {
             }
         }
         return p
+        
     }
     
     func save() -> Promise<User> {
@@ -120,3 +154,4 @@ extension User {
          }
      }
 }
+

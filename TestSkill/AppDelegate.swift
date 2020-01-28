@@ -11,13 +11,20 @@ import Firebase
 import MBProgressHUD
 import FBSDKCoreKit
 import GoogleSignIn
+import SwiftUI
+import FirebaseAuth
+import Promises
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
     
     
 
     var window: UIWindow?
+    
+    lazy var background: DispatchQueue = {
+        return DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
+    }()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -26,8 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Google API
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        
+         GIDSignIn.sharedInstance().delegate  = self
         //Facebook Config
+        
         LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
         
         window?.frame = UIScreen.main.bounds
@@ -35,14 +43,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        window?.rootViewController = GameViewController()
 //        window?.rootViewController = AddSampleData()
 //        window?.rootViewController = CurrentViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        window?.rootViewController = FrontController()
-        
-        
+        window?.rootViewController =
+//            UIHostingController(rootView:  Sample())
+        FrontEndController()
+//            TestAddGroup(group:PlayGroup(),players: [User()]))
+//        if let user = Auth.auth().currentUser{
+//            print(user.uid)
+//            background.async {
+//                let remp = try! await (User.getAllItem())
+//                DispatchQueue.main.async {
+//                    self.window?.rootViewController = UIHostingController(rootView:  ShowUser(players: remp).)
+//                    print("print")
+//                }
+//            }
+//        }
+//        print("printing")
+        return true
 //        attemptRegisterForNotification(application: application)
         
-        return true
     }
-    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        print("inside callback")
+        if error != nil {
+            return
+        }else{
+            guard let authentication = user.authentication else { return }
+            print("Sign success by Google , get google info")
+            var tempUser = ProviderUser()
+            tempUser.userName = user.profile.name
+            tempUser.firstName = user.profile.givenName
+            tempUser.lastName = user.profile.familyName
+            tempUser.email = user.profile.email
+            tempUser.imgUrl = user.profile.imageURL(withDimension: 100)?.absoluteString
+            let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                           accessToken: authentication.accessToken)
+            let tokenDict:[String: Any] = ["token": credential , "user": tempUser ]
+            NotificationCenter.default.post(name: .loginCompleted, object: nil,userInfo: tokenDict)
+      
+        }
+    }
+            
+
     
 
     /*
@@ -108,11 +149,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation] ?? "")
 
         }else {
-            facebookOrGoogle = GIDSignIn.sharedInstance().handle(url,
-                                                                        sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?,
-                                                                        annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+            print("handle for google \(url)")
+            facebookOrGoogle = (GIDSignIn.sharedInstance()?.handle(url))!
         }
         return facebookOrGoogle
+    
     }
     
 
