@@ -32,7 +32,7 @@ public struct UserData   {
         fcmToken = ""
         name = ""
         balance = 0
-        about = ""
+        about = "" 
         birthday = ""
         gender = ""
     }

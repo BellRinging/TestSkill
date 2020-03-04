@@ -104,8 +104,20 @@ extension View {
     func titleStyle() -> some View {
         return ModifiedContent(content: self, modifier: TitleFont(size: 16))
     }
+
+    func bigTitleStyle() -> some View {
+        return ModifiedContent(content: self, modifier: TextFont(size: 24))
+    }
     
- 
+    
+     func normalTextStyle() -> some View {
+            return ModifiedContent(content: self, modifier: TextFont(size: 16))
+        }
+
+    func normalTextSubStyle() -> some View {
+           return ModifiedContent(content: self, modifier: TextFont(size: 14))
+       }
+    
 }
 
 struct TitleFont: ViewModifier {
@@ -122,6 +134,6 @@ struct TextFont: ViewModifier {
     let size: CGFloat
     
     func body(content: Content) -> some View {
-        return content.font(.FjallaOne(size: 16))
+        return content.font(.FjallaOne(size: size)).foregroundColor(Color.textColor)
     }
 }

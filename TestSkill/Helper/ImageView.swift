@@ -9,28 +9,38 @@
 import SwiftUI
 
 
-
-
 class ImageLoader: ObservableObject {
+    
     @Published var dataIsValid = false
-    var data:Data?
+    var image : UIImage?
+    static var cache: ImageCacheType = ImageCache()
 
     init(urlString:String) {
         guard let url = URL(string: urlString) else { return }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else { return }
+        if let image = ImageLoader.cache.image(for: url){
             DispatchQueue.main.async {
                 self.dataIsValid = true
-                self.data = data
+                self.image = image
             }
+        }else{
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data else { return }
+                let image = UIImage(data: data) ?? UIImage()
+                ImageLoader.cache.insertImage(image, for: url)
+//                print("Add to cache ")
+                DispatchQueue.main.async {
+                    self.dataIsValid = true
+                    self.image = image
+                }
+            }
+            task.resume()
         }
-        task.resume()
     }
 }
 
-func imageFromData(_ data:Data) -> UIImage {
-    UIImage(data: data) ?? UIImage()
-}
+//func imageFromData(_ data:Data) -> UIImage {
+//    UIImage(data: data) ?? UIImage()
+//}
 
 struct ImageView: View {
     @ObservedObject var imageLoader:ImageLoader
@@ -42,12 +52,12 @@ struct ImageView: View {
     
     var body: some View {
         HStack{
-            Image(uiImage: imageLoader.dataIsValid ? imageFromData(imageLoader.data!) : UIImage())
+            Image(uiImage: imageLoader.dataIsValid ? imageLoader.image! : UIImage())
                 .renderingMode(.original)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+//                .aspectRatio(contentMode: .fit)
                 .clipShape(Circle())
-                .scaledToFit()
+//                .scaledToFit()
         }
     }
 }
@@ -56,8 +66,12 @@ struct ImageView: View {
 extension View {
     
     func standardImageStyle() -> some View {
-        return ModifiedContent(content: self, modifier: StandardSize(width: 50, height: 50))
+        return ModifiedContent(content: self, modifier: StandardSize(width: 40, height: 40))
     }
+    
+    func ImageStyle(size : CGFloat) -> some View {
+          return ModifiedContent(content: self, modifier: StandardSize(width: size, height: size))
+      }
 }
 
 struct StandardSize: ViewModifier {

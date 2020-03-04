@@ -9,10 +9,17 @@
 import SwiftUI
 import FirebaseAuth
 import GoogleSignIn
+import Promises
 
 struct TestFont: View {
     
+
+    var abc : TestFontViewModel
     
+    init(){
+        abc = TestFontViewModel()
+    }
+      
     var body: some View {
         VStack{
             Button(action: {
@@ -37,11 +44,13 @@ struct TestFont: View {
 //            }
 //        }
         
+//        abc.addGame()
+        
         try! Auth.auth().signOut()
         GIDSignIn.sharedInstance().signOut()
-        
-
-    
+//
+//
+//
         NotificationCenter.default.post(name: .dismissMainView ,object: nil)
         print("Logout")
         

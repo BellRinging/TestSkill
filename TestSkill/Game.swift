@@ -2,8 +2,8 @@ import UIKit
 import Firebase
 import Promises
 
-struct Game: Codable{
-    var gameId : String
+struct Game: Codable ,Identifiable{
+    var id : String
     var groupId : String
     var location : String
     var date : String
@@ -25,6 +25,26 @@ extension Game {
                  }
                 print("delete : \(id)")
                 return resolve(())
+            }
+        }
+        return p
+    }
+    
+    static func getItemById(gameId : String) -> Promise<Game> {
+        let p = Promise<Game> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("games").document(gameId)
+            ref.getDocument{ (doc, err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: doc?.data(), options: .prettyPrinted)
+                    let  game = try JSONDecoder.init().decode(Game.self, from: data)
+                    resolve(game)
+                }catch{
+                    reject(error)
+                }
             }
         }
         return p
@@ -95,7 +115,7 @@ extension Game {
               let db = Firestore.firestore()
               let encoded = try! JSONEncoder.init().encode(self)
               let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
-              let ref = db.collection("games").document(self.gameId)
+              let ref = db.collection("games").document(self.id)
               ref.setData(data as! [String : Any]) { (err) in
                   guard err == nil  else {
                       return reject(err!)
@@ -111,7 +131,7 @@ extension Game {
           return Promise<Game> { (resolve , reject) in
               let db = Firestore.firestore()
               let data = ["result.\(playerId)": FieldValue.increment(Int64(value))]
-              let ref = db.collection("games").document(self.gameId)
+              let ref = db.collection("games").document(self.id)
               ref.updateData(data ) { (err) in
                   guard err == nil  else {
                       return reject(err!)

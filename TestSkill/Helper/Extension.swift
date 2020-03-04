@@ -12,6 +12,17 @@ import FirebaseDatabase
 import Promises
 
 
+
+
+struct UserDefaultsKey  {
+    static let CurrentUser = "CurrentUser"
+    static let  CurrentGroup = "CurrentGroup"
+    
+}
+
+
+
+
 extension UserDefaults {
 
    func save<T:Encodable>(customObject object: T, inKey key: String) {
@@ -181,6 +192,8 @@ extension Equatable {
 
 
 extension Notification.Name {
+    static let updateGame = Notification.Name("updateGame")
+    static let dismissAddGameView = Notification.Name("dismissAddGameView")
     static let dismissMainView = Notification.Name("dismissMainView")
     static let dismissSwiftUI = Notification.Name("dismissSwiftUI")
     static let loginCompleted = Notification.Name("loginCompleted")

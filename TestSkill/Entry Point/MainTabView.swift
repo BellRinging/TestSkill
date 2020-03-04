@@ -7,10 +7,31 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+
+
 
 struct MainTabView: View {
         
     @State private var selectedView = 2
+    
+    init() {
+     saveCurrentUser()
+    }
+    
+    func saveCurrentUser(){
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        User.getById(id: uid).then { (user)  in
+            if let userFromDefault = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser) {
+                if (userFromDefault != user){
+                    print("Update Current user")
+                    UserDefaults.standard.save(customObject: userFromDefault, inKey: UserDefaultsKey.CurrentUser)
+                }
+            }else {
+                UserDefaults.standard.save(customObject: user, inKey: UserDefaultsKey.CurrentUser)
+            }
+        }
+    }
     
     var body: some View {
         
@@ -27,7 +48,7 @@ struct MainTabView: View {
                     Text("Search")
             }.tag(1)
 //
-            GameHistoryView()
+            LazyView(GameView())
                 .tabItem {
                     selectedView == 2 ? Image(systemName: "person.fill"):Image(systemName:"person")
                     Text("Home")
@@ -43,7 +64,8 @@ struct MainTabView: View {
                     selectedView == 4 ? Image(systemName: "list.bullet"):Image(systemName: "list.bullet.indent")
                     Text("Menu")
             }.tag(4)
-        }).accentColor(Color.redColor)
+            })
+            .accentColor(Color.redColor)
     }
 }
 

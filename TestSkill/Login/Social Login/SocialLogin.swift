@@ -34,7 +34,6 @@ struct SocialLogin: UIViewRepresentable {
         Utility.showProgress()
         loginToFirebase(credentials).then { tempUser in
             RegisterHelper.registerUserIntoDatabase(user)
-//            RegisterHelper.updateDisplayName(user)
             print("Profile created \(provider)")
             NotificationCenter.default.post(name: .dismissSwiftUI, object: nil)
         }.catch{ err in

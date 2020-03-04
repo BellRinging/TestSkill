@@ -30,12 +30,11 @@ class AddPlayGroupViewModel: ObservableObject {
     
     weak var parent : DisplayPlayGroupViewModel?{
         didSet{
-                print("didset")
             guard let group = parent?.selectedGroup else {return}
             startFan = group.startFan
             endFan = group.endFan
             groupName = group.groupName
-            loadPlayerByDictory(dict:group.players)
+            loadPlayerByArray(array: group.players)
             loadRule(group:group)
         }
     }
@@ -61,7 +60,9 @@ class AddPlayGroupViewModel: ObservableObject {
             playGroup.id = parent == nil ? UUID().uuidString : parent!.selectedGroup!.id
         }
         playGroup.groupName = self.groupName
-        playGroup.players = toPlayerByDictory(players: self.players)
+//        playGroup.players = toPlayerByDictory(players: self.players)
+        playGroup.players = players.map{$0.id}
+        playGroup.playersName = players.map{$0.userName ?? ""}
         playGroup.rule = toRule()
         playGroup.startFan = self.startFan
         playGroup.endFan = self.endFan
@@ -94,45 +95,43 @@ class AddPlayGroupViewModel: ObservableObject {
         let start = group.startFan
         let end = group.endFan
         let rule = group.rule
+        let ruleSelf = group.ruleSelf
         for i in start...end {
             self.fan[i] = "\(rule[i]!)" 
-            self.fanSelf[i] = "\(rule[i*10]!)"
+            self.fanSelf[i] = "\(ruleSelf[i]!)"
         }
     }
+
     
-    func toPlayerByDictory(players : [User]) -> Dictionary<String, String>{
-        let key = players.map{$0.id}
-        print(key)
-        let value = players.map{$0.userName!}
-        print(value)
-        return Dictionary(uniqueKeysWithValues: zip(key,value))
-    }
-    
-    func loadPlayerByDictory(dict : Dictionary<String,String>){
+    func loadPlayerByArray(array : [String]){
         
+        guard let userA = Auth.auth().currentUser else {return }
         self.background.sync {
             self.players = []
-            for (key,_) in dict {
-                print("\(key)" )
-                User.getById(id: key).then { (user) in
-                    guard let user = user else {return}
-                    if (!self.players.contains(user)){
-                        self.players.append(user)
+            for key in array {
+                if key != userA.uid{
+                    User.getById(id: key).then {[weak self] (user) in
+                        guard let user = user else {return}
+                        print(user.id)
+                        if (!(self?.players.contains(user) ?? false) ){
+                            self?.players.append(user)
+                        }
+                    }.catch{ err in
+                        Utility.showError(message: err.localizedDescription)
                     }
-                }.catch{ err in
-                    Utility.showError(message: err.localizedDescription)
                 }
             }
         }
     }
     
     func loadPlayer(){
+        print("load Player")
         guard let userA = Auth.auth().currentUser else {return }
         self.background.sync {
-            User.getById(id: userA.uid).then { (user) in
+            User.getById(id: userA.uid).then { [weak self] (user) in
                 guard let user = user else {return}
-                if (!self.players.contains(user)){
-                    self.players.append(user)
+                if (!(self?.players.contains(user) ?? false)){
+                    self?.players.append(user)
                 }
             }.catch{ err in
                 Utility.showError(message: err.localizedDescription)

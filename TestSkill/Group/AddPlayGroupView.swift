@@ -12,10 +12,7 @@ import SwiftUI
 
 struct AddPlayGroupView: View {
     
- 
     @ObservedObject var viewModel: AddPlayGroupViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State var tempString : String = ""
     
     init(parent : DisplayPlayGroupViewModel){
         viewModel = AddPlayGroupViewModel()
@@ -24,28 +21,24 @@ struct AddPlayGroupView: View {
 
     var body: some View {
         NavigationView{
-            ZStack{
-                Color.white.edgesIgnoringSafeArea(.vertical)
-                VStack(alignment: .center){
-                    TextField("Group name", text: $viewModel.groupName)
-                        .padding()
-                        .textFieldStyle(BottomLineTextFieldStyle())
-                    playersArea
-                    rule.padding()
-//                    bottonButton
-                    Spacer()
+            VStack(alignment: .center){
+                TextField("Group name", text: $viewModel.groupName)
+                    .padding()
+                    .textFieldStyle(BottomLineTextFieldStyle())
+                AddPlayGroupPlayerRow(players: viewModel.players)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation {
+                        self.viewModel.showPlayerSelection.toggle()
+                    }
                 }
-                .background(SwiftUI.Color.white)
-                .cornerRadius(10)
-                .shadow(radius: 5)
+                rule.padding()
+                Spacer()
             }
             .navigationBarTitle("Add Group", displayMode: .inline)
-        .navigationBarItems(leading: CancelButton(), trailing: ConfirmButton())
-//        .navigationBarItems(leading: CancelButton())
-            .background(NavigationConfigurator { nc in
-                nc.navigationBar.barTintColor = UIColor.red
-                nc.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.white]
-            })
+            .navigationBarItems(leading: CancelButton(), trailing: ConfirmButton())
+        }.modal(isShowing: self.$viewModel.showPlayerSelection) {
+            DisplayUserView(flag: self.$viewModel.showPlayerSelection, users: self.$viewModel.players)
         }
     }
     
@@ -92,36 +85,6 @@ struct AddPlayGroupView: View {
     
 
     
-    var playersArea : some View {
-        
-            Button(action: {
-                self.viewModel.showPlayerSelection.toggle()
-            }) {
-                HStack(alignment: .center){
-                    VStack{
-                        Text("\(self.viewModel.players.count)人")
-                    }.padding()
-                    if (self.viewModel.players.count > 3) {
-                        ForEach(0...3 ,id: \.self) { (index) in
-                            ImageView(withURL: self.viewModel.players[index].imgUrl).standardImageStyle()
-                        }
-                    }else{
-                        ForEach(self.viewModel.players ,id: \.id) { (player) in
-                            ImageView(withURL: player.imgUrl).standardImageStyle()
-                        }
-                    }
-                    Spacer()
-                    Image(systemName: "ellipsis")
-                        .renderingMode(.original)
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(Circle())
-                        .scaledToFit()
-                    .standardImageStyle()
-                }
-            }
-        .sheet(isPresented: $viewModel.showPlayerSelection) {
-            DisplayUserView(parent: self.viewModel)
-        }
-    }
+  
 }
 

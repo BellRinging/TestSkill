@@ -21,16 +21,17 @@ class Utility {
     static func showProgress(){
         print("Show Progress")
         DispatchQueue.main.async {
-            guard let mainWindow = UIApplication.shared.delegate?.window else { return }
-            let progressIcon = MBProgressHUD.showAdded(to: mainWindow!, animated: true)
+      
+            guard let mainWindow = UIApplication.shared.window else {return}
+            let progressIcon = MBProgressHUD.showAdded(to: mainWindow, animated: true)
             progressIcon.labelText = "Loading"
             progressIcon.isUserInteractionEnabled = false
             //tempView
             
-            let tempView = UIView(frame: (mainWindow?.frame)!)
+            let tempView = UIView(frame: (mainWindow.frame))
             tempView.backgroundColor = UIColor(white: 0, alpha: 0.2)
             tempView.tag = 999
-            mainWindow?.addSubview(tempView)
+            mainWindow.addSubview(tempView)
             progressIcon.show(animated: true)
         }
     }
@@ -38,9 +39,9 @@ class Utility {
     static func hideProgress(){
         DispatchQueue.main.async {
             print("hide Progress")
-            guard let mainWindow = UIApplication.shared.delegate?.window else { return }
-            MBProgressHUD.hideAllHUDs(for: mainWindow!, animated: true)
-            let view = mainWindow?.viewWithTag(999)
+            guard let mainWindow =  UIApplication.shared.window else {return}
+            MBProgressHUD.hideAllHUDs(for: mainWindow, animated: true)
+            let view = mainWindow.viewWithTag(999)
             view?.removeFromSuperview()
         }
     }

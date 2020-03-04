@@ -11,17 +11,15 @@ import Foundation
 
 public struct DisplayBoard : Codable  {
     let id : String
-    let user_id : String
     let user_name: String
     let img_url : String
     var balance : Int
     
-    init(dict : [String:String]) {
-        self.user_id = dict["user_id"] ?? ""
-        self.user_name = dict["user_name"] ?? ""
-        self.img_url = dict["image_url"] ?? ""
-        self.id = dict["id"] ?? ""
-        self.balance = 0
+    init(dict : [String:Any]) {
+        self.user_name = (dict["name"] as? String ?? "")
+        self.img_url = (dict["imgUrl"] as? String ?? "")
+        self.id = (dict["id"] as? String ?? "")
+        self.balance = (dict["balance"] as? Int ?? 0)
     }
     
 }

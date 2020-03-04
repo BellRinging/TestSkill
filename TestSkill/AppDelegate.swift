@@ -38,26 +38,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
         
         LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
         
-        window?.frame = UIScreen.main.bounds
-        window?.makeKeyAndVisible()
-//        window?.rootViewController = GameViewController()
-//        window?.rootViewController = AddSampleData()
-//        window?.rootViewController = CurrentViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        window?.rootViewController =
-//            UIHostingController(rootView:  Sample())
-        FrontEndController()
-//            TestAddGroup(group:PlayGroup(),players: [User()]))
-//        if let user = Auth.auth().currentUser{
-//            print(user.uid)
-//            background.async {
-//                let remp = try! await (User.getAllItem())
-//                DispatchQueue.main.async {
-//                    self.window?.rootViewController = UIHostingController(rootView:  ShowUser(players: remp).)
-//                    print("print")
-//                }
-//            }
-//        }
-//        print("printing")
+        
+        if #available(iOS 13.0, *) { } else {
+            window?.frame = UIScreen.main.bounds
+            window?.makeKeyAndVisible()
+            window?.rootViewController = FrontEndController()
+        }
+
         return true
 //        attemptRegisterForNotification(application: application)
         
@@ -194,3 +181,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
 }
 
 
+extension UIApplication {
+    var window: UIWindow? {
+        connectedScenes
+        .filter({$0.activationState == .foregroundActive})
+        .map({$0 as? UIWindowScene})
+        .compactMap({$0})
+        .first?.windows
+        .filter({$0.isKeyWindow}).first
+    }
+}

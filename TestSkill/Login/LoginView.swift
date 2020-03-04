@@ -18,7 +18,6 @@ import Combine
 
 
 struct LoginView: View {
-//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: LoginViewModel
     @ObservedObject var keyboardObserver = KeyboardObserver.shared
     private var tickets: [AnyCancellable] = []

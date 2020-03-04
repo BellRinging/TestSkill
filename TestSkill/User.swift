@@ -4,7 +4,7 @@ import FirebaseAuth
 import Promises
 
 
-struct User : Identifiable,Codable,Equatable  {
+struct User : Identifiable,Codable,Equatable,Hashable  {
     public var  id : String
     public var  userName: String?
     public var  firstName: String?
@@ -85,7 +85,6 @@ extension User {
                     return
                 }
                 do {
-                    print("have data")
                     let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
                     let group = try JSONDecoder.init().decode(User.self, from: data)
                     resolve(group)

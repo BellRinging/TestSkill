@@ -3,13 +3,17 @@ import Promises
 import Firebase
 
 struct GameDetail : Codable {
-    let gameDetailId : String
+    let id : String
     let gameId : String
-    let remark : String
+    let fan : Int
     let value  : Int
+    let winnerAmount  : Int
+    let loserAmount  : Int
     let whoLose : [String]
     let whoWin  : [String]
     let winType : String
+    let byErrorFlag : Int
+    let repondToLose : Int
     
 }
 
@@ -109,12 +113,12 @@ extension GameDetail {
             let db = Firestore.firestore()
             let encoded = try! JSONEncoder.init().encode(self)
             let data = try! JSONSerialization.jsonObject(with: encoded, options: .allowFragments)
-            let ref = db.collection("gameDetails").document(self.gameDetailId)
+            let ref = db.collection("gameDetails").document(self.id)
             ref.setData(data as! [String : Any]) { (err) in
                 guard err == nil  else {
                     return reject(err!)
                 }
-                print("Save gamedetail \(self.gameDetailId)")
+                print("Save gamedetail \(self.id)")
                 resolve(self)
             }
        

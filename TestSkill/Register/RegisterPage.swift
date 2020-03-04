@@ -240,7 +240,7 @@ struct RegisterHelper{
             return
         }
         let value = ["email": user.email ?? "",
-                                        "userId": uid,
+                                        "id": uid,
                                         "userName":user.userName ?? "",
                                         "lastName": user.lastName ?? "",
                                         "firstName": user.firstName ?? "",
@@ -248,8 +248,9 @@ struct RegisterHelper{
                                         "balance":0
                                ] as [String : Any]
            let ref = Firestore.firestore()
-           let usersReference = ref.collection("users").document(value["userId"] as! String)
+           let usersReference = ref.collection("users").document(value["id"] as! String)
            usersReference.setData(value)
+        
        }
     
     
