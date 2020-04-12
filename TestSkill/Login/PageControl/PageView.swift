@@ -1,10 +1,3 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-A view for bridging a UIPageViewController.
-*/
-
 import SwiftUI
 
 struct PageView<Page: View>: View {
@@ -23,8 +16,3 @@ struct PageView<Page: View>: View {
         }
     }
 }
-
-
-    
-
-

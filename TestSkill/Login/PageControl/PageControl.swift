@@ -1,12 +1,4 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-A view wrapping a UIPageControl.
-*/
-
 import SwiftUI
-
 import UIKit
 
 struct PageControl: UIViewRepresentable {

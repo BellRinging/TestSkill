@@ -13,64 +13,81 @@ import FirebaseAuth
 
 struct MainTabView: View {
         
-    @State private var selectedView = 2
+//    @State private var selectedView = 0
+    var uid = "8QfQrvQEklaD9tKfksXrbmOaYo53"
+    var userId = ""
+    
     
     init() {
      saveCurrentUser()
+//        UIApplication.shared.statusBarUIView?.backgroundColor = UIColor.rgb(red: 225, green: 0, blue: 0)
     }
     
-    func saveCurrentUser(){
+    mutating func saveCurrentUser(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
+        self.userId = uid
         User.getById(id: uid).then { (user)  in
-            if let userFromDefault = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser) {
-                if (userFromDefault != user){
-                    print("Update Current user")
-                    UserDefaults.standard.save(customObject: userFromDefault, inKey: UserDefaultsKey.CurrentUser)
-                }
-            }else {
+            if let user = user {
                 UserDefaults.standard.save(customObject: user, inKey: UserDefaultsKey.CurrentUser)
+                if let token = UserDefaults.standard.retrieve(object: String.self, fromKey: UserDefaultsKey.FcmToken){
+                    if user.fcmToken != token {
+                        user.updateFcmToken(token: token).catch { (err) in
+                            Utility.showAlert(message: err.localizedDescription)
+                        }
+                    }
+                }
             }
         }
     }
     
     var body: some View {
-        
-    
-        TabView(selection: $selectedView, content: {
-            TestFont()
-                .tabItem {
-                    selectedView == 0 ? Image(systemName: "book.fill"):Image(systemName: "book")
-                    Text("History")
-            }.tag(0)
-            TestFont()
-                .tabItem {
-                    selectedView == 1 ? Image(systemName: "magnifyingglass.circle.fill"):Image(systemName: "magnifyingglass.circle")
-                    Text("Search")
-            }.tag(1)
-//
-            LazyView(GameView())
-                .tabItem {
-                    selectedView == 2 ? Image(systemName: "person.fill"):Image(systemName:"person")
-                    Text("Home")
-            }.tag(2)
-//
-            TestFont()
-                .tabItem {
-                    selectedView == 3 ? Image(systemName: "tv.fill"):Image(systemName: "tv")
-                    Text("Admin")
-            }.tag(3)
-            TestMenuPage()
-                .tabItem {
-                    selectedView == 4 ? Image(systemName: "list.bullet"):Image(systemName: "list.bullet.indent")
-                    Text("Menu")
-            }.tag(4)
-            })
-            .accentColor(Color.redColor)
+        TabbarView(showAdmin: userId == uid).accentColor(Color.redColor)
     }
 }
 
-struct TestMainTabView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainTabView()
+
+struct TabbarView: View {
+    @State var selectedTab = Tab.game
+    var showAdmin : Bool
+
+    
+    enum Tab: Int {
+        case game, search, menu,edit,admin
+    }
+    
+    func tabbarItem(text: String, image: String ,selectedImage: String) -> some View {
+        VStack {
+            Image(systemName: image)
+                .imageScale(.large)
+            Text(text)
+        }
+    }
+    
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            if showAdmin == true {
+                LazyView(AdminView())
+                    .tabItem{
+                        self.tabbarItem(text: "Admin", image: "magnifyingglass.circle.fill", selectedImage: "magnifyingglass.circle")
+                }.tag(Tab.admin)
+            }
+           LazyView(SearchView())
+                 .tabItem{
+                     self.tabbarItem(text: "Search", image: "magnifyingglass.circle.fill", selectedImage: "magnifyingglass.circle")
+                 }.tag(Tab.search)
+            LazyView(GameView())
+                .tabItem{
+                    self.tabbarItem(text: "Game", image: "book.fill",selectedImage: "book")
+            }.tag(Tab.game)
+            
+      
+            LazyView(MenuPage())
+                .tabItem{
+                    self.tabbarItem(text: "Menu", image: "list.bullet", selectedImage: "list.bullet.indent")
+            }.tag(Tab.menu)
+            
+        }
+//        .statusBar(hidden: false)
+//        .edgesIgnoringSafeArea(.top)
     }
 }

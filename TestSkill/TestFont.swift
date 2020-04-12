@@ -13,52 +13,52 @@ import Promises
 
 struct TestFont: View {
     
-
-    var abc : TestFontViewModel
+    var viewModel = TestFontViewModel()
     
     init(){
-        abc = TestFontViewModel()
+        print("TestFont")
     }
       
     var body: some View {
+        
         VStack{
-            Button(action: {
-                self.printFont()
-                }) {
-                    Text("Font")
-            }
             
-            Text("Simple Swift Guide").font(MainFont.bold.size(14))
-            Text("Simple Swift Guide").font(SwiftUI.Font.custom("KohinoorDevanagari-Regular", size: 33))
+            Button(action: {
+                     self.viewModel.deleteGroup()
+                     }) {
+                         Text("Delete Group")
+                     }
+
+            Button(action: {
+                        self.viewModel.deleteUserRecords()
+                        }) {
+                            Text("Delete gameRecords")
+                        }
+
+            Button(action: {
+                self.viewModel.DeleteGame()
+            }) {
+                Text("Delete Game")
+            }
+            Button(action: {
+                self.viewModel.deleteGameDetail()
+                }) {
+                    Text("Delete Game Detail")
+                }
+
+            Button(action: {
+                self.viewModel.deleteUserBalanceAndItem()
+                }) {
+                    Text("Delete User Record and Balance")
+                }
+
         }
+
         
     }
     
     
     
     
-    func printFont(){
-//        for fontFamily in UIFont.familyNames {
-//            for fontName in UIFont.fontNames(forFamilyName: fontFamily) {
-//                print("\(fontName)")
-//            }
-//        }
-        
-//        abc.addGame()
-        
-        try! Auth.auth().signOut()
-        GIDSignIn.sharedInstance().signOut()
-//
-//
-//
-        NotificationCenter.default.post(name: .dismissMainView ,object: nil)
-        print("Logout")
-        
-    }
 }
 
-struct TestFont_Previews: PreviewProvider {
-    static var previews: some View {
-        TestFont()
-    }
-}

@@ -2,28 +2,36 @@ import UIKit
 import Firebase
 import Promises
 
-struct Game: Codable ,Identifiable{
+struct Game: Codable ,Identifiable {
     var id : String
     var groupId : String
     var location : String
     var date : String
     var period : String
     var result : [String:Int]
+    var playersFilter : [String:Bool]
     var playersMap : [String:String]
     var playersId : [String]
     var createDateTime : String
+    var detailCount : Int = 0
+    var flown : Int 
 }
 
 extension Game {
     
-    static func delete(id : String ) -> Promise<Void> {
+    
+//    static func ==(lhs:Game, rhs:Game) -> Bool { // Implement Equatable
+//        return lhs.id == rhs.id
+//    }
+    
+    func delete() -> Promise<Void> {
         let p = Promise<Void> { (resolve , reject) in
             let db = Firestore.firestore()
-            db.collection("games").document(id).delete { (err) in
+            db.collection("games").document(self.id).delete { (err) in
                 guard err == nil  else {
                      return reject(err!)
                  }
-                print("delete : \(id)")
+                print("delete game: \(self.id)")
                 return resolve(())
             }
         }
@@ -45,6 +53,22 @@ extension Game {
                 }catch{
                     reject(error)
                 }
+            }
+        }
+        return p
+    }
+    
+    
+    func updatePlayerOrder() -> Promise<Game> {
+        let p = Promise<Game> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("games").document(self.id)
+            let data = ["playersId": self.playersId]
+            ref.updateData(data ) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+                resolve(self)
             }
         }
         return p
@@ -75,9 +99,75 @@ extension Game {
         return p
     }
     
-    static func getItemWithUserId(userId : String ,pagingSize:Int=4, lastDoc:DocumentSnapshot? = nil) -> Promise<([Game],DocumentSnapshot?)> {
+
+    static func getItemBySearch(userId : String , fan : String = "Any", period : String = "Any" ,win : String = "Any" ,amount : Int , players : [User] = [] ,location: String) -> Promise<[Game]> {
+            let p = Promise<[Game]> { (resolve , reject) in
+
+                let db = Firestore.firestore()
+                var query = db.collection("games") as Query
+                let uid = players.map{$0.id}
+                    print("uid : \(players)")
+                    
+                if uid.count > 0 {
+                    print("hei id: \(uid)")
+                    for id in uid {
+                        query = query.whereField("playersFilter.\(id)", isEqualTo: true)
+                    }
+                }else{
+                    query = query.whereField("playersId", arrayContains: userId)
+                }
+                if location != "Any" {
+                    print("location \(location)")
+                    query = query.whereField("location", isEqualTo: location)
+                }
+                if period != "Any" {
+                    print("period \(period)")
+                    query = query.whereField("period", isEqualTo: period)
+                }
+                
+                var groups : [Game] = []
+                print("Before ")
+                query.getDocuments { (snap, error) in
+                print("After ")
+                    guard error == nil  else {
+                        return reject(error!)
+                    }
+                    guard let documents = snap?.documents else {return}
+                    for doc in documents {
+                        do {
+                            let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                            let  game = try JSONDecoder.init().decode(Game.self, from: data)
+                            let result = game.result[userId] ?? 0
+                            if win != "Any" {
+                                if (win == "Win"){
+                                    if (result >= amount){
+                                        groups.append(game)
+                                    }
+                                }
+                                if (win == "Lose"){
+                                    if (result <= amount){
+                                        groups.append(game)
+                                    }
+                                }
+                            }else{
+                                groups.append(game)
+                            }
+                        }catch{
+                            reject(error)
+                        }
+                    }
+                    resolve(groups)
+                }
+            }
+            return p
+        }
+    
+    static func getItemWithUserId(userId : String ,pagingSize:Int=20, lastDoc:DocumentSnapshot? = nil) -> Promise<([Game],DocumentSnapshot?)> {
         let p = Promise<([Game],DocumentSnapshot?)> { (resolve , reject) in
+
             let db = Firestore.firestore()
+            
+            
             let ref = db.collection("games")
             var query = ref.limit(to: pagingSize)
             query = query.order(by: "date", descending: true)
@@ -86,13 +176,18 @@ extension Game {
                 query = query.start(afterDocument: lastDoc)
             }
             var groups : [Game] = []
-            query.addSnapshotListener  { (snap, err) in
-                guard err == nil  else {
-                    return reject(err!)
+    
+//            query.addSnapshotListener  { (snap, err) in
+            query.getDocuments { (snap, error) in
+            
+                guard error == nil  else {
+                    print(error)
+                    return reject(error!)
                 }
                 guard let documents = snap?.documents else {return}
-                print("Result count : \(documents.count)")
+                print("Game count : \(documents.count)")
                 let lastDoc : DocumentSnapshot? = documents.last
+        
                 print("last Doc id : \(lastDoc?.documentID)")
                 for doc in documents {
                     do {
@@ -140,4 +235,39 @@ extension Game {
               }
           }
       }
+    
+    func updateDetailCount() -> Promise<Game> {
+            
+         return Promise<Game> { (resolve , reject) in
+             let db = Firestore.firestore()
+             let data = ["detailCount": FieldValue.increment(Int64(1))]
+             let ref = db.collection("games").document(self.id)
+             ref.updateData(data ) { (err) in
+                 guard err == nil  else {
+                     return reject(err!)
+                 }
+                 resolve(self)
+             }
+         }
+     }
+    
+    func markFlown(flown : Int = 1) -> Promise<Game> {
+            
+         return Promise<Game> { (resolve , reject) in
+             let db = Firestore.firestore()
+             let data = ["flown": flown]
+             let ref = db.collection("games").document(self.id)
+             ref.updateData(data ) { (err) in
+                 guard err == nil  else {
+                     return reject(err!)
+                 }
+                 resolve(self)
+             }
+         }
+     }
+    
+
+    
 }
+
+

@@ -1,85 +1,96 @@
-//
-//  ShowUser.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 12/1/2020.
-//  Copyright © 2020 Kwok Wai Yeung. All rights reserved.
-//
-
 import SwiftUI
-import Promises
+import Combine
 
 
 struct DisplayPlayerGroupView: View {
     
     @ObservedObject var viewModel: DisplayPlayGroupViewModel
-
-
     
-    init(closeFlag : Binding<Bool> ,returnGroup : Binding<PlayGroup?>){
-        viewModel = DisplayPlayGroupViewModel(closeFlag: closeFlag, returnGroup: returnGroup)
+
+    var groupUsers : [User] = []
+    
+    init(closeFlag : Binding<Bool> ,returnGroup : Binding<PlayGroup?> = Binding.constant(nil) ,  needReturn: Bool = false ){
+        viewModel = DisplayPlayGroupViewModel(closeFlag: closeFlag,returnGroup:returnGroup, needReturn: needReturn)
+    }
+    
+    func displayRow(group : PlayGroup) -> some View{
+        DisplayPlayerGroupRow(group: group, isSelected: self.viewModel.selectedGroup == group)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                print("needReturn :\(self.viewModel.needReturn )")
+                if self.viewModel.needReturn {
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsKey.CurrentGroupUser)
+                    UserDefaults.standard.save(customObject: group, inKey: UserDefaultsKey.CurrentGroup)
+                    self.viewModel.returnGroup = group
+                    print("Remove group user from UserObject")
+                    self.viewModel.closeFlag.toggle()
+                }else{
+                    self.viewModel.selectedGroup = group
+                }
+        }
     }
     
     var body : some View {
          NavigationView {
-            List(viewModel.groups) { group in
-                DisplayPlayerGroupRow(group: group, isSelected: self.viewModel.selectedGroup == group)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if !self.viewModel.isEditing{
-                        self.viewModel.returnGroup = group
-                        UserDefaults.standard.save(customObject: group, inKey: UserDefaultsKey.CurrentGroup)
-                        print("Save")
-                        self.viewModel.closeFlag.toggle()
-                    }else{
-                        self.viewModel.selectedGroup = group
+            List{
+                ForEach(0..<viewModel.groups.count , id:\.self) { row in
+                    self.displayRow(group:self.viewModel.groups[row])
                     }
+                .onDelete { (index) in
+                    self.viewModel.selectedIndex = index.first!
+                    self.viewModel.showingDeleteAlert = true
                 }
+                }
+
+            .navigationBarTitle("Game Group", displayMode: .inline)
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: RightButton())
             }
-            .navigationBarTitle("Group", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(), trailing: RightButton())
-         }
          .modal(isShowing: self.$viewModel.showAddingGroup) {
-             AddPlayGroupView(parent: self.viewModel)
+            if self.viewModel.isAdd {
+                AddPlayGroupView(closeFlag: self.$viewModel.showAddingGroup)
+            }else{
+                AddPlayGroupView(closeFlag: self.$viewModel.showAddingGroup, editGroup: self.$viewModel.selectedGroup)
+            }
         }
-       
+        .alert(isPresented: self.$viewModel.showingDeleteAlert) {
+            Alert(title: Text("Confirm delete"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete")) {
+                self.viewModel.deleteGroup(index:self.viewModel.selectedIndex)
+                }, secondaryButton: .cancel()
+            )
+        }
     }
     
-    func CancelButton() -> some View{
-        Button(action: {
-            if self.viewModel.isEditing{
-                self.viewModel.selectedGroup = nil
-            }else{
-                withAnimation {
-                    self.viewModel.closeFlag.toggle()
-                }
-            }
-            self.viewModel.isEditing.toggle()
-        }, label: {
-            Text("Cancel").foregroundColor(Color.white)
-        })
-    }
+    func delete(at offsets: IndexSet) {
+         viewModel.groups.remove(atOffsets: offsets)
+     }
+    
     
     func RightButton() -> some View{
-        Button(action: {
-            if self.viewModel.isEditing {
-                //Press Confirm
-                if let selectedGroup = self.viewModel.selectedGroup {
-                    withAnimation {
-                        self.viewModel.showAddingGroup.toggle()
-                    }
-                }else{
-                    Utility.showError(message: "You must select one group")
+        HStack{
+            if self.viewModel.groups.count > 0 && self.viewModel.selectedGroup != nil{
+                Button(action: {
+                    self.viewModel.showAddingGroup = true
+                    self.viewModel.isAdd = false
+                }) {
+                    Image(systemName: "square.and.pencil")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20,height: 20)
                 }
-            }else{
-                self.viewModel.isEditing.toggle()
             }
-        }) {
-            Text(viewModel.isEditing ? "Confirm Edit":"Edit").foregroundColor(Color.white)
+            Button(action: {
+                self.viewModel.showAddingGroup = true
+                self.viewModel.isAdd = true
+            }) {
+                 Image(systemName: "plus")
+                       .resizable()
+                       .scaledToFit()
+                       .frame(width: 20,height: 20)
+            }
         }
+        
     }
 }
-
 
 
 

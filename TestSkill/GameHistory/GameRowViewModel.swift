@@ -15,30 +15,28 @@ import Promises
 class GameRowViewModel: ObservableObject {
     
     
-    init(game:Game ,users:[User]) {
+    init(game:Game ) {
         self.game = game
-        self.users = users
     }
     
     var users:[User] = []
     var game : Game
     
     func initial(){
-//        print("initial game row")
         location = game.location
         let tempDate = game.date
         date = "\(tempDate.suffix(2))/\(tempDate.prefix(6).suffix(2))/\(tempDate.prefix(4))"
         let uid = Auth.auth().currentUser?.uid
         otherPlayers = []
         otherPlayersResult = []
-        game.result.map { (key,value) in
+        let _ = game.result.map { (key,value) in
             if key == uid {
                 amount = value
                 win = amount > 0 ? true : false
             }else{
                 otherPlayersResult.append(value > 0 ? true : false)
-                User.getById(id: key).then{ user in
-                    guard let user = user else {return}
+                if let groupUser = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser){
+                    let user = groupUser.filter{$0.id == key}.first!
                     self.otherPlayers.append(user)
                 }
             }

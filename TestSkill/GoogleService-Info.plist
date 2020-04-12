@@ -2,14 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p.apps.googleusercontent.com</string>
+	<string>660224651723-bk61vmlr98ieilq81cocllcol2sh6v2c.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.660224651723-ipdvbl2a4atqpqfjroecchp6q09jcr5p</string>
+	<string>com.googleusercontent.apps.660224651723-bk61vmlr98ieilq81cocllcol2sh6v2c</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBpeXwtuPuKFiv8o2T4ts9b06bSYfGJNew</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,23 +13,23 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bellringing.kmconcept.TestSkillTestSkill</string>
+	<string>com.bellringing.kmconcept.mahjongcalculator</string>
 	<key>PROJECT_ID</key>
 	<string>testlearning-6237e</string>
 	<key>STORAGE_BUCKET</key>
 	<string>testlearning-6237e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<false/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:660224651723:ios:b20c22b26c5b4511</string>
+	<string>1:660224651723:ios:31859b6b81266c64e1864e</string>
 	<key>DATABASE_URL</key>
 	<string>https://testlearning-6237e.firebaseio.com</string>
 </dict>

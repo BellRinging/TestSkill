@@ -80,7 +80,7 @@
 //    func getAllUser() -> [User]{
 //        //get all users
 ////        let users = try! await(User.getAllItem().catch{ err in
-////            Utility.showError(self, message: err.localizedDescription)
+////            Utility.showAlert(self, message: err.localizedDescription)
 ////            print(err.localizedDescription)
 ////            }
 ////        )
@@ -90,7 +90,7 @@
 ////    func getGroupByID(groupId : String) -> PlayGroup{
 ////        //get group
 ////        let group = try! await(PlayGroup.getById(id: "749C7B4D-21ED-40B1-8F28-ACC42E364B7A").catch{ err in
-////            Utility.showError(self, message: err.localizedDescription)
+////            Utility.showAlert(self, message: err.localizedDescription)
 ////            print(err.localizedDescription)
 ////            }
 ////        )
@@ -156,7 +156,7 @@
 //////                let _ = userGroup.save(userId: user.id)
 //////            }
 ////        }.catch{ err in
-////            Utility.showError(self, message: err.localizedDescription)
+////            Utility.showAlert(self, message: err.localizedDescription)
 ////            print(err.localizedDescription)
 ////        }
 //    }
@@ -165,7 +165,7 @@
 //        let _ =  gameDetail.save().then{ detail in
 //            self.saveIndivualRecord(detail: detail, game: game, users: users)
 //        }.catch{ err in
-//            Utility.showError(self, message: err.localizedDescription)
+//            Utility.showAlert(self, message: err.localizedDescription)
 //            print(err.localizedDescription)
 //        }
 //    }
@@ -186,7 +186,7 @@
 //                let winUser = users.filter ({$0.id == whoWin})[0]
 ////                let _ = winUser.updateBalance(userId : winUser.id , value : credit )
 //            }.catch{err in
-//                Utility.showError(self, message: err.localizedDescription)
+//                Utility.showAlert(self, message: err.localizedDescription)
 //                print(err.localizedDescription)
 //            }
 //        }
@@ -198,7 +198,7 @@
 //                let loseUser = users.filter ({$0.id == whoLose})[0]
 ////                let _ = loseUser.updateBalance(userId : loseUser.id , value : credit * -1)
 //            }.catch { (err) in
-//                Utility.showError(self, message: err.localizedDescription)
+//                Utility.showAlert(self, message: err.localizedDescription)
 //                print(err.localizedDescription)
 //            }
 //        
@@ -248,14 +248,14 @@
 //        
 //        //Radon select a game
 //        let games = try! await(Game.getAllItem().catch{err in
-//            Utility.showError(self, message: err.localizedDescription)
+//            Utility.showAlert(self, message: err.localizedDescription)
 //        })
 //        guard let selectedGame = games.randomElement() else { return}
 //        print("Selected Game id : \(selectedGame.gameId)")
 //        
 //        //Get the game rule
 ////        let groupRule = try! await(PlayGroup.getById(id: selectedGame.groupId).catch{err in
-////            Utility.showError(self, message: err.localizedDescription)
+////            Utility.showAlert(self, message: err.localizedDescription)
 ////        }).rule
 ////        print("Rule : \(groupRule)")
 //        

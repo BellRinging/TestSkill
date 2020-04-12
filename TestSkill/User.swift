@@ -1,54 +1,26 @@
 import UIKit
 import Firebase
-import FirebaseAuth
 import Promises
 
 
 struct User : Identifiable,Codable,Equatable,Hashable  {
+//    let id = UUID()
     public var  id : String
-    public var  userName: String?
+    public var  userName: String
     public var  firstName: String?
     public var  lastName: String?
     public var  email: String
     public var  imgUrl : String
-    public var balance : Int?
-    
+    public var balance : Int
+    public var  friends: [String]
+    public var  fdsRequest: [String]
+    public var  fdsPending: [String]
+    public var  fcmToken: String
+
     
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.email == rhs.email
     }
-    
-//    init(dict : [String:String]) {
-//        self.id = dict["user_id"] ?? ""
-//        self.userName = dict["user_name"] ?? ""
-//        self.firstName = dict["first_name"] ?? ""
-//        self.lastName = dict["last_name"] ?? ""
-//        self.email = dict["email"] ?? ""
-//        self.imgUrl = dict["image_url"] ?? ""
-//        self.balance = 0
-//    }
-//
-//    enum CodingKeys: CodingKey {
-//        case id
-//        case userName
-//        case firstName
-//        case lastName
-//        case email
-//        case imgUrl
-//        case balance
-//    }
-//
-//    init(){
-//        self.id = ""
-//        self.userName = ""
-//        self.firstName = ""
-//        self.lastName = ""
-//        self.email = ""
-//        self.imgUrl = ""
-//        self.balance = 0
-//    }
-//
-
 }
 
 
@@ -70,10 +42,60 @@ extension User {
             return p
         }
      }
+
+    
+    static func searchUserByEmail(text: String) -> Promise<[User]>  {
+        var endText = text + "z"
+          let p = Promise<[User]> { (resolve , reject) in
+              let db = Firestore.firestore()
+            let ref = db.collection("users").whereField("email", isGreaterThanOrEqualTo: text).whereField("email", isLessThan: endText)
+            ref.getDocuments { (snap, err) in
+                guard let documents = snap?.documents else {return}
+                var groups : [User] = []
+                for doc in documents {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                        let  group = try JSONDecoder.init().decode(User.self, from: data)
+                        groups.append(group)
+                    }catch{
+                        reject(error)
+                    }
+                }
+                resolve(groups)
+          }
+      }
+        return p
+    }
+    
+    
+    static func searchUserByName(text: String) -> Promise<[User]>  {
+        var endText = text + "z"
+          let p = Promise<[User]> { (resolve , reject) in
+              let db = Firestore.firestore()
+            let ref = db.collection("users").whereField("email", isGreaterThanOrEqualTo: text).whereField("email", isLessThan: endText)
+            ref.getDocuments { (snap, err) in
+                guard let documents = snap?.documents else {return}
+                var groups : [User] = []
+                for doc in documents {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                        let  group = try JSONDecoder.init().decode(User.self, from: data)
+                        groups.append(group)
+                    }catch{
+                        reject(error)
+                    }
+                }
+                resolve(groups)
+          }
+      }
+        return p
+    }
+    
     
     static func getById(id: String) -> Promise<User?>  {
         let p = Promise<User?> { (resolve , reject) in
             let db = Firestore.firestore()
+            
             let ref = db.collection("users").document(id)
             ref.getDocument { (snapshot, err) in
                 if let err = err{
@@ -94,6 +116,21 @@ extension User {
             }
         }
         return p
+    }
+    
+    func updateFcmToken(token:String) -> Promise<User> {
+        return Promise<User> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let data = ["fcmToken" : token]
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+            }
+            print("Update fcmtoken for \(self.id)")
+            resolve(self)
+        }
     }
     
     static func getAllItem() -> Promise<[User]> {
@@ -117,8 +154,33 @@ extension User {
             }
         }
         return p
+    }
+    
+    static func getFriends() -> Promise<[User]> {
+        let uid = Auth.auth().currentUser!.uid
+        
+        let p = Promise<[User]> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("users").whereField("friends", arrayContains: uid)
+            var groups : [User] = []
+            ref.getDocuments { (snap, err) in
+                guard let documents = snap?.documents else {return}
+                for doc in documents {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                        let  group = try JSONDecoder.init().decode(User.self, from: data)
+                        groups.append(group)
+                    }catch{
+                        reject(error)
+                    }
+                }
+                resolve(groups)
+            }
+        }
+        return p
         
     }
+    
     
     func save() -> Promise<User> {
            
@@ -135,22 +197,101 @@ extension User {
             }
         }
     }
-
-
-    func updateBalance(userId : String , value : Int ) -> Promise<User>{
-            
+    
+    func updateFriend(userId:String) -> Promise<User> {
         return Promise<User> { (resolve , reject) in
-             let db = Firestore.firestore()
-             let data = ["balance": FieldValue.increment(Int64(value))]
-             let ref = db.collection("users").document(userId)
-             ref.updateData(data as! [String : Any]) { (err) in
-                 guard err == nil  else {
-                     return reject(err!)
-                 }
-                print("Update balance \(userId) \(value)")
-                 resolve(self)
-             }
-         }
-     }
+            let db = Firestore.firestore()
+            let data = ["friends" : FieldValue.arrayUnion([userId])]
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+            }
+            print("Update friends array add \(userId) to \(self.id)")
+            resolve(self)
+        }
+    }
+    
+    func updateFdsRequest(userId:String) -> Promise<User> {
+        return Promise<User> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let data = ["fdsRequest" : FieldValue.arrayUnion([userId])]
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+            }
+            print("Update updateFdsRequest array add \(userId) to \(self.id)")
+            resolve(self)
+        }
+    }
+    
+    func removeFdsRequest(userId:String) -> Promise<User> {
+        return Promise<User> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let data = ["fdsRequest" : FieldValue.arrayRemove([userId])]
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+            }
+            print("Update updateFdsRequest array add \(userId) to \(self.id)")
+            resolve(self)
+        }
+    }
+    
+    func removeFdsPending (userId:String) -> Promise<User> {
+        return Promise<User> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let data = ["fdsPending" : FieldValue.arrayRemove([userId])]
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+            }
+            print("Update fdsPending array add \(userId) to \(self.id)")
+            resolve(self)
+        }
+    }
+    
+    func updateFdsPending (userId:String) -> Promise<User> {
+        return Promise<User> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let data = ["fdsPending" : FieldValue.arrayUnion([userId])]
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+            }
+            print("Update fdsPending array add \(userId) to \(self.id)")
+            resolve(self)
+        }
+    }
+
+
+    func updateBalance(value : Int ,absoluteValue : Bool = false) -> Promise<User>{
+        return Promise<User> { (resolve , reject) in
+            let db = Firestore.firestore()
+            var data : [String : Any]
+            if absoluteValue {
+                data = ["balance": value]
+            }else{
+                data = ["balance": FieldValue.increment(Int64(value))]
+            }
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data as [String : Any]) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+                print("Update balance \(self.id) \(value)")
+                resolve(self)
+            }
+        }
+    }
 }
 

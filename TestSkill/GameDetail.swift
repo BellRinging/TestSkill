@@ -3,32 +3,68 @@ import Promises
 import Firebase
 
 struct GameDetail : Codable {
-    let id : String
-    let gameId : String
-    let fan : Int
-    let value  : Int
-    let winnerAmount  : Int
-    let loserAmount  : Int
-    let whoLose : [String]
-    let whoWin  : [String]
-    let winType : String
-    let byErrorFlag : Int
-    let repondToLose : Int
+    var id : String
+    var gameId : String
+    var fan : Int
+    var value  : Int
+    var winnerAmount  : Int
+    var loserAmount  : Int
+    var whoLose : [String]
+    var whoWin  : [String]
+    var winType : String
+    var byErrorFlag : Int
+    var repondToLose : Int
+    var playerList : [String:String]
+    var period : String
+    var createDateTime : String
+    var detailNo : Int
     
 }
 
 
 extension GameDetail {
     
-    static func delete(id : String ) -> Promise<Void> {
+    func delete() -> Promise<Void> {
         let p = Promise<Void> { (resolve , reject) in
             let db = Firestore.firestore()
-            db.collection("gameDetails").document(id).delete { (err) in
+            db.collection("gameDetails").document(self.id).delete { (err) in
                 guard err == nil  else {
                      return reject(err!)
                  }
-                print("delete gameDetails: \(id)")
+                print("delete gameDetail: \(self.id)")
                 return resolve(())
+            }
+        }
+        return p
+    }
+    
+    
+    static func getLastDetailByGameId(gameId: String , detailNo : Int) -> Promise<GameDetail?>  {
+        let p = Promise<GameDetail?> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let ref = db.collection("gameDetails").whereField("gameId",isEqualTo: gameId).whereField("detailNo",isEqualTo: detailNo).limit(to: 1)
+            ref.getDocuments { (snapshot, err) in
+                if let err = err{
+                    reject(err)
+                }
+                
+                let data = snapshot?.documents.first
+           
+                if let data = data {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: data.data(), options: .prettyPrinted)
+                        let  group = try JSONDecoder.init().decode(GameDetail.self, from: data)
+//                         print(group)
+                        resolve(group)
+                    }catch{
+                        print(error)
+                        reject(error)
+                    }
+                }else{
+                    print("no record")
+                    resolve(nil)
+                }
+                
             }
         }
         return p
@@ -77,31 +113,27 @@ extension GameDetail {
         return p
     }
     
-    static func getAllItemById(gameId : String ,pagingSize:Int=40, lastDoc:DocumentSnapshot? = nil) -> Promise<([GameDetail],DocumentSnapshot?)> {
-         let p = Promise<([GameDetail],DocumentSnapshot?)> { (resolve , reject) in
+    static func getAllItemById(gameId : String ) -> Promise<([GameDetail])> {
+         let p = Promise<([GameDetail])> { (resolve , reject) in
              let db = Firestore.firestore()
              let ref = db.collection("gameDetails")
-            var query = ref.limit(to: pagingSize)
-            query = query.order(by: "gameDetails", descending: true)
-            query = query.whereField("gameId", arrayContains: gameId)
-            if let lastDoc = lastDoc {
-                query = query.start(afterDocument: lastDoc)
-            }
-            
+            let query = ref.whereField("gameId", isEqualTo: gameId).order(by: "createDateTime")
              var groups : [GameDetail] = []
-             ref.getDocuments { (snap, err) in
+             query.getDocuments  { (snap, err) in
+//                print(err?.localizedDescription)
                  guard let documents = snap?.documents else {return}
-                let lastDoc : DocumentSnapshot? = documents.last
+//                print("item??")
                  for doc in documents {
                      do {
                          let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
                          let  group = try JSONDecoder.init().decode(GameDetail.self, from: data)
                          groups.append(group)
                      }catch{
+                        print(error)
                          reject(error)
                      }
                  }
-                 resolve((groups,lastDoc))
+                 resolve((groups))
              }
          }
          return p
@@ -124,4 +156,6 @@ extension GameDetail {
        
         }
     }
+    
+    
 }

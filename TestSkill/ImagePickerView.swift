@@ -1,17 +1,12 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-A view that wraps a UIPageViewController.
-*/
-
 import SwiftUI
 import UIKit
 
 
 struct ImagePicker: UIViewControllerRepresentable {
-    @Environment(\.presentationMode) var presentationMode
+    
     @Binding var image: UIImage?
+    @Binding var closeFlag: Bool
+//    var configure: (UINavigationController) -> Void = { _ in }
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
         let picker = UIImagePickerController()
@@ -20,26 +15,27 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
-
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self,closeFlag: self.$closeFlag)
     }
     
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: ImagePicker
+        @Binding var closeFlag: Bool
         
-        init(_ parent: ImagePicker) {
+        init(_ parent: ImagePicker , closeFlag : Binding<Bool>) {
             self.parent = parent
+            self._closeFlag = closeFlag
         }
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.image = uiImage
             }
-            
-            parent.presentationMode.wrappedValue.dismiss()
+//            print("Selected image")
+            closeFlag.toggle()
         }
     }
 }

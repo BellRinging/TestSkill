@@ -1,27 +1,26 @@
 import SwiftUI
 import FirebaseAuth
 
-class DisplayUserViewModel: ObservableObject {
+class DisplayFriendViewModel: ObservableObject {
 
     @Published var users : [User] = []
     @Published var selectedUser : [User] = []
     @Binding var closeFlag : Bool
     @Binding var players : [User]
     var maxSelection : Int
+    var includeSelf : Bool
     
     
-    init(flag : Binding<Bool> , users : Binding<[User]>, maxSelection : Int){
+    init(flag : Binding<Bool> , users : Binding<[User]>, maxSelection : Int ,includeSelf: Bool){
         selectedUser = []
         self._closeFlag = flag
         self._players = users
         self.selectedUser = users.wrappedValue
         self.maxSelection = maxSelection
-        print("selected user count \(selectedUser.count)")
+        self.includeSelf = includeSelf
         self.loadUser()
     }
     
-  
- 
     func addToSelectedList(user : User){
          if let index = selectedUser.firstIndex(of:user){
              selectedUser.remove(at: index)
@@ -32,12 +31,22 @@ class DisplayUserViewModel: ObservableObject {
          }
      }
     
+    func confirm(){
+        if self.includeSelf {
+            if let yourself = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser){
+                self.selectedUser.append(yourself)
+            }
+        }
+        self.players = self.selectedUser
+        self.closeFlag.toggle()
+    }
+    
     func loadUser(){
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        User.getAllItem().then { (users)  in
+        User.getAllItem().then { [unowned self] (users)  in
             let filter = users.filter{ (user) in
                 if user.id == uid {
-                    if !self.selectedUser.contains(user){
+                    if !self.selectedUser.contains(user) && self.includeSelf{
                         self.selectedUser.append(user)
                     }
                 }
@@ -48,6 +57,4 @@ class DisplayUserViewModel: ObservableObject {
             Utility.showError(message: err.localizedDescription)
         })
     }
-    
-
 }

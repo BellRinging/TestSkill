@@ -38,33 +38,115 @@ class TestFontViewModel : ObservableObject{
             group.groupName = "VietNam"
             return group
         }
-        
+            
+            
+    func deleteGroup(){
+        self.background.async {
+            
+            
+            PlayGroup.getAllItem().then{ groups in
+                for group in groups {
+                    group.delete()
+                }
+            }.catch{err in
+                print(err.localizedDescription)
+            }
+            
+            
+        }
+    }
+            
     
     func DeleteGame(){
            self.background.async {
                
-               print("delete game")
+               
                Game.getAllItem().then{ games in
-                   print("After get game")
                    for game in games {
-                       let _ = Game.delete(id: game.id).catch{ (err) in
-                           print(err.localizedDescription)
-                       }
+                        game.delete()
                    }
                }.catch{err in
                    print(err.localizedDescription)
                }
+//
                GameDetail.getAllItem().then{ gameDetails in
                    for gameDetail in gameDetails {
-                       GameDetail.delete(id: gameDetail.id).catch({ (err) in
-                           print(err.localizedDescription)
-                       })
+                    gameDetail.delete()
                    }
                }.catch{err in
                    print(err.localizedDescription)
                }
+//
+            
+            User.getAllItem().then{ users in
+                for user in users {
+//                    user.updateBalance(value: 0)
+                    GameRecord.getAllItem(userId: user.id).then { (gameRecords)in
+                        for gameRecord in gameRecords {
+                            gameRecord.delete(userId: user.id)
+                        }
+                    }
+                }
+            }.catch{err in
+                print(err.localizedDescription)
+            }
+            
            }
        }
+    
+    
+    func deleteUserRecords(){
+         self.background.async {
+             User.getAllItem().then{ users in
+                 for user in users {
+                     user.updateBalance(value: 0)
+                     GameRecord.getAllItem(userId: user.id).then { (gameRecords)in
+                         for gameRecord in gameRecords {
+                             gameRecord.delete(userId: user.id)
+                         }
+                     }
+                 }
+             }.catch{err in
+                 print(err.localizedDescription)
+             }
+                
+        }
+        
+    }
+    
+    
+       func deleteUserBalanceAndItem(){
+            self.background.async {
+                User.getAllItem().then{ users in
+                    for user in users {
+                        user.updateBalance(value: 0)
+                        GameRecord.getAllItem(userId: user.id).then { (gameRecords)in
+                            for gameRecord in gameRecords {
+                                gameRecord.delete(userId: user.id)
+                            }
+                        }
+                    }
+                }.catch{err in
+                    print(err.localizedDescription)
+                }
+                   
+           }
+           
+       }
+    
+      func deleteGameDetail(){
+         self.background.async {
+ 
+                       GameDetail.getAllItem().then{ gameDetails in
+                           for gameDetail in gameDetails {
+                            gameDetail.delete()
+                           }
+                       }.catch{err in
+                           print(err.localizedDescription)
+                       }
+        }
+        
+    }
     
     func addGame(){
         background.async {
@@ -77,40 +159,40 @@ class TestFontViewModel : ObservableObject{
         }
     }
     
-
-       func handleAddGame(){
-    
-//                Utility.showProgress()
-    
-    
-            self.background.async {
-
-                PlayGroup.getById(id: "4D59E86B-B0A0-41FE-A21F-FDC57DF47B4C").then { (group) in
-                    print("Get the group")
-                    self.background.async {
-                        var users : [User] = []
-                        for key in group.players {
-                            let user = try! await(User.getById(id: key))
-                            users.append(user!)
-                        }
-                        let groupRule = group.rule
-                        for round in 0...8{
-                            print("round : \(round)")
-                            let game = self.createRandomGame(users: users, group: group)
-                            print(game)
-                            let _ =  game.save().then{ game in
-                                print("Save Game \(round)")
-//                                for _ in 0...8{
-//                                    let gameDetail = self.createGameDetailObject(game: game, groupRule: groupRule)
-//                                    self.saveGameDetail(gameDetail: gameDetail, game: game, users: users)
-//                                }
-                            }
-                        }
-                    }
-                }
-        }
-    
-    }
+//
+//       func handleAddGame(){
+//    
+////                Utility.showProgress()
+//    
+//    
+//            self.background.async {
+//
+//                PlayGroup.getById(id: "4D59E86B-B0A0-41FE-A21F-FDC57DF47B4C").then { (group) in
+//                    print("Get the group")
+//                    self.background.async {
+//                        var users : [User] = []
+//                        for key in group.players {
+//                            let user = try! await(User.getById(id: key))
+//                            users.append(user!)
+//                        }
+//                        let groupRule = group.rule
+//                        for round in 0...8{
+//                            print("round : \(round)")
+//                            let game = self.createRandomGame(users: users, group: group)
+//                            print(game)
+//                            let _ =  game.save().then{ game in
+//                                print("Save Game \(round)")
+////                                for _ in 0...8{
+////                                    let gameDetail = self.createGameDetailObject(game: game, groupRule: groupRule)
+////                                    self.saveGameDetail(gameDetail: gameDetail, game: game, users: users)
+////                                }
+//                            }
+//                        }
+//                    }
+//                }
+//        }
+//    
+//    }
     
 //     func createGameDetailObject(game : Game, groupRule : [Int:Int]) ->GameDetail{
 //
@@ -143,7 +225,7 @@ class TestFontViewModel : ObservableObject{
             let _ =  gameDetail.save().then{ detail in
 //                self.saveIndivualRecord(detail: detail, game: game, users: users)
             }.catch{ err in
-//                Utility.showError(self, message: err.localizedDescription)
+//                Utility.showAlert(self, message: err.localizedDescription)
                 print(err.localizedDescription)
             }
         }
@@ -152,7 +234,7 @@ class TestFontViewModel : ObservableObject{
         func getAllUser() -> [User]{
            // get all users
             let users = try! await(User.getAllItem().catch{ err in
-                Utility.showError( message: err.localizedDescription)
+                Utility.showAlert( message: err.localizedDescription)
                 print(err.localizedDescription)
                 }
             )
@@ -161,30 +243,30 @@ class TestFontViewModel : ObservableObject{
     
        
        
-           func createRandomGame(users : [User] , group : PlayGroup) -> Game{
-               let someDateTime = self.generateRandomDate(daysBack:365)
-               let dateFormatter = DateFormatter()
-               dateFormatter.dateFormat = "yyyyMMdd"
-               let date = dateFormatter.string(from: someDateTime!)
-               dateFormatter.dateFormat = "yyyyMM"
-               let period = dateFormatter.string(from: someDateTime!)
-               let numList = [0,0,0,0]
-               let location = ["CP Home", "Ricky Home"]
-               let area = location.randomElement()!
-               let randomPickList = self.randomPick(array: users, number: 4) as! [User]
-               let userIdList: [String] = randomPickList.map{ $0.id}
-               let userNameList : [String] = randomPickList.map{$0.userName!}
-               let players = Dictionary(uniqueKeysWithValues: zip(userIdList,userNameList))
-               let result : [String:Int] = Dictionary(uniqueKeysWithValues: zip(userIdList,numList))
-               let groupId = group.id
-               let uuid = UUID().uuidString
-               let today = Date(timeIntervalSinceNow: 0)
-               dateFormatter.dateFormat = "yyyyMMddhhmmss"
-               let currentDateTime = dateFormatter.string(from: today)
-       
-               let game = Game(id: uuid, groupId: groupId, location: area, date: date, period : period, result: result ,playersMap : players,playersId :userIdList,createDateTime : currentDateTime)
-               return game
-           }
+//           func createRandomGame(users : [User] , group : PlayGroup) -> Game{
+//               let someDateTime = self.generateRandomDate(daysBack:365)
+//               let dateFormatter = DateFormatter()
+//               dateFormatter.dateFormat = "yyyyMMdd"
+//               let date = dateFormatter.string(from: someDateTime!)
+//               dateFormatter.dateFormat = "yyyyMM"
+//               let period = dateFormatter.string(from: someDateTime!)
+//               let numList = [0,0,0,0]
+//               let location = ["CP Home", "Ricky Home"]
+//               let area = location.randomElement()!
+//               let randomPickList = self.randomPick(array: users, number: 4) as! [User]
+//               let userIdList: [String] = randomPickList.map{ $0.id}
+//               let userNameList : [String] = randomPickList.map{$0.userName!}
+//               let players = Dictionary(uniqueKeysWithValues: zip(userIdList,userNameList))
+//               let result : [String:Int] = Dictionary(uniqueKeysWithValues: zip(userIdList,numList))
+//               let groupId = group.id
+//               let uuid = UUID().uuidString
+//               let today = Date(timeIntervalSinceNow: 0)
+//               dateFormatter.dateFormat = "yyyyMMddhhmmss"
+//               let currentDateTime = dateFormatter.string(from: today)
+//            let playersFilter : [String:Bool] = [:]
+//            let game = Game(id: uuid, groupId: groupId, location: area, date: date, period : period, result: result,playersFilter:playersFilter ,playersMap : players,playersId :userIdList,createDateTime : currentDateTime)
+//               return game
+//           }
        
            func generateRandomDate(daysBack: Int)-> Date?{
                let day = arc4random_uniform(UInt32(daysBack))+1

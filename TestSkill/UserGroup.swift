@@ -2,7 +2,7 @@ import UIKit
 import Promises
 import Firebase
 
-public struct UserGroup : Codable {
+public struct UserGroup : Codable ,Hashable {
     public var group_id : String
     public let group_name: String
 }

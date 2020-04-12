@@ -14,9 +14,11 @@ import GoogleSignIn
 import SwiftUI
 import FirebaseAuth
 import Promises
+import UserNotifications
+import UserNotificationsUI
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate ,UNUserNotificationCenterDelegate ,MessagingDelegate{
     
     
 
@@ -26,36 +28,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
         return DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
     }()
     
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         //Firebase
         FirebaseApp.configure()
         
+        //Message & notification
+        attemptRegisterForNotification(application:application)
+        
+
         //Google API
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
          GIDSignIn.sharedInstance().delegate  = self
         //Facebook Config
         
         LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        
-        if #available(iOS 13.0, *) { } else {
-            window?.frame = UIScreen.main.bounds
-            window?.makeKeyAndVisible()
-            window?.rootViewController = FrontEndController()
-        }
+ 
 
         return true
-//        attemptRegisterForNotification(application: application)
-        
     }
+
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        print("inside callback")
         if error != nil {
             return
         }else{
             guard let authentication = user.authentication else { return }
-            print("Sign success by Google , get google info")
+            print("Signed In by Google")
             var tempUser = ProviderUser()
             tempUser.userName = user.profile.name
             tempUser.firstName = user.profile.givenName
@@ -70,60 +67,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
         }
     }
             
-
-    
-
-    /*
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler(.alert)
-    }
-    
+//    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+//        Messaging.messaging().apnsToken = deviceToken
+//    }
     
     func attemptRegisterForNotification(application : UIApplication){
-        print("Attemp to register APNS")
+//        print("Attemp to register APNS")
         Messaging.messaging().delegate = self
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
-            
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {granted, err in
-                    if let err = err {
-                        print("err:",err.localizedDescription)
-                    }else {
-                        print("granted")
-                        let fcmToken = Messaging.messaging().fcmToken
-                        Utility.fcmToken = fcmToken
-                        print("FCM token: \(fcmToken ?? "")")
-                    }
-            })
-        } else {
-            let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-        }
-        
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { (geant, err) in}
         application.registerForRemoteNotifications()
-     
-        
     }
 
-//    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-//        print("Registered with token :",fcmToken)
-//        Utility.fcmToken = fcmToken
-//    }
-    */
-    
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-//        AppEventsLogger.activate(application)
-//        AppEvents.activateApp()
-    }
-    
-    
-    
+
+
+
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     
     
@@ -134,7 +93,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
             facebookOrGoogle = LoginManager.shared.facebookUrlConfiguration(app, open: url,
                                                                  sourceApplication:
                 options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation] ?? "")
-
         }else {
             print("handle for google \(url)")
             facebookOrGoogle = (GIDSignIn.sharedInstance()?.handle(url))!
@@ -143,41 +101,101 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate {
     
     }
     
-
     
-
-
-//
-//
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//
-//        let userInfo = response.notification.request.content.userInfo
-//
-//        if let followerId = userInfo["followerId"] as? String {
-//            print(followerId)
-//
-//            // I want to push the UserProfileController for followerId somehow
-//
-//
-//            Database.fetchUserWithUID(uid: followerId, completion: { (user) in
-//                let userProfileController = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
-//                userProfileController.user = user
-//                if let mainTabBarController = self.window?.rootViewController as? MainTabBarController {
-//
-//                    mainTabBarController.selectedIndex = 0
-//
-//                    mainTabBarController.presentedViewController?.dismiss(animated: true, completion: nil)
-//
-//                    if let homeNavigationController = mainTabBarController.viewControllers?.first as? UINavigationController {
-//
-//                        homeNavigationController.pushViewController(userProfileController, animated: true)
-//
-//                    }
-//
-//                }
-//            })
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        
+        if let token = UserDefaults.standard.retrieve(object: String.self, fromKey: UserDefaultsKey.FcmToken) {
+            if token != fcmToken {
+                print("Token Change : \(fcmToken)")
+                UserDefaults.standard.save(customObject: fcmToken , inKey: UserDefaultsKey.FcmToken)
+            }
+        }else{
+            print("Add token : \(fcmToken)")
+            UserDefaults.standard.save(customObject: fcmToken, inKey: UserDefaultsKey.FcmToken)
+        }
+    }
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Push notification received in backgroup.")
+        let userInfo = response.notification.request.content.userInfo
+        print(userInfo)
+        print(userInfo["userId"])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("Push notification received in foreground.")
+        print(notification.request.content.userInfo["userId"])
+        
+        
+        completionHandler([.alert, .sound, .badge])
+    }
+//    
+//    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+//          //Handle error here
+//      }
+//    
+//    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+//        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+//            // Create an account in your system.
+//            let userIdentifier = appleIDCredential.user
+//            let userFirstName = appleIDCredential.fullName?.givenName
+//            let userLastName = appleIDCredential.fullName?.familyName
+//            let userEmail = appleIDCredential.email
+//            
+//            //Navigate to other view controller
+//        } else if let passwordCredential = authorization.credential as? ASPasswordCredential {
+//            // Sign in using an existing iCloud Keychain credential.
+//            let username = passwordCredential.user
+//            let password = passwordCredential.password
+//            
+//            //Navigate to other view controller
 //        }
 //    }
+//    
+//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+//        return self.view.window!
+//    }
+//    
+//    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+//      if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+//        guard let nonce = currentNonce else {
+//          fatalError("Invalid state: A login callback was received, but no login request was sent.")
+//        }
+//        guard let appleIDToken = appleIDCredential.identityToken else {
+//          print("Unable to fetch identity token")
+//          return
+//        }
+//        guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+//          print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+//          return
+//        }
+//        // Initialize a Firebase credential.
+//        let credential = OAuthProvider.credential(withProviderID: "apple.com",
+//                                                  IDToken: idTokenString,
+//                                                  rawNonce: nonce)
+//        // Sign in with Firebase.
+//        Auth.auth().signIn(with: credential) { (authResult, error) in
+//          if error {
+//            // Error. If error.code == .MissingOrInvalidNonce, make sure
+//            // you're sending the SHA256-hashed nonce as a hex string with
+//            // your request to Apple.
+//            print(error.localizedDescription)
+//            return
+//          }
+//          // User is signed in to Firebase with Apple.
+//          // ...
+//        }
+//      }
+//    }
+//
+//    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+//      // Handle error.
+//      print("Sign in with Apple errored: \(error)")
+//    }
+        
 }
 
 

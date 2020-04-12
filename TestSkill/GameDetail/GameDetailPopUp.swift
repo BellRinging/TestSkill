@@ -12,89 +12,57 @@ import  SwiftEntryKit
 struct GameDetailPopUp: View {
     
     unowned var viewModel : GameDetailViewModel
-    
-    @State private var selectedPlayer : DisplayBoard? = nil
-    @State private var selectedFan = 3
-    @State private var loserRespond = false
-    func getAmount(who:DisplayBoard) -> Int {
-//
-        if selectedPlayer?.id == viewModel.winner?.id {
-            return -1 * (viewModel.ruleSelf[self.selectedFan] ?? 0)
-        }
-
-        if selectedPlayer?.id == who.id {
-            if loserRespond {
-                return -1 * 3 * (viewModel.ruleSelf[self.selectedFan] ?? 0)
+    @State public var selectedPlayer : DisplayBoard? {
+        didSet{
+            if self.selectedPlayer == nil {
+                self.showFanArea = false
+                self.selectedFan = self.viewModel.endFan
             }else{
-                return -1 * (viewModel.rule[self.selectedFan] ?? 0)
+                self.showFanArea = true
             }
-        }else{
-            return 0
         }
-//        return 0
     }
     
+    @State private var selectedFan : Int = 999
+    @State private var loserRespond = false
+    @State private var showFanArea = true
+    
+    init(viewModel : GameDetailViewModel){
+        self.viewModel = viewModel
+//        self.selectedFan = viewModel.startFan
+    }
     
     var body: some View {
         VStack {
-            playerSelectionArea
-            toggleArea
+            cancelButton()
+            playerSelectionArea()
+            toggleArea()
                 .padding()
-          
-            fanSelectionArea
-            buttonArea
-        }.padding()
-        
-    }
-    
-    var emptyView: some View {
-        Text("")
-    }
-    
-    func fanSelectionItem(fan : Int) -> some View {
-        Button(action: {
-            self.selectedFan = fan
-        }) {
-            Rectangle().stroke()
-                .stroke(SwiftUI.Color.black,lineWidth: 2)
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Circle().stroke(selectedFan == fan ? Color.red:Color.clear, lineWidth: 4)
-                        .frame(width: 35, height: 35)
-            )
-                .overlay(
-                    Text("\(fan)")
-            )
-        }
-    }
-    
-    var fanSelectionArea : some View {
-        VStack{
-     
-            VStack{
-                if (viewModel.seperateLineForFan){
-                    HStack{
-                        ForEach(viewModel.startFan ..< (viewModel.startFan + 4) ) { number in
-                            self.fanSelectionItem(fan: number)
-                        }
-                    }
-                    HStack{
-                        ForEach((viewModel.startFan + 4) ..< viewModel.endFan + 1) { number in
-                            self.fanSelectionItem(fan: number)
-                        }
-                    }
-                }else{
-                    HStack{
-                        ForEach(viewModel.startFan ..< viewModel.endFan + 1) { number in
-                            self.fanSelectionItem(fan: number)
-                        }
-                    }
-                }
+            if showFanArea {
+                fanSelectionArea
             }
-            
+            buttonArea
         }
-
+        .padding()
+        .onAppear(){
+            self.selectedPlayer = self.viewModel.filteredDisplayBoard[0]
+        }
         
+    }
+    
+    func playerSelectionArea() -> some View {
+        VStack{
+            Text("食糊啦").titleFont(size: 24)
+            self.winnerArea()
+            Text("邊個出沖？")
+                .font(ChineseFont.regular.size(24))
+            HStack{
+                ForEach(0...2 ,id: \.self) { (index) in
+                    self.playerSelectionItem(board:self.viewModel.filteredDisplayBoard[index])
+                }
+                specialItem
+            }
+        }
     }
     
     func playerSelectionItem(board : DisplayBoard) ->some View {
@@ -115,6 +83,65 @@ struct GameDetailPopUp: View {
         }
     }
     
+    func getAmount(who:DisplayBoard) -> Int {
+        
+        if selectedPlayer == nil {
+            return (viewModel.ruleSelf[viewModel.endFan] ?? 0)
+        }
+        
+        if selectedPlayer?.id == viewModel.winner?.id {
+            return -1 * (viewModel.ruleSelf[self.selectedFan] ?? 0)
+        }
+        
+        if selectedPlayer?.id == who.id {
+            return  loserRespond ? -1 * 3 * (viewModel.ruleSelf[self.selectedFan] ?? 0) : -1 * (viewModel.rule[self.selectedFan] ?? 0)
+        }else{
+            return 0
+        }
+        
+    }
+
+    var fanSelectionArea : some View {
+        VStack{
+            if (viewModel.seperateLineForFan){
+                HStack{
+                    ForEach(viewModel.startFan ..< (viewModel.startFan + 4) ) { number in
+                        self.fanSelectionItem(fan: number)
+                    }
+                }
+                HStack{
+                    ForEach((viewModel.startFan + 4) ..< viewModel.endFan + 1) { number in
+                        self.fanSelectionItem(fan: number)
+                    }
+                }
+            }else{
+                HStack{
+                    ForEach(viewModel.startFan ..< viewModel.endFan + 1) { number in
+                        self.fanSelectionItem(fan: number)
+                    }
+                }
+            }
+        }
+    }
+    
+    func fanSelectionItem(fan : Int) -> some View {
+        Button(action: {
+            self.selectedFan = fan
+        }) {
+            Rectangle()
+                .stroke(Color.black,lineWidth: 2)
+                .frame(width: 40, height: 40)
+                .overlay(
+                    Circle().stroke(selectedFan == fan ? Color.red:Color.clear, lineWidth: 4)
+                        .frame(width: 35, height: 35)
+            )
+                .overlay(
+                    Text("\(fan)")
+            )
+        }
+    }
+
+    
     var specialItem : some View {
         Button(action: {
             self.selectedPlayer = nil
@@ -128,7 +155,7 @@ struct GameDetailPopUp: View {
                     .scaledToFit()
                     .overlay(Circle().stroke(selectedPlayer == nil ? Color.redColor:Color.clear, lineWidth: 4))
                 Text("詐糊")
-                    .foregroundColor(SwiftUI.Color.redColor)
+                    .foregroundColor(Color.redColor)
                     .font(ChineseFont.regular.size(12))
                 Text("")
                     .font(ChineseFont.regular.size(12))
@@ -136,7 +163,7 @@ struct GameDetailPopUp: View {
         }
     }
     
-    var winnerArea : some View{
+    func winnerArea() ->some View{
         ZStack {
             HStack{
                 Spacer()
@@ -155,101 +182,46 @@ struct GameDetailPopUp: View {
             }
             
         }
-        
     }
     
-    
-    func saveDetail(){
-        let whoWin = self.viewModel.winner!.id
-        let whoLose = self.selectedPlayer?.id != nil ? self.selectedPlayer!.id : ""
-        let winType = self.selectedPlayer?.id == whoWin ? "Self": loserRespond ? "Special":"Other"
-        let fanNo = self.selectedFan
-        let byErrorFlag = self.selectedPlayer?.id == nil ? 1:0
-        var value = 0
-        var whoLoseList:[String] = []
-        var whoWinList:[String] = []
-        let repondToLose = loserRespond ? 1:0
-        var winnerAmount = 0
-        var loserAmount = 0
-        
-        if (winType == "Self" || byErrorFlag == 1){
-            self.viewModel.filteredDisplayBoard.map { user in
-                whoLoseList.append(user.id)
-            }
-            whoWinList = [whoWin]
-            value = self.viewModel.ruleSelf[fanNo] ?? 0
-            winnerAmount = value * 3
-            loserAmount = value * -1
-            if (byErrorFlag == 1){
-                //swap the item
-                let temp = whoWinList
-                whoWinList = whoLoseList
-                whoLoseList = temp
-                let tem2 = winnerAmount
-                winnerAmount = loserAmount
-                loserAmount = tem2
-            }
-        }else{
-            whoWinList = [whoWin]
-            whoLoseList = [whoLose]
-            value = loserRespond ? (self.viewModel.ruleSelf[fanNo] ?? 0 ) : (self.viewModel.rule[fanNo] ?? 0)
-            winnerAmount = value
-            loserAmount = value * -1
-        }
-        let uuid = UUID().uuidString
-        let gameDetail = GameDetail(id: uuid, gameId: self.viewModel.game.id, fan: fanNo, value: value, winnerAmount: winnerAmount, loserAmount: loserAmount, whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: byErrorFlag,repondToLose:repondToLose)
-        gameDetail.save().then { (gameDetail)  in
-//            print(gameDetail)
-            print("GameRecord Saved")
-            NotificationCenter.default.post(name: .updateGame, object: gameDetail.gameId)
-        }.catch { (error) in
-            Utility.showError(message: error.localizedDescription)
+    func cancelButton() -> some View{
+        HStack{
+            Button(action: {
+                self.dismiss()
+            }, label:{
+                Image(systemName: "xmark")
+            }).accentColor(Color.red)
+            Spacer()
         }
     }
+    
     
     var buttonArea : some View{
-        HStack {
-            RoundedRectangle(cornerRadius: 10) .fill(SwiftUI.Color.green)
-                .frame(width: 120, height: 40).overlay(
-                    Button(action: {
-                        self.saveDetail()
-                        self.dismiss()
-                }, label:{
+            Button(action: {
+                if self.selectedFan == 999 {
+                    Utility.showAlert(message: "Please select the fan")
+                    return
+                }
+                let loserRe = self.loserRespond ? 1 : 0
+                let winType = self.selectedPlayer?.id == self.viewModel.winner?.id ? "Self": self.loserRespond ? "Special":"Other"
+                let byError = self.selectedPlayer?.id == nil ? 1: 0
+                let fan = self.selectedFan
+                self.viewModel.saveDetail(whoWin: self.viewModel.winner!.id, whoLose: self.selectedPlayer?.id  ?? "", winType: winType, fan: fan, loserRespond: loserRe, byErrorFlag: byError)
+                self.dismiss()
+            }, label:{
+                ZStack{
+                    RoundedRectangle(cornerRadius: 10).fill(Color.green)
+                        .frame( height: 40)
                     Text("確認")
                         .foregroundColor(SwiftUI.Color.white)
                         .font(ChineseFont.regular.size(16))
-                })
-                    
-            )
-            RoundedRectangle(cornerRadius: 10) .fill(SwiftUI.Color.red)
-                .frame(width: 120, height: 40).overlay(     Button(action: {
-                    self.dismiss()
-                }, label:{
-                    Text("取消")
-                        .foregroundColor(SwiftUI.Color.white)
-                        .font(ChineseFont.regular.size(16))
-                    
-                }))
-            
-        }.padding()
-    }
-    
-    var playerSelectionArea: some View {
-        VStack{
-            Text("食糊啦").titleFont(size: 24)
-            self.winnerArea
-            Text("邊個出沖？")
-                .font(ChineseFont.regular.size(24))
-            HStack{
-                ForEach(0...2 ,id: \.self) { (index) in
-                    self.playerSelectionItem(board:self.viewModel.filteredDisplayBoard[index])
                 }
-                specialItem
-            }
-        }
+            }).padding()
     }
     
-    var toggleArea : some View {
+   
+    
+    func toggleArea() -> some View {
         HStack{
             Spacer()
             Text("輸家包自摸")
@@ -260,15 +232,11 @@ struct GameDetailPopUp: View {
             Spacer()
         }
     }
-    
 
     func dismiss(){
         SwiftEntryKit.dismiss()
     }
-    
-    func result(){
-        print("\(selectedPlayer) \(selectedFan)")
-    }
+
 }
 
 var fanSelectionView: some View {

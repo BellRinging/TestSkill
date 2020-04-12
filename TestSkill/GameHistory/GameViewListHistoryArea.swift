@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import SwiftUIRefresh
 
 enum pageStatus {
     case loading
@@ -16,37 +17,73 @@ enum pageStatus {
 
 struct GameViewListHistoryArea: View {
     
-    var groupUsers : [User]
-    var sectionHeader : [String]
-    var games : [String:[Game]]
-    var status : pageStatus
-    
+    @ObservedObject var viewModel: GameViewListAreaViewModel
+
+    init(groupUsers:[User],sectionHeader: [String],sectionHeaderAmt: [String:Int],games:[String:[Game]],status: pageStatus,lastGameDetail:GameDetail?,callback : @escaping (String,Int) -> () ){
+        viewModel = GameViewListAreaViewModel(groupUsers: groupUsers, sectionHeader: sectionHeader,sectionHeaderAmt:sectionHeaderAmt, games: games, status: status,lastGameDetail:lastGameDetail, callback: callback)
+    }
+
     var body: some View {
         VStack{
-            if status == .loading{
-                Text("loading")
+            if self.viewModel.status == .loading && self.viewModel.games.count == 0 {
+                Text(self.viewModel.status == .loading ? "Loading":"No data")
             }else{
                 List {
-                    ForEach(self.sectionHeader, id: \.self) { period in
-                        Section(header: self.sectionArea(text:period)) {
-                            ForEach(self.games[period]! ,id: \.id) { game in
+                    ForEach(self.viewModel.sectionHeader, id: \.self) { period in
+                        Section(header: self.sectionArea(period:period)) {
+                            ForEach(self.viewModel.games[period]! ,id: \.id) { game in
                                 NavigationLink(destination:
-                                LazyView(GameDetailView(game: game ,users :self.groupUsers))){
-                                    GameRow(game: game, users: self.groupUsers)
-                                        .frame(height: 50)
+                                LazyView(GameDetailView(game: game ,users :self.viewModel.groupUsers ,lastGameDetail : self.viewModel.lastGameDetail))){
+                                    GameRow(game: game)
+                                        .frame(height: 60)
+                                        .contextMenu{
+                                        VStack {
+                                            Button(action: {
+                                                   NotificationCenter.default.post(name: .flownGame, object: game)
+                                            }){
+                                                HStack {
+                                                    Text("Flown")
+                                                    Image(systemName: "lock")
+                                                        .resizable()
+                                                        .frame(maxWidth : 20)
+                                                }
+                                            }
+                                            Button(action: {
+                                                   NotificationCenter.default.post(name: .deleteGame, object: game)
+                                            }){
+                                                HStack {
+                                                    Text("Remove")
+                                                    Image(systemName: "trash")
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
+                            }.onDelete { (index) in
+                                self.viewModel.selectedIndex = index.first!
+                                self.viewModel.selectedPeriod = period
+                                self.viewModel.showingDeleteAlert = true
                             }
                         }
                     }
                 }
             }
+        }.alert(isPresented: self.$viewModel.showingDeleteAlert) {
+            Alert(title: Text("Confirm delete"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete")) {
+                self.viewModel.callback(self.viewModel.selectedPeriod , self.viewModel.selectedIndex)
+                }, secondaryButton: .cancel()
+            )
         }
+        
+        
+        
     }
     
-    func sectionArea(text : String) -> some View {
+    func sectionArea(period : String) -> some View {
            HStack{
-               Spacer()
-               Text(text).font(MainFont.bold.size(12))
+            Text(period).font(MainFont.bold.size(12))
+            Spacer()
+            Text("\(self.viewModel.sectionHeaderAmt[period]!)").titleFont(size: 12,color: self.viewModel.sectionHeaderAmt[period]! > 0 ? Color.greenColor: Color.red)
            }
        }
 

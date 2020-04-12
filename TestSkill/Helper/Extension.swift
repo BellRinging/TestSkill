@@ -14,9 +14,14 @@ import Promises
 
 
 
+
 struct UserDefaultsKey  {
     static let CurrentUser = "CurrentUser"
     static let  CurrentGroup = "CurrentGroup"
+    static let  CurrentGroupUser = "CurrentGroupUser"
+    static let  LoginFlag = "LoginFlag"
+    static let  FcmToken = "FcmToken"
+    static let  AppleIdUser = "AppleIdUser"
     
 }
 
@@ -38,11 +43,10 @@ extension UserDefaults {
            if let object = try? decoder.decode(type, from: data) {
                return object
            }else {
-               print("Couldnt decode object")
+               print("Couldnt decode object for key : \(key)")
                return nil
            }
        }else {
-           print("Couldnt find key")
            return nil
        }
    }
@@ -161,42 +165,47 @@ extension Date {
 
 
 
-extension UIApplication {
-    
-    class var topViewController: UIViewController? {
-        return getTopViewController()
-    }
-    
-    private class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        if let nav = base as? UINavigationController {
-            return getTopViewController(base: nav.visibleViewController)
-        }
-        if let tab = base as? UITabBarController {
-            if let selected = tab.selectedViewController {
-                return getTopViewController(base: selected)
-            }
-        }
-        if let presented = base?.presentedViewController {
-            return getTopViewController(base: presented)
-        }
-        return base
-    }
-}
-
-extension Equatable {
-    func share() {
-        let activity = UIActivityViewController(activityItems: [self], applicationActivities: nil)
-        UIApplication.topViewController?.present(activity, animated: true, completion: nil)
-    }
-}
-
-
 extension Notification.Name {
     static let updateGame = Notification.Name("updateGame")
+    static let updateUserBalance = Notification.Name("updateUserBalance")
+    static let updateLastGameRecord = Notification.Name("updateLastGameRecord")
+    static let addPlayGroup = Notification.Name("addPlayGroup")
+    static let addFriend = Notification.Name("addFriend")
     static let dismissAddGameView = Notification.Name("dismissAddGameView")
     static let dismissMainView = Notification.Name("dismissMainView")
     static let dismissSwiftUI = Notification.Name("dismissSwiftUI")
     static let loginCompleted = Notification.Name("loginCompleted")
     static let dismissPlayGroup = Notification.Name("dismissPlayGroup")
+    static let FCMToken = Notification.Name("FCMToken")
+    
+    static let flownGame = Notification.Name("flownGame")
+    static let deleteGame = Notification.Name("deleteGame")
+    
 
+}
+
+
+//class HostingController: UIHostingController<ContentView> {
+//    override var preferredStatusBarStyle: UIStatusBarStyle {
+//        return .lightContent
+//    }
+//}
+
+extension UIApplication {
+    var statusBarUIView: UIView? {
+        if #available(iOS 13.0, *) {
+            let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+            if let statusBarFrame = keyWindow?.windowScene?.statusBarManager?.statusBarFrame {
+                let statusBarView = UIView(frame: statusBarFrame)
+                keyWindow?.addSubview(statusBarView)
+                return statusBarView
+            } else if responds(to: Selector(("statusBar"))) {
+                return value(forKey: "statusBar") as? UIView
+            } else {
+                return nil
+            }
+        }else{
+            return nil
+        }
+    }
 }

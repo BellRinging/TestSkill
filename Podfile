@@ -1,4 +1,4 @@
-platform :ios, '10.2'
+platform :ios, '13.0'
 use_frameworks! 
 
 target ‘TestSkill’ do
@@ -8,6 +8,7 @@ target ‘TestSkill’ do
 	pod 'Firebase/Core'
 	pod 'Firebase/Storage'
 	pod 'Firebase/Database'
+	pod 'Firebase/Messaging'
 	pod 'MBProgressHUD', '~> 1.0.0'
 	pod 'Firebase/Messaging'
 	pod 'Firebase/Firestore'
@@ -15,4 +16,6 @@ target ‘TestSkill’ do
 	pod 'FBSDKCoreKit'
 	pod 'FBSDKLoginKit'
 	pod 'PromisesSwift'
+	pod "Introspect"
+	pod "SwiftUIRefresh"
 end

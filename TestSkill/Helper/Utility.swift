@@ -1,23 +1,11 @@
-//
-//  Helper.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 11/9/2017.
-//  Copyright © 2017 Kwok Wai Yeung. All rights reserved.
-//
-
-import UIKit
 import MBProgressHUD
-import FirebaseAuth
-import Firebase
-import FBSDKLoginKit
-import GoogleSignIn
 import SwiftEntryKit
-
-
+import SwiftUI
+typealias Action = () -> ()
 class Utility {
     
-
+    static var currentNonce : String?
+    
     static func showProgress(){
         print("Show Progress")
         DispatchQueue.main.async {
@@ -46,256 +34,58 @@ class Utility {
         }
     }
     
-    
-    static func showError(message : String){
+   
+    static func showAlert(message : String , callBack : Action?  = nil){
            
-           var attributes: EKAttributes
-           var description: PresetDescription
-           var descriptionString: String
-           var descriptionThumb: String
-           attributes = EKAttributes.centerFloat
-           attributes.hapticFeedbackType = .success
-           attributes.displayDuration = .infinity
-           attributes.entryBackground = .gradient(
-               gradient: .init(
-                   colors: [EKColor(rgb: 0xfffbd5), EKColor(rgb: 0xb20a2c)],
-                   startPoint: .zero,
-                   endPoint: CGPoint(x: 1, y: 1)
-               )
-           )
-           attributes.screenBackground = .color(color: .dimmedDarkBackground)
-           attributes.shadow = .active(
-               with: .init(
-                   color: .black,
-                   opacity: 0.3,
-                   radius: 8
-               )
-           )
-           attributes.screenInteraction = .dismiss
-           attributes.entryInteraction = .absorbTouches
-           attributes.scroll = .enabled(
-               swipeable: true,
-               pullbackAnimation: .jolt
-           )
-           attributes.roundCorners = .all(radius: 8)
-           attributes.entranceAnimation = .init(
-               translate: .init(
-                   duration: 0.7,
-                   spring: .init(damping: 0.7, initialVelocity: 0)
-               ),
-               scale: .init(
-                   from: 0.7,
-                   to: 1,
-                   duration: 0.4,
-                   spring: .init(damping: 1, initialVelocity: 0)
-               )
-           )
-           attributes.exitAnimation = .init(
-               translate: .init(duration: 0.2)
-           )
-           attributes.popBehavior = .animated(
-               animation: .init(
-                   translate: .init(duration: 0.35)
-               )
-           )
-           attributes.positionConstraints.size = .init(
-               width: .offset(value: 20),
-               height: .intrinsic
-           )
-           attributes.positionConstraints.maxSize = .init(
-               width: .constant(value: UIScreen.main.minEdge),
-               height: .intrinsic
-           )
-           attributes.statusBar = .dark
-           descriptionString = message
-           descriptionThumb = ThumbDesc.bottomPopup.rawValue
-           description = .init(
-               with: attributes,
-               title: "Pop Up II",
-               description: descriptionString,
-               thumb: descriptionThumb
-           )
-           let image = UIImage(named: "gear")!.withRenderingMode(.alwaysTemplate)
-           let title = "Error"
-           let description2 = message
-           showPopupMessage(attributes: attributes,
-                            title: title,
-                            titleColor: .white,
-                            description: description2,
-                            descriptionColor: .white,
-                            buttonTitleColor: ColorEK.Gray.mid,
-                            buttonBackgroundColor: .white,
-                            image: image)
-           
-       }
-    
-    static func showError(_ controller:UIViewController,message : String){
-        
-        var attributes: EKAttributes
-        var description: PresetDescription
-        var descriptionString: String
-        var descriptionThumb: String
-        attributes = EKAttributes.centerFloat
-        attributes.hapticFeedbackType = .success
-        attributes.displayDuration = .infinity
-        attributes.entryBackground = .gradient(
-            gradient: .init(
-                colors: [EKColor(rgb: 0xfffbd5), EKColor(rgb: 0xb20a2c)],
-                startPoint: .zero,
-                endPoint: CGPoint(x: 1, y: 1)
-            )
-        )
-        attributes.screenBackground = .color(color: .dimmedDarkBackground)
-        attributes.shadow = .active(
-            with: .init(
-                color: .black,
-                opacity: 0.3,
-                radius: 8
-            )
-        )
-        attributes.screenInteraction = .dismiss
-        attributes.entryInteraction = .absorbTouches
-        attributes.scroll = .enabled(
-            swipeable: true,
-            pullbackAnimation: .jolt
-        )
-        attributes.roundCorners = .all(radius: 8)
-        attributes.entranceAnimation = .init(
-            translate: .init(
-                duration: 0.7,
-                spring: .init(damping: 0.7, initialVelocity: 0)
-            ),
-            scale: .init(
-                from: 0.7,
-                to: 1,
-                duration: 0.4,
-                spring: .init(damping: 1, initialVelocity: 0)
-            )
-        )
-        attributes.exitAnimation = .init(
-            translate: .init(duration: 0.2)
-        )
-        attributes.popBehavior = .animated(
-            animation: .init(
-                translate: .init(duration: 0.35)
-            )
-        )
-        attributes.positionConstraints.size = .init(
-            width: .offset(value: 20),
-            height: .intrinsic
-        )
-        attributes.positionConstraints.maxSize = .init(
-            width: .constant(value: UIScreen.main.minEdge),
-            height: .intrinsic
-        )
-        attributes.statusBar = .dark
-        descriptionString = message
-        descriptionThumb = ThumbDesc.bottomPopup.rawValue
-        description = .init(
-            with: attributes,
-            title: "Pop Up II",
-            description: descriptionString,
-            thumb: descriptionThumb
-        )
-        let image = UIImage(named: "gear")!.withRenderingMode(.alwaysTemplate)
-        let title = "Error"
-        let description2 = message
-        showPopupMessage(attributes: attributes,
-                         title: title,
-                         titleColor: .white,
-                         description: description2,
-                         descriptionColor: .white,
-                         buttonTitleColor: ColorEK.Gray.mid,
-                         buttonBackgroundColor: .white,
-                         image: image)
-        
-    }
-    
-    static private func showPopupMessage(attributes: EKAttributes,
-                                   title: String,
-                                   titleColor: EKColor,
-                                   description: String,
-                                   descriptionColor: EKColor,
-                                   buttonTitleColor: EKColor,
-                                   buttonBackgroundColor: EKColor,
-                                   image: UIImage? = nil) {
-        
-        var displayMode: EKAttributes.DisplayMode {
-            return PresetsDataSource.displayMode
+        var alertView = CustomAlertView(message: message)
+        if let callBack = callBack{
+            alertView = CustomAlertView(message: message,callBack: callBack)
         }
-        
-         
-         var themeImage: EKPopUpMessage.ThemeImage?
-         if let image = image {
-             themeImage = EKPopUpMessage.ThemeImage(
-                 image: EKProperty.ImageContent(
-                     image: image,
-                     displayMode: displayMode,
-                     size: CGSize(width: 60, height: 60),
-                     tint: titleColor,
-                     contentMode: .scaleAspectFit
-                 )
-             )
-         }
-         let title = EKProperty.LabelContent(
-             text: title,
-             style: .init(
-                 font: MainFont.medium.with(size: 24),
-                 color: titleColor,
-                 alignment: .center,
-                 displayMode: displayMode
-             )
-         )
-         let description = EKProperty.LabelContent(
-             text: description,
-             style: .init(
-                 font: MainFont.light.with(size: 16),
-                 color: descriptionColor,
-                 alignment: .center,
-                 displayMode: displayMode
-             )
-         )
-         let button = EKProperty.ButtonContent(
-             label: .init(
-                 text: "Got it!",
-                 style: .init(
-                     font: MainFont.bold.with(size: 16),
-                     color: buttonTitleColor,
-                     displayMode: displayMode
-                 )
-             ),
-             backgroundColor: buttonBackgroundColor,
-             highlightedBackgroundColor: buttonTitleColor.with(alpha: 0.05),
-             displayMode: displayMode
-         )
-         let message = EKPopUpMessage(
-             themeImage: themeImage,
-             title: title,
-             description: description,
-             button: button) {
-                 SwiftEntryKit.dismiss()
-         }
-         let contentView = EKPopUpMessageView(with: message)
-         SwiftEntryKit.display(entry: contentView, using: attributes)
-     }
-    
-    func logMessage(_ message: String,
-                       fileName: String = #file,
-                       functionName: String = #function,
-                       lineNumber: Int = #line,
-                       columnNumber: Int = #column) {
-           
-           print("### \(fileName) - \(message)")
+        let customView = UIHostingController(rootView: alertView)
+        var attributes = EKAttributes()
+        attributes.windowLevel = .normal
+        attributes.position = .center
+        attributes.displayDuration = .infinity
+        attributes.screenInteraction = .forward
+        attributes.entryInteraction = .forward
+        attributes.shadow = .active(with: .init(color: .black, opacity: 0.3, radius: 10, offset: .zero))
+        attributes.positionConstraints.size = .init(width: .offset(value: 50), height: .intrinsic)
+        let edgeWidth = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+        attributes.positionConstraints.maxSize = .init(width: .constant(value: edgeWidth), height: .intrinsic)
+        attributes.roundCorners = .all(radius: 10)
+        SwiftEntryKit.display(entry: customView, using: attributes)
     }
     
-    private enum ThumbDesc: String {
-        case bottomToast = "ic_bottom_toast"
-        case bottomFloat = "ic_bottom_float"
-        case topToast = "ic_top_toast"
-        case topFloat = "ic_top_float"
-        case statusBarNote = "ic_sb_note"
-        case topNote = "ic_top_note"
-        case bottomPopup = "ic_bottom_popup"
-    }
+    static func randomNonceString(length: Int = 32) -> String {
+      precondition(length > 0)
+      let charset: Array<Character> =
+          Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+      var result = ""
+      var remainingLength = length
 
+      while remainingLength > 0 {
+        let randoms: [UInt8] = (0 ..< 16).map { _ in
+          var random: UInt8 = 0
+          let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+          if errorCode != errSecSuccess {
+            fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
+          }
+          return random
+        }
+
+        randoms.forEach { random in
+          if remainingLength == 0 {
+            return
+          }
+
+          if random < charset.count {
+            result.append(charset[Int(random)])
+            remainingLength -= 1
+          }
+        }
+      }
+
+      return result
+    }
+    
 }

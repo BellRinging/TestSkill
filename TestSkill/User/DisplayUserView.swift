@@ -9,38 +9,33 @@
 import SwiftUI
 import Promises
 
-struct DisplayUserView: View {
+struct DisplayFriendView: View {
 
     @ObservedObject var viewModel: DisplayUserViewModel
     
-    
-    init(flag : Binding<Bool> , users : Binding<[User]>,maxSelection : Int = 999) {
-        viewModel = DisplayUserViewModel(flag: flag, users: users,maxSelection: maxSelection)
+    init(flag : Binding<Bool> , users : Binding<[User]>,maxSelection : Int = 999 ,includeSelf : Bool = true) {
+        viewModel = DisplayUserViewModel(flag: flag, users: users,maxSelection: maxSelection ,includeSelf : includeSelf)
     }
     
     var body: some View {
-        
         NavigationView{
-            List(viewModel.users) { user in
-                DisplayUserRow(user: user, isSelected: self.viewModel.selectedUser.contains(user))
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    self.viewModel.addToSelectedList(user: user)
+            VStack{
+                SelectAllView(self.$viewModel.selectedUser, availableList: self.viewModel.users)
+                    .padding([.horizontal,.top])
+                List(viewModel.users) { user in
+                    DisplayUserRow(user: user, isSelected: self.viewModel.selectedUser.contains(user))
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            self.viewModel.addToSelectedList(user: user)
+                    }
                 }
             }
             .navigationBarTitle("Display User", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(), trailing: ConfirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
         }
     
     }
     
-    func CancelButton() -> some View{
-         Button(action: {
-            self.viewModel.closeFlag.toggle()
-         }, label: {
-             Text("Cancel").foregroundColor(Color.white)
-         })
-     }
     
     func ConfirmButton() -> some View{
          Button(action: {

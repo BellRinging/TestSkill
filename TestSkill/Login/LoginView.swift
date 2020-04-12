@@ -1,47 +1,14 @@
-//
-//  LoginPageSwifUI.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 3/1/2020.
-//  Copyright © 2020 Kwok Wai Yeung. All rights reserved.
-//
-
 import SwiftUI
-import FirebaseAuth
-import FirebaseDatabase
-import GoogleSignIn
-import FBSDKLoginKit
-import Promises
-import Combine
-
-
-
 
 struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
-    @ObservedObject var keyboardObserver = KeyboardObserver.shared
-    private var tickets: [AnyCancellable] = []
-
-    
-    private mutating func addNotification(){
-        NotificationCenter.default.publisher(for: .loginCompleted)
-            .compactMap{$0.userInfo as NSDictionary?}
-            .sink { (dict) in
-                if let credential = dict["token"] as? AuthCredential , let tempUser = dict["user"] as? ProviderUser {
-                    SocialLogin().firebaseLogin(credential, provider: "google",user:tempUser)
-                }
-        }.store(in: &tickets)
-    }
-    
     init(){
         viewModel = LoginViewModel()
-        addNotification()
-
     }
     
     var body: some View {
         VStack {
-           upperArea
+           upperArea()
            loginArea
            loginButton
             Text("----or-----")
@@ -50,9 +17,16 @@ struct LoginView: View {
             HStack{
                 facebookButton
                 googleButton
+                appleButton
                 Spacer()
             }.padding()
-        }
+            }
+        .modal(isShowing: self.$viewModel.showRegisterPage, content: {
+            LazyView(RegisterPage(closeFlag: self.$viewModel.showRegisterPage))
+        })
+            .modal(isShowing: self.$viewModel.showForgetPassword, content: {
+            LazyView(ForgetPasswordView(closeFlag: self.$viewModel.showForgetPassword))
+        })
         
     }
     
@@ -61,18 +35,14 @@ struct LoginView: View {
             self.viewModel.normalLogin()
         }){
             HStack(alignment: .center) {
-                Spacer()
                 Text("Login")
-                    .font(MainFont.forButtonText())
-                    .foregroundColor(SwiftUI.Color.white).bold()
-                Spacer()
+                    .textStyle(size: 16 , color: Color.white)
+                    .frame(maxWidth:.infinity)
             }.padding()
-            
         }
-        .background(SwiftUI.Color.greenColor)
+        .background(Color.greenColor)
             .padding()
             .shadow(radius: 5)
-                     
     }
     
     var loginArea : some View{
@@ -96,28 +66,32 @@ struct LoginView: View {
                     .font(MainFont.forPlaceHolder())
                     .foregroundColor(SwiftUI.Color.redColor)
                     .onTapGesture {
-//                        self.viewModel
+                        withAnimation {                       
+                            self.viewModel.showRegisterPage = true
+                        }
                     }
-                    .sheet(isPresented: $viewModel.showRegisterPage) {
-                                  RegisterPage()
-                              }
                 Spacer()
                 Text("Forget Password")
                     .font(MainFont.forPlaceHolder())
                     .foregroundColor(SwiftUI.Color.redColor)
+                .onTapGesture {
+                    withAnimation {
+                        self.viewModel.showForgetPassword = true
+                    }
+                }
             }
             .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
         }
+        .keyboardResponsive()
         .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
     }
     
-    var upperArea : some View{
+    func upperArea() -> some View{
         VStack{
-            
             PageView(viewModel.sampleDataForPageView)
                 .aspectRatio(contentMode: ContentMode.fit)
 
-            Text("Vietnam Majob")
+            Text("Vietnam Mahjong")
                 .foregroundColor(SwiftUI.Color.textColor)
                 .font(MainFont.forTitleText())
             Text("少賭宜情 大賭李家誠")
@@ -157,13 +131,19 @@ struct LoginView: View {
             SocialLogin().attemptLoginFb()
         }
     }
-}
-
-
-struct LoginPageSwifUI_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
+    
+    var appleButton : some View {
+//        SignInWithApple() 
+            Circle()
+                .fill(Color.black)
+                .frame(width: 50, height: 50)
+                .overlay(
+                    Image("icon-apple")
+                        .resizable()
+                        .aspectRatio(contentMode: ContentMode.fit)
+                        .frame(width: 35, height: 35)
+            ).shadow(radius: 5)
+            .onTapGesture(perform: self.viewModel.showAppleLogin)
     }
 }
-
 

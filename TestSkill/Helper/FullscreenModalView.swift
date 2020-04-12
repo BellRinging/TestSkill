@@ -19,7 +19,6 @@ struct FullscreenModalView<Presenting, Content>: View where Presenting: View, Co
                 if self.$isShowing.wrappedValue {
                     self.content()
                     .background(Color.primary.colorInvert())
-                    .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width, height: geometry.size.height)
                     .transition(.move(edge: .bottom))
                     .zIndex(1)

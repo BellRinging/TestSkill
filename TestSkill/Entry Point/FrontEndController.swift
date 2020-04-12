@@ -16,6 +16,7 @@ import Combine
 
 
 
+
 class FrontEndController: UIViewController {
     
     private var tickets: [AnyCancellable] = []
@@ -28,6 +29,7 @@ class FrontEndController: UIViewController {
         addEventListener()
     }
     
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -46,6 +48,7 @@ class FrontEndController: UIViewController {
     
     @objc func showLoginPage(){
         let loginController = UIHostingController(rootView: LoginView())
+        
         loginPageController = loginController
         loginController.modalPresentationStyle = .fullScreen
         self.present(loginController, animated: true, completion: nil)
@@ -62,7 +65,9 @@ class FrontEndController: UIViewController {
     
     func checkIfProfitSetup(){
         print("Check if user login ")
-        guard let _ = Auth.auth().currentUser else {
+        let loginFlag = UserDefaults.standard.integer(forKey: UserDefaultsKey.LoginFlag) ?? 0
+        let uid = Auth.auth().currentUser?.uid
+        if uid == nil || loginFlag == 0 {
             print("User not login ,show login page")
             perform(#selector(showLoginPage), with: self, afterDelay: 0.01)
             return

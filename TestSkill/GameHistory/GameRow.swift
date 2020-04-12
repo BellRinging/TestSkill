@@ -13,8 +13,8 @@ struct GameRow: View {
     
     @ObservedObject var viewModel: GameRowViewModel
 
-    init(game:Game,users:[User]){
-        viewModel = GameRowViewModel(game:game ,users:users)
+    init(game:Game){
+        viewModel = GameRowViewModel(game:game )
         viewModel.initial()
     }
     
@@ -26,8 +26,12 @@ struct GameRow: View {
             }
             
             ForEach(0..<viewModel.otherPlayers.count  ,id: \.self) { (index) in
-                ImageView(withURL: self.viewModel.otherPlayers[index].imgUrl).standardImageStyle()
-                    .overlay(Circle().stroke( self.viewModel.otherPlayersResult[index] ? Color.red:Color.clear, lineWidth: 2))
+                VStack{
+                    ImageView(withURL: self.viewModel.otherPlayers[index].imgUrl).standardImageStyle()
+                        .overlay(Circle().stroke( self.viewModel.otherPlayersResult[index] ? Color.greenColor:Color.clear, lineWidth: 1.5))
+                    Text("\(self.viewModel.otherPlayers[index].userName ?? "")").textStyle(size: 10).frame(width: 50)
+                }
+                
             }
             Spacer()
             Text("\(viewModel.amount)")

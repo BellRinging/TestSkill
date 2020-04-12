@@ -1,11 +1,3 @@
-//
-//  File.swift
-//  TestSkill
-//
-//  Created by Kwok Wai Yeung on 2/2/2020.
-//  Copyright © 2020 Kwok Wai Yeung. All rights reserved.
-//
-
 import SwiftUI
 import Promises
 
@@ -13,7 +5,6 @@ import Promises
 
 struct AddGameViewRow : View {
     var players : [User]
-    var viewModel : AddGameViewRowModel = AddGameViewRowModel()
     
     var body : some View {
         VStack{
@@ -21,9 +12,14 @@ struct AddGameViewRow : View {
                 Text("Tap to add player")
             }else{             
                 HStack{
-                       Spacer()
+                    Spacer()
                     ForEach(players ,id: \.id) { (player) in
-                        ImageView(withURL: player.imgUrl).standardImageStyle()
+                        VStack{
+                            ImageView(withURL: player.imgUrl).standardImageStyle()
+                            Text(player.userName)
+                                .textStyle(size: 10)
+                                .frame(width: 60)
+                        }
                     }
                     Spacer()
                 }.padding()

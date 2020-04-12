@@ -7,22 +7,25 @@
 //
 
 import SwiftUI
-
+import Introspect
 
 
 struct AddPlayGroupView: View {
     
     @ObservedObject var viewModel: AddPlayGroupViewModel
     
-    init(parent : DisplayPlayGroupViewModel){
-        viewModel = AddPlayGroupViewModel()
-        viewModel.parent = parent
+    init(closeFlag : Binding<Bool> , editGroup : Binding<PlayGroup?> = Binding.constant(nil)){
+        viewModel = AddPlayGroupViewModel(closeFlag: closeFlag, editGroup: editGroup)
     }
 
     var body: some View {
         NavigationView{
+            ScrollView{
             VStack(alignment: .center){
                 TextField("Group name", text: $viewModel.groupName)
+                    .introspectTextField { textField in
+                        textField.becomeFirstResponder()
+                    }
                     .padding()
                     .textFieldStyle(BottomLineTextFieldStyle())
                 AddPlayGroupPlayerRow(players: viewModel.players)
@@ -35,21 +38,15 @@ struct AddPlayGroupView: View {
                 rule.padding()
                 Spacer()
             }
-            .navigationBarTitle("Add Group", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(), trailing: ConfirmButton())
+            }
+            .keyboardResponsive()
+            .navigationBarTitle(self.viewModel.editGroup == nil ? "Add Game Group" : "Edit Game Group", displayMode: .inline)
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
         }.modal(isShowing: self.$viewModel.showPlayerSelection) {
-            DisplayUserView(flag: self.$viewModel.showPlayerSelection, users: self.$viewModel.players)
+            DisplayFriendView(closeFlag: self.$viewModel.showPlayerSelection, users: self.$viewModel.players)
         }
     }
     
-    func CancelButton() -> some View{
-        
-        Button(action: {
-            self.viewModel.parent?.showAddingGroup.toggle()
-        }) {
-            Text("Cancel").foregroundColor(Color.white)
-        }
-    }
     
     func ConfirmButton() -> some View{
         
@@ -61,7 +58,6 @@ struct AddPlayGroupView: View {
     }
     
     var rule : some View{
-        
         VStack{
             Stepper("Start Value : \(viewModel.startFan)", value: $viewModel.startFan ,in: 0...viewModel.endFan)
             Stepper("End Value : \(viewModel.endFan)", value: $viewModel.endFan ,in: viewModel.startFan...10)
@@ -74,10 +70,10 @@ struct AddPlayGroupView: View {
             
             ForEach(viewModel.startFan...viewModel.endFan ,id: \.self) { (index) in
                 HStack{
-                    Text("\(index)")
-                    TextField("value", text: self.$viewModel.fan[index])
-                    Text("\(index)")
-                    TextField("value", text: self.$viewModel.fanSelf[index])
+                    Text("\(index)").frame(minWidth:20)
+                    TextField("value", text: self.$viewModel.fan[index]).background(Color.whiteGaryColor).cornerRadius(5)
+                    Text("\(index)").frame(minWidth:20)
+                    TextField("value", text: self.$viewModel.fanSelf[index]).background(Color.whiteGaryColor).cornerRadius(5)
                 }
             }
         }

@@ -55,11 +55,9 @@ enum Font2 {
             return SwiftUI.Font.custom("HelveticaNeue-Medium", size: 32)
         }
         
-    static func forSmallTitleText() -> SwiftUI.Font {
-          return SwiftUI.Font.custom("HelveticaNeue-Bold", size: 24)
-      }
-      
-    
+        static func forSmallTitleText() -> SwiftUI.Font {
+            return SwiftUI.Font.custom("HelveticaNeue-Bold", size: 24)
+        }
     }
     
     enum PingFangHK: String {
@@ -97,34 +95,40 @@ extension Font {
 
 
 extension View {
-    func titleFont(size: CGFloat) -> some View {
-        return ModifiedContent(content: self, modifier: TitleFont(size: size))
+    func titleFont(size: CGFloat, color : Color = Color.textColor) -> some View {
+        return ModifiedContent(content: self, modifier: TitleFont(size: size,color : color))
     }
     
-    func titleStyle() -> some View {
-        return ModifiedContent(content: self, modifier: TitleFont(size: 16))
+    func titleStyle(color : Color = Color.textColor) -> some View {
+        return ModifiedContent(content: self, modifier: TitleFont(size: 16,color : color))
     }
 
-    func bigTitleStyle() -> some View {
-        return ModifiedContent(content: self, modifier: TextFont(size: 24))
+    func bigTitleStyle(color : Color = Color.textColor) -> some View {
+        return ModifiedContent(content: self, modifier: TextFont(size: 24,color : color))
     }
     
     
-     func normalTextStyle() -> some View {
-            return ModifiedContent(content: self, modifier: TextFont(size: 16))
+     func normalTextStyle(color : Color = Color.textColor) -> some View {
+            return ModifiedContent(content: self, modifier: TextFont(size: 16,color : color))
         }
+    
+    func textStyle(size: CGFloat , color : Color = Color.textColor) -> some View {
+        return ModifiedContent(content: self, modifier: TextFont(size: size ,color : color))
+    }
+     
 
-    func normalTextSubStyle() -> some View {
-           return ModifiedContent(content: self, modifier: TextFont(size: 14))
+    func normalTextSubStyle(color : Color = Color.textColor) -> some View {
+           return ModifiedContent(content: self, modifier: TextFont(size: 14,color : color))
        }
     
 }
 
 struct TitleFont: ViewModifier {
     let size: CGFloat
+    let color: Color
     
     func body(content: Content) -> some View {
-        return content.font(.AmericanCaptain(size: size))
+        return content.font(.AmericanCaptain(size: size)).foregroundColor(color)
     }
 }
 
@@ -132,8 +136,14 @@ struct TitleFont: ViewModifier {
 
 struct TextFont: ViewModifier {
     let size: CGFloat
+    let color: Color
+    
+    init(size:CGFloat,color:Color) {
+        self.size = size
+        self.color = color
+    }
     
     func body(content: Content) -> some View {
-        return content.font(.FjallaOne(size: size)).foregroundColor(Color.textColor)
+        return content.font(.FjallaOne(size: size)).foregroundColor(color)
     }
 }

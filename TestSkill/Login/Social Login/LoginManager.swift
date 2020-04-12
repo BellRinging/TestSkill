@@ -39,7 +39,7 @@ public class LoginManager {
             let (user, token) = arg
             completion(token,nil,user)
         }.catch { (err) in
-            Utility.showError(message: err.localizedDescription)
+            Utility.showAlert(message: err.localizedDescription)
             completion(nil,err,nil)
         }
             
@@ -152,7 +152,7 @@ public class LoginManager {
 //        }
         if let picture = dataResponse.object(forKey: NeededFields.picture.rawValue) as? NSDictionary {
             if let data = picture.value(forKey: "data") as? NSDictionary {
-                userData.imgUrl = data.value(forKey:"url") as! String
+                userData.imgUrl = data.value(forKey:"url")! as! String
             }
         }
         return userData

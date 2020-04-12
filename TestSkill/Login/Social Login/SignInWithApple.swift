@@ -1,0 +1,13 @@
+import SwiftUI
+import AuthenticationServices
+// 1
+final class SignInWithApple: UIViewRepresentable {
+  // 2
+  func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
+    // 3
+    return ASAuthorizationAppleIDButton(type: .default, style: .black)
+  }
+  // 4
+  func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {
+  }
+}

@@ -1,14 +1,4 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-A view that shows a featured landmark.
-*/
-
 import SwiftUI
-
-
-
 
 struct PageViewArea: View {
     var inputDO: Page
@@ -37,19 +27,12 @@ struct TextOverlay: View {
             Rectangle().fill(gradient)
             VStack(alignment: .leading) {
                 Text(inputDO.title)
-                    .font(MainFont.condensedBold.size(32))
+                    .textStyle(size: 32,color: Color.white)
                 Text(inputDO.massage)
-                    .font(MainFont.medium.size(12))
+                    .textStyle(size: 12,color: Color.white)
             }
             .padding()
         }
         .foregroundColor(.white)
-    }
-}
-
-struct PageViewArea_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        PageViewArea(inputDO: Page(title: "This is title", image: Image("player1"), massage: "This is message"))
     }
 }
