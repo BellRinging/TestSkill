@@ -29,7 +29,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UINavigationBar.appearance().tintColor =  UIColor.white
         if let windowScene = scene as? UIWindowScene {
             self.window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = FrontEndController()
+            window?.rootViewController =
+//                UIHostingController(rootView: Big2DetailView())
+                FrontEndController()
 //             UIApplication.shared.statusBarUIView?.backgroundColor = UIColor.rgb(red: 225, green: 0, blue: 0)
             self.window!.makeKeyAndVisible()
         }

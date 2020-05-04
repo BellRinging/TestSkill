@@ -28,7 +28,7 @@ struct GameView: View {
                             
                     }else{
                         GameViewUpperArea(user: self.$viewModel.currentUser, credit: self.viewModel.mthCredit,debit: self.viewModel.mthDebit)
-                        GameViewListHistoryArea(groupUsers: self.viewModel.groupUsers, sectionHeader: self.viewModel.sectionHeader, sectionHeaderAmt: self.viewModel.sectionHeaderAmt,games: self.viewModel.games, status: self.viewModel.status,lastGameDetail: self.viewModel.lastGameDetail, callback: self.viewModel.deleteGame)
+                        GameViewListHistoryArea(groupUsers: self.viewModel.groupUsers, sectionHeader: self.viewModel.sectionHeader, sectionHeaderAmt: self.viewModel.sectionHeaderAmt,games: self.viewModel.games, status: self.viewModel.status,lastGameDetail: self.viewModel.lastGameDetail,lastBig2GameDetail: self.viewModel.lastBig2GameDetail, callback: self.viewModel.deleteGame)
                             .pullToRefresh(isShowing: self.$isShowing) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 self.viewModel.loadMoreGame()

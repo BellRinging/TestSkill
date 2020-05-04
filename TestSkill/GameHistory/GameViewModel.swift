@@ -51,6 +51,7 @@ class GameViewModel: ObservableObject {
     var startAgain : Bool = false
     final var pagingSize : Int = 20
     var lastGameDetail : GameDetail? //for detailView
+    var lastBig2GameDetail : Big2GameDetail? //for detailView
     var gameForFlown : Game?
     
     init() {
@@ -71,6 +72,12 @@ class GameViewModel: ObservableObject {
             .map{$0.object as! GameDetail?}
             .sink { [unowned self] (gameDetail) in
                     self.lastGameDetail = gameDetail
+        }.store(in: &tickets)
+        
+        NotificationCenter.default.publisher(for: .updateLastBig2GameRecord)
+            .map{$0.object as! Big2GameDetail?}
+            .sink { [unowned self] (big2GameDetail) in
+                    self.lastBig2GameDetail = big2GameDetail
         }.store(in: &tickets)
         
         NotificationCenter.default.publisher(for: .deleteGame)
@@ -177,7 +184,7 @@ class GameViewModel: ObservableObject {
                 self.sectionHeader = []
                 startAgain.toggle()
             }
-            Game.getItemWithUserId(userId: uid, pagingSize: pagingSize, lastDoc: lastDoc).then { (games,lastDoc)  in
+            Game.getItemWithUserId(userId: uid, groupId: self.group!.id ,pagingSize: pagingSize, lastDoc: lastDoc).then { (games,lastDoc)  in
                 
                 if games.count > 0 {
                     if games.count <= self.pagingSize {
@@ -221,7 +228,7 @@ class GameViewModel: ObservableObject {
     func loadGameFromGroup(group : PlayGroup){
         print("call load Game")
         if let uid = Auth.auth().currentUser?.uid {
-            Game.getItemWithUserId(userId: uid,pagingSize: pagingSize).then { (games,lastDoc)  in
+            Game.getItemWithUserId(userId: uid,groupId: group.id, pagingSize: pagingSize).then { (games,lastDoc)  in
                 var sorted = games.sorted { $0.date > $1.date }
                 if games.count < self.pagingSize {
                     self.noMoreUpdate = true
@@ -277,6 +284,8 @@ class GameViewModel: ObservableObject {
         }else{
             print("Add New game")
             self.sectionHeader.append(period)
+            let uid = Auth.auth().currentUser!.uid
+            self.sectionHeaderAmt[period] = game.result[uid]!
             self.sectionHeader.sort {$0 > $1}
             self.games[period] = [game]
         }

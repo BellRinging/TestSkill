@@ -25,25 +25,57 @@ class AddPlayGroupViewModel: ObservableObject {
     }()
     
     
-    @Published var fan : [String] = Array<String>(repeating: "", count: 11)
-    @Published var fanSelf : [String] = Array<String>(repeating: "", count: 11)
+    @Published var fan : [String] = Array<String>(repeating: "0", count: 11)
+    @Published var fanSelf : [String] = Array<String>(repeating: "0", count: 11)
     @Published var startFan = 3
     @Published var endFan = 10
     @Published var showPlayerSelection = false
     @Published var groupName = ""
     @Published var players : [User]
     @Published var playerSelected = ""
+    @Published var selectedTab : Int = 0
+    
+    @Published var big2Amt : String = "10"
+    @Published var countDouble : Int = 8
+    @Published var countTriple : Int = 10
+    @Published var countQuadruple : Int = 13
+    @Published var enableDouble : Bool = true
+    @Published var enableTriple : Bool = true
+    @Published var enableQuadiple : Bool = true
+    @Published var startMinusOne : Bool = true
+    @Published var big2Enable : Bool = false
+    @Published var mahjongEnable : Bool = true
+    @Published var markBig2 : Bool = false
+    
     
     init(closeFlag : Binding<Bool> , editGroup : Binding<PlayGroup?> ){
         self._closeFlag = closeFlag
         self._editGroup = editGroup
         players = []
         if let group = editGroup.wrappedValue{
-            loadPlayerByArray(array: group.players)
-            loadRule(group: group)
+            self.mahjongEnable = group.mahjongEnable == 1
             self.groupName = group.groupName
-            self.startFan = group.startFan
-            self.endFan = group.endFan
+            self.big2Enable = group.big2Enable == 1
+            loadPlayerByArray(array: group.players)
+            if group.mahjongEnable == 1 {
+                loadRule(group: group)
+                self.startFan = group.startFan
+                self.endFan = group.endFan
+            }
+            if group.big2Enable == 1 {
+                self.big2Amt = "\(group.big2Amt)"
+                self.countQuadruple = group.quadiple
+                self.countTriple = group.triple
+                self.countDouble = group.double
+                
+                self.enableDouble = group.enableDouble == 1
+                self.enableTriple = group.enableTriple == 1
+                self.enableQuadiple = group.enableQuadiple == 1
+                
+                self.startMinusOne = group.startMinusOne == 1
+                self.markBig2 = group.markBig2 == 1
+            }
+            
         }else{
             loadPlayer()
         }
@@ -72,6 +104,17 @@ class AddPlayGroupViewModel: ObservableObject {
             //NewAdd
             playGroup.id =  UUID().uuidString
         }
+        playGroup.big2Amt = Int(big2Amt)!
+        playGroup.big2Enable = big2Enable ? 1: 0
+        playGroup.mahjongEnable = mahjongEnable ? 1: 0
+        playGroup.double = self.countDouble
+        playGroup.triple = self.countTriple
+        playGroup.quadiple = self.countQuadruple
+        playGroup.enableDouble = self.enableDouble ? 1:0
+        playGroup.enableTriple = self.enableTriple ? 1:0
+        playGroup.enableQuadiple = self.enableQuadiple ? 1:0
+        playGroup.markBig2 = markBig2 ? 1:0
+        playGroup.startMinusOne = startMinusOne ? 1:0
         playGroup.groupName = self.groupName
         playGroup.players = players.map{$0.id}
         playGroup.playersName = players.map{$0.userName ?? ""}
@@ -161,32 +204,45 @@ class AddPlayGroupViewModel: ObservableObject {
     
 
         func checking() -> Bool {
-            for i in startFan...endFan {
-                let fan = Int(self.fan[i]) ?? 0
-                let fanSelf = Int(self.fanSelf[i]) ?? 0
-                
-                if fan == 0  || fanSelf == 0 {
-                    Utility.showAlert(message: "\(i) fan not yet denfined")
-                    return false
-                }
-            }
-            if self.groupName == "" {
-                 Utility.showAlert(message: "Group Name is not yet denfined")
+            
+            if mahjongEnable == false && big2Enable == false {
+                Utility.showAlert(message: "Please enable the rule")
                 return false
             }
-            let count = players.count
-            for index in 0...(count - 1){
-                for index2 in 0...(count - 1){
-                    let id2 = players[index2].id
-                    if !players[index].friends.contains(id2) && index != index2{
-                        self.userA = index
-                        self.userB = index2
-                        Utility.showAlert(message: "\(players[index].userName) and \(players[index2].userName) are not a fds yet, add them as fds?",callBack:addFriend)
+            
+            if mahjongEnable {
+                for i in startFan...endFan {
+                    let fan = Int(self.fan[i]) ?? 0
+                    let fanSelf = Int(self.fanSelf[i]) ?? 0
+                    
+                    if fan == 0  || fanSelf == 0 {
+                        Utility.showAlert(message: "\(i) fan not yet denfined")
                         return false
                     }
                 }
+                if self.groupName == "" {
+                    Utility.showAlert(message: "Group Name is not yet denfined")
+                    return false
+                }
+                let count = players.count
+                for index in 0...(count - 1){
+                    for index2 in 0...(count - 1){
+                        let id2 = players[index2].id
+                        if !players[index].friends.contains(id2) && index != index2{
+                            self.userA = index
+                            self.userB = index2
+                            Utility.showAlert(message: "\(players[index].userName) and \(players[index2].userName) are not a fds yet, add them as fds?",callBack:addFriend)
+                            return false
+                        }
+                    }
+                }
             }
-     
+            if big2Enable {
+                if Int(self.big2Amt) ?? 0  == 0 {
+                    Utility.showAlert(message: "Please input amount per card")
+                    return false
+                }
+            }
             return true
         }
 

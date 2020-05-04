@@ -8,6 +8,7 @@ class AddGameViewModel: ObservableObject {
     @Published var location = "Ricky Home"
     @Published var showCalendar = false
     @Published var showSelectPlayer = false
+    @Published var selectedType = 0
     @Binding var closeFlag : Bool
     var userA : Int = 0
     var userB : Int = 0
@@ -52,7 +53,6 @@ class AddGameViewModel: ObservableObject {
             Utility.showAlert(message: "Please select the player")
             return
         }
-//        let idList = players.map{$0.id}
         
         
         for index in 0...3{
@@ -66,39 +66,6 @@ class AddGameViewModel: ObservableObject {
                 }
             }
         }
-//
-//        for id in idList{
-//            if (!players[0].friends.contains(id) && players[0].id != id){
-//                  let who = players.filter{$0.id == id}.first!
-//                Utility.showAlert(message: "\(who.userName) and \(players[0].userName) are not a fds yet, add them as fds?",callBack:addFriend)
-//
-//                return
-//            }
-//        }
-//
-//        for id in idList{
-//            if (!players[1].friends.contains(id) && players[1].id != id){
-//                  let who = players.filter{$0.id == id}.first!
-//                Utility.showAlert(message: "\(who.userName) and \(players[1].userName) are not a fds yet",callBack:addFriend)
-//                return
-//            }
-//        }
-//
-//        for id in idList{
-//            if (!players[2].friends.contains(id) && players[2].id != id){
-//                  let who = players.filter{$0.id == id}.first!
-//                Utility.showAlert(message: "\(who.userName) and \(players[2].userName) are not a fds yet",callBack:addFriend)
-//                return
-//            }
-//        }
-//
-//        for id in idList{
-//            if (!players[3].friends.contains(id) && players[3].id != id){
-//                let who = players.filter{$0.id == id}.first!
-//                Utility.showAlert(message: "\(who.userName) and \(players[3].userName) are not a fds yet",callBack:addFriend)
-//                return
-//            }
-//        }
         
         
         
@@ -131,8 +98,34 @@ class AddGameViewModel: ObservableObject {
             temp.append(true)
         }
         let playersFitler = Dictionary(uniqueKeysWithValues: zip(userIdList,temp))
-            
-        let game = Game(id: uuid, groupId: groupId, location: location, date: date, period : period, result: result ,playersFilter :playersFitler,playersMap : players,playersId :userIdList,createDateTime : currentDateTime,flown: 0)
+        let gameType = selectedType == 0 ? "Mahjong": "Big2"
+        let tempCount = Dictionary(uniqueKeysWithValues: zip(userIdList,[0,0,0,0]))
+        
+        let game = Game(
+            id: uuid,
+            groupId: groupId,
+            location: location,
+            date: date,
+            period : period,
+            result: result ,
+            totalCards: tempCount,
+            playersFilter :playersFitler,
+            playersMap : players,
+            playersId :userIdList,
+            createDateTime : currentDateTime,
+            detailCount :0 ,
+            flown: 0 ,
+            gameType:gameType,
+            doubleCount: tempCount,
+            tripleCount: tempCount,
+            quadipleCount: tempCount,
+            winCount: tempCount,
+            bonusFlag :  0,
+            bonus :  0,
+            lostStupidCount:  tempCount,
+            safeGameCount : tempCount,
+            doubleBecaseLastCount : tempCount
+        )        
         game.save().then { game in
             print("Game Saved \(game.id)")
             NotificationCenter.default.post(name: .updateGame, object: game)

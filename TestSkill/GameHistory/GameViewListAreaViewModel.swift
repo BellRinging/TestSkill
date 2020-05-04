@@ -18,6 +18,7 @@ class GameViewListAreaViewModel: ObservableObject {
     @Published var showingFlowView = false
     @Published var isShowing = false
     var lastGameDetail : GameDetail?
+    var lastBig2GameDetail : Big2GameDetail?
     var gameForFlown : Game?
     
     init(groupUsers:[User],sectionHeader: [String],sectionHeaderAmt: [String:Int],games:[String:[Game]],status: pageStatus,lastGameDetail:GameDetail?,callback : @escaping (String,Int) -> () ){

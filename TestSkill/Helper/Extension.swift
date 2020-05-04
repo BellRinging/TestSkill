@@ -169,6 +169,7 @@ extension Notification.Name {
     static let updateGame = Notification.Name("updateGame")
     static let updateUserBalance = Notification.Name("updateUserBalance")
     static let updateLastGameRecord = Notification.Name("updateLastGameRecord")
+    static let updateLastBig2GameRecord = Notification.Name("updateLastBig2GameRecord")
     static let addPlayGroup = Notification.Name("addPlayGroup")
     static let addFriend = Notification.Name("addFriend")
     static let dismissAddGameView = Notification.Name("dismissAddGameView")
@@ -184,12 +185,6 @@ extension Notification.Name {
 
 }
 
-
-//class HostingController: UIHostingController<ContentView> {
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return .lightContent
-//    }
-//}
 
 extension UIApplication {
     var statusBarUIView: UIView? {

@@ -9,12 +9,23 @@ struct Game: Codable ,Identifiable {
     var date : String
     var period : String
     var result : [String:Int]
+    var totalCards : [String:Int]?
     var playersFilter : [String:Bool]
     var playersMap : [String:String]
     var playersId : [String]
     var createDateTime : String
     var detailCount : Int = 0
-    var flown : Int 
+    var flown : Int
+    var gameType : String?
+    var doubleCount : [String:Int]?
+    var tripleCount : [String:Int]?
+    var quadipleCount : [String:Int]?
+    var winCount : [String:Int]?
+    var bonusFlag : Int?
+    var bonus : Int?
+    var lostStupidCount : [String:Int]?
+    var safeGameCount : [String:Int]?
+    var doubleBecaseLastCount : [String:Int]?
 }
 
 extension Game {
@@ -162,7 +173,7 @@ extension Game {
             return p
         }
     
-    static func getItemWithUserId(userId : String ,pagingSize:Int=20, lastDoc:DocumentSnapshot? = nil) -> Promise<([Game],DocumentSnapshot?)> {
+    static func getItemWithUserId(userId : String ,groupId : String , pagingSize:Int=20, lastDoc:DocumentSnapshot? = nil) -> Promise<([Game],DocumentSnapshot?)> {
         let p = Promise<([Game],DocumentSnapshot?)> { (resolve , reject) in
 
             let db = Firestore.firestore()
@@ -171,6 +182,7 @@ extension Game {
             let ref = db.collection("games")
             var query = ref.limit(to: pagingSize)
             query = query.order(by: "date", descending: true)
+            query = query.whereField("groupId", isEqualTo: groupId)
             query = query.whereField("playersId", arrayContains: userId)
             if let lastDoc = lastDoc {
                 query = query.start(afterDocument: lastDoc)
@@ -193,8 +205,10 @@ extension Game {
                     do {
                         let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
                         let  group = try JSONDecoder.init().decode(Game.self, from: data)
+//                        print(group)
                         groups.append(group)
                     }catch{
+//                        print(error.localizedDescription)
                         reject(error)
                     }
                 }

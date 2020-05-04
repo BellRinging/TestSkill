@@ -12,8 +12,8 @@ struct GameDetailView: View {
     
     @ObservedObject private var viewModel: GameDetailViewModel
     
-    init(game: Game ,users:[User] , lastGameDetail : GameDetail?){
-        viewModel = GameDetailViewModel(game: game, users: users, lastGameDetail: lastGameDetail)
+    init(game: Game ,lastGameDetail : GameDetail?){
+        viewModel = GameDetailViewModel(game: game, lastGameDetail: lastGameDetail)
         viewModel.onInitial()
     }
     

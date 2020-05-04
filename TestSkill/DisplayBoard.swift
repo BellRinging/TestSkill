@@ -15,6 +15,7 @@ public struct DisplayBoard : Codable  {
     let img_url : String
     var balance : Int
     let order : Int
+
     
     init(dict : [String:Any]) {
         self.user_name = (dict["name"] as? String ?? "")
@@ -22,6 +23,42 @@ public struct DisplayBoard : Codable  {
         self.id = (dict["id"] as? String ?? "")
         self.balance = (dict["balance"] as? Int ?? 0)
         self.order = (dict["order"] as? Int ?? 0)
+    }
+    
+}
+
+
+
+public struct DisplayBoardBig2 : Codable  {
+    let id : String
+    let user_name: String
+    let img_url : String
+    var balance : Int
+    let order : Int
+    let winCount : Int
+    let doubleCount : Int
+    let tripleCount : Int
+    let qurdipleCount : Int
+    let doubleBecaseLastCount : Int
+    let safeGameCount : Int
+    let lostStupidCount : Int
+    var totalCards : Int
+    
+    init(dict : [String:Any]) {
+        self.user_name = (dict["name"] as? String ?? "")
+        self.img_url = (dict["imgUrl"] as? String ?? "")
+        self.id = (dict["id"] as? String ?? "")
+        self.balance = (dict["balance"] as? Int ?? 0)
+        self.order = (dict["order"] as? Int ?? 0)
+        
+        self.winCount = (dict["winCount"] as? Int ?? 0)
+        self.doubleCount = (dict["doubleCount"] as? Int ?? 0)
+        self.tripleCount = (dict["tripleCount"] as? Int ?? 0)
+        self.qurdipleCount = (dict["qurdipleCount"] as? Int ?? 0)
+        self.doubleBecaseLastCount = (dict["doubleBecaseLastCount"] as? Int ?? 0)
+        self.lostStupidCount = (dict["lostStupidCount"] as? Int ?? 0)
+        self.totalCards = (dict["totalCards"] as? Int ?? 0)
+        self.safeGameCount = (dict["safeGameCount"] as? Int ?? 0)        
     }
     
 }

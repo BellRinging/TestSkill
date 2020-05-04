@@ -12,19 +12,33 @@ struct AdminView: View {
     
  @ObservedObject var viewModel = AdminViewModel()
     
-
-
-    
     var body: some View {
         VStack{
             VStack{
-                if self.viewModel.gameTemp == nil{
-                    Button("Select Game"){
-                        self.viewModel.isShowGameLK = true
-                    }.padding()
-                }else{
-                    GameRow(game: self.viewModel.gameTemp!)
-                }
+                
+                HStack{
+                    Text("Game:").textStyle(size: 12,color: Color.blue)
+                    if self.viewModel.gameTemp != nil{
+                        VStack{
+                            Text("\(self.viewModel.gameTemp!.date) \(self.viewModel.gameTemp!.location)").textStyle(size: 12)
+                        }
+                    }else{
+                        Text("No Selection").textStyle(size: 12)
+                    }
+                    Spacer()
+                    if self.viewModel.gameTemp == nil{
+                        Button("Select Game"){
+                            self.viewModel.isShowGameLK = true
+                        }.textStyle(size: 12)
+                    }else{
+                        Button("Clear Selection"){
+                            self.viewModel.gameTemp = nil
+                        }.textStyle(size: 12,color: Color.redColor)
+                    }
+                }.padding()
+                
+                
+                
                 HStack{
                     Button("UnFlown"){
                         Utility.showAlert(message: "Confirm?", callBack: self.viewModel.unFlownGame)

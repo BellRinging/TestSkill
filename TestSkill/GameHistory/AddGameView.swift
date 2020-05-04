@@ -46,6 +46,11 @@ struct AddGameView: View {
                     RKViewController(isPresented: self.$viewModel.showCalendar, rkManager: self.viewModel.calenderManager)
                 }
                 
+                Picker("", selection: self.$viewModel.selectedType) {
+                                   Text("Mahjong").tag(0)
+                                   Text("Big2").tag(1)
+                               }
+                               .pickerStyle(SegmentedPickerStyle()).padding(.horizontal)
                 
                 TextField("Location", text: $viewModel.location)
                     .textFieldStyle(BottomLineTextFieldStyle())

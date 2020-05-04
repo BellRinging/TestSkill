@@ -31,18 +31,10 @@ struct SearchGameView: View {
                 }
                 Spacer()
             }
-            .navigationBarTitle("Result: \(self.viewModel.games.count)", displayMode: .inline)
-            .navigationBarItems(leading: cancelButton())
+            .navigationBarTitle("Result: \(self.viewModel.resultCount)", displayMode: .inline)
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag))
         }
     }
-    
-        func cancelButton() -> some View {
-            Button(action: {
-                self.viewModel.closeFlag.toggle()
-            }) {
-                Image(systemName: "xmark.circle")
-            }
-        }
         
     
     

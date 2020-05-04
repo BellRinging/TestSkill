@@ -91,8 +91,6 @@ struct GameDetailListView: View {
             Button(action: {
                 SwiftEntryKit.dismiss()
             }) {
-//                Image(systemName: "xmark")
-//                .contentShape(Rectangle())
                   Text("Close")
             }
         }

@@ -34,19 +34,11 @@ struct SearchGameDetailView: View {
                 Spacer()
             }
             .navigationBarTitle("Result: \(self.viewModel.gameRecords.count)", displayMode: .inline)
-            .navigationBarItems(leading: cancelButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag))
         }
     }
     
-    
-func cancelButton() -> some View {
-    Button(action: {
-        self.viewModel.closeFlag.toggle()
-    }) {
-        Image(systemName: "xmark.circle")
-    }
-}
-        
+     
     
     
 }

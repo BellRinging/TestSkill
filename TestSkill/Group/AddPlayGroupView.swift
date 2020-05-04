@@ -35,7 +35,17 @@ struct AddPlayGroupView: View {
                         self.viewModel.showPlayerSelection.toggle()
                     }
                 }
-                rule.padding()
+                
+                Picker("", selection: self.$viewModel.selectedTab) {
+                    Text("Mahjooh").tag(0)
+                    Text("Big2").tag(1)
+                }
+                .pickerStyle(SegmentedPickerStyle()).padding(.horizontal)
+                if self.viewModel.selectedTab == 0 {
+                    rule.padding()
+                } else {
+                    ruleBig2.padding()
+                }
                 Spacer()
             }
             }
@@ -57,8 +67,46 @@ struct AddPlayGroupView: View {
         }
     }
     
+    var ruleBig2 : some View{
+       VStack{
+        
+            Toggle(isOn: self.$viewModel.big2Enable) {
+                Text("enable").textStyle(size: 14 ,color: Color.redColor)
+            }.toggleStyle(CheckboxAtFrontToggleStyle())
+        
+        
+        HStack{
+          
+            Text("Big2Amount").frame(minWidth:20)
+            Spacer()
+            TextField("value", text: self.$viewModel.big2Amt).keyboardType(.numberPad).background(Color.whiteGaryColor).cornerRadius(5).frame(width:100) .multilineTextAlignment(.center)
+        }
+        Toggle(isOn: self.$viewModel.enableDouble) {
+            Stepper("Count 2x: \(viewModel.countDouble)", value: $viewModel.countDouble ,in: 2...viewModel.countTriple)
+        }.toggleStyle(CheckboxAtFrontToggleStyle())
+        Toggle(isOn: self.$viewModel.enableTriple) {
+            Stepper("Count 3x: \(viewModel.countTriple)", value: $viewModel.countTriple ,in: viewModel.countDouble...viewModel.countQuadruple)
+        }.toggleStyle(CheckboxAtFrontToggleStyle())
+        Toggle(isOn: self.$viewModel.enableQuadiple) {
+            Stepper("Count 4x: \(viewModel.countQuadruple)", value: $viewModel.countQuadruple ,in: viewModel.countTriple...13)
+        }.toggleStyle(CheckboxAtFrontToggleStyle())
+        Toggle(isOn: self.$viewModel.startMinusOne) {
+            Text("結牌-1").frame(minWidth:20)
+        }.toggleStyle(CheckboxAtFrontToggleStyle())
+        Toggle(isOn: self.$viewModel.markBig2) {
+            Text("Mark大Dee").frame(minWidth:20)
+        }.toggleStyle(CheckboxAtFrontToggleStyle())
+        
+        }
+    }
+    
     var rule : some View{
         VStack{
+            
+            Toggle(isOn: self.$viewModel.mahjongEnable) {
+                Text("enable").textStyle(size: 14 ,color: Color.redColor)
+            }.toggleStyle(CheckboxAtFrontToggleStyle())
+            
             Stepper("Start Value : \(viewModel.startFan)", value: $viewModel.startFan ,in: 0...viewModel.endFan)
             Stepper("End Value : \(viewModel.endFan)", value: $viewModel.endFan ,in: viewModel.startFan...10)
             HStack{
@@ -71,9 +119,9 @@ struct AddPlayGroupView: View {
             ForEach(viewModel.startFan...viewModel.endFan ,id: \.self) { (index) in
                 HStack{
                     Text("\(index)").frame(minWidth:20)
-                    TextField("value", text: self.$viewModel.fan[index]).background(Color.whiteGaryColor).cornerRadius(5)
+                    TextField("value", text: self.$viewModel.fan[index]).background(Color.whiteGaryColor).keyboardType(.numberPad).multilineTextAlignment(.center).cornerRadius(5)
                     Text("\(index)").frame(minWidth:20)
-                    TextField("value", text: self.$viewModel.fanSelf[index]).background(Color.whiteGaryColor).cornerRadius(5)
+                    TextField("value", text: self.$viewModel.fanSelf[index]).background(Color.whiteGaryColor).keyboardType(.numberPad).multilineTextAlignment(.center).cornerRadius(5)
                 }
             }
         }

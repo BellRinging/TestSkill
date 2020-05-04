@@ -66,20 +66,14 @@ struct SwapUser: View {
 
             }
             .navigationBarTitle("Swap", displayMode: .inline)
-            .navigationBarItems(leading: cancelButton(), trailing: confirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: confirmButton())
             .environment(\.editMode, self.$editMode)
         }
         .navigationBarHidden(self.viewModel.closeFlag)
     }
     
     
-        func cancelButton() -> some View {
-            Button(action: {
-                self.viewModel.closeFlag.toggle()
-            }) {
-                Image(systemName: "xmark.circle")
-            }
-        }
+  
     
     func confirmButton() -> some View {
          Button(action: {

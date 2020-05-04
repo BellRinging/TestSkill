@@ -14,6 +14,20 @@ struct PlayGroup :  Identifiable,Codable,Equatable,Hashable  {
      public var groupName: String
     
     
+    public var big2Amt: Int
+    public var big2Enable: Int
+    public var mahjongEnable: Int
+    public var double: Int
+    public var triple: Int
+    public var quadiple: Int
+    public var enableDouble: Int
+    public var enableTriple: Int
+    public var enableQuadiple: Int
+    public var startMinusOne: Int
+    public var markBig2: Int
+    
+    
+    
     
     static func == (lhs: PlayGroup, rhs: PlayGroup) -> Bool {
         return lhs.id == rhs.id && lhs.groupName == rhs.groupName
@@ -29,6 +43,17 @@ struct PlayGroup :  Identifiable,Codable,Equatable,Hashable  {
         groupName = ""
         startFan = 3
         endFan = 10
+        big2Amt = 10
+        double = 8
+        triple = 10
+        quadiple = 13
+        markBig2 = 0
+        mahjongEnable = 1
+        startMinusOne = 1
+        big2Enable = 0
+        enableDouble = 1
+        enableTriple = 1
+        enableQuadiple = 1
     }
 
 }

@@ -27,6 +27,7 @@ class SearchGameViewModel: ObservableObject {
     @Published var sectionHeader : [String] = []
     @Published var status : pageStatus = .loading
     @Binding var closeFlag : Bool
+    var resultCount : Int = 0
 
     
     
@@ -37,6 +38,11 @@ class SearchGameViewModel: ObservableObject {
         let dictionary = Dictionary(grouping: sorted) { $0.period }
         self.sectionHeader = dictionary.keys.sorted(by: >)
         self.games = dictionary
+        var count = 0
+        for (key,value) in dictionary {
+            count = count + value.count
+        }
+        self.resultCount = count 
      
     }
     

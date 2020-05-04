@@ -21,9 +21,15 @@ struct GameRow: View {
     var body: some View {
         HStack{
             VStack{
+                Image(viewModel.game.gameType == "Big2" ? "Big2Icon" : "mahjongIcon")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width:25)
                 Text(viewModel.date).font(MainFont.bold.size(12))
                 Text(viewModel.location).font(MainFont.light.size(10))
             }
+            
+      
             
             ForEach(0..<viewModel.otherPlayers.count  ,id: \.self) { (index) in
                 VStack{

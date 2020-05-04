@@ -19,7 +19,7 @@ struct GameViewListHistoryArea: View {
     
     @ObservedObject var viewModel: GameViewListAreaViewModel
 
-    init(groupUsers:[User],sectionHeader: [String],sectionHeaderAmt: [String:Int],games:[String:[Game]],status: pageStatus,lastGameDetail:GameDetail?,callback : @escaping (String,Int) -> () ){
+    init(groupUsers:[User],sectionHeader: [String],sectionHeaderAmt: [String:Int],games:[String:[Game]],status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,callback : @escaping (String,Int) -> () ){
         viewModel = GameViewListAreaViewModel(groupUsers: groupUsers, sectionHeader: sectionHeader,sectionHeaderAmt:sectionHeaderAmt, games: games, status: status,lastGameDetail:lastGameDetail, callback: callback)
     }
 
@@ -32,8 +32,7 @@ struct GameViewListHistoryArea: View {
                     ForEach(self.viewModel.sectionHeader, id: \.self) { period in
                         Section(header: self.sectionArea(period:period)) {
                             ForEach(self.viewModel.games[period]! ,id: \.id) { game in
-                                NavigationLink(destination:
-                                LazyView(GameDetailView(game: game ,users :self.viewModel.groupUsers ,lastGameDetail : self.viewModel.lastGameDetail))){
+                                NavigationLink(destination: self.navDest(game: game)){
                                     GameRow(game: game)
                                         .frame(height: 60)
                                         .contextMenu{
@@ -74,9 +73,16 @@ struct GameViewListHistoryArea: View {
                 }, secondaryButton: .cancel()
             )
         }
-        
-        
-        
+    }
+    
+    func navDest(game:Game) -> some View{
+        VStack{
+            if game.gameType == "Big2" {
+                LazyView(Big2DetailView(game: game,lastGameDetail : self.viewModel.lastBig2GameDetail))
+            }else{
+                LazyView(GameDetailView(game: game ,lastGameDetail : self.viewModel.lastGameDetail))
+            }
+        }
     }
     
     func sectionArea(period : String) -> some View {

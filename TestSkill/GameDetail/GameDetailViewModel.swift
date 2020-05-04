@@ -54,9 +54,9 @@ class GameDetailViewModel: ObservableObject {
     
     @Published var displayBoard : [DisplayBoard] = []
     
-    init(game : Game ,users : [User] , lastGameDetail: GameDetail?){
+    init(game : Game , lastGameDetail: GameDetail?){
         self.game = game
-        self.groupUsers = users
+        self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
         self.lastGameDetail = lastGameDetail
         self.loadLastGameRecord()
     }
