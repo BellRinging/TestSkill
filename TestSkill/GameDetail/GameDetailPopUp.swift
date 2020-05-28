@@ -203,7 +203,7 @@ struct GameDetailPopUp: View {
                     return
                 }
                 let loserRe = self.loserRespond ? 1 : 0
-                let winType = self.selectedPlayer?.id == self.viewModel.winner?.id ? "Self": self.loserRespond ? "Special":"Other"
+                let winType = self.selectedPlayer?.id == self.viewModel.winner?.id ? "Self" :"Other"
                 let byError = self.selectedPlayer?.id == nil ? 1: 0
                 let fan = self.selectedFan
                 self.viewModel.saveDetail(whoWin: self.viewModel.winner!.id, whoLose: self.selectedPlayer?.id  ?? "", winType: winType, fan: fan, loserRespond: loserRe, byErrorFlag: byError)

@@ -22,6 +22,7 @@ struct AddPlayGroupView: View {
         NavigationView{
             ScrollView{
             VStack(alignment: .center){
+                Text("").textStyle(size: 8)
                 TextField("Group name", text: $viewModel.groupName)
                     .introspectTextField { textField in
                         textField.becomeFirstResponder()
@@ -124,6 +125,31 @@ struct AddPlayGroupView: View {
                     TextField("value", text: self.$viewModel.fanSelf[index]).background(Color.whiteGaryColor).keyboardType(.numberPad).multilineTextAlignment(.center).cornerRadius(5)
                 }
             }
+            Toggle(isOn: self.$viewModel.enableBonusPerDraw) {
+                HStack{
+                    Text("Bonus per draw").frame(minWidth:20)
+                    Spacer()
+                    TextField("value", text: self.$viewModel.bonusPerDraw).keyboardType(.numberPad).background(Color.whiteGaryColor).cornerRadius(5).frame(width:100) .multilineTextAlignment(.center)
+                }
+            }.toggleStyle(CheckboxAtFrontToggleStyle())
+            
+            Toggle(isOn: self.$viewModel.enableSpecialItem) {
+                HStack{
+                    Text("Special Item").frame(minWidth:20)
+                    Spacer()
+                    TextField("value", text: self.$viewModel.specialItemAmount).keyboardType(.numberPad).background(Color.whiteGaryColor).cornerRadius(5).frame(width:100) .multilineTextAlignment(.center)
+                }
+            }.toggleStyle(CheckboxAtFrontToggleStyle())
+            
+            Toggle(isOn: self.$viewModel.enableCalimWater) {
+                Stepper("Claim Water Fan: \(viewModel.calimWaterFan)", value: $viewModel.calimWaterFan ,in: viewModel.startFan...viewModel.endFan)
+            }.toggleStyle(CheckboxAtFrontToggleStyle())
+            HStack{
+                Text("Claim Water Amt")
+                Spacer()
+                TextField("value", text: self.$viewModel.calimWaterAmount).keyboardType(.numberPad).background(Color.whiteGaryColor).cornerRadius(5).frame(width:100) .multilineTextAlignment(.center)
+            }.padding(.trailing , 5)
+            
         }
     }
     

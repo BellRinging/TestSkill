@@ -36,11 +36,21 @@ class MenuPageViewModel: ObservableObject {
     @Published var isShowFriend : Bool = false
     @Published var isShowTerm : Bool = false
     @Published var isShowContactUs : Bool = false
-    @Published var isShowAccount : Bool = false
+    @Published var isShowAccount : Bool = false{
+        didSet{
+            if isShowAccount == false{
+                refreshUser()
+            }
+        }
+    }
     @Published var tempUser : [User] = []
     var user : User
     
     init(){
+        user = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!
+    }
+    
+    func refreshUser(){
         user = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!
     }
 

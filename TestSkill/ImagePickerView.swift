@@ -1,42 +1,37 @@
 import SwiftUI
 import UIKit
+import ALCameraViewController
 
 
 struct ImagePicker: UIViewControllerRepresentable {
     
     @Binding var image: UIImage?
     @Binding var closeFlag: Bool
-//    var configure: (UINavigationController) -> Void = { _ in }
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        return picker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
+    
+    
+    var croppingParameters: CroppingParameters {
+        return CroppingParameters(isEnabled: true, allowResizing: true, allowMoving: true, squarableCrop: true)
     }
     
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self,closeFlag: self.$closeFlag)
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UINavigationController {
+//        print("In Make")
+//        print(self.closeFlag)
+        let libraryViewController = CameraViewController.imagePickerViewController(croppingParameters: croppingParameters) { image, asset in
+//            print(image)
+//            print(asset)
+            let abc = image?.copy() as? UIImage
+            self.image = abc
+            
+                self.closeFlag = false
+            
+        }
+        return libraryViewController
+    }
+
+    func updateUIViewController(_ uiViewController: UINavigationController, context: UIViewControllerRepresentableContext<ImagePicker>) {
+        print("In update: \(self.closeFlag)")
     }
     
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        let parent: ImagePicker
-        @Binding var closeFlag: Bool
-        
-        init(_ parent: ImagePicker , closeFlag : Binding<Bool>) {
-            self.parent = parent
-            self._closeFlag = closeFlag
-        }
-        
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
-            }
-//            print("Selected image")
-            closeFlag.toggle()
-        }
-    }
 }
 

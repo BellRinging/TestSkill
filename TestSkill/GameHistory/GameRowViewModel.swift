@@ -37,7 +37,7 @@ class GameRowViewModel: ObservableObject {
                 otherPlayersResult.append(value > 0 ? true : false)
                 if let groupUser = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser){
                     let user = groupUser.filter{$0.id == key}.first!
-                    self.otherPlayers.append(user)
+                    self.otherPlayers.append(user)    
                 }
             }
         }

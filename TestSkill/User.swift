@@ -16,6 +16,8 @@ struct User : Identifiable,Codable,Equatable,Hashable  {
     public var  fdsRequest: [String]
     public var  fdsPending: [String]
     public var  fcmToken: String
+    public var  userType: String
+    public var  owner: String
 
     
     static func == (lhs: User, rhs: User) -> Bool {

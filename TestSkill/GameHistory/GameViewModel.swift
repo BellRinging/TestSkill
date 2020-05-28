@@ -49,7 +49,7 @@ class GameViewModel: ObservableObject {
      }
     var noMoreUpdate : Bool = false
     var startAgain : Bool = false
-    final var pagingSize : Int = 20
+    final var pagingSize : Int = 50
     var lastGameDetail : GameDetail? //for detailView
     var lastBig2GameDetail : Big2GameDetail? //for detailView
     var gameForFlown : Game?
@@ -279,7 +279,7 @@ class GameViewModel: ObservableObject {
                 }
             }else{
                 print("Add New game")
-                self.games[period]?.append(game)
+                self.games[period]?.insert(game, at: 0)
             }
         }else{
             print("Add New game")

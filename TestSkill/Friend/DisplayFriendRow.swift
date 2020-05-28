@@ -23,6 +23,9 @@ struct DisplayFriendRow: View {
                 .standardImageStyle()
             Text(user.userName)
             Spacer()
+            if self.user.userType == "dummy" {
+                Text("Dummy A/C").textStyle(size: 12,color: Color.red)
+            }
             if self.isSelected {
                 Image(systemName: "checkmark")
             }

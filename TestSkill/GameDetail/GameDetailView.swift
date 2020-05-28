@@ -17,37 +17,70 @@ struct GameDetailView: View {
         viewModel.onInitial()
     }
     
+    
+    func normalView() -> some View{
+        VStack{
+            HStack{
+                Spacer()
+                ForEach(self.viewModel.lastGameWin) { (win) in
+                    VStack{
+                        ImageView(withURL: win.imgUrl).standardImageStyle()
+                        Text("\(win.userName ?? "")").textStyle(size: 10).frame(width: 50)
+                    }
+                }
+                VStack{
+                    Text(self.viewModel.lastGameDetail == nil ? "" :"Last Record:")
+                        .foregroundColor(Color.redColor)
+                        .textStyle(size: 10)
+                    HStack{
+                        Text(self.viewModel.lastGameType == "Self" ? "自摸":"打出").textStyle(size: 10).padding(.trailing,2)
+                        Text("\(self.viewModel.lastGameFan) 番").textStyle(size: 10)
+                    }
+                    .padding(.horizontal,5)
+                }
+                
+                ForEach(self.viewModel.lastGameLose ) { (lose) in
+                    VStack{
+                        ImageView(withURL: lose.imgUrl).standardImageStyle()
+                        Text("\(lose.userName ?? "")").textStyle(size: 10).frame(width: 50)
+                    }
+                }
+                Spacer()
+            }.padding(.vertical,5)
+        }
+    }
+    
+    
     func lastRecordView() -> some View{
         VStack{
             if self.viewModel.lastGameDetail != nil {
-                VStack{
-                    HStack{
+                if self.viewModel.lastGameDetail?.winType == "draw" {
+                    VStack{
+                        Text(self.viewModel.lastGameDetail == nil ? "" :"Last Record:")
+                            .foregroundColor(Color.redColor)
+                            .textStyle(size: 10)
                         Spacer()
-                        ForEach(self.viewModel.lastGameWin) { (win) in
-                            VStack{
-                                ImageView(withURL: win.imgUrl).standardImageStyle()
-                                Text("\(win.userName ?? "")").textStyle(size: 10).frame(width: 50)
-                            }
-                        }
-                        VStack{
-                            Text(self.viewModel.lastGameDetail == nil ? "" :"Last Record:")
-                                .foregroundColor(Color.redColor)
-                                .textStyle(size: 10)
-                            HStack{
-                                Text(self.viewModel.lastGameType == "Self" ? "自摸":"打出").textStyle(size: 10).padding(.trailing,2)
-                                Text("\(self.viewModel.lastGameFan) 番").textStyle(size: 10)
-                            }
-                            .padding(.horizontal,5)
-                        }
-                        
-                        ForEach(self.viewModel.lastGameLose ) { (lose) in
-                            VStack{
-                                ImageView(withURL: lose.imgUrl).standardImageStyle()
-                                Text("\(lose.userName ?? "")").textStyle(size: 10).frame(width: 50)
-                            }
-                        }
+                        Text("~Draw Game~").textStyle(size: 24).frame(maxWidth:.infinity)
                         Spacer()
                     }.padding(.vertical,5)
+                }else if self.viewModel.lastGameDetail?.winType == "Special" {
+                        HStack{
+                            Spacer()
+                            Text(self.viewModel.lastGameDetail == nil ? "" :"Last Record:")
+                                                   .foregroundColor(Color.redColor)
+                                                   .textStyle(size: 10)
+                            ForEach(self.viewModel.lastGameLose ) { (lose) in
+                                VStack{
+                                    ImageView(withURL: lose.imgUrl).standardImageStyle()
+                                    Text("\(lose.userName ?? "")").textStyle(size: 10).frame(width: 50)
+                                }
+                            }
+                            Text("Special").textStyle(size: 24)
+                            Text("\(self.viewModel.lastGameDetail?.loserAmount ?? 0)").textStyle(size: 24,color: Color.red)
+                            Spacer()
+                        }.padding(.vertical,5)
+                }else{
+                    normalView()
                 }
             }else{
                 Text("No last Record")
@@ -129,13 +162,54 @@ struct GameDetailView: View {
             }else{
                 detail()
             }
+        }.sheet(isPresented:self.$viewModel.showSpecialView){
+            LazyView(MarkSpecialView(closeFlag: self.$viewModel.showSpecialView, game: self.viewModel.game))
         }.modal(isShowing: self.$viewModel.showSwapPlayer){
             LazyView(SwapUser(game: self.viewModel.game,closeFlag:self.$viewModel.showSwapPlayer).environment(\.editMode, Binding.constant(EditMode.active)))
         }.navigationBarTitle("\(viewModel.game.date) \(viewModel.game.location)", displayMode: .inline)
     }
     
+    func bonusText()-> some View {
+        VStack{
+            HStack{
+                if self.viewModel.enableBonusPerDraw && self.viewModel.game.flown != 1{
+                    Text("Bonus:").textStyle(size: 12).padding(.top,10)
+                }
+                Spacer()
+                if self.viewModel.enableSpecialItem && self.viewModel.game.flown != 1{
+                    Button(action: {
+                        self.viewModel.showSpecialView = true
+                    }){
+                        Text("Spacial").textStyle(size: 12).padding(.top,10)
+                    }
+                }
+            }
+            HStack{
+                if self.viewModel.enableBonusPerDraw && self.viewModel.game.flown != 1{
+                    Text("\(self.viewModel.game.bonus ?? 0)" ).textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
+                }
+                Spacer()
+            }
+            HStack{
+                if self.viewModel.enableCalimWater && self.viewModel.game.flown != 1{
+                    Text("Water:").textStyle(size: 12).padding(.top,5)
+                }
+                Spacer()
+            }
+            HStack{
+                if self.viewModel.enableCalimWater && self.viewModel.game.flown != 1{
+                    Text("\(self.viewModel.game.water ?? 0)").textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
+                }
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+    
     func mainArea() -> some View {
         HStack {
+        
+           
             VStack {
                 IndividualScoreDisplay(title:"西",player: self.viewModel.displayBoard[2])
                     .contentShape(Rectangle())
@@ -147,6 +221,8 @@ struct GameDetailView: View {
                         self.viewModel.eat(2)
                 }
             }
+              
+          
             VStack {
                 IndividualScoreDisplay(title:"北",player: self.viewModel.displayBoard[3])
                     .contentShape(Rectangle())
@@ -157,7 +233,20 @@ struct GameDetailView: View {
                         }
                         self.viewModel.eat(3)
                 }
-                Text("流局").padding()
+                Button(action: {
+                    if self.viewModel.game.flown == 1 {
+                        Utility.showAlert(message: "Game is flown")
+                        return
+                    }
+                    if !self.viewModel.enableBonusPerDraw {
+                        Utility.showAlert(message: "No bonus enable")
+                        return
+                    }
+                    Utility.showAlert(message: "Confirm draw game?",callBack: self.viewModel.markDraw)
+                }) {
+                    Text("流局").textStyle(size: 14)
+                        .padding()
+                }
                 IndividualScoreDisplay(title:"南",player: self.viewModel.displayBoard[1])
                     .contentShape(Rectangle())
                     .onTapGesture {
@@ -180,6 +269,9 @@ struct GameDetailView: View {
                 }
             }
         }.padding(.top)
+        .overlay(
+            bonusText()
+        )
     }
 }
 

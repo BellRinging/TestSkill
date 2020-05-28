@@ -18,4 +18,6 @@ target ‘TestSkill’ do
 	pod 'PromisesSwift'
 	pod "Introspect"
 	pod "SwiftUIRefresh"
+	pod 'ALCameraViewController'
+	pod 'FloatingButton'
 end

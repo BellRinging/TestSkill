@@ -124,7 +124,8 @@ class AddGameViewModel: ObservableObject {
             bonus :  0,
             lostStupidCount:  tempCount,
             safeGameCount : tempCount,
-            doubleBecaseLastCount : tempCount
+            doubleBecaseLastCount : tempCount,
+            water: 0
         )        
         game.save().then { game in
             print("Game Saved \(game.id)")

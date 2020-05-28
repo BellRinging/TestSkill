@@ -18,7 +18,10 @@ struct GameDetail : Codable {
     var period : String
     var createDateTime : String
     var detailNo : Int
-    
+    var bonusFlag : Int
+    var bonus : Int
+    var waterFlag : Int?
+    var waterAmount : Int?
 }
 
 
@@ -117,7 +120,7 @@ extension GameDetail {
          let p = Promise<([GameDetail])> { (resolve , reject) in
              let db = Firestore.firestore()
              let ref = db.collection("gameDetails")
-            let query = ref.whereField("gameId", isEqualTo: gameId).order(by: "createDateTime")
+            let query = ref.whereField("gameId", isEqualTo: gameId).order(by: "detailNo")
              var groups : [GameDetail] = []
              query.getDocuments  { (snap, err) in
 //                print(err?.localizedDescription)
@@ -127,6 +130,7 @@ extension GameDetail {
                      do {
                          let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
                          let  group = try JSONDecoder.init().decode(GameDetail.self, from: data)
+                        print(group.id)
                          groups.append(group)
                      }catch{
                         print(error)

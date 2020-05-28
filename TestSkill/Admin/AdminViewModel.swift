@@ -29,6 +29,31 @@ class AdminViewModel: ObservableObject {
         return DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
     }()
         
+    
+    func updateGame(){
+        Game.getAllItem().then { games in
+            print(games.count)
+            for var detail in games{
+                detail.water = 0
+                detail.save()
+            }
+        }
+    }
+    
+    
+    func updateGameDetail(){
+        self.background.async {
+            
+            GameDetail.getAllItem().then { details in
+                print(details.count)
+                for var detail in details{
+                    detail.waterFlag = 0
+                    detail.waterAmount = 0
+                    detail.save()
+                }
+            }
+        }
+    }
     func DeleteGame(){
  
         let id = gameTemp!.id

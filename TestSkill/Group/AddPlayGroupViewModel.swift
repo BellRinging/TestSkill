@@ -47,6 +47,15 @@ class AddPlayGroupViewModel: ObservableObject {
     @Published var mahjongEnable : Bool = true
     @Published var markBig2 : Bool = false
     
+    @Published var enableSpecialItem : Bool = false
+    @Published var specialItemAmount : String = "50"
+    @Published var enableBonusPerDraw : Bool = true
+    @Published var enableCalimWater : Bool = true
+    @Published var calimWaterFan : Int = 3
+    @Published var calimWaterAmount : String = "30"
+    @Published var bonusPerDraw : String = "50"
+    
+    
     
     init(closeFlag : Binding<Bool> , editGroup : Binding<PlayGroup?> ){
         self._closeFlag = closeFlag
@@ -61,6 +70,16 @@ class AddPlayGroupViewModel: ObservableObject {
                 loadRule(group: group)
                 self.startFan = group.startFan
                 self.endFan = group.endFan
+                
+                self.enableBonusPerDraw = group.enableBonusPerDraw == 1
+                self.bonusPerDraw = "\(group.bonusPerDraw)"
+                self.enableSpecialItem = group.enableSpecialItem == 1
+                self.specialItemAmount = "\(group.specialItemAmount)"
+                self.enableCalimWater = group.enableCalimWater == 1
+                self.calimWaterAmount = "\(group.calimWaterAmount)"
+                self.calimWaterFan = group.calimWaterFan
+                
+
             }
             if group.big2Enable == 1 {
                 self.big2Amt = "\(group.big2Amt)"
@@ -122,6 +141,17 @@ class AddPlayGroupViewModel: ObservableObject {
         playGroup.ruleSelf = toRuleSelf()
         playGroup.startFan = self.startFan
         playGroup.endFan = self.endFan
+        
+        playGroup.enableCalimWater = self.enableCalimWater ? 1:0
+        playGroup.enableBonusPerDraw = self.enableBonusPerDraw ? 1:0
+        playGroup.enableSpecialItem = self.enableSpecialItem ? 1:0
+        playGroup.calimWaterAmount = Int(self.calimWaterAmount) ?? 0
+        playGroup.calimWaterFan = self.calimWaterFan
+        playGroup.specialItemAmount = Int(self.specialItemAmount) ?? 0
+        playGroup.bonusPerDraw = Int(self.bonusPerDraw) ?? 0
+        
+        
+        
         playGroup.save().then { (group) in
             if let _ = self.editGroup {
                 self.editGroup = group
@@ -131,6 +161,7 @@ class AddPlayGroupViewModel: ObservableObject {
                 print("Post add")
                 NotificationCenter.default.post(name: .addPlayGroup, object: group)
             }
+
             self.closeFlag.toggle()
         }.catch { (err) in
             Utility.showAlert(message: err.localizedDescription)
@@ -207,6 +238,28 @@ class AddPlayGroupViewModel: ObservableObject {
             
             if mahjongEnable == false && big2Enable == false {
                 Utility.showAlert(message: "Please enable the rule")
+                return false
+            }
+            
+            if enableSpecialItem && (Int(specialItemAmount) ?? 0) == 0 {
+                Utility.showAlert(message: "Special Item is 0")
+                return false
+            }
+      
+            if enableCalimWater {
+                
+                if (Int(calimWaterAmount) ?? 0) == 0 {
+                    Utility.showAlert(message: "claimWaterAmount Item is 0")
+                    return false
+                }
+                if (calimWaterFan > self.endFan || calimWaterFan < self.startFan)  {
+                    Utility.showAlert(message: "claimWaterFan Item is not in range")
+                    return false
+                }
+            }
+            
+            if enableBonusPerDraw && (Int(bonusPerDraw) ?? 0) == 0 {
+                Utility.showAlert(message: "bonusPerDraw Item is 0")
                 return false
             }
             

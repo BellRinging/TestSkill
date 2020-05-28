@@ -14,6 +14,14 @@ struct PlayGroup :  Identifiable,Codable,Equatable,Hashable  {
      public var groupName: String
     
     
+    public var enableSpecialItem: Int
+    public var specialItemAmount: Int
+    public var enableBonusPerDraw: Int
+    public var enableCalimWater: Int
+    public var calimWaterAmount: Int
+    public var calimWaterFan: Int
+    public var bonusPerDraw: Int
+    
     public var big2Amt: Int
     public var big2Enable: Int
     public var mahjongEnable: Int
@@ -54,6 +62,13 @@ struct PlayGroup :  Identifiable,Codable,Equatable,Hashable  {
         enableDouble = 1
         enableTriple = 1
         enableQuadiple = 1
+       enableSpecialItem = 1
+        specialItemAmount = 1
+        enableBonusPerDraw = 1
+        enableCalimWater = 1
+        calimWaterAmount = 1
+        calimWaterFan = 1
+        bonusPerDraw = 1
     }
 
 }

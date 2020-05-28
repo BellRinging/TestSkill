@@ -15,6 +15,8 @@ class ProfileViewModel: ObservableObject {
     
     @Published var player : User
     @Published var firend : [User] = []
+    
+    @Published var showEditPage : Bool = false 
   
     
     init(player : User){

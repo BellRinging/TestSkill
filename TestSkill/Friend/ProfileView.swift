@@ -35,6 +35,24 @@ struct ProfileView: View {
                 }
             }
             Spacer()
+                .navigationBarItems(trailing:  editButton())
+            .navigationBarHidden(self.viewModel.showEditPage)
+        }.modal(isShowing: self.$viewModel.showEditPage) {
+            LazyView(RegisterPage(closeFlag: self.$viewModel.showEditPage ,user:self.viewModel.player,userType: "dummy"))
+        }
+    }
+    
+    func editButton() -> some View {
+        HStack{
+            if self.viewModel.player.userType == "dummy" {
+                Button("Edit"){
+                    withAnimation {
+                        self.viewModel.showEditPage.toggle()
+                    }
+                }
+            }else{
+                Text("")
+            }
         }
     }
 }

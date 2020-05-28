@@ -172,6 +172,8 @@ extension Notification.Name {
     static let updateLastBig2GameRecord = Notification.Name("updateLastBig2GameRecord")
     static let addPlayGroup = Notification.Name("addPlayGroup")
     static let addFriend = Notification.Name("addFriend")
+    static let updateUser = Notification.Name("updateUser")
+    static let test = Notification.Name("test")
     static let dismissAddGameView = Notification.Name("dismissAddGameView")
     static let dismissMainView = Notification.Name("dismissMainView")
     static let dismissSwiftUI = Notification.Name("dismissSwiftUI")

@@ -19,6 +19,14 @@ class GameDetailViewModel: ObservableObject {
     var rule : [Int:Int] = [:]
     var ruleSelf : [Int:Int] = [:]
     var seperateLineForFan : Bool = true
+    @Published var enableSpecialItem : Bool = true
+    @Published var enableBonusPerDraw : Bool = true
+    @Published var enableCalimWater : Bool = true
+    var calimWaterAmount : Int = 0
+    var calimWaterFan : Int = 0
+    var specialItemAmount : Int = 0
+    var bonusPerDraw : Int = 0
+    
     
     
     var lastGameWin : [User] = []
@@ -48,10 +56,9 @@ class GameDetailViewModel: ObservableObject {
     }
     
     @Published var showDetailView : Bool = false
-    
     @Published var showSwapPlayer : Bool = false
     
-    
+    @Published var showSpecialView : Bool = false
     @Published var displayBoard : [DisplayBoard] = []
     
     init(game : Game , lastGameDetail: GameDetail?){
@@ -67,6 +74,16 @@ class GameDetailViewModel: ObservableObject {
         group = curGroup
         self.startFan = curGroup.startFan
         self.endFan = curGroup.endFan
+        
+        self.enableSpecialItem = curGroup.enableSpecialItem == 1
+        self.enableBonusPerDraw = curGroup.enableBonusPerDraw  == 1
+        self.enableCalimWater = curGroup.enableCalimWater  == 1
+        self.calimWaterAmount = curGroup.calimWaterAmount
+        self.calimWaterFan = curGroup.calimWaterFan
+        self.specialItemAmount = curGroup.specialItemAmount
+        self.bonusPerDraw = curGroup.bonusPerDraw
+        
+        
         if(curGroup.endFan - curGroup.startFan > 4){
             seperateLineForFan = true
         }else{
@@ -81,9 +98,6 @@ class GameDetailViewModel: ObservableObject {
     func convertResultToDisplay(){
         var temp : [DisplayBoard] = []
         var count = 0
-        
-//           print(game.playersId)
-//        print(groupUsers.map{$0.id})
         for player in game.playersId{
             let balance = game.result[player] as? Int ?? 0
             let name  = game.playersMap[player]
@@ -128,7 +142,6 @@ class GameDetailViewModel: ObservableObject {
 
     func eat(_ who:Int){
         
-   
         whoWin = who
         winner = self.displayBoard[who]
         filteredDisplayBoard = self.displayBoard.filter{$0.id != self.displayBoard[who].id}
@@ -161,6 +174,39 @@ class GameDetailViewModel: ObservableObject {
         }
     }
     
+    func markDraw(){
+        Utility.showProgress()
+        let detailNo = game.detailCount + 1
+        var value = self.bonusPerDraw
+        var whoLoseList:[String] = self.game.playersId
+        var whoWinList:[String] = []
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMddHHmm"
+        let datetime = formatter.string(from: Date())
+        let playersList = self.game.playersMap
+        let period = self.game.period
+        let uuid = UUID().uuidString
+        let winType = "draw"
+        let bonus =  value * 4
+        let gameDetail = GameDetail(id: uuid, gameId: self.game.id, fan: 0, value: value, winnerAmount: 0, loserAmount: value * -1 , whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: 0,repondToLose:0,playerList:playersList,period:period,createDateTime:datetime,detailNo: detailNo,bonusFlag: 0 , bonus: bonus,waterFlag: 0,waterAmount: 0)
+        gameDetail.save().then { (gameDetail)  in
+            let uid = Auth.auth().currentUser!.uid
+            whoLoseList.map { (loser)  in
+                let amount = self.game.result[loser]! - value
+                self.game.result[loser]! = amount
+            }
+            let detailCount = self.game.detailCount
+            self.game.detailCount = detailCount + 1
+            self.game.bonusFlag = 1
+            self.game.bonus = (self.game.bonus ?? 0 ) + value * 4
+            NotificationCenter.default.post(name: .updateUserBalance, object:  value * -1)
+            NotificationCenter.default.post(name: .updateLastGameRecord, object:  gameDetail)
+            NotificationCenter.default.post(name: .updateGame, object:  self.game)
+        }.catch { (error) in
+            Utility.showAlert(message: error.localizedDescription)
+        }
+    }
+    
     func rollback(){
         Utility.showProgress()
         if let lastRecord = self.lastGameDetail {
@@ -170,6 +216,10 @@ class GameDetailViewModel: ObservableObject {
             var result = self.game.result
             let winAmt = lastRecord.winnerAmount
             let loserAmt = lastRecord.loserAmount
+            let winType = lastRecord.winType
+            let bonusFlag = lastRecord.bonusFlag ?? 0
+            let waterFlag = lastRecord.waterFlag ?? 0
+            let waterAmount = lastRecord.waterAmount ?? 0
             lastRecord.whoWin.map {
                 if $0 == uid {
                     needUpdateBalance = true
@@ -186,6 +236,25 @@ class GameDetailViewModel: ObservableObject {
             }
             lastRecord.delete().then { _ in
                 self.game.detailCount = self.game.detailCount - 1
+                if winType == "draw"{
+                    let bonus = (self.game.bonus ?? 0) + loserAmt * 4
+//                    print("===== \(bonus)")
+                    if bonus == 0 {
+                        self.game.bonusFlag = 0
+                        self.game.bonus = 0
+                    }else{
+                        self.game.bonusFlag = 1
+                        self.game.bonus = bonus
+                    }
+                }
+                if waterFlag == 1 {
+                    self.game.water = self.game.water! - waterAmount
+                }
+                if bonusFlag == 1 {
+                    let bonus = lastRecord.bonus
+                    self.game.bonusFlag = 1
+                    self.game.bonus = bonus
+                }
                 self.game.result = result
                                 
                 if (needUpdateBalance){
@@ -212,6 +281,9 @@ class GameDetailViewModel: ObservableObject {
         let datetime = formatter.string(from: Date())
         let playersList = self.game.playersMap
         let period = self.game.period
+        let bonus = self.game.bonus ?? 0
+        let bonusFlag = self.game.bonusFlag ?? 0
+        var getTheBonusFlag = 0
         if (winType == "Self" || byErrorFlag == 1){
             self.filteredDisplayBoard.map { user in
                 whoLoseList.append(user.id)
@@ -238,8 +310,23 @@ class GameDetailViewModel: ObservableObject {
             loserAmount = value * -1
         }
         let uuid = UUID().uuidString
-        let gameDetail = GameDetail(id: uuid, gameId: self.game.id, fan: fan, value: value, winnerAmount: winnerAmount, loserAmount: loserAmount, whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: byErrorFlag,repondToLose:loserRespond,playerList:playersList,period:period,createDateTime:datetime,detailNo: detailNo)
+        
+        if winnerAmount == ruleSelf[endFan]! * 3  && self.game.bonusFlag == 1 {
+            winnerAmount = winnerAmount + bonus
+            getTheBonusFlag = 1
+        }
+        let waterFlag = enableCalimWater && calimWaterFan <= fan ? 1:0
+        if waterFlag == 1 {
+            winnerAmount = winnerAmount - calimWaterAmount
+        }
+        
+        let gameDetail = GameDetail(id: uuid, gameId: self.game.id, fan: fan, value: value, winnerAmount: winnerAmount, loserAmount: loserAmount, whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: byErrorFlag,repondToLose:loserRespond,playerList:playersList,period:period,createDateTime:datetime,detailNo: detailNo,bonusFlag: getTheBonusFlag,bonus: bonus,waterFlag: waterFlag,waterAmount: calimWaterAmount)
         gameDetail.save().then { (gameDetail)  in
+            if getTheBonusFlag == 1 {
+                self.game.bonusFlag = 0
+                self.game.bonus = 0
+            }
+
             let uid = Auth.auth().currentUser!.uid
             var needUpdateBalance = false
             var updateAmount = 0
@@ -259,6 +346,10 @@ class GameDetailViewModel: ObservableObject {
                 }
                 self.game.result[loser]! = amount
             }
+            
+            if waterFlag == 1 {
+                self.game.water = (self.game.water ?? 0) + self.calimWaterAmount
+            }
             let detailCount = self.game.detailCount
             self.game.detailCount = detailCount + 1
             if (needUpdateBalance){
@@ -271,4 +362,5 @@ class GameDetailViewModel: ObservableObject {
         }
     }
     
+   
 }

@@ -53,7 +53,7 @@ struct MenuPage: View {
                 HStack(alignment:.center){
                     Text("App version")
                     Spacer()
-                    Text("v2.0.1")
+                    Text("v5.0.1")
                 }.padding()
                 Spacer()
             }
@@ -63,7 +63,7 @@ struct MenuPage: View {
             LazyView(DisplayPlayerGroupView(closeFlag: self.$viewModel.isShowPlayGroup))
         }
             .modal(isShowing: self.$viewModel.isShowFriend ){
-                LazyView(DisplayFriendView(closeFlag: self.$viewModel.isShowFriend ,users:self.$viewModel.tempUser ,hasDetail: true))
+                LazyView(DisplayFriendView(closeFlag: self.$viewModel.isShowFriend ,users:self.$viewModel.tempUser ,hasDetail: true,showSelectAll: false ,showAddButton: true))
             }
             .modal(isShowing: self.$viewModel.isShowTerm){
                 LazyView(Terms(closeFlag: self.$viewModel.isShowTerm))

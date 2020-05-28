@@ -46,7 +46,10 @@ struct AdminView: View {
                     Button("Delete"){
                         Utility.showAlert(message: "Confirm?", callBack: self.viewModel.DeleteGame)
                     }
-                }        
+                }
+                Button("UpdateGameDetail"){
+                    Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateGameDetail)
+                }
             }.padding()
             transferData().padding()
         }.modal(isShowing: self.$viewModel.isShowGameLK) {

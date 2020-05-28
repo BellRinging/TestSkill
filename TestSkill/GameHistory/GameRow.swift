@@ -24,7 +24,7 @@ struct GameRow: View {
                 Image(viewModel.game.gameType == "Big2" ? "Big2Icon" : "mahjongIcon")
                     .resizable()
                     .scaledToFit()
-                    .frame(width:25)
+//                    .frame(width:30)
                 Text(viewModel.date).font(MainFont.bold.size(12))
                 Text(viewModel.location).font(MainFont.light.size(10))
             }

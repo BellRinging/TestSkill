@@ -26,6 +26,7 @@ struct Game: Codable ,Identifiable {
     var lostStupidCount : [String:Int]?
     var safeGameCount : [String:Int]?
     var doubleBecaseLastCount : [String:Int]?
+    var water : Int?
 }
 
 extension Game {
@@ -269,7 +270,7 @@ extension Game {
             
          return Promise<Game> { (resolve , reject) in
              let db = Firestore.firestore()
-             let data = ["flown": flown]
+            let data = ["flown": flown ,"water" : 0]
              let ref = db.collection("games").document(self.id)
              ref.updateData(data ) { (err) in
                  guard err == nil  else {

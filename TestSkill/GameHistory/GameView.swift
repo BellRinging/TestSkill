@@ -14,6 +14,8 @@ struct GameView: View {
     }
 
     var body: some View {
+
+        
         GeometryReader { geometry in
             NavigationView{
                 VStack{
@@ -48,7 +50,7 @@ struct GameView: View {
                 AddGameView(closeFlag: self.$viewModel.showAddGameDisplay )
             })
             .modal(isShowing: self.$viewModel.showingFlownView) {
-                FlownGameView(closeFlag: self.$viewModel.showingFlownView, game: self.viewModel.gameForFlown!)
+                MarkFlownView(closeFlag: self.$viewModel.showingFlownView, game: self.viewModel.gameForFlown!)
             }
       
         }.onAppear(){
@@ -73,6 +75,7 @@ struct GameView: View {
     }
     
     var rightImg : some View {
+        
         Button(action: {
             withAnimation {
                 self.viewModel.showAddGameDisplay = true
@@ -82,6 +85,14 @@ struct GameView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20,height: 20)
+            
         }
     }
+    
+    
 }
+
+
+
+
+

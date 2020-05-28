@@ -140,9 +140,9 @@ struct SearchView: View {
             self.viewModel.initFan()
         }
         .modal(isShowing: self.$viewModel.showSelectPlayerDetailLevel) {
-            LazyView(DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerDetailLevel, users: self.$viewModel.playersDetailLevel, maxSelection: 1 ,includeSelf : false,acceptNoReturn: true))
+            LazyView(DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerDetailLevel, users: self.$viewModel.playersDetailLevel, maxSelection: 1 ,includeSelf : false,acceptNoReturn: true ,showSelectAll: false))
         }.modal(isShowing: self.$viewModel.showSelectPlayerGameLevel) {
-            LazyView(DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerGameLevel, users: self.$viewModel.playersGameLevel, maxSelection: 3 ,includeSelf : true))
+            LazyView(DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerGameLevel, users: self.$viewModel.playersGameLevel, maxSelection: 3 ,includeSelf : true,showSelectAll: false))
         }
         .modal(isShowing: self.$viewModel.showSearchGame) {
             LazyView(SearchGameView(closeFlag:self.$viewModel.showSearchGame,games:self.viewModel.games))

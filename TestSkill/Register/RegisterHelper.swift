@@ -19,17 +19,19 @@ struct RegisterHelper{
                                         "friends": [],
                                         "fdsRequest": [],
                                         "fdsPending": [],
-                                        "fcmToken" : token
+                                        "fcmToken" : token,
+                                        "owner" : uid,
+                                        "userType" : "real"
                                ] as [String : Any]
            let ref = Firestore.firestore()
            let usersReference = ref.collection("users").document(value["id"] as! String)
            usersReference.setData(value)
-        
+  
        }
     
     
     static func uploadImage(uid: String , inputImage : UIImage?) -> Promise<String> {
-        
+
         let p = Promise<String> { (resolve , reject) in
             let ref = Storage.storage().reference().child("profile_images").child(uid).child("profilePic.jpg")
             if let img = inputImage ?? UIImage(named: "player3") , let uploadData = img.jpegData(compressionQuality: 0.1) {

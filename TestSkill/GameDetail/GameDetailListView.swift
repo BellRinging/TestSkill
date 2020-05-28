@@ -96,9 +96,3 @@ struct GameDetailListView: View {
         }
     
 }
-
-//struct GameDetailListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        GameDetailListView()
-//    }
-//}

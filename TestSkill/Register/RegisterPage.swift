@@ -7,41 +7,21 @@
 //
 
 import SwiftUI
-import Promises
-import GoogleSignIn
-import FBSDKLoginKit
-import Firebase
-import FirebaseAuth
-import FirebaseStorage
-import FirebaseFirestore
 
 
-struct RegisterViewState {
-    var email : String
-    var password : String
-}
-
-enum RegisterViewInput {
-    case normalLogin
-    case googleLogin
-    case facebookLogin
-    case showRegisterPage
-    case forgetPassword
-}
 
 struct RegisterPage: View {
     
    @ObservedObject var viewModel: RegisterViewModel
-//    @ObservedObject var keyboardObserver = KeyboardObserver.shared
     
-    init(closeFlag : Binding<Bool> , user : User? = nil){
-        viewModel = RegisterViewModel(closeFlag: closeFlag , user : user)
+    init(closeFlag : Binding<Bool> , user : User? = nil , userType : String = "real"){
+        viewModel = RegisterViewModel(closeFlag: closeFlag , user : user ,userType: userType)
     }
     
     var body: some View {
         NavigationView{
             VStack{
-                    self.viewModel.image?
+                self.viewModel.image?
                     .resizable()
                     .aspectRatio(contentMode: ContentMode.fit)
                     .frame(width: 200 , height: 200)
@@ -51,24 +31,30 @@ struct RegisterPage: View {
                             self.viewModel.showingImagePicker = true
                         }
                 }
+                Text("")
                 Form {
                     Section(header:
-                        Text("Info")
-                            .font(MainFont.forSmallTitleText()))
+                        Text(self.viewModel.userType == "real" ? "Info" : "Dummy Account Info").textStyle(size: 16)
+                    )
                     {
-                        
-                        TextField("Email Address", text: self.$viewModel.email)
-                            .autocapitalization(.none)
-                            .disabled(self.viewModel.editMode)
+                        if self.viewModel.userType != "dummy"{
+                            TextField("Email Address", text: self.$viewModel.email)
+                                .autocapitalization(.none)
+                                .disabled(self.viewModel.editMode)
+                        }
                         TextField("User name", text: self.$viewModel.userName)
                             .autocapitalization(.none)
                         TextField("First name", text: self.$viewModel.firstName)
                             .autocapitalization(.none)
                         TextField("Last name", text: self.$viewModel.lastName)
                             .autocapitalization(.none)
-                        
+                        if self.viewModel.userType == "dummy"{
+                            TextField("Balance", text: self.$viewModel.balance)
+                                .autocapitalization(.none)
+                                .keyboardType(.numberPad)
+                        }
                     }
-                    if !self.viewModel.editMode {
+                    if !self.viewModel.editMode && self.viewModel.userType == "real" {
                         Section(header:
                             Text("Password")
                                 .font(MainFont.forSmallTitleText())){
@@ -81,16 +67,16 @@ struct RegisterPage: View {
                         Text("For password reset, please use the forget password under the login page").textStyle(size: 12)
                     }
                 }
+                Spacer()
             }
             .keyboardResponsive()
-            .navigationBarTitle("Register form", displayMode: .inline)
+            .navigationBarTitle("\(self.viewModel.title)", displayMode: .inline)
             .navigationBarItems(leading:  CancelButton(self.viewModel.$closeFlag), trailing: confirmButton)
 
-        }.sheet(isPresented: self.$viewModel.showingImagePicker, onDismiss: {
-            self.viewModel.loadImage()
-        }, content: {
-            ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker).accentColor(Color.redColor)
-        })
+        }
+        .sheet(isPresented: self.$viewModel.showingImagePicker,onDismiss: self.viewModel.loadImage){
+            ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker)
+        }
     }
     
     
