@@ -9,15 +9,14 @@
 import SwiftUI
 
 struct ContactUsView: View {
-    @Binding var closeFlag : Bool 
-    
+    @Binding var closeFlag : Bool
     var body: some View {
         NavigationView{
             VStack{
                 VStack(alignment: .leading){
                     Text(" We dont have any support , but we welcome for any comment ")
                         .padding()
-                    Text("Comment please send to my personal Email:")
+                    Text("Comment please send to my personal email:")
                         .padding()
                         Text("kennyyeung.kw@gmail.com")
                         .padding()
@@ -30,9 +29,3 @@ struct ContactUsView: View {
         }
     }
 }
-
-//struct Terms_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Terms()
-//    }
-//}

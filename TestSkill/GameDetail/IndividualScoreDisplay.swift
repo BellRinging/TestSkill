@@ -19,10 +19,7 @@ struct IndividualScoreDisplay: View {
     var body: some View {
           VStack {
             Text(title).textStyle(size: 12)
-            ImageView(withURL: player.img_url).standardImageStyle()
-            Text(player.user_name)
-                .font(ChineseFont.regular.size(12))
-                  .foregroundColor(SwiftUI.Color.black)
+            UserDisplay(url: player.imgUrl, name: player.userName)
             Text("\(player.balance)").foregroundColor(player.balance > 0  ? Color.green:Color.redColor)
                   .font(MainFont.medium.size(24))
           }

@@ -13,15 +13,15 @@ import SwiftEntryKit
 struct Big2PlayerScoreCard: View {
     
     var title : String
-    var player : DisplayBoardBig2
+    var player : DisplayBoardForBig2
     
  
     var body: some View {
 
             VStack {
-            ImageView(withURL: player.img_url)
+            ImageView(withURL: player.imgUrl)
                 .standardImageStyle().padding(.top)
-            Text(player.user_name)
+            Text(player.userName)
                 .textStyle(size: 12,color:Color.black)
             HStack{
                 

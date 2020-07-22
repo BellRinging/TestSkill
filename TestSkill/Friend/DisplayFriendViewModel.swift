@@ -14,7 +14,8 @@ class DisplayFriendViewModel: ObservableObject {
     @Binding var closeFlag : Bool
     @Binding var players : [User]
     var maxSelection : Int
-    var includeSelf : Bool
+    var includeSelfInReturn : Bool
+    var includeSelfInSeletion : Bool
     var onlyInUserGroup : Bool
     private var tickets: [AnyCancellable] = []
     var requestList : [String] = []
@@ -29,6 +30,14 @@ class DisplayFriendViewModel: ObservableObject {
                  self.loadUser()
         }.store(in: &tickets)
         
+        NotificationCenter.default.publisher(for: .deleteFriend)
+            .map{$0.object as! User}
+            .sink { [unowned self] (user) in
+                let index = self.users.firstIndex{$0.id == user.id}!
+                self.users.remove(at: index)
+        }.store(in: &tickets)
+        
+        
         NotificationCenter.default.publisher(for: .updateUser)
                 .map{$0.object as! User}
                .sink { [unowned self] (user) in
@@ -40,22 +49,25 @@ class DisplayFriendViewModel: ObservableObject {
     }
     
     
-    init(closeFlag : Binding<Bool> , users : Binding<[User]>, maxSelection : Int ,includeSelf: Bool ,onlyInUserGroup : Bool,hasDetail : Bool ,acceptNoReturn:Bool,showSelectAll:Bool , showAddButton: Bool){
+    init(closeFlag : Binding<Bool> , users : Binding<[User]>, maxSelection : Int ,includeSelfInReturn: Bool ,onlyInUserGroup : Bool,hasDetail : Bool ,acceptNoReturn:Bool,showSelectAll:Bool , showAddButton: Bool ,includeSelfInSeletion: Bool){
         self.selectedUser = []
         self._closeFlag = closeFlag
         self._players = users
         let uid = Auth.auth().currentUser!.uid
         let abc = users.wrappedValue
         self.maxSelection = maxSelection
-        self.includeSelf = includeSelf
+        self.includeSelfInReturn = includeSelfInReturn
         self.onlyInUserGroup = onlyInUserGroup
         self.hasDetail = hasDetail
         self.acceptNoReturn = acceptNoReturn
         self.showSelectAll = showSelectAll
         self.showAddButton = showAddButton
+        self.includeSelfInSeletion = includeSelfInSeletion
         self.loadUser()
         abc.map {
-            if $0.id != uid {
+            if includeSelfInSeletion {
+                self.selectedUser.append($0)
+            }else if $0.id != uid{
                 self.selectedUser.append($0)
             }
         }
@@ -67,25 +79,30 @@ class DisplayFriendViewModel: ObservableObject {
     
     func addToSelectedList(user : User){
 //        print("add to row")
-         if let index = selectedUser.firstIndex(of:user){
-             selectedUser.remove(at: index)
-         }else{
-            if selectedUser.count < maxSelection {
-                selectedUser.append(user)
+        if maxSelection == 1{
+            selectedUser = []
+            selectedUser.append(user)
+        }else{
+            if let index = selectedUser.firstIndex(of:user){
+                selectedUser.remove(at: index)
+            }else{
+                if selectedUser.count < maxSelection {
+                    selectedUser.append(user)
+                }
             }
-         }
+        }
      }
     
     func confirm(){
 //        print("Confirm")
-        if self.includeSelf {
+        if self.includeSelfInReturn {
 //             print("include youself")
             if let yourself = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser){
-                print(yourself.id)
+//                print(yourself.id)
 //                print(selectedUser.contains(yourself))
-                print(selectedUser.map{$0.id})
+//                print(selectedUser.map{$0.id})
                 if !selectedUser.contains(yourself){
-                    print("add to list")
+//                    print("add to list")
                     self.selectedUser.append(yourself)
                 }
             }
@@ -106,9 +123,21 @@ class DisplayFriendViewModel: ObservableObject {
             }else{
                 list = users
             }
+            if self.includeSelfInSeletion {
+                let yourself = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!
+                if !list.contains(yourself){
+                    list.insert(yourself,at:0)
+                }
+            }
+            
             self.users = list
         }.catch({ (err) in
             Utility.showAlert(message: err.localizedDescription)
         })
+        
+    }
+    
+    func deleteUser(){
+        
     }
 }

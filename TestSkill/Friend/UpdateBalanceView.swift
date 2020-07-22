@@ -20,30 +20,27 @@ struct UpdateBalanceView: View {
     var body: some View {
         
         NavigationView{
-                VStack{
-                    VStack{
-                        Text("Your current Balance :").textStyle(size: 30).padding()
-                        Text("\(self.viewModel.player1OAmt)")
-                            .titleFont(size: 80,color: Color.greenColor)
-                            .padding(.bottom)
-
-                        TextField("Modify the Amount here", text: self.$viewModel.player1Amt)
-                            .autocapitalization(.none)
-                            .cornerRadius(10)
-                            .background(Color.whiteGaryColor)
-                            .frame(maxWidth:100)
-                            .frame(height:60)
-                        
-                        
-                        Text("Remark: There may be error in sync the balance , the function manual adject the correct balance manual into your account").lineLimit(nil).fixedSize(horizontal: false, vertical: true).padding([.top,.horizontal],20)
-                    }
-                   
-                    Spacer()
-                    
+            
+            VStack{
+                ForEach(0..<self.viewModel.years.count) { index in
+                    Text("Your \(self.viewModel.years[index]) Balance :").textStyle(size: 16).padding()
+                    Text(self.viewModel.amtForDisplay[index])
+                        .titleFont(size: 30,color: Color.greenColor)
+                        .padding(.bottom)
+                    TextField("Modify the Amount here", text: self.$viewModel.amtForEdit[index])
+                        .autocapitalization(.none)
+                        .cornerRadius(10)
+                        .background(Color.whiteGaryColor)
+                        .frame(maxWidth:100)
+                        .frame(height:60)
                 }
-                .navigationBarTitle("Upldate Balance", displayMode: .inline)
-                .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
+                Text("Remark: There may be error in sync the balance , the function manual adject the correct balance manual into your account").lineLimit(nil).fixedSize(horizontal: false, vertical: true).padding([.top,.horizontal],20)
+                Spacer()
             }
+                
+            .navigationBarTitle("Upldate Balance", displayMode: .inline)
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton(){ self.viewModel.showAlert = true})
+        }
         .alert(isPresented: self.$viewModel.showAlert) {
             Alert(title: Text("Confirm?"), message: Text("balance will update"), primaryButton: .destructive(Text("Update")) {
                 self.viewModel.confirm()
@@ -59,17 +56,7 @@ struct UpdateBalanceView: View {
             Text("\(user.userName ?? "")").textStyle(size: 10).frame(width: 70)
         }.padding(.horizontal)
     }
-    
 
-    func ConfirmButton() -> some View {
-        Button(action: {
-            self.viewModel.showAlert = true
-        }, label:{
-            Text("確認").foregroundColor(Color.white)
-            
-        }).padding()
-            .shadow(radius: 5)
-    }
 
 }
 

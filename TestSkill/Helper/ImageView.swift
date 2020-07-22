@@ -38,10 +38,6 @@ class ImageLoader: ObservableObject {
     }
 }
 
-//func imageFromData(_ data:Data) -> UIImage {
-//    UIImage(data: data) ?? UIImage()
-//}
-
 struct ImageView: View {
     @ObservedObject var imageLoader:ImageLoader
     @State var image:UIImage = UIImage()

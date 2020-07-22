@@ -53,29 +53,32 @@ struct MenuPage: View {
                 HStack(alignment:.center){
                     Text("App version")
                     Spacer()
-                    Text("v5.0.1")
+                    Text("v\(self.viewModel.version)")
                 }.padding()
                 Spacer()
             }
             .navigationBarTitle("Menu", displayMode: .inline)
         }
         .modal(isShowing: self.$viewModel.isShowPlayGroup) {
-            LazyView(DisplayPlayerGroupView(closeFlag: self.$viewModel.isShowPlayGroup))
+            DisplayPlayerGroupView(closeFlag: self.$viewModel.isShowPlayGroup)
         }
             .modal(isShowing: self.$viewModel.isShowFriend ){
-                LazyView(DisplayFriendView(closeFlag: self.$viewModel.isShowFriend ,users:self.$viewModel.tempUser ,hasDetail: true,showSelectAll: false ,showAddButton: true))
+                DisplayFriendView(closeFlag: self.$viewModel.isShowFriend ,users:self.$viewModel.tempUser ,hasDetail: true,showSelectAll: false ,showAddButton: true)
             }
             .modal(isShowing: self.$viewModel.isShowTerm){
-                LazyView(Terms(closeFlag: self.$viewModel.isShowTerm))
+                Terms(closeFlag: self.$viewModel.isShowTerm)
             }
             .modal(isShowing: self.$viewModel.isShowContactUs){
-                LazyView(ContactUsView(closeFlag: self.$viewModel.isShowContactUs))
+                ContactUsView(closeFlag: self.$viewModel.isShowContactUs)
             }
             .modal(isShowing: self.$viewModel.isShowAccount){
-                LazyView(RegisterPage(closeFlag: self.$viewModel.isShowAccount ,user:self.viewModel.user))
+                RegisterPage(closeFlag: self.$viewModel.isShowAccount ,user:self.viewModel.user)
             }
             .modal(isShowing: self.$viewModel.isShowUpdateBalance) {
-                LazyView(UpdateBalanceView(closeFlag: self.$viewModel.isShowUpdateBalance))
+                UpdateBalanceView(closeFlag: self.$viewModel.isShowUpdateBalance)
             }
+        .modal(isShowing: self.$viewModel.isShowLocation) {
+            LocationView(closeFlag: self.$viewModel.isShowLocation)
+              }
     }
 }

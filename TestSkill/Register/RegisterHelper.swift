@@ -9,13 +9,13 @@ struct RegisterHelper{
             return
         }
         let token = UserDefaults.standard.retrieve(object: String.self, fromKey: UserDefaultsKey.FcmToken) ?? ""
-        let value = ["email": user.email ?? "",
+        var value = ["email": user.email ?? "",
                                         "id": uid,
                                         "userName":user.userName ?? "",
                                         "lastName": user.lastName ?? "",
                                         "firstName": user.firstName ?? "",
                                         "imgUrl": user.imgUrl ?? "",
-                                        "balance":0,
+                                        "yearBalance": [Utility.getCurrentYear(): 0],
                                         "friends": [],
                                         "fdsRequest": [],
                                         "fdsPending": [],
@@ -23,9 +23,18 @@ struct RegisterHelper{
                                         "owner" : uid,
                                         "userType" : "real"
                                ] as [String : Any]
+        
            let ref = Firestore.firestore()
-           let usersReference = ref.collection("users").document(value["id"] as! String)
-           usersReference.setData(value)
+           let usersReference = ref.collection("users").document(uid)
+//        print(usersReference.path)
+//        print("before add")
+        let user = User(id: uid, userName: user.userName ?? "", firstName: user.firstName ?? "", lastName: user.lastName ?? "", email: user.email ?? "", imgUrl: user.imgUrl ?? "", friends: [], fdsRequest: [], fdsPending: [], fcmToken: token, userType: "real", owner: uid, yearBalance: [2020:0])
+        user.save().then { _ in
+            print("success save")
+        }
+//        print(value)
+//           usersReference.setData(value)
+        print("after add")
   
        }
     

@@ -265,7 +265,6 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FloatingButton (0.0.1)
   - GoogleAppMeasurement (6.1.7):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -351,7 +350,6 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Messaging
   - Firebase/Storage
-  - FloatingButton
   - GoogleSignIn (~> 5.0.0)
   - Introspect
   - MBProgressHUD (~> 1.0.0)
@@ -380,7 +378,6 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseStorage
-    - FloatingButton
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -421,7 +418,6 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: ce993a3c3670a8f5d47ce371ac5d143c560608c5
   FirebaseMessaging: 089b7a4991425783384acc8bcefcd78c0af913bd
   FirebaseStorage: 93fe2f8190a01bfb2b2c4932df7d679744c4ef1d
-  FloatingButton: 8ef7f8c8b5fa12b4664ed78d53b1d24cbc83a727
   GoogleAppMeasurement: db118eb61a97dd8c4f7014e368d3c335cbbcf80a
   GoogleDataTransport: 8e9b210c97d55fbff306cc5468ff91b9cb32dcf5
   GoogleDataTransportCCTSupport: 202d7cdf9c4a7d81a2bb7f7e7e1ba6faa421b1f2
@@ -442,6 +438,6 @@ SPEC CHECKSUMS:
   SwiftEntryKit: 340713c2e4a6662c5149629990bf1088bf5f0389
   SwiftUIRefresh: 3daa095596b5a624ea67fd0174997026b339a5bc
 
-PODFILE CHECKSUM: 5c890c2ea6ea60fb0d2652d139798891dff03a6a
+PODFILE CHECKSUM: e152d0a476b14db3153087ec0277c0eea3978ca2
 
 COCOAPODS: 1.7.5

@@ -53,7 +53,7 @@ struct AddFriendView: View {
                     
                 }
                 .padding([.horizontal,.top])
-                .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
+                .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: CButton())
                 
                 SelectAllView(self.$viewModel.selectedUsers, availableList: self.viewModel.users                 .filter{$0.userName.hasPrefix(self.viewModel.searchText) || $0.email.hasPrefix(self.viewModel.searchText) || self.viewModel.searchText == ""}).padding(.horizontal)
                 
@@ -96,36 +96,14 @@ struct AddFriendView: View {
     
 
     
-    func ConfirmButton() -> some View{
+    func CButton() -> some View{
         VStack{
             if self.viewModel.selectedUsers.count > 0  {
-                Button(action: {
+                ConfirmButton(){
                     self.viewModel.addFriendPendding()
-                }, label: {
-                    Text("Add Friend").foregroundColor(Color.white)
-                })
+                }
             }
         }
     }
 
 }
-
-
-
-                   // Filtered list of names
-//                    ForEach(self.viewModel.users.filter{$0.userName!.hasPrefix(self.viewModel.searchText) || $0.email.hasPrefix(self.viewModel.searchText) || self.viewModel.searchText == ""}, id:\.self) {
-//                        user in
-//                        AddFriendRow(user: user, isSelected: self.viewModel.selectedUsers.contains(user))
-//                        .contentShape(Rectangle())
-//                        .onTapGesture {
-//                            print(user.userName!)
-//                            if !self.viewModel.selectedUsers.contains(user){
-//                                self.viewModel.selectedUsers.append(user)
-//                            }else{
-//                                let index = self.viewModel.selectedUsers.firstIndex(of: user)!
-//                                self.viewModel.selectedUsers.remove(at: index)
-//                            }
-//                        }
-//                    }
-
-

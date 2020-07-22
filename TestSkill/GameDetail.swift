@@ -15,6 +15,7 @@ struct GameDetail : Codable {
     var byErrorFlag : Int
     var repondToLose : Int
     var playerList : [String:String]
+    var involvedPlayer : [String]
     var period : String
     var createDateTime : String
     var detailNo : Int
@@ -40,6 +41,72 @@ extension GameDetail {
         }
         return p
     }
+    
+     static func search(fan : String = "Any", period : String = "Any" ,win : String = "Any" ,winType : String = "Any",game : Game? = nil,player : User?) -> Promise<[GameDetail]> {
+            let p = Promise<[GameDetail]> { (resolve , reject) in
+                let db = Firestore.firestore()
+                var ref = db.collection("gameDetails") as! Query
+                if fan != "Any" {
+                    ref  = ref.whereField("fan", isEqualTo: Int(fan) ?? 0 )
+                }
+//                if win != "Any" && players.count == 1 {
+//                    ref  = ref.whereField("win", isEqualTo: win == "Win" ? 1:0 )
+//                }
+                if period != "Any" {
+                    ref = ref.whereField("period", isEqualTo: period)
+                }
+                
+                if winType != "Any" {
+                    ref = ref.whereField("winType", isEqualTo: winType)
+                }
+                
+                if let game = game {
+                    ref = ref.whereField("gameId", isEqualTo: game.id)
+                }
+                
+                if let player = player {
+                    ref = ref.whereField("involvedPlayer", arrayContains: player.id)
+                    print("player : \(player.id)")
+                }
+                
+                var gameDetails : [GameDetail] = []
+                ref.getDocuments { (snap, err) in
+                    guard err == nil  else {
+                        return reject(err!)
+                    }
+                    guard let documents = snap?.documents else {return}
+                    print("documents count \(documents.count) ")
+                    do{
+                        for doc in documents {
+                            let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                            let gameRecord = try JSONDecoder.init().decode(GameDetail.self, from: data)
+                            
+                            if player != nil  && win != "Any" {
+                                if win == "Win"{
+                                    let exist = gameRecord.whoWin.filter{$0 == player!.id}.first
+                                    if let exist = exist {
+                                        gameDetails.append(gameRecord)
+                                    }
+                                }
+                                if win == "Lose"{
+                                    let exist = gameRecord.whoLose.filter{$0 == player!.id}.first
+                                    if let exist = exist {
+                                        gameDetails.append(gameRecord)
+                                    }
+                                }
+                            }else{
+                            
+                                gameDetails.append(gameRecord)
+                            }
+                        }
+                        resolve(gameDetails)
+                    }catch{
+                        reject(error)
+                    }
+                }
+            }
+            return p
+        }
     
     
     static func getLastDetailByGameId(gameId: String , detailNo : Int) -> Promise<GameDetail?>  {

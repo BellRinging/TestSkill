@@ -27,7 +27,7 @@ class GameLKModel: ObservableObject {
     
     func loadGame(){
         Game.getAllItem().then{ games in
-            print(games.count)
+            
             self.games = games
         }
     }

@@ -14,12 +14,7 @@ struct AddGameViewRow : View {
                 HStack{
                     Spacer()
                     ForEach(players ,id: \.id) { (player) in
-                        VStack{
-                            ImageView(withURL: player.imgUrl).standardImageStyle()
-                            Text(player.userName)
-                                .textStyle(size: 10)
-                                .frame(width: 60)
-                        }
+                        UserDisplay(user: player)
                     }
                     Spacer()
                 }.padding()

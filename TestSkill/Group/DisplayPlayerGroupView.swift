@@ -52,6 +52,9 @@ struct DisplayPlayerGroupView: View {
                 AddPlayGroupView(closeFlag: self.$viewModel.showAddingGroup, editGroup: self.$viewModel.selectedGroup)
             }
         }
+         .modal(isShowing: self.$viewModel.showStatistic) {
+            ResultView(closeFlag: self.$viewModel.showStatistic)
+         }
         .alert(isPresented: self.$viewModel.showingDeleteAlert) {
             Alert(title: Text("Confirm delete"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete")) {
                 self.viewModel.deleteGroup(index:self.viewModel.selectedIndex)
@@ -76,8 +79,17 @@ struct DisplayPlayerGroupView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 20,height: 20)
+                }.padding(.trailing,5)
+                Button(action: {
+                    self.viewModel.showStatistic = true
+                }) {
+                    Image(systemName: "s.square")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20,height: 20)
                 }
             }
+          
             Button(action: {
                 self.viewModel.showAddingGroup = true
                 self.viewModel.isAdd = true
@@ -86,7 +98,7 @@ struct DisplayPlayerGroupView: View {
                        .resizable()
                        .scaledToFit()
                        .frame(width: 20,height: 20)
-            }
+            }.padding(.leading,5)
         }
         
     }

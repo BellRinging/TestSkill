@@ -70,10 +70,10 @@ struct GameDetailPopUp: View {
             self.selectedPlayer = board
         }) {
             VStack {
-                ImageView(withURL: board.img_url)
+                ImageView(withURL: board.imgUrl)
                     .ImageStyle(size: 40)
                     .overlay(Circle().stroke(selectedPlayer?.id == board.id ? Color.red:Color.clear, lineWidth: 4))
-                Text("\(board.user_name)")
+                Text("\(board.userName)")
                     .foregroundColor(Color.black)
                     .font(ChineseFont.regular.size(12))
                 Text("\(getAmount(who:board))")
@@ -175,7 +175,7 @@ struct GameDetailPopUp: View {
                         .frame(width:35).padding(.trailing,40)
                 }
             }
-            ImageView(withURL: (viewModel.winner!.img_url ))
+            ImageView(withURL: (viewModel.winner!.imgUrl ))
                 .ImageStyle(size: 80)
                 .overlay(Circle().stroke(selectedPlayer?.id ==  viewModel.winner?.id ? Color.redColor:Color.clear, lineWidth: 4)).onTapGesture {
                     self.selectedPlayer = self.viewModel.winner

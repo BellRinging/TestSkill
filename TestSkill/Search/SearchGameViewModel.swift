@@ -17,12 +17,6 @@ import Firebase
 
 class SearchGameViewModel: ObservableObject {
     
-
-    
-//    lazy var background: DispatchQueue = {
-//        return DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
-//    }()
-//    
     @Published var games: [String:[Game]] =  [:]
     @Published var sectionHeader : [String] = []
     @Published var status : pageStatus = .loading

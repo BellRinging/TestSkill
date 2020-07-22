@@ -41,46 +41,16 @@ struct SwapUser: View {
                         
                     }.onMove(perform: self.viewModel.move)
                 }.frame(height: 350)
-//                HStack{
-//                    Button(action: {
-//                        self.viewModel.closeFlag.toggle()
-//                    }, label:{
-//                        RoundedRectangle(cornerRadius: 10)
-//                            .fill(Color.redColor)
-//                            .overlay(
-//                                Text("取消").foregroundColor(Color.white)
-//                        )
-//                    }).frame(height: 40)
-//                    Button(action: {
-//                        self.viewModel.swap()
-//                    }, label:{
-//                        RoundedRectangle(cornerRadius: 10)
-//                            .fill(Color.green)
-//                            .overlay(
-//                                Text("確認").foregroundColor(Color.white)
-//                        )
-//                    }).frame(height: 40)
-//
-//                }.padding()
                 Spacer()
 
             }
             .navigationBarTitle("Swap", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: confirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton(){
+                 self.viewModel.swap()
+            })
             .environment(\.editMode, self.$editMode)
         }
         .navigationBarHidden(self.viewModel.closeFlag)
     }
-    
-    
-  
-    
-    func confirmButton() -> some View {
-         Button(action: {
-             self.viewModel.swap()
-         }) {
-             Text("Confirm")
-         }
-     }
  
 }

@@ -133,7 +133,6 @@ struct LoginView: View {
     }
     
     var appleButton : some View {
-//        SignInWithApple() 
             Circle()
                 .fill(Color.black)
                 .frame(width: 50, height: 50)

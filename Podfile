@@ -19,5 +19,4 @@ target ‘TestSkill’ do
 	pod "Introspect"
 	pod "SwiftUIRefresh"
 	pod 'ALCameraViewController'
-	pod 'FloatingButton'
 end

@@ -8,14 +8,8 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseDatabase
-import MBProgressHUD
-import Promises
 import SwiftUI
 import Combine
-
-
-
 
 class FrontEndController: UIViewController {
     
@@ -29,26 +23,24 @@ class FrontEndController: UIViewController {
         addEventListener()
     }
     
-
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.checkIfProfitSetup()
     }
     func addEventListener(){
-        NotificationCenter.default.publisher(for: .dismissSwiftUI).sink {[weak self] (_) in
+        NotificationCenter.default.publisher(for: .dismissSwiftUI)
+            .sink {[weak self] (_) in
             self?.loginPageController?.dismiss(animated: true, completion: nil)
         }.store(in: &tickets)
         
-        NotificationCenter.default.publisher(for: .dismissMainView).sink { [weak self] (_) in
+        NotificationCenter.default.publisher(for: .dismissMainView)
+            .sink { [weak self] (_) in
             self?.mainViewController?.dismiss(animated: true, completion: nil)
         }.store(in: &tickets)
     }
  
-    
     @objc func showLoginPage(){
         let loginController = UIHostingController(rootView: LoginView())
-        
         loginPageController = loginController
         loginController.modalPresentationStyle = .fullScreen
         self.present(loginController, animated: true, completion: nil)
@@ -62,7 +54,6 @@ class FrontEndController: UIViewController {
         self.present(vc, animated: true, completion: nil)
       }
 
-    
     func checkIfProfitSetup(){
         print("Check if user login ")
         let loginFlag = UserDefaults.standard.integer(forKey: UserDefaultsKey.LoginFlag) ?? 0

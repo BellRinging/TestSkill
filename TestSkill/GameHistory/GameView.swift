@@ -6,16 +6,24 @@ struct GameView: View {
     @State var isShowing : Bool = false
     
     init(){
-        print("GameView init")
         viewModel = GameViewModel.shared
+        print("init Game")
         viewModel.status = .loading
         viewModel.onInitialCheck()
         
     }
+    
+    var actAsUser : some View {
+        HStack{
+            if self.viewModel.actAsUser != nil {
+                UserDisplay(url: self.viewModel.actAsUser!.imgUrl, name: self.viewModel.actAsUser!.userName)
+            }
+            Spacer()
+        }
+        
+    }
 
     var body: some View {
-
-        
         GeometryReader { geometry in
             NavigationView{
                 VStack{
@@ -26,14 +34,15 @@ struct GameView: View {
                         }else{
                                 Text("loading...")
                         }
-                                
-                            
                     }else{
-                        GameViewUpperArea(user: self.$viewModel.currentUser, credit: self.viewModel.mthCredit,debit: self.viewModel.mthDebit)
-                        GameViewListHistoryArea(groupUsers: self.viewModel.groupUsers, sectionHeader: self.viewModel.sectionHeader, sectionHeaderAmt: self.viewModel.sectionHeaderAmt,games: self.viewModel.games, status: self.viewModel.status,lastGameDetail: self.viewModel.lastGameDetail,lastBig2GameDetail: self.viewModel.lastBig2GameDetail, callback: self.viewModel.deleteGame)
+                        GameViewUpperArea(balanceObj: self.viewModel.balanceObject,showPercent:self.viewModel.showPercent).onTapGesture {
+                            self.viewModel.showPercent.toggle()
+                        }
+                        .overlay(self.actAsUser)
+                        GameViewListHistoryArea(sectionHeader: self.viewModel.sectionHeader, sectionHeaderAmt: self.viewModel.sectionHeaderAmt,games: self.viewModel.games, status: self.viewModel.status,lastGameDetail: self.viewModel.lastGameDetail,lastBig2GameDetail: self.viewModel.lastBig2GameDetail, noMoreGame: self.viewModel.noMoreUpdate, callback: self.viewModel.deleteGame)
                             .pullToRefresh(isShowing: self.$isShowing) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                self.viewModel.loadMoreGame()
+                                self.viewModel.loadGame()
                                 self.isShowing = false
                             }
                         }
@@ -53,8 +62,6 @@ struct GameView: View {
                 MarkFlownView(closeFlag: self.$viewModel.showingFlownView, game: self.viewModel.gameForFlown!)
             }
       
-        }.onAppear(){
-            self.self.viewModel.loadGameBalance()
         }
 
     }
@@ -85,11 +92,17 @@ struct GameView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20,height: 20)
-            
         }
     }
-    
-    
+}
+
+struct UpperResultObject {
+    var balance: Int = 0
+    var currentMth: Int = 0
+    var lastMth: Int = 0
+    var lastYTM: Int = 0
+    var mtlm : String = "N/A"
+    var mtly : String = "N/A"
 }
 
 

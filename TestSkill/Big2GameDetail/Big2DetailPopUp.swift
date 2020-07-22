@@ -51,10 +51,10 @@ struct Big2DetailPopUp: View {
             self.selectedPlayer = index
         }) {
             VStack {
-                ImageView(withURL: self.viewModel.filteredDisplayBoard![index].img_url)
+                ImageView(withURL: self.viewModel.filteredDisplayBoard![index].imgUrl)
                     .ImageStyle(size: 40)
                     .overlay(Circle().stroke(selectedPlayer == index ? Color.red:Color.clear, lineWidth: 4))
-                Text("\(self.viewModel.filteredDisplayBoard![index].user_name)")
+                Text("\(self.viewModel.filteredDisplayBoard![index].userName)")
                     .foregroundColor(Color.black)
                     .font(ChineseFont.regular.size(12))
                 Text("($\(getAmount(who:index))) \(selectedNumber[index])")
@@ -143,7 +143,7 @@ struct Big2DetailPopUp: View {
     
     func winnerArea() ->some View{
         HStack{
-            ImageView(withURL: (viewModel.winner!.img_url ))
+            ImageView(withURL: (viewModel.winner!.imgUrl ))
                 .ImageStyle(size: 80)
             VStack{
                 Text("$\(getWinnerAmount())").textStyle(size: 30,color: Color.green).frame(width:90)

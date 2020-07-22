@@ -12,25 +12,38 @@ import Combine
 
 struct GameViewUpperArea: View {
     
-    @Binding var user: User?
-    var credit : Int
-    var debit : Int
-        
+    @ObservedObject var viewModel: GameUpperViewModel
+    
+    init(balanceObj : UpperResultObject,showPercent:Bool) {
+        viewModel = GameUpperViewModel(balanceObj: balanceObj,showPercent:showPercent)
+    }
+    
+    
     var body: some View {
         VStack{
-            self.amountArea(amt: "\(user?.balance ?? 0)", text: "Total Balance")
+            self.amountArea()
                 .frame(maxWidth:.infinity)
                 .padding()
-            }
+        }.onTapGesture {
+//            self.showPercent.toggle()
+        }
         .background(Color.redColor)
     }
     
-    func amountArea(amt: String , text : String) -> some View{
+    func amountArea() -> some View{
         VStack{
-            Text(amt)
+            Text("\(self.viewModel.balance)")
                 .font(.title)
                 .foregroundColor(Color.white)
-            Text(text)
+            HStack{
+                Text("vLM: \(self.viewModel.mtlm)")
+                    .textStyle(size: 10,color: Color.white)
+//                    .padding([.leading,.trailing,.top])
+                Text("vLY: \(self.viewModel.mtly)")
+                    .textStyle(size: 10,color: Color.white)
+//                    .padding([.leading,.trailing,.bottom])
+            }
+            Text("Total Balance")
                 .font(.footnote)
                 .foregroundColor(Color.white)
         }

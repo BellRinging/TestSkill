@@ -16,6 +16,7 @@ enum Linkage: String {
     case MyAccount
     case PlayGroup
     case Friend
+    case Location
     case Language
     case ContactUs
     case logout
@@ -36,6 +37,8 @@ class MenuPageViewModel: ObservableObject {
     @Published var isShowFriend : Bool = false
     @Published var isShowTerm : Bool = false
     @Published var isShowContactUs : Bool = false
+    @Published var isShowLocation : Bool = false
+    var version : String = ""
     @Published var isShowAccount : Bool = false{
         didSet{
             if isShowAccount == false{
@@ -48,6 +51,10 @@ class MenuPageViewModel: ObservableObject {
     
     init(){
         user = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!
+        
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ,let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String{
+            self.version = "\(version).\(build)"
+        }
     }
     
     func refreshUser(){
@@ -59,6 +66,7 @@ class MenuPageViewModel: ObservableObject {
     ItemObj(icon: "person.fill", caption: "My Account", action: Linkage.MyAccount),
     ItemObj(icon: "person.2.fill", caption: "Play Group", action: Linkage.PlayGroup),
     ItemObj(icon: "person.3.fill", caption: "Friend", action: Linkage.Friend),
+    ItemObj(icon: "location", caption: "Location", action: Linkage.Location),
     ItemObj(icon: "textformat.abc", caption: "Language", action: Linkage.Language),
     ItemObj(icon: "bubble.left.and.bubble.right.fill", caption: "Contact Us", action: Linkage.ContactUs),
     ItemObj(icon: "arrow.right.square", caption: "Logout", action: Linkage.logout)
@@ -79,6 +87,11 @@ class MenuPageViewModel: ObservableObject {
             case .PlayGroup:
                 withAnimation {
                     isShowPlayGroup = true
+                }
+                return
+            case .Location:
+                withAnimation {
+                    isShowLocation = true
                 }
                 return
             case .Language:
@@ -102,6 +115,8 @@ class MenuPageViewModel: ObservableObject {
             }
     }
 
+
+        
     func logout(){
         try! Auth.auth().signOut()
         GIDSignIn.sharedInstance().signOut()

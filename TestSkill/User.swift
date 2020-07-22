@@ -1,6 +1,7 @@
 import UIKit
 import Firebase
 import Promises
+import FirebaseFirestore
 
 
 struct User : Identifiable,Codable,Equatable,Hashable  {
@@ -11,14 +12,14 @@ struct User : Identifiable,Codable,Equatable,Hashable  {
     public var  lastName: String?
     public var  email: String
     public var  imgUrl : String
-    public var balance : Int
+//    public var  balance : Int
     public var  friends: [String]
     public var  fdsRequest: [String]
     public var  fdsPending: [String]
     public var  fcmToken: String
     public var  userType: String
     public var  owner: String
-
+    public var  yearBalance: [Int:Int]
     
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.email == rhs.email
@@ -27,6 +28,21 @@ struct User : Identifiable,Codable,Equatable,Hashable  {
 
 
 extension User {
+    
+    func delete() -> Promise<Void> {
+        let p = Promise<Void> { (resolve , reject) in
+            let db = Firestore.firestore()
+            db.collection("users").document(self.id).delete { (err) in
+                guard err == nil  else {
+                     return reject(err!)
+                 }
+                print("delete user: \(self.id)")
+                return resolve(())
+            }
+        }
+        return p
+    }
+    
     
     
     static func getUserObject() -> Promise<User?>  {
@@ -97,17 +113,20 @@ extension User {
     static func getById(id: String) -> Promise<User?>  {
         let p = Promise<User?> { (resolve , reject) in
             let db = Firestore.firestore()
-            
-            let ref = db.collection("users").document(id)
+            var ref = db.collection("users").document(id)
+//            print(ref.path)
             ref.getDocument { (snapshot, err) in
                 if let err = err{
+//                    print(err)
                     reject(err)
                 }
+                 
                 guard let dict = snapshot?.data() else {
-                    print("No User found")
+                    print("No User found :\(id)")
                     resolve(nil)
                     return
                 }
+//                print("i3")
                 do {
                     let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
                     let group = try JSONDecoder.init().decode(User.self, from: data)
@@ -115,6 +134,7 @@ extension User {
                 }catch{
                     reject(error)
                 }
+//                print("i4")
             }
         }
         return p
@@ -133,6 +153,40 @@ extension User {
             print("Update fcmtoken for \(self.id)")
             resolve(self)
         }
+    }
+    
+    
+    func getGamesWithin2Year(groupId : String ) -> Promise<[Game]> {
+        let p = Promise<[Game]> { (resolve , reject) in
+            
+            let db = Firestore.firestore()
+            let year = Utility.getPerviousYear()
+            var query = db.collection("games").order(by: "date", descending: true)
+            query = query.whereField("groupId", isEqualTo: groupId)
+            query = query.whereField("playersId", arrayContains: self.id)
+            query = query.whereField("date",isGreaterThan: "\(year)0000")
+            var groups : [Game] = []
+            query.getDocuments { (snap, error) in
+                
+                guard error == nil  else {
+                    print(error)
+                    return reject(error!)
+                }
+                guard let documents = snap?.documents else {return}
+//                print("Game count : \(documents.count)")
+                for doc in documents {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
+                        let  group = try JSONDecoder.init().decode(Game.self, from: data)
+                        groups.append(group)
+                    }catch{
+                        reject(error)
+                    }
+                }
+                resolve(groups)
+            }
+        }
+        return p
     }
     
     static func getAllItem() -> Promise<[User]> {
@@ -276,14 +330,14 @@ extension User {
     }
 
 
-    func updateBalance(value : Int ,absoluteValue : Bool = false) -> Promise<User>{
+    func updateBalance(value : Int ,year : Int,absoluteValue : Bool = false) -> Promise<User>{
         return Promise<User> { (resolve , reject) in
             let db = Firestore.firestore()
             var data : [String : Any]
             if absoluteValue {
-                data = ["balance": value]
+                data = ["yearBalance.\(year)": value]
             }else{
-                data = ["balance": FieldValue.increment(Int64(value))]
+                data = ["yearBalance.\(year)": FieldValue.increment(Int64(value))]
             }
             let ref = db.collection("users").document(self.id)
             ref.updateData(data as [String : Any]) { (err) in

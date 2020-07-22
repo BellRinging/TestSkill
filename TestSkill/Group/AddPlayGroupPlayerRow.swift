@@ -22,18 +22,12 @@ struct AddPlayGroupPlayerRow : View {
             }.padding()
             if (players.count > 2) {
                 ForEach(0...2 ,id: \.self) { (index) in
-                    VStack{
-                        ImageView(withURL: self.players[index].imgUrl).standardImageStyle()
-                        Text("\(self.players[index].userName ?? "")").textStyle(size: 10).frame(width: 60)
-                    }
+                    UserDisplay(user: self.players[index])
                 }
                 Text("More").textStyle(size: 8,color: Color.redColor)
             }else{
                 ForEach(players ,id: \.id) { (player) in
-                    VStack{
-                        ImageView(withURL: player.imgUrl).standardImageStyle()
-                        Text("\(player.userName ?? "")").textStyle(size: 10).frame(width: 60)
-                    }
+                    UserDisplay(user: player)
                 }
             }
             Spacer()

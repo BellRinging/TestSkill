@@ -13,10 +13,6 @@ typealias MainFont = Font2.HelveticaNeue
 typealias ChineseFont = Font2.PingFangHK
 
 
-enum LoginStatus: String {
-    case login = "login"
-    case logout = "logout"
-}
 
 
 enum Font2 {
@@ -103,11 +99,6 @@ extension View {
         return ModifiedContent(content: self, modifier: TitleFont(size: 16,color : color))
     }
 
-    func bigTitleStyle(color : Color = Color.textColor) -> some View {
-        return ModifiedContent(content: self, modifier: TextFont(size: 24,color : color))
-    }
-    
-    
      func normalTextStyle(color : Color = Color.textColor) -> some View {
             return ModifiedContent(content: self, modifier: TextFont(size: 16,color : color))
         }

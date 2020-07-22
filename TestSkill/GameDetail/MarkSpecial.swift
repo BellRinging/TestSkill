@@ -35,19 +35,11 @@ struct MarkSpecialView: View {
                 }
             }
             .navigationBarTitle("Mark Special", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton(){
+                self.viewModel.markSpecial()
+                }
+            )
         }
-    }
-    
-
-    func ConfirmButton() -> some View {
-        Button(action: {
-            self.viewModel.markSpecial()
-        }, label:{
-            Text("確認").foregroundColor(Color.white)
-            
-        }).padding()
-            .shadow(radius: 5)
     }
 
 }

@@ -46,7 +46,6 @@ class MarkSpecialViewModel : ObservableObject {
     
     
     func updatePosition(playerIndex : Int ){
-  
         if playersOffset[playerIndex] == win1xPosition {
             playersOffset[playerIndex] = !hasLoser ? lose1xPosition : win2xPosition
             
@@ -71,15 +70,16 @@ class MarkSpecialViewModel : ObservableObject {
         
         //winner amount
         var totalAmount : Int = 0
-        for i in 0...2 {
-            if (self.playersOffset[i] >= lose1xPosition ){
-                self.playersAmt[i] = playersOffset[i] == lose1xPosition ? specialItemAmt : specialItemAmt*2
+        for i in 0...3 {
+            if (self.playersOffset[i] >= win1xPosition ){
+                self.playersAmt[i] = playersOffset[i] == win1xPosition ? specialItemAmt : specialItemAmt*2
                 totalAmount = totalAmount + self.playersAmt[i]
             }
         }
+//        print("total \(totalAmount)")
         //loser amount
-        for i in 0...2 {
-            if (self.playersOffset[i] < lose1xPosition ){
+        for i in 0...3 {
+            if (self.playersOffset[i] == lose1xPosition ){
                 self.playersAmt[i] =  totalAmount * -1
                 break
             }
@@ -89,9 +89,16 @@ class MarkSpecialViewModel : ObservableObject {
     
 
     func markSpecial(){
+        let uid = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
+        if uid != self.game.owner{
+            Utility.showAlert(message: "Only Owner can mark record")
+            return
+        }
         
+        print(hasLoser)
         if (!hasLoser){
             Utility.showAlert(message: "Not valid setting")
+            return
         }
         
         Utility.showProgress()
@@ -105,9 +112,11 @@ class MarkSpecialViewModel : ObservableObject {
         let datetime = formatter.string(from: Date())
         let playersList = self.game.playersMap
         let period = self.game.period
-        
+        var involvedPlayer = whoLoseList
+        involvedPlayer.append(contentsOf: whoWinList)
+        involvedPlayer = Array(Set(involvedPlayer))
     
-        for i in 0...2 {
+        for i in 0...3 {
             if (self.playersOffset[i] >= win1xPosition ){
                 whoWinList.append(self.players[i].id)
                 if (self.playersOffset[i] == win2xPosition ){
@@ -132,6 +141,7 @@ class MarkSpecialViewModel : ObservableObject {
                                     byErrorFlag: 0,
                                     repondToLose:0,
                                     playerList:playersList,
+                                    involvedPlayer: involvedPlayer,
                                     period:period,
                                     createDateTime:datetime,
                                     detailNo: detailNo,
@@ -144,17 +154,34 @@ class MarkSpecialViewModel : ObservableObject {
             let uid = Auth.auth().currentUser!.uid
             var updateAmount = 0
             
-            for i in 0...2 {
-                let amount = self.game.result[self.players[i].id]! + winnerAmount
-                if self.players[i].id == uid {
+//            for i in 0...3 {
+//                let amount = self.game.result[self.players[i].id]! + winnerAmount
+//                if self.players[i].id == uid {
+//                    updateAmount = updateAmount + winnerAmount
+//                }
+//                self.game.result[self.players[i].id]! = amount
+//            }
+//
+            whoWinList.map {
+                let amount = self.game.result[$0]! + winnerAmount
+                if $0 == uid {
                     updateAmount = updateAmount + winnerAmount
                 }
-                self.game.result[self.players[i].id]! = amount
+                self.game.result[$0] = amount
             }
-          
+            whoLoseList.map {
+                let amount = self.game.result[$0]! + loserAmount
+                if $0 == uid {
+                    updateAmount = updateAmount + loserAmount
+                }
+                self.game.result[$0]! = amount
+            }
+            
+            
             let detailCount = self.game.detailCount
             self.game.detailCount = detailCount + 1
-            NotificationCenter.default.post(name: .updateUserBalance, object:  updateAmount)
+            let year = Int(period.prefix(4))!
+            NotificationCenter.default.post(name: .updateUserBalance, object:  (year,updateAmount))
             NotificationCenter.default.post(name: .updateLastGameRecord, object:  gameDetail)
             NotificationCenter.default.post(name: .updateGame, object:  self.game)
             self.closeFlag.toggle()

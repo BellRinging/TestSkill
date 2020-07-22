@@ -52,19 +52,9 @@ struct AddPlayGroupView: View {
             }
             .keyboardResponsive()
             .navigationBarTitle(self.viewModel.editGroup == nil ? "Add Game Group" : "Edit Game Group", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton(){self.viewModel.addGroup()})
         }.modal(isShowing: self.$viewModel.showPlayerSelection) {
             DisplayFriendView(closeFlag: self.$viewModel.showPlayerSelection, users: self.$viewModel.players)
-        }
-    }
-    
-    
-    func ConfirmButton() -> some View{
-        
-        Button(action: {
-            self.viewModel.addGroup()
-        }) {
-            Text("Confirm").foregroundColor(Color.white)
         }
     }
     

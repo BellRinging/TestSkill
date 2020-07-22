@@ -45,7 +45,7 @@ struct GameRecordDisplayViewRow: View {
                 Spacer()
                 Text("\(amt)")
                     .foregroundColor(win == 1 ? Color.greenColor:Color.redColor)
-                    .bigTitleStyle()
+                    .textStyle(size: 24)
             }
         }
     }

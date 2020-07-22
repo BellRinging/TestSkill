@@ -26,7 +26,17 @@ struct GameLK: View {
                 }
             }
             .navigationBarTitle("Game", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(self.$closeFlag))
+            .navigationBarItems(leading: CancelButton(self.$closeFlag),trailing: emptyReturn() )
+        }
+    }
+    
+    
+    func emptyReturn() -> some View{
+        Button(action: {
+            self.gameObj = nil
+            self.closeFlag.toggle()
+        }) {
+            Text("Empty Return")
         }
     }
 }

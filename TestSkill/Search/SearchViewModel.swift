@@ -15,6 +15,7 @@ class SearchViewModel: ObservableObject {
     @Published var location : [String] = ["Any","Hei Home","Ricky Home"]
     @Published var periods : [String] = ["Any"]
     @Published var fans : [String] = ["Any"]
+    @Published var winType : [String] = ["Any","Self","Other","Special"]
     @Published var selected : Int = 0
     @Published var isOn : Bool = false
     @Published var checkState:Bool = false
@@ -23,17 +24,27 @@ class SearchViewModel: ObservableObject {
     @Published var selectedPeriodGameLevel:Int = 0
     @Published var selectedFanDetailLevel:Int = 0
     @Published var selectedLocation:Int = 0
+    @Published var selectedWinType:Int = 0
+    
+    
     @Published var amount:String = "0"
-    @Published var radioSelection:String = "Game"
+    @Published var radioSelection:String = "Game Detail"
     @Published var radioWinLoses:String = "Any"
     @Published var playersDetailLevel : [User] = []
     @Published var playersGameLevel : [User] = []
+    @Published var playersExclude : [User] = []
     @Published var showSelectPlayerDetailLevel : Bool = false
     @Published var showSelectPlayerGameLevel : Bool = false
     @Published var showSearchGame : Bool = false
+    @Published var showSelectGame : Bool = false
     @Published var showSearchGameDetail : Bool = false
+    @Published var showExcludePlayer : Bool = false
+    
+    
+    @Published var selectedGame : Game?
     var games : [Game] = []
-    var gameRecords : [GameRecord] = []
+    var gameDetails : [GameDetail] = []
+    var refUser : User?
       
     let periodFormater : DateFormatter = {
         let dateFormatterPrint = DateFormatter()
@@ -72,12 +83,13 @@ class SearchViewModel: ObservableObject {
          let uid = Auth.auth().currentUser!.uid
         print("user:\(uid)")
         if self.radioSelection == "Game" {
-            Game.getItemBySearch(
+            Game.search(
                                   userId: uid,
                                   period: periods[selectedPeriodGameLevel],
                                   win: radioWinLoses,
                                   amount: Int(amount) ?? 0,
                                   players: playersGameLevel,
+                                  playerExclude: playersExclude,
                                   location: location[selectedLocation]
                               ).then { (games) in
                                   print(games.count)
@@ -86,25 +98,21 @@ class SearchViewModel: ObservableObject {
                                 
                               }
         }else {
-            GameRecord.getAllItem(
-                       userId: uid,
-                       fan: fans[selectedFanDetailLevel] ,
-                       period: periods[selectedPeriodDetailLevel],
-                       win: winLoses[selectedWinLose],
-                       players: playersDetailLevel
-                   ).then { (gameRecords) in
-                    self.gameRecords = gameRecords
-                    print("show detail \(gameRecords.count)" )
+            self.refUser = playersDetailLevel.count == 0 ? nil:playersDetailLevel[0]
+            GameDetail.search(fan: fans[selectedFanDetailLevel] ,
+                              period: periods[selectedPeriodDetailLevel],
+                              win: winLoses[selectedWinLose],
+                              winType: winType[selectedWinType],
+                              game: selectedGame,
+                              player: self.refUser)
+                .then { (gameDetails) in
+                    self.gameDetails = gameDetails
+                    print("show detail \(gameDetails.count)" )
                     self.showSearchGameDetail = true
             }.catch { (err) in
                 print(err.localizedDescription)
             }
         }
-       
-        
-       
-        
-        
     }
     
 }

@@ -13,8 +13,8 @@ struct DisplayFriendView: View {
 
     @ObservedObject var viewModel: DisplayFriendViewModel
     
-    init(closeFlag : Binding<Bool> , users : Binding<[User]> ,maxSelection : Int = 999 ,includeSelf : Bool = true , onlyInUserGroup : Bool = false,hasDetail : Bool = false,acceptNoReturn : Bool = false , showSelectAll : Bool = true,showAddButton:Bool = false) {
-        viewModel = DisplayFriendViewModel(closeFlag: closeFlag, users: users,maxSelection: maxSelection ,includeSelf : includeSelf,onlyInUserGroup:onlyInUserGroup,hasDetail: hasDetail,acceptNoReturn:acceptNoReturn,showSelectAll:showSelectAll,showAddButton:showAddButton)
+    init(closeFlag : Binding<Bool> , users : Binding<[User]> ,maxSelection : Int = 999 ,includeSelfInReturn : Bool = true , onlyInUserGroup : Bool = false,hasDetail : Bool = false,acceptNoReturn : Bool = false , showSelectAll : Bool = true,showAddButton:Bool = false,includeSelfInSeletion:Bool = false) {
+        viewModel = DisplayFriendViewModel(closeFlag: closeFlag, users: users,maxSelection: maxSelection ,includeSelfInReturn : includeSelfInReturn,onlyInUserGroup:onlyInUserGroup,hasDetail: hasDetail,acceptNoReturn:acceptNoReturn,showSelectAll:showSelectAll,showAddButton:showAddButton,includeSelfInSeletion:includeSelfInSeletion)
     }
     
     
@@ -41,13 +41,13 @@ struct DisplayFriendView: View {
                 }
             }
             .navigationBarTitle("Display Friend", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: CButton())
         }.modal(isShowing: self.$viewModel.showAddFriend) {
             AddFriendView(closeFlag: self.$viewModel.showAddFriend)
         }.modal(isShowing: self.$viewModel.showFriendRequest) {
             FriendRequestView(closeFlag: self.$viewModel.showFriendRequest)
         }.modal(isShowing: self.$viewModel.showAddDummyFriend) {
-            LazyView(RegisterPage(closeFlag: self.$viewModel.showAddDummyFriend ,userType: "dummy"))
+            RegisterPage(closeFlag: self.$viewModel.showAddDummyFriend ,userType: "dummy")
         }
     }
     
@@ -90,19 +90,17 @@ struct DisplayFriendView: View {
         }
      }
 
-    func ConfirmButton() -> some View{
+    func CButton() -> some View{
         HStack{
             if (self.viewModel.showAddButton){
                 AddButton()
             }else{
                  Text("")
             }
-            if (self.viewModel.users.count > 0 && (self.viewModel.selectedUser.count > 0 || self.viewModel.acceptNoReturn)){
-                Button(action: {
+            if (self.viewModel.acceptNoReturn || self.viewModel.users.count > 0 && self.viewModel.selectedUser.count > 0){
+                ConfirmButton(){
                     self.viewModel.confirm()
-                }, label: {
-                    Text("Confirm").foregroundColor(Color.white)
-                })
+                }
             }else{
                 Text("")
             }

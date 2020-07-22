@@ -10,13 +10,10 @@ import SwiftUI
 
 struct SearchGameDetailView: View {
     
-    
-    
     @ObservedObject private var viewModel: SearchGameDetailViewModel
     
-    init(closeFlag : Binding<Bool>, gameRecords: [GameRecord]){
-        print("init Search Game Record View")
-        viewModel = SearchGameDetailViewModel(closeFlag : closeFlag,gameRecords: gameRecords)
+    init(closeFlag : Binding<Bool>, gameDetails: [GameDetail],refUser: User?){
+        viewModel = SearchGameDetailViewModel(closeFlag: closeFlag,gameDetails: gameDetails ,refUser: refUser)
     }
     
     
@@ -24,22 +21,34 @@ struct SearchGameDetailView: View {
     var body: some View {
         NavigationView{
             VStack{
-                if (self.viewModel.gameRecords.count == 0 ) {
+                if (self.viewModel.gameDetails.count == 0 ) {
                     Text("No data")
                 }else{
-                    List(self.viewModel.gameRecords) { record in
-                        GameRecordDisplayViewRow(gameRecords: record, currUser: self.viewModel.currUser, groupUser: self.viewModel.groupUser)
+                    List {
+                        ForEach(self.viewModel.sectionHeader, id: \.self) { gameId in
+                            Section(header: self.sectionArea(text:gameId)) {
+                                ForEach(self.viewModel.displayResult[gameId]! ,id: \.id) { gameDetail in
+                                    SearchGameDetailRow(gameDetail: gameDetail , refUser: self.viewModel.refUser)
+                                }
+                            }
+                        }
                     }
                 }
                 Spacer()
             }
-            .navigationBarTitle("Result: \(self.viewModel.gameRecords.count)", displayMode: .inline)
+            .navigationBarTitle("Result: \(self.viewModel.gameDetails.count)", displayMode: .inline)
             .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag))
         }
     }
     
-     
-    
-    
+    func sectionArea(text : String) -> some View {
+        HStack{
+            Text("\(self.viewModel.sectionHeaderString[text]!)").textStyle(size: 12)
+            Spacer()
+        }
+    }
 }
 
+
+    
+    

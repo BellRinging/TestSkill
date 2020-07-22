@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct GameRow: View {
     
@@ -24,25 +23,30 @@ struct GameRow: View {
                 Image(viewModel.game.gameType == "Big2" ? "Big2Icon" : "mahjongIcon")
                     .resizable()
                     .scaledToFit()
-//                    .frame(width:30)
-                Text(viewModel.date).font(MainFont.bold.size(12))
-                Text(viewModel.location).font(MainFont.light.size(10))
-            }
-            
-      
+                    .frame(width:50)
+                Text(viewModel.date).textStyle(size: 12)
+                Text(viewModel.location).textStyle(size: 10)
+            }.layoutPriority(1)
             
             ForEach(0..<viewModel.otherPlayers.count  ,id: \.self) { (index) in
                 VStack{
-                    ImageView(withURL: self.viewModel.otherPlayers[index].imgUrl).standardImageStyle()
-                        .overlay(Circle().stroke( self.viewModel.otherPlayersResult[index] ? Color.greenColor:Color.clear, lineWidth: 1.5))
-                    Text("\(self.viewModel.otherPlayers[index].userName ?? "")").textStyle(size: 10).frame(width: 50)
+                    ImageView(withURL: self.viewModel.otherPlayers[index].imgUrl)
+                        .standardImageStyle()
+                        .overlay(
+                            Circle()
+                                .stroke( self.viewModel.otherPlayersResult[index] ? Color.greenColor:Color.clear, lineWidth: 1.5))
+                    Text(self.viewModel.otherPlayers[index].userName)
+                        .textStyle(size: 10).frame(width: 50)
                 }
-                
             }
             Spacer()
-            Text("\(viewModel.amount)")
-                .foregroundColor(viewModel.win ? Color.greenColor:Color.redColor)
-            .bigTitleStyle()
+            if self.viewModel.currentPlayerExist {
+                Text("\(viewModel.amount)")
+                    .foregroundColor(viewModel.win ? Color.greenColor:Color.redColor)
+                    .textStyle(size: 24)
+            }else{
+                Text("N/A").textStyle(size: 20 ,color: Color.redColor)
+            }
         }
     }
 }

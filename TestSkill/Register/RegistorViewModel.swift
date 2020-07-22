@@ -51,7 +51,7 @@ class RegisterViewModel: ObservableObject {
         self.firstName = user!.firstName!
         self.lastName = user!.lastName!
         if user!.userType == "dummy"{
-            self.balance = "\(user!.balance)"
+            self.balance = "\(user!.yearBalance[Utility.getCurrentYear()] ?? 0)"
         }
         
         let url =  URL(string:user!.imgUrl)!
@@ -147,8 +147,9 @@ class RegisterViewModel: ObservableObject {
                 print("url :\(url)")
                 let providerUser = ProviderUser(userName: self.userName, firstName: self.firstName, lastName: self.lastName, email: self.email, imgUrl: url)
                 RegisterHelper.registerUserIntoDatabase(providerUser)
-                RegisterHelper.updateDisplayName(providerUser)
-                print("Profile created")
+                print("after registered")
+//                RegisterHelper.updateDisplayName(providerUser)
+//                print("Profile created")
                 self.closeFlag.toggle()
             }.catch{ err in
                 print("Fail to create login into firebase \(err.localizedDescription)")
@@ -173,17 +174,17 @@ class RegisterViewModel: ObservableObject {
     }
     
     func registerDummyUserIntoDatabase() {
-        
+        print("AAA")
         let uid = Auth.auth().currentUser!.uid
         let uuid = UUID().uuidString
         RegisterHelper.uploadImage(uid: uuid, inputImage: self.inputImage).then { (url) in
-            let value = ["email": "\(uuid)@dummy.com" ,
+            print("after AAA")
+            var value = ["email": "\(uuid)@dummy.com" ,
                 "id": uuid,
                 "userName": self.userName ,
                 "lastName": self.lastName ,
                 "firstName": self.firstName ,
                 "imgUrl": url,
-                "balance": Int(self.balance) ?? 0 ,
                 "friends": [uid],
                 "fdsRequest": [],
                 "fdsPending": [],
@@ -191,6 +192,9 @@ class RegisterViewModel: ObservableObject {
                 "userType" : "dummy",
                 "owner" : uid
                 ] as [String : Any]
+            var dict : [Int:Int] = [:]
+            dict[Utility.getCurrentYear()] = Int(self.balance) ?? 0
+            value["yearBalance"] = dict
             let ref = Firestore.firestore()
             let usersReference = ref.collection("users").document(uuid)
             usersReference.setData(value)
@@ -223,7 +227,9 @@ class RegisterViewModel: ObservableObject {
         
         print("list \(list)")
         if updateBalance {
-            list["balance"] = Int(self.balance) ?? 0
+            var dict : [Int:Int] = [:]
+            dict[Utility.getCurrentYear()] = Int(self.balance) ?? 0
+            list["yearBalance"] = dict
         }
         
         let ref = Firestore.firestore()
@@ -247,7 +253,7 @@ class RegisterViewModel: ObservableObject {
             }
             
             if updateBalance {
-                user.balance = Int(self.balance) ?? 0
+                user.yearBalance[Utility.getCurrentYear()] = Int(self.balance) ?? 0
             }
             NotificationCenter.default.post(name: .updateUser , object: user)
         }
@@ -262,6 +268,7 @@ class RegisterViewModel: ObservableObject {
                     reject(err!)
                     return
                 }
+                print("createUserInDb success return")
                 resolve(user)
             }
         }

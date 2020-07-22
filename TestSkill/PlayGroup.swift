@@ -105,6 +105,7 @@ extension PlayGroup {
                         let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
                         let group = try JSONDecoder.init().decode(PlayGroup.self, from: data)
                         groups.append(group)
+//                        print("finished get group")
                     }catch{
                         reject(error)
                     }

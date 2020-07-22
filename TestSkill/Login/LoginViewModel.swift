@@ -66,8 +66,11 @@ class LoginViewModel: ObservableObject {
     func normalLoginByUser(email:String,password:String) ->Promise<FirebaseAuth.User>{
          let p = Promise<FirebaseAuth.User> { (resolve , reject) in
              Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+//                print(error)
+//                print(result)
                  if let err = error {
                      reject(err)
+                    return
                  }
                  print("login by email success ,show main page")
           

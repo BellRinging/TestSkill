@@ -33,13 +33,26 @@ struct SearchView: View {
                             Text("Players").foregroundColor(Color.primary)
                             Spacer()
                             ForEach(viewModel.playersDetailLevel) { (player) in
-                                VStack{
-                                    ImageView(withURL: player.imgUrl).standardImageStyle()
-                                    Text("\(player.userName ?? "")").textStyle(size: 10).frame(width: 60)
-                                }
+                                UserDisplay(user:player)
                             }
                         }
                     }
+                    
+                    Button(action: {
+                                    withAnimation {
+                                        self.viewModel.showSelectGame = true
+                                    }
+                                }) {
+                                    HStack{
+                                        Text("Game").foregroundColor(Color.primary)
+                                        Spacer()
+                                        if self.viewModel.selectedGame != nil{
+                                            VStack{
+                                                Text("\(self.viewModel.selectedGame!.date) \(self.viewModel.selectedGame!.location)")
+                                            }
+                                        }
+                                    }
+                                }
                     
                     HStack{
                         Picker(selection: $viewModel.selectedWinLose,
@@ -60,6 +73,17 @@ struct SearchView: View {
                                 }
                         })
                     }
+                    HStack{
+                        Picker(selection: self.$viewModel.selectedWinType,
+                               label: Text("Win Type"),
+                               content: {
+                                ForEach(0 ..< self.viewModel.winType.count,id: \.self) {
+                                    Text("\(self.viewModel.winType[$0])").tag($0)
+                                }
+                        })
+                        
+                    }
+                    
                     HStack{
                         Picker(selection: self.$viewModel.selectedFanDetailLevel,
                                label: Text("Fans"),
@@ -82,12 +106,24 @@ struct SearchView: View {
                             Text("Comination").foregroundColor(Color.primary)
                             Spacer()
                             ForEach(viewModel.playersGameLevel) { (player) in
-                                VStack{
-                                    ImageView(withURL: player.imgUrl).standardImageStyle()
-                                    Text("\(player.userName ?? "")").textStyle(size: 10).frame(width: 60)
-                                }
-                                
+                                UserDisplay(user: player)
                             }
+                            Spacer()
+                        }
+                    }
+                    Button(action: {
+                        withAnimation {
+                            
+                            self.viewModel.showExcludePlayer = true
+                        }
+                    }) {
+                        HStack{
+                            Text("Exclude").foregroundColor(Color.primary)
+                            Spacer()
+                            ForEach(viewModel.playersExclude) { (player) in
+                                UserDisplay(user: player)
+                            }
+                            Spacer()
                         }
                     }
                     HStack{
@@ -118,39 +154,40 @@ struct SearchView: View {
                         })
                     }
                 }
-                Button(action: {
-                                        self.viewModel.search()
-                                    }, label:{
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .fill(Color.greenColor)
-                                            .frame(maxWidth:.infinity )
-                                            .frame(height: 40)
-                                            .shadow(radius: 5)
-                                            .overlay(
-                                                Text("Search").foregroundColor(Color.white))
-                                    })
-                .padding()
+  
+                
                 }
                
             }
      
             .navigationBarTitle("Search", displayMode: .inline)
+            .navigationBarItems(trailing: ConfirmButton(){
+                 self.viewModel.search()
+            })
         }.onAppear(){
             self.viewModel.initPeriod()
             self.viewModel.initFan()
         }
         .modal(isShowing: self.$viewModel.showSelectPlayerDetailLevel) {
-            LazyView(DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerDetailLevel, users: self.$viewModel.playersDetailLevel, maxSelection: 1 ,includeSelf : false,acceptNoReturn: true ,showSelectAll: false))
+            DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerDetailLevel, users: self.$viewModel.playersDetailLevel, maxSelection: 1 ,includeSelfInReturn: false, acceptNoReturn: true ,showSelectAll: false,includeSelfInSeletion : true)
         }.modal(isShowing: self.$viewModel.showSelectPlayerGameLevel) {
-            LazyView(DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerGameLevel, users: self.$viewModel.playersGameLevel, maxSelection: 3 ,includeSelf : true,showSelectAll: false))
+            DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerGameLevel, users: self.$viewModel.playersGameLevel, maxSelection: 4 ,includeSelfInReturn: false, acceptNoReturn: true, showSelectAll: false,includeSelfInSeletion : true)
+        }
+        .modal(isShowing: self.$viewModel.showExcludePlayer) {
+            DisplayFriendView(closeFlag: self.$viewModel.showExcludePlayer, users: self.$viewModel.playersExclude, includeSelfInReturn: false, acceptNoReturn: true, showSelectAll: false,includeSelfInSeletion : true)
         }
         .modal(isShowing: self.$viewModel.showSearchGame) {
-            LazyView(SearchGameView(closeFlag:self.$viewModel.showSearchGame,games:self.viewModel.games))
+            SearchGameView(closeFlag:self.$viewModel.showSearchGame,games:self.viewModel.games)
         }
         .modal(isShowing: self.$viewModel.showSearchGameDetail) {
-            LazyView(SearchGameDetailView(closeFlag:self.$viewModel.showSearchGameDetail,gameRecords:self.viewModel.gameRecords))
-           }
+            SearchGameDetailView(closeFlag:self.$viewModel.showSearchGameDetail,gameDetails:self.viewModel.gameDetails,refUser: self.viewModel.refUser)
+        }
+        .modal(isShowing: self.$viewModel.showSelectGame) {
+            GameLK(closeFlag:self.$viewModel.showSelectGame,gameObj : self.$viewModel.selectedGame)
+        }
     }
+    
+ 
     
 
 }

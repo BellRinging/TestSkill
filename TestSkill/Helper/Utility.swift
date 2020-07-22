@@ -2,20 +2,20 @@ import MBProgressHUD
 import SwiftEntryKit
 import SwiftUI
 typealias Action = () -> ()
+
+
 class Utility {
     
     static var currentNonce : String?
     
     static func showProgress(){
-        print("Show Progress")
+
         DispatchQueue.main.async {
-      
             guard let mainWindow = UIApplication.shared.window else {return}
             let progressIcon = MBProgressHUD.showAdded(to: mainWindow, animated: true)
             progressIcon.labelText = "Loading"
             progressIcon.isUserInteractionEnabled = false
             //tempView
-            
             let tempView = UIView(frame: (mainWindow.frame))
             tempView.backgroundColor = UIColor(white: 0, alpha: 0.2)
             tempView.tag = 999
@@ -26,7 +26,6 @@ class Utility {
     
     static func hideProgress(){
         DispatchQueue.main.async {
-            print("hide Progress")
             guard let mainWindow =  UIApplication.shared.window else {return}
             MBProgressHUD.hideAllHUDs(for: mainWindow, animated: true)
             let view = mainWindow.viewWithTag(999)
@@ -35,7 +34,7 @@ class Utility {
     }
     
    
-    static func showAlert(message : String , callBack : Action?  = nil){
+    static func showAlert(message : String , callBack : (Action)?  = nil){
            
         var alertView = CustomAlertView(message: message)
         if let callBack = callBack{
@@ -87,5 +86,48 @@ class Utility {
 
       return result
     }
+    
+    static func getUserObject(id: String) -> User {
+        let group = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
+        let index = group.firstIndex { $0.id == id }!
+        return group[index]
+    }
+    
+    static func getCurrentYear() -> Int {
+        let date = Date()
+        let calendar = Calendar.current
+        return calendar.component(.year, from: date)
+    }
+    
+    static func getPerviousYear() -> Int {
+        let date = Date()
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date) - 1
+        return year
+    }
+    
+    static func getPYTM() -> String {
+        let date = Date()
+        var lastMonthDate = Calendar.current.date(byAdding: .year, value: -1, to: date)
+        let format = DateFormatter()
+        format.dateFormat = "yyyyMM"
+        return format.string(from: date)
+    }
+    
+    static func getLM() -> String {
+        let date = Date()
+        var lastMonthDate = Calendar.current.date(byAdding: .month, value: -1, to: date)
+        let format = DateFormatter()
+        format.dateFormat = "yyyyMM"
+        return format.string(from: lastMonthDate!)
+    }
+    static func getCM() -> String {
+        let date = Date()
+        let format = DateFormatter()
+        format.dateFormat = "yyyyMM"
+        return format.string(from: date)
+    }
+    
+    
     
 }

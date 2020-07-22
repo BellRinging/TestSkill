@@ -26,14 +26,11 @@ class GameDetailViewModel: ObservableObject {
     var calimWaterFan : Int = 0
     var specialItemAmount : Int = 0
     var bonusPerDraw : Int = 0
-    
-    
-    
     var lastGameWin : [User] = []
     var lastGameLose : [User] = []
     var lastGameType : String = ""
     var lastGameFan : Int = 0
-
+    var owner : String = ""
     
     lazy var background: DispatchQueue = {
         return DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
@@ -63,7 +60,15 @@ class GameDetailViewModel: ObservableObject {
     
     init(game : Game , lastGameDetail: GameDetail?){
         self.game = game
+        
+        
+        
         self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
+        let ownerObj = groupUsers.filter{$0.id == game.owner}.first!
+        self.owner = ownerObj.userName
+        
+        
+        
         self.lastGameDetail = lastGameDetail
         self.loadLastGameRecord()
     }
@@ -141,7 +146,11 @@ class GameDetailViewModel: ObservableObject {
     
 
     func eat(_ who:Int){
-        
+        let uid = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
+        if uid != self.game.owner{
+            Utility.showAlert(message: "Only Owner can mark record")
+            return
+        }
         whoWin = who
         winner = self.displayBoard[who]
         filteredDisplayBoard = self.displayBoard.filter{$0.id != self.displayBoard[who].id}
@@ -175,6 +184,11 @@ class GameDetailViewModel: ObservableObject {
     }
     
     func markDraw(){
+        let uid = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
+            if uid != self.game.owner{
+                Utility.showAlert(message: "Only Owner can mark record")
+                return
+            }
         Utility.showProgress()
         let detailNo = game.detailCount + 1
         var value = self.bonusPerDraw
@@ -188,7 +202,8 @@ class GameDetailViewModel: ObservableObject {
         let uuid = UUID().uuidString
         let winType = "draw"
         let bonus =  value * 4
-        let gameDetail = GameDetail(id: uuid, gameId: self.game.id, fan: 0, value: value, winnerAmount: 0, loserAmount: value * -1 , whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: 0,repondToLose:0,playerList:playersList,period:period,createDateTime:datetime,detailNo: detailNo,bonusFlag: 0 , bonus: bonus,waterFlag: 0,waterAmount: 0)
+        let involvedPlayer = self.game.playersId
+        let gameDetail = GameDetail(id: uuid, gameId: self.game.id, fan: 0, value: value, winnerAmount: 0, loserAmount: value * -1 , whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: 0,repondToLose:0,playerList:playersList,involvedPlayer: involvedPlayer, period:period,createDateTime:datetime,detailNo: detailNo,bonusFlag: 0 , bonus: bonus,waterFlag: 0,waterAmount: 0)
         gameDetail.save().then { (gameDetail)  in
             let uid = Auth.auth().currentUser!.uid
             whoLoseList.map { (loser)  in
@@ -199,7 +214,9 @@ class GameDetailViewModel: ObservableObject {
             self.game.detailCount = detailCount + 1
             self.game.bonusFlag = 1
             self.game.bonus = (self.game.bonus ?? 0 ) + value * 4
-            NotificationCenter.default.post(name: .updateUserBalance, object:  value * -1)
+            
+            let year = Int(period.prefix(4))!
+            NotificationCenter.default.post(name: .updateUserBalance, object:  (year,value * -1))
             NotificationCenter.default.post(name: .updateLastGameRecord, object:  gameDetail)
             NotificationCenter.default.post(name: .updateGame, object:  self.game)
         }.catch { (error) in
@@ -208,6 +225,17 @@ class GameDetailViewModel: ObservableObject {
     }
     
     func rollback(){
+        let uid = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
+        if uid != self.game.owner{
+            Utility.showAlert(message: "Only Owner can mark record")
+            return
+        }
+        if self.lastGameDetail == nil {
+            Utility.showAlert(message: "No last record")
+            return
+        }
+        
+        
         Utility.showProgress()
         if let lastRecord = self.lastGameDetail {
             let uid = Auth.auth().currentUser!.uid
@@ -220,6 +248,7 @@ class GameDetailViewModel: ObservableObject {
             let bonusFlag = lastRecord.bonusFlag ?? 0
             let waterFlag = lastRecord.waterFlag ?? 0
             let waterAmount = lastRecord.waterAmount ?? 0
+            let year = Int(self.game.period.prefix(4))!
             lastRecord.whoWin.map {
                 if $0 == uid {
                     needUpdateBalance = true
@@ -258,7 +287,9 @@ class GameDetailViewModel: ObservableObject {
                 self.game.result = result
                                 
                 if (needUpdateBalance){
-                    NotificationCenter.default.post(name: .updateUserBalance, object:  updateAmount)
+                    let temp = (year ,updateAmount)
+               
+                    NotificationCenter.default.post(name: .updateUserBalance, object:  temp)
                 }
                 NotificationCenter.default.post(name: .updateLastGameRecord, object:  nil)
                 NotificationCenter.default.post(name: .updateGame, object:  self.game)
@@ -319,8 +350,9 @@ class GameDetailViewModel: ObservableObject {
         if waterFlag == 1 {
             winnerAmount = winnerAmount - calimWaterAmount
         }
-        
-        let gameDetail = GameDetail(id: uuid, gameId: self.game.id, fan: fan, value: value, winnerAmount: winnerAmount, loserAmount: loserAmount, whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: byErrorFlag,repondToLose:loserRespond,playerList:playersList,period:period,createDateTime:datetime,detailNo: detailNo,bonusFlag: getTheBonusFlag,bonus: bonus,waterFlag: waterFlag,waterAmount: calimWaterAmount)
+        var involvedPlayer = whoWinList
+        involvedPlayer.append(contentsOf: whoLoseList)
+        let gameDetail = GameDetail(id: uuid, gameId: self.game.id, fan: fan, value: value, winnerAmount: winnerAmount, loserAmount: loserAmount, whoLose: whoLoseList, whoWin: whoWinList, winType: winType ,byErrorFlag: byErrorFlag,repondToLose:loserRespond,playerList:playersList,involvedPlayer:involvedPlayer, period:period,createDateTime:datetime,detailNo: detailNo,bonusFlag: getTheBonusFlag,bonus: bonus,waterFlag: waterFlag,waterAmount: calimWaterAmount)
         gameDetail.save().then { (gameDetail)  in
             if getTheBonusFlag == 1 {
                 self.game.bonusFlag = 0
@@ -353,7 +385,9 @@ class GameDetailViewModel: ObservableObject {
             let detailCount = self.game.detailCount
             self.game.detailCount = detailCount + 1
             if (needUpdateBalance){
-                NotificationCenter.default.post(name: .updateUserBalance, object:  updateAmount)
+                let year = Int(self.game.period.prefix(4))!
+                let temp = (year,updateAmount)
+                NotificationCenter.default.post(name: .updateUserBalance, object:  temp)
             }
             NotificationCenter.default.post(name: .updateLastGameRecord, object:  gameDetail)
             NotificationCenter.default.post(name: .updateGame, object:  self.game)

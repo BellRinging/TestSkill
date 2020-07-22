@@ -11,15 +11,15 @@ import Foundation
 
 public struct DisplayBoard : Codable  {
     let id : String
-    let user_name: String
-    let img_url : String
+    let userName: String
+    let imgUrl : String
     var balance : Int
     let order : Int
 
     
     init(dict : [String:Any]) {
-        self.user_name = (dict["name"] as? String ?? "")
-        self.img_url = (dict["imgUrl"] as? String ?? "")
+        self.userName = (dict["name"] as? String ?? "")
+        self.imgUrl = (dict["imgUrl"] as? String ?? "")
         self.id = (dict["id"] as? String ?? "")
         self.balance = (dict["balance"] as? Int ?? 0)
         self.order = (dict["order"] as? Int ?? 0)
@@ -29,10 +29,10 @@ public struct DisplayBoard : Codable  {
 
 
 
-public struct DisplayBoardBig2 : Codable  {
+public struct DisplayBoardForBig2 : Codable  {
     let id : String
-    let user_name: String
-    let img_url : String
+    let userName: String
+    let imgUrl : String
     var balance : Int
     let order : Int
     let winCount : Int
@@ -45,8 +45,8 @@ public struct DisplayBoardBig2 : Codable  {
     var totalCards : Int
     
     init(dict : [String:Any]) {
-        self.user_name = (dict["name"] as? String ?? "")
-        self.img_url = (dict["imgUrl"] as? String ?? "")
+        self.userName = (dict["name"] as? String ?? "")
+        self.imgUrl = (dict["imgUrl"] as? String ?? "")
         self.id = (dict["id"] as? String ?? "")
         self.balance = (dict["balance"] as? Int ?? 0)
         self.order = (dict["order"] as? Int ?? 0)

@@ -26,6 +26,15 @@ public struct RKViewController: View {
                 HStack {
                     Text("Done")
                     Spacer()
+//                    Button(action: {
+//                                      let currentDate = self.rkManager.minimumDate
+//                                      var dateComponent = DateComponents()
+//                                      dateComponent.year = -1
+//                                      let futureDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
+//                                      self.rkManager.minimumDate = futureDate!
+//                                  }) {
+//                                      Text("Load More")
+//                                  }
                 }.padding(15)
             }
             rkManager.isWeeklyView ? AnyView(weeklyBody) : AnyView(monthlyBody)
@@ -62,7 +71,7 @@ public struct RKViewController: View {
      //      ScrollableView(self.$contentOffset, axis: .horizontal) {
         ScrollView (.horizontal) {
             HStack {
-                ForEach(0..<self.numberOfMonths()) { index in
+                ForEach(0..<self.numberOfMonths() ) { index in
                     VStack (spacing: 15) {
                         Divider()
                         HStack {
@@ -87,6 +96,7 @@ public struct RKViewController: View {
         ScrollableView(self.$contentOffset) {
             //     ScrollView(.vertical) {
             VStack (spacing: 25) {
+              
                 ForEach(0..<self.numberOfMonths()) { index in
                     VStack(alignment: HorizontalAlignment.center, spacing: 15){
                         RKMonthHeader(rkManager: self.rkManager, monthOffset: index)

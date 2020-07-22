@@ -16,10 +16,7 @@ struct AddFriendRow: View {
     
     var body: some View {
         HStack(alignment: .center){
-            VStack{
-                ImageView(withURL: user.imgUrl).standardImageStyle()
-                Text(user.userName).textStyle(size: 10).frame(width: 60)
-            }
+            UserDisplay(user:user)
             Text(user.email).textStyle(size: 12)
             
             if status == 0 {
@@ -39,9 +36,3 @@ struct AddFriendRow: View {
         }.padding(.horizontal)
     }
 }
-
-//struct FriendRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FriendRow()
-//    }
-//}

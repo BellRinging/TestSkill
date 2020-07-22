@@ -7,34 +7,159 @@
 //
 
 import SwiftUI
+import UIKit
+import SwiftEntryKit
 
 struct LocationView: View {
     
     @ObservedObject var viewModel : LocationViewModel
     
-    init(closeFlag : Binding<Bool>,location : Binding<String>){
-        viewModel = LocationViewModel(closeFlag: closeFlag , location : location)
+    init(closeFlag : Binding<Bool>,location : Binding<String> = Binding.constant("") ,singleSelect : Bool = false){
+        print("init Location")
+        viewModel = LocationViewModel(closeFlag: closeFlag , location : location,singleSelect: singleSelect)
     }
     
     var body: some View {
         NavigationView{
-            List(self.viewModel.location  ,id: \.self) { (loc) in
-                Text(loc)
+            List{
+                ForEach(self.viewModel.locations ,id: \.id) { loc in
+                    LocationRow(text:loc.name,isSelected : self.viewModel.selectedItem  == loc.name )
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            self.viewModel.selectedItem = loc.name
+                            if self.viewModel.singleSelect {
+                                self.viewModel.refLocation = loc.name
+                                self.viewModel.closeFlag.toggle()
+                            }
+                    }
+                    .contextMenu{
+                        self.popUpMenu(loc: loc)
+                    }
+                }
+                .onDelete { (index) in
+                    self.viewModel.selectedForAction = self.viewModel.locations[index.first!]
+                    self.viewModel.showingDeleteAlert = true
+                }
+                
             }
             .navigationBarTitle("Location", displayMode: .inline)
-            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: CButton())
+        }
+        .alert(isPresented: self.$viewModel.showingDeleteAlert) {
+            Alert(title: Text("Confirm delete"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete")) {
+                self.viewModel.delete()
+                }, secondaryButton: .cancel()
+            )
         }
     }
     
-    func ConfirmButton() -> some View {
-         Button(action: {
-             self.viewModel.confirm()
-         }, label:{
-             Text("確認").foregroundColor(Color.white)
-             
-         }).padding()
-             .shadow(radius: 5)
+    func CButton() -> some View{
+           HStack{
+               if (self.viewModel.showAddButton){
+                   AddButton()
+               }else{
+                    Text("")
+               }
+        }
+       }
+
+
+    func AddButton() -> some View{
+        Button(action: {
+
+            let popup = CustomAlertWithTextField(title: "Add Location", returnText: self.$viewModel.textContent, closeFlag: self.$viewModel.isShowAddAlert){
+                self.viewModel.add()
+            }
+                
+            
+            let customView = UIHostingController(rootView: popup)
+            var attributes = EKAttributes()
+            attributes.windowLevel = .normal
+            attributes.position = .center
+            attributes.displayDuration = .infinity
+            attributes.screenInteraction = .forward
+            attributes.entryInteraction = .forward
+            attributes.shadow = .active(with: .init(color: .black, opacity: 0.3, radius: 10, offset: .zero))
+            attributes.positionConstraints.size = .init(width: .offset(value: 50), height: .intrinsic)
+            let edgeWidth = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+            attributes.positionConstraints.maxSize = .init(width: .constant(value: edgeWidth), height: .intrinsic)
+            attributes.roundCorners = .all(radius: 10)
+            SwiftEntryKit.display(entry: customView, using: attributes)
+        }) {
+            Image(systemName: "plus")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20,height: 20)
+        }
      }
+    
+    
+    func popUpMenu(loc: Location) -> some View{
+        VStack {
+            Button(action: {
+                self.viewModel.selectedForAction = loc
+                self.viewModel.textContent = loc.name
+                let index = self.viewModel.locations.firstIndex { $0.id == loc.id }!
+                let popup = CustomAlertWithTextField(title: "Edit Location", returnText: self.$viewModel.textContent, closeFlag: self.$viewModel.isShowAddAlert){
+                    self.viewModel.edit(index:index)
+                }
+                    
+                
+                let customView = UIHostingController(rootView: popup)
+                var attributes = EKAttributes()
+                attributes.windowLevel = .normal
+                attributes.position = .center
+                attributes.displayDuration = .infinity
+                attributes.screenInteraction = .forward
+                attributes.entryInteraction = .forward
+                attributes.shadow = .active(with: .init(color: .black, opacity: 0.3, radius: 10, offset: .zero))
+                attributes.positionConstraints.size = .init(width: .offset(value: 50), height: .intrinsic)
+                let edgeWidth = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+                attributes.positionConstraints.maxSize = .init(width: .constant(value: edgeWidth), height: .intrinsic)
+                attributes.roundCorners = .all(radius: 10)
+                SwiftEntryKit.display(entry: customView, using: attributes)
+                
+            }){
+                HStack {
+                    Text("Edit")
+                    Image(systemName: "lock")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth : 20)
+                }
+            }
+            Button(action: {
+                self.viewModel.selectedForAction = loc
+//                let index = self.viewModel.locations.firstIndex { $0.id == loc.id}!
+                self.viewModel.delete()
+            }){
+                HStack {
+                    Text("Remove")
+                    Image(systemName: "trash")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth : 20)
+                }
+            }
+        }
+    }
+}
+
+
+
+struct LocationRow: View {
+    var text : String
+    var isSelected : Bool
+    
+    var body: some View {
+        HStack{
+            Text(text)
+            Spacer()
+            if self.isSelected {
+                Image(systemName: "checkmark")
+            }
+        }.padding()
+    }
 }
 
 

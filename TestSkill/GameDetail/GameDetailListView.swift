@@ -47,11 +47,8 @@ struct GameDetailListView: View {
     
     func titleRow(_ users : [User]) -> some View{
         HStack{
-            ForEach(0...users.count - 1 ,id: \.self) { (index) in
-                VStack{
-                    ImageView(withURL: users[index].imgUrl).standardImageStyle()
-                    Text(users[index].userName).textStyle(size: 10).frame(minWidth: 70, maxWidth: .infinity)
-                }
+            ForEach(users ,id: \.self) { (user) in
+                UserDisplay(user: user).frame(minWidth: 70, maxWidth: .infinity)
             }
         }.padding(.leading, 80)
     }

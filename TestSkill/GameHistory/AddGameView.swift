@@ -24,38 +24,48 @@ struct AddGameView: View {
             }
             .navigationBarTitle("Add Game", displayMode: .inline)
             .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag))
+        }.modal(isShowing: self.$viewModel.showLocationView) {
+            LocationView(closeFlag: self.$viewModel.showLocationView, location: self.$viewModel.location,singleSelect: true)
         }
     }
     
     
     func main() -> some View{
         VStack{
-            VStack{
+            VStack(alignment: .center){
                 HStack(alignment: .bottom){
-                    Text(self.viewModel.getTextFromDate(date: self.viewModel.calenderManager.selectedDate))
+                    TextField("", text: self.$viewModel.displayDate).frame(width: 200).padding()
                     Spacer()
                     Image("calendar")
                         .resizable()
                         .scaledToFit().frame(width: 30)
+                        .onTapGesture {
+                            self.viewModel.showCalendar.toggle()
+                    }
+                    .sheet(isPresented: self.$viewModel.showCalendar,onDismiss: self.viewModel.setDate) {
+                        RKViewController(isPresented: self.$viewModel.showCalendar, rkManager: self.viewModel.calenderManager)
+                    }
                 }
                 .padding([.trailing,.leading,.top])
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    self.viewModel.showCalendar.toggle()
-                }.sheet(isPresented: self.$viewModel.showCalendar) {
-                    RKViewController(isPresented: self.$viewModel.showCalendar, rkManager: self.viewModel.calenderManager)
-                }
+                
                 
                 Picker("", selection: self.$viewModel.selectedType) {
-                                   Text("Mahjong").tag(0)
-                                   Text("Big2").tag(1)
+                    Text(GameType.mahjong.rawValue).tag(0)
+                    Text(GameType.big2.rawValue).tag(1)
                                }
                                .pickerStyle(SegmentedPickerStyle()).padding(.horizontal)
-                
-                TextField("Location", text: $viewModel.location)
-                    .textFieldStyle(BottomLineTextFieldStyle())
-                    .padding([.leading,.trailing,.top])
-                
+                Button(action: {
+                    self.viewModel.showLocationView = true
+                }) {
+                    VStack{
+                    HStack{
+                        Text("Location").textStyle(size: 14)
+                        Spacer()
+                        Text(self.viewModel.location=="" ? "<Tap to add location>" :self.viewModel.location).textStyle(size: 14)
+                    }.padding()
+                    Divider()
+                    }
+                }
             
                 playerArea().frame(height : 60)
                 
@@ -79,6 +89,7 @@ struct AddGameView: View {
             .shadow(radius: 5)
             Spacer()
         }
+//
     }
     
     func playerArea() -> some View {
@@ -87,7 +98,7 @@ struct AddGameView: View {
         }) {
             AddGameViewRow(players: self.viewModel.players)
         }.sheet(isPresented: self.$viewModel.showSelectPlayer) {
-            DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayer, users: self.$viewModel.players ,maxSelection: 3 ,includeSelf: true,onlyInUserGroup: true)
+            DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayer, users: self.$viewModel.players ,maxSelection: 4 ,includeSelfInReturn: false,onlyInUserGroup: true,includeSelfInSeletion: true)
         }
     }
     

@@ -1,3 +1,4 @@
+
 //
 //  TestSwiftUI.swift
 //  TestSkill
@@ -122,35 +123,33 @@ struct GameDetailView: View {
             Text("Round: \(self.viewModel.game.detailCount)")
                 .titleFont(size: 24)
             Spacer()
-            Button(action: {
-                self.viewModel.showSwapPlayer = true
-            }) {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.greenColor).frame(width: 100, height: 24)
-                .overlay(
-                                    Text("Swap Position")
-                                        .textStyle(size: 16,color: Color.white)
-                )
-            }
-            Button(action: {
-                if self.viewModel.game.flown == 1 {
-                    Utility.showAlert(message: "Game is flown")
-                    return
+            if self.viewModel.game.flown == 0{
+                Button(action: {
+                    self.viewModel.showSwapPlayer = true
+                }) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.greenColor).frame(width: 100, height: 24)
+                        .overlay(
+                            Text("Swap Position")
+                                .textStyle(size: 16,color: Color.white)
+                    )
                 }
-                self.viewModel.showAlert = true
-            }) {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.greenColor).frame(width: 100, height: 24)
-                .overlay(
-                    Text("Rollback last")
-                        .textStyle(size: 16,color: Color.white)
-                )
-            }
-            .alert(isPresented: self.$viewModel.showAlert) {
-                Alert(title: Text("Confirm Rollback?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Confirm")) {
-                    self.viewModel.rollback()
-                    }, secondaryButton: .cancel()
-                )
+                Button(action: {
+                    self.viewModel.showAlert = true
+                }) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.greenColor).frame(width: 100, height: 24)
+                        .overlay(
+                            Text("Rollback last")
+                                .textStyle(size: 16,color: Color.white)
+                    )
+                }
+                .alert(isPresented: self.$viewModel.showAlert) {
+                    Alert(title: Text("Confirm Rollback?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Confirm")) {
+                        self.viewModel.rollback()
+                        }, secondaryButton: .cancel()
+                    )
+                }
             }
         }.padding([.top,.horizontal])
     }
@@ -189,18 +188,21 @@ struct GameDetailView: View {
                     Text("\(self.viewModel.game.bonus ?? 0)" ).textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
                 }
                 Spacer()
+                Text("Mark By:").textStyle(size: 10).padding(.top,5)
             }
             HStack{
                 if self.viewModel.enableCalimWater && self.viewModel.game.flown != 1{
                     Text("Water:").textStyle(size: 12).padding(.top,5)
                 }
                 Spacer()
+              Text(self.viewModel.owner).textStyle(size: 10,color:Color.redColor).padding(.top,5)
             }
             HStack{
                 if self.viewModel.enableCalimWater && self.viewModel.game.flown != 1{
                     Text("\(self.viewModel.game.water ?? 0)").textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
                 }
                 Spacer()
+                
             }
             Spacer()
         }

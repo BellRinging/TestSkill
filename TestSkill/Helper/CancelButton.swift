@@ -23,3 +23,21 @@ struct CancelButton : View {
     }
 }
 
+struct ConfirmButton : View {
+    
+    var action : ()->()
+    
+    var body: some View {
+        Button(action: {
+            self.action()
+        }, label:{
+            Text("確認")
+                .foregroundColor(Color.white)
+        }).padding()
+            .shadow(radius: 5)
+    }
+    
+    
+}
+
+

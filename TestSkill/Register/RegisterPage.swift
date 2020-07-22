@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-
-
 struct RegisterPage: View {
     
    @ObservedObject var viewModel: RegisterViewModel
@@ -71,23 +69,14 @@ struct RegisterPage: View {
             }
             .keyboardResponsive()
             .navigationBarTitle("\(self.viewModel.title)", displayMode: .inline)
-            .navigationBarItems(leading:  CancelButton(self.viewModel.$closeFlag), trailing: confirmButton)
+            .navigationBarItems(leading:  CancelButton(self.viewModel.$closeFlag), trailing: ConfirmButton(){
+                self.viewModel.handleRegister()
+            })
 
         }
         .sheet(isPresented: self.$viewModel.showingImagePicker,onDismiss: self.viewModel.loadImage){
             ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker)
         }
-    }
-    
-    
-    
-    var confirmButton : some View{
-        Button(action: {
-            self.viewModel.handleRegister()
-        }, label:{
-            Text("Confirm")
-                .foregroundColor(Color.white)
-        })
     }
 
 }

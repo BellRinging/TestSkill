@@ -32,9 +32,10 @@ class AdminViewModel: ObservableObject {
     
     func updateGame(){
         Game.getAllItem().then { games in
-            print(games.count)
+//            print(games.count)
+            let uid = Auth.auth().currentUser!.uid
             for var detail in games{
-                detail.water = 0
+                detail.owner = uid
                 detail.save()
             }
         }
@@ -47,36 +48,167 @@ class AdminViewModel: ObservableObject {
             GameDetail.getAllItem().then { details in
                 print(details.count)
                 for var detail in details{
-                    detail.waterFlag = 0
-                    detail.waterAmount = 0
+                    var list = detail.whoWin
+                    list.append(contentsOf: detail.whoLose)
+                    let unique = Array(Set(list))
+                    detail.involvedPlayer = unique
                     detail.save()
                 }
             }
         }
     }
-    func DeleteGame(){
- 
-        let id = gameTemp!.id
-        GameDetail.getAllItemById(gameId: id).then{ details in
-              
-            for detail in details{
-//                print("detail: \(detail.id)")
-                detail.delete()
-            }
-        }.catch{err in
-            print(err.localizedDescription)
+    
+    
+    func setActUser(){
+        if player1.count == 1 {
+            UserDefaults.standard.save(customObject: player1[0], inKey: UserDefaultsKey.ActAsUser)
+            Utility.showAlert(message: "User Set Complete")
         }
-      
-        GameRecord.getAllByGameId(gameId: id).then{ records in
-            for record in records{
-//                record.
-            }
-        }.catch { (err) in
-            print(err)
-        }
-        gameTemp?.delete()
     }
     
+    func removeActUser(){
+        
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.ActAsUser)
+        Utility.showAlert(message: "Remove Complete")
+         
+    }
+    
+    func updateUser(){
+        let groupUser = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
+        let lines = arrayFromContentsOfFileWithName(fileName: "data")!
+        var games : [String:[String:Int]] = [:]
+        let users = ["6Wd8FEKKSPPC5wL2rsbk8lZL9qf2","XqZ2t6RE2vhJVV4RzbT0xKbdIzu2","JK6fMTaxQNgURL8Q4LqxKWeRs4G3","8QfQrvQEklaD9tKfksXrbmOaYo53","9coe3B90tgcfCR5hh5j6X4ipHhN2","MvcrtnVbRDYiEnhECT9wtBjSMOD3"]
+        
+           let usersName = ["Ricky","sugar","倪康","Kenny Yeung","小希","康哥"]
+        
+        for line in lines {
+          
+            let abc = line.split(separator: "\t", maxSplits: 7, omittingEmptySubsequences: false)
+            var result : [String:Int] = [:]
+            var dummyResult : [String:Int] = [:]
+            var userIdList: [String] = []
+            var players: [String:String] = [:]
+            print(abc)
+            if abc[1] != "" {
+                result[users[0]] = Int(abc[1])!
+                dummyResult[users[0]] = 0
+                userIdList.append(users[0])
+                players[users[0]] = usersName[0]
+            }
+            if abc[2] != "" {
+                result[users[1]] = Int(abc[2])!
+                dummyResult[users[1]] = 0
+                userIdList.append(users[1])
+                players[users[1]] = usersName[1]
+            }
+            if abc[3] != "" {
+                result[users[2]] = Int(abc[3])!
+                dummyResult[users[2]] = 0
+                userIdList.append(users[2])
+                players[users[2]] = usersName[2]
+            }
+            if abc[4] != "" {
+                result[users[3]] = Int(abc[4])!
+                dummyResult[users[3]] = 0
+                userIdList.append(users[3])
+                players[users[3]] = usersName[3]
+            }
+            if abc[5] != "" {
+                result[users[4]] = Int(abc[5])!
+                dummyResult[users[4]] = 0
+                userIdList.append(users[4])
+                players[users[4]] = usersName[4]
+            }
+            if abc[6] != "" {
+                result[users[5]] = Int(abc[6])!
+                dummyResult[users[5]] = 0
+                userIdList.append(users[5])
+                players[users[5]] = usersName[5]
+            }
+            let date = "\(abc[0])".replacingOccurrences(of: "-", with: "")
+            
+
+                    
+                    let formatter = DateFormatter()
+            let period = "\(date.prefix(6))"
+                    let numList = [0,0,0,0]
+                    let groupId = "5F08121C-5EA8-424E-8EAA-C10F40D93A2D"
+                    let uuid = UUID().uuidString
+                    let today = Date(timeIntervalSinceNow: 0)
+                    formatter.dateFormat = "yyyyMMddhhmmss"
+                    let currentDateTime = formatter.string(from: today)
+                    var temp :[Bool] = []
+                    for i in userIdList{
+                        temp.append(true)
+                    }
+                    let playersFitler = Dictionary(uniqueKeysWithValues: zip(userIdList,temp))
+//                    let gameType = selectedType == 0 ? GameType.mahjong.rawValue: GameType.big2.rawValue
+//                    let tempCount = Dictionary(uniqueKeysWithValues: zip(userIdList,[0,0,0,0]))
+//                    let uid = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
+//
+                    let game = Game(
+                        id: uuid,
+                        groupId: groupId,
+                        location: "Ricky's Home",
+                        date: date,
+                        period : period,
+                        result: result ,
+                        totalCards: dummyResult,
+                        playersFilter :playersFitler,
+                        playersMap : players,
+                        playersId :userIdList,
+                        createDateTime : currentDateTime,
+                        detailCount :0 ,
+                        flown: 1 ,
+                        gameType:"mahjong",
+                        doubleCount: dummyResult,
+                        tripleCount: dummyResult,
+                        quadipleCount: dummyResult,
+                        winCount: dummyResult,
+                        bonusFlag :  0,
+                        bonus :  0,
+                        lostStupidCount:  dummyResult,
+                        safeGameCount : dummyResult,
+                        doubleBecaseLastCount : dummyResult,
+                        water: 0,
+                        owner: "8QfQrvQEklaD9tKfksXrbmOaYo53"
+                    )
+            game.save().then { gam in
+                print("update Amount ")             
+                     
+            }
+            
+                 
+            
+        }
+    }
+    
+    
+    func deleteGame(){
+        Game.getAllItem().then { (games)in
+            for game in games {
+                let date = game.createDateTime.prefix(8)
+                if date == "20200606" {
+                    game.delete()
+                }
+            }
+        }
+    }
+        
+    
+    func arrayFromContentsOfFileWithName(fileName: String) -> [String]? {
+        guard let path = Bundle.main.path(forResource: fileName, ofType: "txt") else {
+            return nil
+        }
+
+        do {
+            let content = try String(contentsOfFile:path, encoding: String.Encoding.utf8)
+            return content.components(separatedBy: "\n")
+        } catch {
+            return nil
+        }
+    }
+   
     func unFlownGame(){
         if gameTemp == nil {
             Utility.showAlert(message: "No game selected")
@@ -93,34 +225,11 @@ class AdminViewModel: ObservableObject {
     
     func UpdateId(){
        
-        GameRecord.getAllItemAndFixthePath().then{ records in
-            print(records.count)
-//            for record in records{
-//                print("\(record.userId) -> \(record.id)")
-//                record.save()
-//            }
-            
+        GameRecord.getAllItem().then { _ in
+            print("finished")
         }
         
-//        User.getAllItem().then{ users in
-//
-//            let db = Firestore.firestore()
-//            var dict : [String:[GameRecord]] = [:]
-//            self.background.async {
-//
-//                for user in users {
-//                    print("User :\(user.id)")
-//                    let gamesRecords = try! await(GameRecord.getById2(userId: user.id))
-//                    if gamesRecords.count > 0 {
-//                        for record in gamesRecords{
-//                            let _ = try! await (record.updateId(userId:user.id))
-//                        }
-//                    }
-//
-//                }
-//            }
-//        }
-        
+
     }
     
     func transfer(){
@@ -130,16 +239,21 @@ class AdminViewModel: ObservableObject {
         }
         
         let userA = player1[0].id
-//        let userA = "r9qA0orWkqWntJTXo4AMkMrIXIC3"
-//        let userB = "XqZ2t6RE2vhJVV4RzbT0xKbdIzu2"
         let userB = player2[0].id
-
+        
+        let balance = player1[0].yearBalance
+        player2[0].yearBalance = balance
+        player2[0].save().then { _ in
+            print("update balance")
+        }
+//        let playerListTemp : [String: String] = [:]
         GameDetail.getAllItem().then { (gameDetails) in
             var promiseList : [Promise<GameDetail>] = []
             for detail in gameDetails{
                 var obj = detail
                 obj.whoWin = detail.whoWin.map { $0 == userA ? userB:$0 }
                 obj.whoLose = detail.whoLose.map { $0 == userA ? userB:$0 }
+                obj.involvedPlayer = detail.involvedPlayer.map { $0 == userA ? userB:$0 }
                 var dict : [String: String] = [:]
                 for (key, value) in detail.playerList{
                     if key == userA{
@@ -156,30 +270,7 @@ class AdminViewModel: ObservableObject {
             }
         }
         
-        GameRecord.getById2(userId: userA).then { (details)in
-            var promiseList : [Promise<GameRecord>] = []
-            for var detail in details {
-                detail.userId = userB
-                promiseList.append(detail.save())
-            }
-            Promises.all(promiseList).then{ _ in
-                print("finish trandfer user GameRecord")
-            }
-        }
-        
-        GameRecord.getAllByTo(userId: userA).then{records in
-            var promiseList : [Promise<GameRecord>] = []
-            for var detail in records {
-                if (detail.to == userA) {
-                    detail.to = userB
-                    promiseList.append(detail.save())
-                }
-                print(detail)
-            }
-            Promises.all(promiseList).then{ _ in
-                print("finish trandfer to GameRecord")
-            }
-        }
+      
         
 //
         Game.getAllItem().then{games in
@@ -194,6 +285,102 @@ class AdminViewModel: ObservableObject {
                     }
                 }
                 game.playersMap = dict
+                
+                
+                if var dict = game.doubleCount {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.doubleCount = dict
+                }
+                if var dict = game.tripleCount {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.tripleCount = dict
+                }
+                if var dict = game.doubleBecaseLastCount {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.doubleBecaseLastCount = dict
+                }
+                if var dict = game.lostStupidCount {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.lostStupidCount = dict
+                }
+//                if var dict = game.playersFilter {
+//                    for (key, value) in dict {
+//                        if key == userA{
+//                            dict[userB] = value
+//                        }else{
+//                            dict[key] = value
+//                        }
+//                    }
+//                    game.playersFilter = dict
+//                }
+                if var dict = game.safeGameCount {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.safeGameCount = dict
+                }
+                if var dict = game.quadipleCount {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.quadipleCount = dict
+                }
+                if var dict = game.totalCards {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.totalCards = dict
+                }
+                
+                if var dict = game.winCount {
+                    for (key, value) in dict {
+                        if key == userA{
+                            dict[userB] = value
+                        }else{
+                            dict[key] = value
+                        }
+                    }
+                    game.winCount = dict
+                }
+                
+                
+                
                 var dict2 : [String: Int] = [:]
                 for (key, value) in game.result{
                     if key == userA{
@@ -226,6 +413,7 @@ class AdminViewModel: ObservableObject {
             Promises.all(promiseList).then{ _ in
                 print("finish trandfer Game")
             }
+        
         }
     }
 }

@@ -19,8 +19,46 @@ struct GameViewListHistoryArea: View {
     
     @ObservedObject var viewModel: GameViewListAreaViewModel
 
-    init(groupUsers:[User],sectionHeader: [String],sectionHeaderAmt: [String:Int],games:[String:[Game]],status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,callback : @escaping (String,Int) -> () ){
-        viewModel = GameViewListAreaViewModel(groupUsers: groupUsers, sectionHeader: sectionHeader,sectionHeaderAmt:sectionHeaderAmt, games: games, status: status,lastGameDetail:lastGameDetail, callback: callback)
+    init(sectionHeader: [String],sectionHeaderAmt: [String:Int],games:[String:[Game]],status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,noMoreGame:Bool,callback : @escaping (String,Int) -> () ){
+        viewModel = GameViewListAreaViewModel(sectionHeader: sectionHeader,sectionHeaderAmt:sectionHeaderAmt, games: games, status: status,lastGameDetail:lastGameDetail,noMoreGame:noMoreGame,callback: callback)
+    }
+    
+    func popUpMenu(game: Game) -> some View{
+        VStack {
+            Button(action: {
+                NotificationCenter.default.post(name: .flownGame, object: game)
+            }){
+                HStack {
+                    Text("Flown")
+                    Image(systemName: "lock")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth : 20)
+                }
+            }
+            Button(action: {
+                NotificationCenter.default.post(name: .deleteGame, object: game)
+            }){
+                HStack {
+                    Text("Remove")
+                    Image(systemName: "trash")
+                    .scaledToFit()
+                    .frame(maxWidth : 20)
+                }
+            }
+        }
+    }
+    
+    func gameDisplay(game:Game,period:String,index: Int) -> some View{
+        
+        GameRow(game: game)
+            .frame(height: 60)
+            .contextMenu{
+                self.popUpMenu(game:game)
+        }
+        .onAppear {
+            self.viewModel.itemAppears(period: period , index: index)
+        }
     }
 
     var body: some View {
@@ -31,32 +69,9 @@ struct GameViewListHistoryArea: View {
                 List {
                     ForEach(self.viewModel.sectionHeader, id: \.self) { period in
                         Section(header: self.sectionArea(period:period)) {
-                            ForEach(self.viewModel.games[period]! ,id: \.id) { game in
-                                NavigationLink(destination: self.navDest(game: game)){
-                                    GameRow(game: game)
-                                        .frame(height: 60)
-                                        .contextMenu{
-                                        VStack {
-                                            Button(action: {
-                                                   NotificationCenter.default.post(name: .flownGame, object: game)
-                                            }){
-                                                HStack {
-                                                    Text("Flown")
-                                                    Image(systemName: "lock")
-                                                        .resizable()
-                                                        .frame(maxWidth : 20)
-                                                }
-                                            }
-                                            Button(action: {
-                                                   NotificationCenter.default.post(name: .deleteGame, object: game)
-                                            }){
-                                                HStack {
-                                                    Text("Remove")
-                                                    Image(systemName: "trash")
-                                                }
-                                            }
-                                        }
-                                    }
+                            ForEach(self.viewModel.games[period]!.indices ,id: \.id) { index in
+                                NavigationLink(destination: self.navDest(game: self.viewModel.games[period]![index])){
+                                    self.gameDisplay(game: self.viewModel.games[period]![index],period:period,index: index)
                                 }
                             }.onDelete { (index) in
                                 self.viewModel.selectedIndex = index.first!
@@ -86,12 +101,13 @@ struct GameViewListHistoryArea: View {
     }
     
     func sectionArea(period : String) -> some View {
-           HStack{
+        HStack{
             Text(period).font(MainFont.bold.size(12))
             Spacer()
-            Text("\(self.viewModel.sectionHeaderAmt[period]!)").titleFont(size: 12,color: self.viewModel.sectionHeaderAmt[period]! > 0 ? Color.greenColor: Color.red)
-           }
-       }
+            Text("\(self.viewModel.sectionHeaderAmt[period]!)")
+                .titleFont(size: 12,color: self.viewModel.sectionHeaderAmt[period]! > 0 ? Color.greenColor: Color.redColor)
+        }
+    }
 
 }
 

@@ -27,25 +27,20 @@ struct FriendRequestView: View {
                         self.viewModel.addToSelectedList(user: user)
                 }
             }
-            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton())
+            .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: CButton())
             .navigationBarTitle("Display Friend", displayMode: .inline)
         }
     }
     
-    
-       func ConfirmButton() -> some View{
-           VStack{
-               if self.viewModel.selectedUsers.count > 0  {
-                   Button(action: {
-                       self.viewModel.addFriend()
-                   }, label: {
-                       Text("Add Friend").foregroundColor(Color.white)
-                   })
-               }
-           }
-       }
-
-    
+    func CButton() -> some View{
+        VStack{
+            if self.viewModel.selectedUsers.count > 0  {
+                ConfirmButton(){
+                    self.viewModel.addFriend()
+                }
+            }
+        }
+    }
 
 }
 

@@ -11,6 +11,7 @@ import SwiftUI
 struct ProfileView: View {
     
     @ObservedObject var viewModel: ProfileViewModel
+   
     
     init(player : User){
         viewModel = ProfileViewModel(player: player)
@@ -19,7 +20,7 @@ struct ProfileView: View {
     var body: some View {
         VStack{
             ImageView(withURL: self.viewModel.player.imgUrl).frame(width: 100, height: 100).padding()
-            Text("\(self.viewModel.player.balance)").textStyle(size: 50,color: self.viewModel.player.balance > 0 ? Color.greenColor:Color.redColor)
+            Text("\(self.viewModel.player.yearBalance[Utility.getCurrentYear()] ?? 0)").textStyle(size: 50,color: (self.viewModel.player.yearBalance[Utility.getCurrentYear()] ?? 0 ) > 0 ? Color.greenColor:Color.redColor)
             Text(self.viewModel.player.userName).textStyle(size: 20).frame(maxWidth: .infinity)
             Text("email: \(self.viewModel.player.email)").textStyle(size: 14).frame(maxWidth: .infinity)
             Text("id: \(self.viewModel.player.id)").textStyle(size: 12).frame(maxWidth: .infinity)
@@ -34,11 +35,22 @@ struct ProfileView: View {
                     }
                 }
             }
+            if self.viewModel.showEditButton {
+                Button(action: {
+                    self.viewModel.deleteAccount()
+                }) {
+                    Rectangle().background(Color.green).cornerRadius(10)
+                        .frame(width:200 , height: 40)
+                        .overlay(
+                            Text("Delete").textStyle(size: 16,color: Color.white)
+                    )
+                }
+            }
             Spacer()
                 .navigationBarItems(trailing:  editButton())
             .navigationBarHidden(self.viewModel.showEditPage)
         }.modal(isShowing: self.$viewModel.showEditPage) {
-            LazyView(RegisterPage(closeFlag: self.$viewModel.showEditPage ,user:self.viewModel.player,userType: "dummy"))
+            RegisterPage(closeFlag: self.$viewModel.showEditPage ,user:self.viewModel.player,userType: "dummy")
         }
     }
     

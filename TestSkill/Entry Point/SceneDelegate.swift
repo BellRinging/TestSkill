@@ -8,9 +8,6 @@
 
 import Foundation
 import SwiftUI
-//
-//  SceneDelegate.swift
-//
 import UIKit
 
 @available(iOS 13.0, *)

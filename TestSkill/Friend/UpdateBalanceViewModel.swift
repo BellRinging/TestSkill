@@ -14,27 +14,44 @@ class UpdateBalanceViewModel : ObservableObject {
 
     @Binding var closeFlag : Bool
     @Published var player : User
-    @Published var player1OAmt : String = ""
-    @Published var player1Amt : String = ""
+    @Published var years : [Int] = []
+    var amtForDisplay : [String] = []
+    @Published var amtForEdit : [String] = []
     @Published var showAlert : Bool = false
     
     init(closeFlag : Binding<Bool>){
         self._closeFlag = closeFlag
         self.player = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!
-        self.player1OAmt = "\(player.balance ?? 0)"
-        self.player1Amt = "\(player.balance ?? 0)"
+        print("Current : \(player.userName)")
+        let yearBalance = player.yearBalance
+        for year in yearBalance.keys{
+            years.append(year)
+            let amount = player.yearBalance[year] ?? 0
+            amtForDisplay.append("\(amount)")
+            amtForEdit.append("\(amount)")
+        }
+       
     }
     
     
     func confirm(){
-      
-        if player1Amt == "" {
-            Utility.showAlert(message: "Amt not in right format")
-            return
+        for amt in amtForEdit {
+            if amt == "" {
+                Utility.showAlert(message: "Amt not in right format")
+                return
+            }
         }
-        player.updateBalance(value: Int(player1Amt)! ,absoluteValue: true)
-        player.balance = Int(player1Amt)!
-        UserDefaults.standard.save(customObject: player, inKey: UserDefaultsKey.CurrentUser)
+        
+        for i in 0...self.years.count - 1{
+            let year = years[i]
+            let amt = Int(amtForEdit[i])!
+            player.updateBalance(value: amt,year: year ,absoluteValue: true)
+            player.yearBalance[year] = amt
+            UserDefaults.standard.save(customObject: player, inKey: UserDefaultsKey.CurrentUser)
+        }
+        
+
+
         closeFlag.toggle()
         
     }

@@ -49,8 +49,8 @@ struct Big2DetailView: View {
                         ForEach(0..<self.viewModel.displayBoard.count , id: \.self) { (index) in
                             HStack{
                                 VStack{
-                                    ImageView(withURL: self.viewModel.displayBoard[index].img_url).standardImageStyle()
-                                    Text("\(self.viewModel.displayBoard[index].user_name ?? "")").textStyle(size: 10).frame(width: 50)
+                                    ImageView(withURL: self.viewModel.displayBoard[index].imgUrl).standardImageStyle()
+                                    Text("\(self.viewModel.displayBoard[index].userName ?? "")").textStyle(size: 10).frame(width: 50)
                                 }
                                 Text("\(self.viewModel.lastGameDetail!.actualNum[self.viewModel.displayBoard[index].id]!)").textStyle(size: 24,color:
                                     self.viewModel.lastGameDetail!.actualNum[self.viewModel.displayBoard[index].id]! == 0 ? Color.green :

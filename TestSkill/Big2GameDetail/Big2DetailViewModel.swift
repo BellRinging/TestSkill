@@ -6,7 +6,7 @@ class Big2DetailViewModel: ObservableObject {
     
     var game : Game
     var groupUsers : [User]
-    var winner : DisplayBoardBig2?
+    var winner : DisplayBoardForBig2?
     var amtPerCard : Int = 10
     var countDouble : Int = 8
     var countTriple : Int = 10
@@ -23,10 +23,10 @@ class Big2DetailViewModel: ObservableObject {
     }()
     
     
-    var filteredDisplayBoard : [DisplayBoardBig2]? = []
+    var filteredDisplayBoard : [DisplayBoardForBig2]? = []
     @Published var showSwapPlayer = false
     @Published var showAlert = false
-    @Published var displayBoard : [DisplayBoardBig2]  = []
+    @Published var displayBoard : [DisplayBoardForBig2]  = []
     
     init(game:Game,lastGameDetail:Big2GameDetail?){
         self.game = game
@@ -126,8 +126,8 @@ class Big2DetailViewModel: ObservableObject {
             self.game.safeGameCount = safeGameCount
             self.game.lostStupidCount = lostStupidCount
              
-            
-            let updateAmount = refValue[uid]
+            let year = Int(period.prefix(4))!
+            let updateAmount = (year,refValue[uid]!)
             NotificationCenter.default.post(name: .updateUserBalance, object:  updateAmount)
             NotificationCenter.default.post(name: .updateLastBig2GameRecord, object:  big2Detail)
             NotificationCenter.default.post(name: .updateGame, object:  self.game)
@@ -236,7 +236,8 @@ class Big2DetailViewModel: ObservableObject {
 
                 NotificationCenter.default.post(name: .updateLastBig2GameRecord, object:  lastLastGame)
                 NotificationCenter.default.post(name: .updateGame, object:  self.game)
-                let updateAmount = refValue[uid]! * -1
+                let year = Int(self.game.period.prefix(4))!
+                let updateAmount = (year,refValue[uid]! * -1)
                 NotificationCenter.default.post(name: .updateUserBalance, object:  updateAmount)
              }.catch { (err) in
                 Utility.showAlert(message: "Error on rollback")
@@ -275,7 +276,7 @@ class Big2DetailViewModel: ObservableObject {
     }
 
     func convertResultToDisplay(){
-        var temp : [DisplayBoardBig2] = []
+        var temp : [DisplayBoardForBig2] = []
         var count = 0
         for player in game.playersId{
             let balance = game.result[player] as? Int ?? 0
@@ -300,7 +301,7 @@ class Big2DetailViewModel: ObservableObject {
                                          "doubleBecaseLastCount":doubleBecaseLastCount
             ]
             count = count + 1
-            let board = DisplayBoardBig2(dict: dict)
+            let board = DisplayBoardForBig2(dict: dict)
             temp.append(board)
         }
         self.displayBoard = temp

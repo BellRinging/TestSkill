@@ -44,22 +44,38 @@ struct AdminView: View {
                         Utility.showAlert(message: "Confirm?", callBack: self.viewModel.unFlownGame)
                     }
                     Button("Delete"){
-                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.DeleteGame)
+//                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.DeleteGame)
                     }
                 }
                 Button("UpdateGameDetail"){
-                    Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateGameDetail)
+                    Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateGame)
                 }
+                Button("deleteGame"){
+                    Utility.showAlert(message: "Confirm?", callBack: self.viewModel.deleteGame)
+                }
+                HStack{
+                    Button("SetActUser"){
+                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.setActUser)
+                    }
+                    Button("Remove ActUser"){
+                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.removeActUser)
+                    }
+                }
+                        
+                
             }.padding()
             transferData().padding()
+            Button("UpdateUserBalance"){
+                              Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateUser)
+                          }
         }.modal(isShowing: self.$viewModel.isShowGameLK) {
             GameLK(closeFlag: self.$viewModel.isShowGameLK,gameObj:self.$viewModel.gameTemp)
         }
         .modal(isShowing: self.$viewModel.isShowPlayer1) {
-            DisplayFriendView(closeFlag:  self.$viewModel.isShowPlayer1, users: self.$viewModel.player1, maxSelection: 1, includeSelf: false)
+            DisplayFriendView(closeFlag:  self.$viewModel.isShowPlayer1, users: self.$viewModel.player1, maxSelection: 1, includeSelfInReturn: false)
         }
         .modal(isShowing: self.$viewModel.isShowPlayer2) {
-            DisplayFriendView(closeFlag:  self.$viewModel.isShowPlayer2, users: self.$viewModel.player2, maxSelection: 1, includeSelf: false)
+            DisplayFriendView(closeFlag:  self.$viewModel.isShowPlayer2, users: self.$viewModel.player2, maxSelection: 1, includeSelfInReturn: false)
         }
     }
     
@@ -96,7 +112,7 @@ struct AdminView: View {
                 }
             }
             Button("UpDateID"){
-                Utility.showAlert(message: "Confirm?", callBack: self.viewModel.UpdateId)
+                Utility.showAlert(message: "Confirm?", callBack: self.viewModel.transfer)
             }
         }
     }

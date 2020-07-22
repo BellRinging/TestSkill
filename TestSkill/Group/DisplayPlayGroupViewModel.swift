@@ -19,6 +19,8 @@ class DisplayPlayGroupViewModel: ObservableObject {
     var needReturn : Bool = true
     @Published var groups : [PlayGroup] = []
     @Published var showAddingGroup: Bool = false
+    @Published var showStatistic: Bool = false
+    
     @Published var selectedGroup : PlayGroup? = nil{
         didSet{
             if let index = resolveIndex(){

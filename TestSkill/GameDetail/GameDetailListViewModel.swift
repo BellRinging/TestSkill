@@ -14,7 +14,6 @@ class GameDetailListViewModel: ObservableObject {
     var totals : [Int] = []
     var gameDetail : [GameDetail]? {
         didSet{
-//            print("Did Set in detail list")
             convertDisplay(gameDetail!)
         }
     }
@@ -53,11 +52,13 @@ class GameDetailListViewModel: ObservableObject {
             var result : [String] = ["0","0","0","0"]
             for win in detail.whoWin{
                 let index = players.firstIndex{$0 == win}!
-                result[index] = "\(detail.winnerAmount)"
+                let val = Int(result[index])! + detail.winnerAmount
+                result[index] =  "\(val)"
             }
             for loser in detail.whoLose{
                 let index = players.firstIndex{$0 == loser}!
-                result[index] = "\(detail.loserAmount)"
+                let val = Int(result[index])! + detail.loserAmount
+                result[index] =  "\(val)"
             }
             forDisplay.append(result)
             player1 = player1 + Int(result[0])!
