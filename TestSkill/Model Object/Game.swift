@@ -3,7 +3,7 @@ import Firebase
 import Promises
 import FirebaseFirestore
 
-struct Game: Codable ,Identifiable {
+struct Game: Codable ,Identifiable  {
     var id : String
     var groupId : String
     var location : String
@@ -33,7 +33,10 @@ struct Game: Codable ,Identifiable {
 
 extension Game {
     
-    
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(id)
+//    }
+//
     func delete() -> Promise<Void> {
         let p = Promise<Void> { (resolve , reject) in
             let db = Firestore.firestore()

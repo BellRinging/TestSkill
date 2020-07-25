@@ -114,13 +114,13 @@
 		E7B3429823B83E2300A5C566 /* GameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3429723B83E2300A5C566 /* GameDetailView.swift */; };
 		E7B3429A23B8E8E000A5C566 /* IndividualScoreDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3429923B8E8E000A5C566 /* IndividualScoreDisplay.swift */; };
 		E7B3429C23B907E600A5C566 /* DisplayBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3429B23B907E600A5C566 /* DisplayBoard.swift */; };
+		E7C5694E24CAFD64009FCD72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7C5694C24CAFD63009FCD72 /* GoogleService-Info.plist */; };
 		E7C8DB0D248CB87E0003FB1E /* UserDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C8DB0C248CB87E0003FB1E /* UserDisplay.swift */; };
 		E7C8DB10248CCBA40003FB1E /* ListPagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C8DB0E248CCBA30003FB1E /* ListPagination.swift */; };
 		E7C8DB11248CCBA40003FB1E /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C8DB0F248CCBA40003FB1E /* SpinnerView.swift */; };
 		E7C8DB13248D04070003FB1E /* TextPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C8DB12248D04070003FB1E /* TextPage.swift */; };
 		E7C8DB1A248E7CE30003FB1E /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C8DB19248E7CE30003FB1E /* ResultView.swift */; };
 		E7C8DB1C248E7CF30003FB1E /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C8DB1B248E7CF30003FB1E /* ResultViewModel.swift */; };
-		E7CF804B2438309E00B7D882 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7CF804A2438309E00B7D882 /* GoogleService-Info.plist */; };
 		E7CF804D24388DC400B7D882 /* FdsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CF804C24388DC400B7D882 /* FdsRequest.swift */; };
 		E7CF804F2438BEB500B7D882 /* MarkFlownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CF804E2438BEB500B7D882 /* MarkFlownView.swift */; };
 		E7CF80512438BECF00B7D882 /* MarkFlownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CF80502438BECF00B7D882 /* MarkFlownViewModel.swift */; };
@@ -288,13 +288,14 @@
 		E7B3429723B83E2300A5C566 /* GameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameDetailView.swift; path = TestSkill/GameDetail/GameDetailView.swift; sourceTree = SOURCE_ROOT; };
 		E7B3429923B8E8E000A5C566 /* IndividualScoreDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualScoreDisplay.swift; sourceTree = "<group>"; };
 		E7B3429B23B907E600A5C566 /* DisplayBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayBoard.swift; sourceTree = "<group>"; };
+		E7C5694C24CAFD63009FCD72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E7C5694D24CAFD64009FCD72 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7C8DB0C248CB87E0003FB1E /* UserDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDisplay.swift; sourceTree = "<group>"; };
 		E7C8DB0E248CCBA30003FB1E /* ListPagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListPagination.swift; sourceTree = "<group>"; };
 		E7C8DB0F248CCBA40003FB1E /* SpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		E7C8DB12248D04070003FB1E /* TextPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPage.swift; sourceTree = "<group>"; };
 		E7C8DB19248E7CE30003FB1E /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		E7C8DB1B248E7CF30003FB1E /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
-		E7CF804A2438309E00B7D882 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E7CF804C24388DC400B7D882 /* FdsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FdsRequest.swift; sourceTree = "<group>"; };
 		E7CF804E2438BEB500B7D882 /* MarkFlownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkFlownView.swift; sourceTree = "<group>"; };
 		E7CF80502438BECF00B7D882 /* MarkFlownViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkFlownViewModel.swift; sourceTree = "<group>"; };
@@ -332,7 +333,6 @@
 		EB579E931F1CD3FA002E31A7 /* myjongso.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myjongso.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB579E961F1CD3FA002E31A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB579EA01F1CD3FA002E31A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		EB579EA21F1CD3FA002E31A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB579EC01F1CE4ED002E31A7 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		EB579EC41F1CE963002E31A7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EBA420231F667A0F0010BFC7 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -414,6 +414,7 @@
 		E773819F23D03022002344FE /* Register */ = {
 			isa = PBXGroup;
 			children = (
+				E783FFAC23C46BB500EF0FDE /* ImagePickerView.swift */,
 				E785A6A123BE3110003F0A78 /* RegisterPage.swift */,
 				E773819C23D03001002344FE /* RegistorViewModel.swift */,
 				E7AD43EE2431C60D00B1200C /* RegisterHelper.swift */,
@@ -641,6 +642,41 @@
 			path = TestNotificationContent;
 			sourceTree = "<group>";
 		};
+		E7C5694A24CAFC63009FCD72 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				E7C5694C24CAFD63009FCD72 /* GoogleService-Info.plist */,
+				E7C5694D24CAFD64009FCD72 /* Info.plist */,
+				EB48ADDB1F69089300D109AA /* TestSkill.entitlements */,
+				E5992351232DF094008AECD6 /* Assets.xcassets */,
+				EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */,
+				EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */,
+				EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */,
+				EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		E7C5694B24CAFCB1009FCD72 /* Model Object */ = {
+			isa = PBXGroup;
+			children = (
+				E7B3429B23B907E600A5C566 /* DisplayBoard.swift */,
+				E518F60D22F067B10012CC2D /* Game.swift */,
+				E7F134A4247FA23C00EE4D51 /* Location.swift */,
+				E51DB7A422F2995400CD7BFF /* GameDetail.swift */,
+				E777394D245C442A002048E5 /* Big2GameDetail.swift */,
+				E51DB7A622F2996000CD7BFF /* GameRecord.swift */,
+				E7CF804C24388DC400B7D882 /* FdsRequest.swift */,
+				E518F60F22F067D40012CC2D /* UserGroup.swift */,
+				E518F61122F067DD0012CC2D /* UserHistory.swift */,
+				EB579EC41F1CE963002E31A7 /* User.swift */,
+				E51DB7A822F3262700CD7BFF /* PlayGroup.swift */,
+				E7535D62233B8F360042CFDF /* ProviderUser.swift */,
+				E77E3CD223BF83E10039F223 /* PageViewController.swift */,
+			);
+			path = "Model Object";
+			sourceTree = "<group>";
+		};
 		E7C8DB18248E7CC10003FB1E /* Statistic */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,10 +734,10 @@
 		EB579E951F1CD3FA002E31A7 /* TestSkill */ = {
 			isa = PBXGroup;
 			children = (
-				EB48ADDB1F69089300D109AA /* TestSkill.entitlements */,
+				E7C5694B24CAFCB1009FCD72 /* Model Object */,
+				E7C5694A24CAFC63009FCD72 /* Support */,
 				E77381A423D1D264002344FE /* Fonts */,
 				EB611FC71F3756C200FEB44D /* Supporting */,
-				EB611FC51F37562600FEB44D /* ModelObject */,
 				E77E3CFE23C17A160039F223 /* Helper */,
 				E7AD43F02431E43500B1200C /* Forget Password */,
 				E7AD43E924319F4D00B1200C /* Contact us */,
@@ -721,41 +757,13 @@
 				E7F1349F247F9CEF00EE4D51 /* Location */,
 				E79AE0522410C86100FD1282 /* Menu */,
 				E77E3D0323C193D60039F223 /* DataObjectForTransfer */,
-				E77E3CD223BF83E10039F223 /* PageViewController.swift */,
-				E783FFAC23C46BB500EF0FDE /* ImagePickerView.swift */,
 			);
 			path = TestSkill;
-			sourceTree = "<group>";
-		};
-		EB611FC51F37562600FEB44D /* ModelObject */ = {
-			isa = PBXGroup;
-			children = (
-				E7B3429B23B907E600A5C566 /* DisplayBoard.swift */,
-				E518F60D22F067B10012CC2D /* Game.swift */,
-				E7F134A4247FA23C00EE4D51 /* Location.swift */,
-				E51DB7A422F2995400CD7BFF /* GameDetail.swift */,
-				E777394D245C442A002048E5 /* Big2GameDetail.swift */,
-				E51DB7A622F2996000CD7BFF /* GameRecord.swift */,
-				E7CF804C24388DC400B7D882 /* FdsRequest.swift */,
-				E518F60F22F067D40012CC2D /* UserGroup.swift */,
-				E518F61122F067DD0012CC2D /* UserHistory.swift */,
-				EB579EC41F1CE963002E31A7 /* User.swift */,
-				E51DB7A822F3262700CD7BFF /* PlayGroup.swift */,
-				E7535D62233B8F360042CFDF /* ProviderUser.swift */,
-			);
-			name = ModelObject;
 			sourceTree = "<group>";
 		};
 		EB611FC71F3756C200FEB44D /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
-				E5992351232DF094008AECD6 /* Assets.xcassets */,
-				EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */,
-				EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */,
-				EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */,
-				EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */,
-				E7CF804A2438309E00B7D882 /* GoogleService-Info.plist */,
-				EB579EA21F1CD3FA002E31A7 /* Info.plist */,
 			);
 			name = Supporting;
 			sourceTree = "<group>";
@@ -851,11 +859,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E77381A823D1D26F002344FE /* FjallaOne-Regular.ttf in Resources */,
-				E7CF804B2438309E00B7D882 /* GoogleService-Info.plist in Resources */,
 				E77381AA23D1D26F002344FE /* FHACondFrenchNC.otf in Resources */,
 				E77381A923D1D26F002344FE /* American Captain.otf in Resources */,
 				EB579EA11F1CD3FA002E31A7 /* LaunchScreen.storyboard in Resources */,
 				E5992352232DF094008AECD6 /* Assets.xcassets in Resources */,
+				E7C5694E24CAFD64009FCD72 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1251,7 +1259,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TestSkill/TestSkill.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TestSkill/Support/TestSkill.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1262,14 +1270,14 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/SwiftyJSON",
 				);
 				IBSC_WARNINGS = NO;
-				INFOPLIST_FILE = TestSkill/Info.plist;
+				INFOPLIST_FILE = TestSkill/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.mahjongcalculator;
 				PRODUCT_NAME = myjongso;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/SignInExampleSwift-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/Support/SignInExampleSwift-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1281,7 +1289,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TestSkill/TestSkill.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TestSkill/Support/TestSkill.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1292,14 +1300,14 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/SwiftyJSON",
 				);
 				IBSC_WARNINGS = NO;
-				INFOPLIST_FILE = TestSkill/Info.plist;
+				INFOPLIST_FILE = TestSkill/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.mahjongcalculator;
 				PRODUCT_NAME = myjongso;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/SignInExampleSwift-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/Support/SignInExampleSwift-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
