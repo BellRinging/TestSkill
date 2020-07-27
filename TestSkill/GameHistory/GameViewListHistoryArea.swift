@@ -19,8 +19,8 @@ struct GameViewListHistoryArea: View {
     
     @ObservedObject var viewModel: GameViewListAreaViewModel
 
-    init(games: GameList,status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,noMoreGame:Bool,callback : @escaping (String,Int) -> () ){
-        viewModel = GameViewListAreaViewModel(games: games, status: status,lastGameDetail:lastGameDetail,noMoreGame:noMoreGame,callback: callback)
+    init(games: GameList,status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,noMoreGame:Bool){
+        viewModel = GameViewListAreaViewModel(games: games, status: status,lastGameDetail:lastGameDetail,noMoreGame:noMoreGame)
     }
     
     func popUpMenu(game: Game) -> some View{

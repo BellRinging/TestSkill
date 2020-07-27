@@ -10,7 +10,6 @@ class GameViewListAreaViewModel: ObservableObject {
     var groupUsers : [User]
     var games : GameList
     var status : pageStatus
-    var callback : (String,Int) -> ()
     var selectedGame : Game? = nil
     var lastGameDetail : GameDetail?
     var lastBig2GameDetail : Big2GameDetail?
@@ -26,22 +25,12 @@ class GameViewListAreaViewModel: ObservableObject {
          games: GameList,
          status: pageStatus,
          lastGameDetail:GameDetail?,
-          noMoreGame:Bool,
-         callback : @escaping (String,Int) -> () ){
+          noMoreGame:Bool){
         self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
         self.games = games
         self.status = status
         self.lastGameDetail = lastGameDetail
         self.noMoreGame = noMoreGame
-        self.callback = callback
-    }
-    
-    func loadMoreGame(completion: (() -> Void)? = nil){
-
-        
-          completion?()
-          return
-        
     }
     
 
@@ -53,7 +42,6 @@ class GameViewListAreaViewModel: ObservableObject {
         }
      }
     func itemAppears(game:Game) {
-//    func itemAppears(period:String , index : Int) {
         if islastItemReached(game:game) {
             if !noMoreGame {
                 print("Load More Game")
