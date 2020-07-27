@@ -284,17 +284,9 @@ class GameViewModel: ObservableObject {
         let period = game.period
         var gameArray : [Game] = []
         if let gamesList = self.games[period]  {
-            gameArray = gamesList
             let index = gamesList.firstIndex { $0.id == game.id}
             if let index = index {
-                print("update the result game")
-                for i in 0..<gameArray.count{
-                    if gameArray[i].id == game.id{
-                        DispatchQueue.main.async {
-                            self.games[period]![i] = game
-                        }
-                    }
-                }
+                self.games[period]![index] = game
             }else{
                 print("Add New game")
                 self.games[period]?.insert(game, at: 0)

@@ -69,7 +69,7 @@ struct GameViewListHistoryArea: View {
                 List {
                     ForEach(self.viewModel.sectionHeader, id: \.self) { period in
                         Section(header: self.sectionArea(period:period)) {
-                            ForEach(0..<self.viewModel.games[period]!.count ) { index in
+                            ForEach(0..<self.viewModel.games[period]!.count ,id: \.self) { index in
                                 NavigationLink(destination: self.navDest(game: self.viewModel.games[period]![index])){
                                     self.gameDisplay(game: self.viewModel.games[period]![index],period:period,index: index)
                                 }

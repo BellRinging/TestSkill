@@ -40,6 +40,7 @@
 		E77381A823D1D26F002344FE /* FjallaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E77381A523D1D26F002344FE /* FjallaOne-Regular.ttf */; };
 		E77381A923D1D26F002344FE /* American Captain.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77381A623D1D26F002344FE /* American Captain.otf */; };
 		E77381AA23D1D26F002344FE /* FHACondFrenchNC.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77381A723D1D26F002344FE /* FHACondFrenchNC.otf */; };
+		E774CC5F24CE67960067C35B /* GamePassingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E774CC5E24CE67960067C35B /* GamePassingObject.swift */; };
 		E777394C245C2868002048E5 /* Big2DetailPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E777394B245C2868002048E5 /* Big2DetailPopUp.swift */; };
 		E777394E245C442A002048E5 /* Big2GameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E777394D245C442A002048E5 /* Big2GameDetail.swift */; };
 		E7773950245E81F2002048E5 /* CheckboxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E777394F245E81F2002048E5 /* CheckboxToggleStyle.swift */; };
@@ -209,6 +210,7 @@
 		E77381A523D1D26F002344FE /* FjallaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FjallaOne-Regular.ttf"; sourceTree = "<group>"; };
 		E77381A623D1D26F002344FE /* American Captain.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "American Captain.otf"; sourceTree = "<group>"; };
 		E77381A723D1D26F002344FE /* FHACondFrenchNC.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FHACondFrenchNC.otf; sourceTree = "<group>"; };
+		E774CC5E24CE67960067C35B /* GamePassingObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePassingObject.swift; sourceTree = "<group>"; };
 		E777394B245C2868002048E5 /* Big2DetailPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Big2DetailPopUp.swift; sourceTree = "<group>"; };
 		E777394D245C442A002048E5 /* Big2GameDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Big2GameDetail.swift; sourceTree = "<group>"; };
 		E777394F245E81F2002048E5 /* CheckboxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxToggleStyle.swift; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 		E7C5694B24CAFCB1009FCD72 /* Model Object */ = {
 			isa = PBXGroup;
 			children = (
+				E774CC5E24CE67960067C35B /* GamePassingObject.swift */,
 				E7B3429B23B907E600A5C566 /* DisplayBoard.swift */,
 				E518F60D22F067B10012CC2D /* Game.swift */,
 				E7F134A4247FA23C00EE4D51 /* Location.swift */,
@@ -1047,6 +1050,7 @@
 				E73F5F09243AF1FB00B8FC83 /* UserData.swift in Sources */,
 				E79AE00123FBCA3B00FD1282 /* GameViewListHistoryArea.swift in Sources */,
 				E7AD43DC242E1E1800B1200C /* RKDate.swift in Sources */,
+				E774CC5F24CE67960067C35B /* GamePassingObject.swift in Sources */,
 				E7AD43CA242E074400B1200C /* SelectAllView.swift in Sources */,
 				E75B8700249111C3002B0682 /* MainTabViewModel.swift in Sources */,
 				E75B87042492163A002B0682 /* PeriodSelectionViewModel.swift in Sources */,
