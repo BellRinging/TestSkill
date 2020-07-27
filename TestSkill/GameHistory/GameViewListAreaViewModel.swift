@@ -8,13 +8,10 @@ class GameViewListAreaViewModel: ObservableObject {
 
     
     var groupUsers : [User]
-    var sectionHeader : [String]
-    var sectionHeaderAmt : [String:Int]
-    var games : [String:[Game]]
+    var games : GameList
     var status : pageStatus
     var callback : (String,Int) -> ()
-    var selectedPeriod : String = ""
-    var selectedIndex : Int = 0
+    var selectedGame : Game? = nil
     var lastGameDetail : GameDetail?
     var lastBig2GameDetail : Big2GameDetail?
     var gameForFlown : Game?
@@ -26,16 +23,12 @@ class GameViewListAreaViewModel: ObservableObject {
     
     
     init(
-         sectionHeader: [String],
-         sectionHeaderAmt: [String:Int],
-         games:[String:[Game]],
+         games: GameList,
          status: pageStatus,
          lastGameDetail:GameDetail?,
           noMoreGame:Bool,
          callback : @escaping (String,Int) -> () ){
         self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
-        self.sectionHeader = sectionHeader
-        self.sectionHeaderAmt = sectionHeaderAmt
         self.games = games
         self.status = status
         self.lastGameDetail = lastGameDetail
@@ -52,17 +45,16 @@ class GameViewListAreaViewModel: ObservableObject {
     }
     
 
-    func islastItemReached(period:String , index : Int) -> Bool {
-        if sectionHeader.count > 0 {
-             return period == sectionHeader[sectionHeader.count-1] && index == (games[period]!.count - 1)
+    func islastItemReached(game:Game) -> Bool {
+        if self.games.list.count > 0 {
+            return game.id == self.games.list.last!.games.last!.id
         }else {
             return false
         }
      }
-     
-    func itemAppears(period:String , index : Int) {
-        if islastItemReached(period:period , index : index) {
-            
+    func itemAppears(game:Game) {
+//    func itemAppears(period:String , index : Int) {
+        if islastItemReached(game:game) {
             if !noMoreGame {
                 print("Load More Game")
                 NotificationCenter.default.post(name: .loadMoreGame, object:  nil)

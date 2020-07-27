@@ -19,8 +19,8 @@ struct GameViewListHistoryArea: View {
     
     @ObservedObject var viewModel: GameViewListAreaViewModel
 
-    init(sectionHeader: [String],sectionHeaderAmt: [String:Int],games:[String:[Game]],status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,noMoreGame:Bool,callback : @escaping (String,Int) -> () ){
-        viewModel = GameViewListAreaViewModel(sectionHeader: sectionHeader,sectionHeaderAmt:sectionHeaderAmt, games: games, status: status,lastGameDetail:lastGameDetail,noMoreGame:noMoreGame,callback: callback)
+    init(games: GameList,status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,noMoreGame:Bool,callback : @escaping (String,Int) -> () ){
+        viewModel = GameViewListAreaViewModel(games: games, status: status,lastGameDetail:lastGameDetail,noMoreGame:noMoreGame,callback: callback)
     }
     
     func popUpMenu(game: Game) -> some View{
@@ -49,7 +49,7 @@ struct GameViewListHistoryArea: View {
         }
     }
     
-    func gameDisplay(game:Game,period:String,index: Int) -> some View{
+    func gameDisplay(game:Game) -> some View{
         
         GameRow(game: game)
             .frame(height: 60)
@@ -57,25 +57,24 @@ struct GameViewListHistoryArea: View {
                 self.popUpMenu(game:game)
         }
         .onAppear {
-            self.viewModel.itemAppears(period: period , index: index)
+            self.viewModel.itemAppears(game: game)
         }
     }
 
     var body: some View {
         VStack{
-            if self.viewModel.status == .loading && self.viewModel.games.count == 0 {
+            if self.viewModel.status == .loading && self.viewModel.games.list.count == 0 {
                 Text(self.viewModel.status == .loading ? "Loading":"No data")
             }else{
                 List {
-                    ForEach(self.viewModel.sectionHeader, id: \.self) { period in
-                        Section(header: self.sectionArea(period:period)) {
-                            ForEach(0..<self.viewModel.games[period]!.count ,id: \.self) { index in
-                                NavigationLink(destination: self.navDest(game: self.viewModel.games[period]![index])){
-                                    self.gameDisplay(game: self.viewModel.games[period]![index],period:period,index: index)
+                    ForEach(self.viewModel.games.list) { gamePassingObject in
+                        Section(header: self.sectionArea(gamePassingObject:gamePassingObject)) {
+                            ForEach(gamePassingObject.games) { game in
+                                NavigationLink(destination: self.navDest(game: game)){
+                                    self.gameDisplay(game: game)
                                 }
                             }.onDelete { (index) in
-                                self.viewModel.selectedIndex = index.first!
-                                self.viewModel.selectedPeriod = period
+                                self.viewModel.selectedGame = gamePassingObject.games[index.first!]
                                 self.viewModel.showingDeleteAlert = true
                             }
                         }
@@ -84,7 +83,7 @@ struct GameViewListHistoryArea: View {
             }
         }.alert(isPresented: self.$viewModel.showingDeleteAlert) {
             Alert(title: Text("Confirm delete"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete")) {
-                self.viewModel.callback(self.viewModel.selectedPeriod , self.viewModel.selectedIndex)
+                NotificationCenter.default.post(name: .deleteGame, object:  self.viewModel.selectedGame!)
                 }, secondaryButton: .cancel()
             )
         }
@@ -100,12 +99,12 @@ struct GameViewListHistoryArea: View {
         }
     }
     
-    func sectionArea(period : String) -> some View {
+    func sectionArea(gamePassingObject : GamePassingObject) -> some View {
         HStack{
-            Text(period).font(MainFont.bold.size(12))
+            Text(gamePassingObject.id).font(MainFont.bold.size(12))
             Spacer()
-            Text("\(self.viewModel.sectionHeaderAmt[period]!)")
-                .titleFont(size: 12,color: self.viewModel.sectionHeaderAmt[period]! > 0 ? Color.greenColor: Color.redColor)
+            Text("\(gamePassingObject.periodAmt)")
+                .titleFont(size: 12,color: gamePassingObject.periodAmt > 0 ? Color.greenColor: Color.redColor)
         }
     }
 

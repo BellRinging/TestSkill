@@ -39,7 +39,7 @@ struct GameView: View {
                             self.viewModel.showPercent.toggle()
                         }
                         .overlay(self.actAsUser)
-                        GameViewListHistoryArea(sectionHeader: self.viewModel.sectionHeader, sectionHeaderAmt: self.viewModel.sectionHeaderAmt,games: self.viewModel.games, status: self.viewModel.status,lastGameDetail: self.viewModel.lastGameDetail,lastBig2GameDetail: self.viewModel.lastBig2GameDetail, noMoreGame: self.viewModel.noMoreUpdate, callback: self.viewModel.deleteGame)
+                        GameViewListHistoryArea(games: self.viewModel.games, status: self.viewModel.status,lastGameDetail: self.viewModel.lastGameDetail,lastBig2GameDetail: self.viewModel.lastBig2GameDetail, noMoreGame: self.viewModel.noMoreUpdate, callback: self.viewModel.deleteGame)
                             .pullToRefresh(isShowing: self.$isShowing) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 self.viewModel.loadGame()

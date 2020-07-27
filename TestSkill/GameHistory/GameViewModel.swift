@@ -30,9 +30,9 @@ class GameViewModel: ObservableObject {
     @Published var showAddGameDisplay: Bool = false
     @Published var showPercent: Bool = true
     @Published var showingFlownView = false
-    @Published var games: [String:[Game]] =  [:]
-    @Published var sectionHeader : [String] = []
-    @Published var sectionHeaderAmt : [String:Int] = [:]
+    @Published var games: GameList = GameList(list: [])
+    
+    
     @Published var groupUsers: [User] =  []
     @Published var status : pageStatus = .loading
     @Published var group: PlayGroup?{
@@ -87,11 +87,11 @@ class GameViewModel: ObservableObject {
         }.store(in: &tickets)
         
         NotificationCenter.default.publisher(for: .deleteGame)
-            .map{$0.object as! Game?}
+            .map{$0.object as! Game}
             .sink { [unowned self] (game) in
-                let period = game!.period
-                let index = self.games[period]!.firstIndex { $0.id == game!.id}!
-                self.deleteGame(section: period, index: index)
+//                let period = game!.period
+//                let index = self.games[period]!.firstIndex { $0.id == game!.id}!
+                self.deleteGame(game: game)
         }.store(in: &tickets)
         
         NotificationCenter.default.publisher(for: .flownGame)
@@ -208,57 +208,41 @@ class GameViewModel: ObservableObject {
             var uid = actAsUser == nil ? Auth.auth().currentUser!.uid:actAsUser!.id
             
             if startAgain {
-                self.games =  [:]
-                self.sectionHeader = []
+                self.games = GameList(list: [])
                 startAgain.toggle()
             }
-            Game.getItemWithGroupId(groupId: self.group!.id ,pagingSize: pagingSize, lastDoc: lastDoc).then { (games,lastDoc)  in
+            Game.getItemWithGroupId(groupId: self.group!.id ,pagingSize: pagingSize, lastDoc: lastDoc).then { (gameList,lastDoc)  in
                 
-                if games.count > 0 {
-                    if games.count < self.pagingSize {
+                if gameList.count > 0 {
+                    if gameList.count < self.pagingSize {
                         self.noMoreUpdate = true
                     }
-                   var list = self.games.values.flatMap{$0}
-                    list += games
+                    var list = self.games.list.count == 0 ? [] : self.games.list.flatMap{$0.games}
+                    list += gameList
 
                     let currentMthGame = list.filter{$0.date.prefix(6) == Utility.getCM()}
-//                    print(Utility.getCM())
-//                    print("currentMthBalance ====: \(currentMthGame.count)")
                     var cMB = 0
                     for game in currentMthGame {
                         cMB += game.result[uid] ?? 0
                     }
                     self.balanceObject.currentMth = cMB
-//                    print("====: \(self.currentMthBalance)")
                     
                     print("Total Game : \(list.count)")
                     var sorted = list.sorted { $0.date > $1.date }
                     let dictionary = Dictionary(grouping: sorted) { $0.period }
-                    DispatchQueue.main.async {
-                        self.sectionHeader = dictionary.keys.sorted(by: >)
-                        self.sectionHeaderAmt = [:]
-                        self.sectionHeader.map { (period)  in
+//                    DispatchQueue.main.async {
+                    var result : [GamePassingObject] = []
+                        let sectionHeader = dictionary.keys.sorted(by: >)
+                        for period in sectionHeader{
                             let list = dictionary[period]!
-                            var amt : Int = 0
-                            for item in list {
-                                amt = amt + (item.result[uid] ?? 0)
+                            var amt : Int = list.reduce(0) { abc, item in
+                                abc + (item.result[uid] ?? 0)
                             }
-                            self.sectionHeaderAmt[period] = amt
+                            let gameObj = GamePassingObject(id: period, games: list, periodAmt: amt)
+                            result.append(gameObj)
                         }
-                        self.games = dictionary
+                        self.games = GameList(list: result)
                         self.lastDoc = lastDoc
-                        
-//                        for (period ,gameList)  in dictionary {
-//                            if period == "202006" {
-//                                for abc in gameList {
-//                                    print(abc.period)
-//                                }
-//                            }
-//                        }
-                        
-                    }
-                    
-                    
                 }else{
                     self.noMoreUpdate = true
                     print("Set noMoreUpdate to true2")
@@ -281,34 +265,19 @@ class GameViewModel: ObservableObject {
 
     func updateGame(game:Game){
         print("Trigger the game update \(game.result)")
-        let period = game.period
-        var gameArray : [Game] = []
-        if let gamesList = self.games[period]  {
-            let index = gamesList.firstIndex { $0.id == game.id}
-            if let index = index {
-                self.games[period]![index] = game
-            }else{
-                print("Add New game")
-                self.games[period]?.insert(game, at: 0)
-            }
-        }else{
-            print("Add New game")
-            self.sectionHeader.append(period)
-            let uid = Auth.auth().currentUser!.uid
-            self.sectionHeaderAmt[period] = game.result[uid]!
-            self.sectionHeader.sort {$0 > $1}
-            self.games[period] = [game]
-        }
+//        print("before",self.games.list[0].games.count)
+        self.games.updateGame(game: game)
+//        print("after",self.games.list[0].games.count)
         Utility.hideProgress()
     }
     
-    func deleteGame(section : String , index : Int){
+    func deleteGame(game : Game){
         withAnimation{
-            let game = self.games[section]![index]
             if game.flown == 1 {
                 Utility.showAlert(message: "Game is already frown")
                 return
             }
+            
             let gameId = game.id
             GameDetail.getAllItemById(gameId: gameId).then { gameDetail in
                 print("gameDetail \(gameDetail.count)")
@@ -316,16 +285,16 @@ class GameViewModel: ObservableObject {
                     Utility.showAlert(message: "Cant delete if game has already started")
                 }else{
                     game.delete()
-                    if self.games[section]!.count >  1 {
-                        self.games[section]!.remove(at: index)
-                    }else{
-                        let temp = self.sectionHeader.firstIndex(of: section)
-                        self.sectionHeader.remove(at: temp!)
-                        self.games.removeValue(forKey: section)
-                    }
+                    self.games.deleteGame(game: game)
                 }
             }
         }
+    }
+    
+    
+    func deleteGame(period : String , index : Int){
+        let index1 = self.games.list.firstIndex{$0.id == period}!
+        self.deleteGame(game: self.games.list[index1].games[index])
     }
       
     func loadGameBalance(){

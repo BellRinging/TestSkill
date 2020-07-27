@@ -20,6 +20,9 @@ struct GameList {
             let index2 = gameList.firstIndex { $0.id == game.id }
             if  index2 != nil {
                 self.list[index!].updateGame(game:game,index:index2!)
+            }else{
+                // add new
+                self.list[index!].addNewGame(game: game)
             }
         }else{
             let uid =  UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
@@ -31,9 +34,24 @@ struct GameList {
     mutating func addGamePassingObject(gameObj :GamePassingObject){
         list.append(gameObj)
     }
+    
+    mutating func deleteGame(game :Game){
+        let period = game.period
+        let index = list.firstIndex { $0.id ==  period}!
+        let gameObj = self.list[index]
+        
+        if gameObj.games.count == 1{
+            self.list.remove(at: index)
+        }else{
+            let gameList = gameObj.games
+            let index2 = gameList.firstIndex { $0.id == game.id }!
+            self.list[index].deleteGame(index: index2)
+        }
+        
+    }
 }
 
-struct GamePassingObject : Identifiable{
+struct GamePassingObject : Identifiable {
     
     var id : String
     var games : [Game] = []
@@ -41,5 +59,16 @@ struct GamePassingObject : Identifiable{
     
     mutating func updateGame(game: Game , index : Int){
         self.games[index] = game
+    }
+    
+    mutating func addNewGame(game: Game ){
+        var list = self.games
+        list.append(game)
+        list = list.sorted{$0.date > $1.date}
+        self.games = list
+    }
+    
+    mutating func deleteGame(index : Int){
+        self.games.remove(at: index)
     }
 }
