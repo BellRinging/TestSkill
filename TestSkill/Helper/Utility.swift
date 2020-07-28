@@ -1,4 +1,3 @@
-import MBProgressHUD
 import SwiftEntryKit
 import SwiftUI
 typealias Action = () -> ()
@@ -12,22 +11,24 @@ class Utility {
 
         DispatchQueue.main.async {
             guard let mainWindow = UIApplication.shared.window else {return}
-            let progressIcon = MBProgressHUD.showAdded(to: mainWindow, animated: true)
-            progressIcon.labelText = "Loading"
-            progressIcon.isUserInteractionEnabled = false
             //tempView
+            print("Show Progress")
+            let vc = UIHostingController(rootView: ProgressView().background(Color.init(white: 0, opacity: 0.2)))
+            let view = vc.view!
             let tempView = UIView(frame: (mainWindow.frame))
             tempView.backgroundColor = UIColor(white: 0, alpha: 0.2)
+            tempView.addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.centerXAnchor.constraint(equalTo: tempView.centerXAnchor).isActive = true
+            view.centerYAnchor.constraint(equalTo: tempView.centerYAnchor).isActive = true
             tempView.tag = 999
             mainWindow.addSubview(tempView)
-            progressIcon.show(animated: true)
         }
     }
     
     static func hideProgress(){
         DispatchQueue.main.async {
             guard let mainWindow =  UIApplication.shared.window else {return}
-            MBProgressHUD.hideAllHUDs(for: mainWindow, animated: true)
             let view = mainWindow.viewWithTag(999)
             view?.removeFromSuperview()
         }

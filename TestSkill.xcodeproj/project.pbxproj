@@ -284,9 +284,6 @@
 		E7AD43F924363D3000B1200C /* FriendRequestViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequestViewModel.swift; sourceTree = "<group>"; };
 		E7AD44002437108600B1200C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		E7AD44022437108600B1200C /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
-		E7AD44052437108600B1200C /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		E7AD44082437108600B1200C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		E7AD440A2437108600B1200C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7B3429723B83E2300A5C566 /* GameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameDetailView.swift; path = TestSkill/GameDetail/GameDetailView.swift; sourceTree = SOURCE_ROOT; };
 		E7B3429923B8E8E000A5C566 /* IndividualScoreDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualScoreDisplay.swift; sourceTree = "<group>"; };
 		E7B3429B23B907E600A5C566 /* DisplayBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayBoard.swift; sourceTree = "<group>"; };
@@ -339,7 +336,6 @@
 		EB579EC41F1CE963002E31A7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EBA420231F667A0F0010BFC7 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		EBB950841F446288005D62E2 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "Pods/../build/Debug-iphoneos/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
-		EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SignInExampleSwift-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -537,6 +533,17 @@
 			path = PageControl;
 			sourceTree = "<group>";
 		};
+		E791DED524CFCCA600343682 /* Statistic */ = {
+			isa = PBXGroup;
+			children = (
+				E7C8DB19248E7CE30003FB1E /* ResultView.swift */,
+				E7C8DB1B248E7CF30003FB1E /* ResultViewModel.swift */,
+				E75B87012492162A002B0682 /* PeriodSelectionView.swift */,
+				E75B870324921639002B0682 /* PeriodSelectionViewModel.swift */,
+			);
+			path = Statistic;
+			sourceTree = "<group>";
+		};
 		E79ADFF823F9223400FD1282 /* GameDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -634,16 +641,6 @@
 			path = "Forget Password";
 			sourceTree = "<group>";
 		};
-		E7AD44042437108600B1200C /* TestNotificationContent */ = {
-			isa = PBXGroup;
-			children = (
-				E7AD44052437108600B1200C /* NotificationViewController.swift */,
-				E7AD44072437108600B1200C /* MainInterface.storyboard */,
-				E7AD440A2437108600B1200C /* Info.plist */,
-			);
-			path = TestNotificationContent;
-			sourceTree = "<group>";
-		};
 		E7C5694A24CAFC63009FCD72 /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -653,7 +650,6 @@
 				E5992351232DF094008AECD6 /* Assets.xcassets */,
 				EB50AE961F876DED003B9264 /* UIViewController+Alerts.h */,
 				EB50AE951F876DED003B9264 /* UIViewController+Alerts.m */,
-				EBB950861F447DEA005D62E2 /* SignInExampleSwift-Bridging-Header.h */,
 				EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */,
 			);
 			path = Support;
@@ -678,18 +674,6 @@
 				E77E3CD223BF83E10039F223 /* PageViewController.swift */,
 			);
 			path = "Model Object";
-			sourceTree = "<group>";
-		};
-		E7C8DB18248E7CC10003FB1E /* Statistic */ = {
-			isa = PBXGroup;
-			children = (
-				E7C8DB19248E7CE30003FB1E /* ResultView.swift */,
-				E7C8DB1B248E7CF30003FB1E /* ResultViewModel.swift */,
-				E75B87012492162A002B0682 /* PeriodSelectionView.swift */,
-				E75B870324921639002B0682 /* PeriodSelectionViewModel.swift */,
-			);
-			name = Statistic;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		E7EDBFA323CF41C500F8998A /* Social Login */ = {
@@ -719,7 +703,6 @@
 			isa = PBXGroup;
 			children = (
 				EB579E951F1CD3FA002E31A7 /* TestSkill */,
-				E7AD44042437108600B1200C /* TestNotificationContent */,
 				EB579E941F1CD3FA002E31A7 /* Products */,
 				5601119098145CB763028C50 /* Pods */,
 				EF72192366AFA7304B4B195B /* Frameworks */,
@@ -752,7 +735,7 @@
 				E7773951245ED835002048E5 /* Big2GameDetail */,
 				E79ADFF823F9223400FD1282 /* GameDetail */,
 				E782D1E223D868730060233B /* GameHistory */,
-				E7C8DB18248E7CC10003FB1E /* Statistic */,
+				E791DED524CFCCA600343682 /* Statistic */,
 				E782D1E523D86A8F0060233B /* Group */,
 				E7AD43C2242CF79B00B1200C /* Friend */,
 				E74A7D37242347E60025D860 /* Admin */,
@@ -925,10 +908,9 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Introspect/Introspect.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/QuickLayout/QuickLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftEntryKit/SwiftEntryKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftUIRefresh/SwiftUIRefresh.framework",
@@ -949,10 +931,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Introspect.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QuickLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftEntryKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftUIRefresh.framework",
@@ -1125,14 +1106,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		E7AD44072437108600B1200C /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E7AD44082437108600B1200C /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 		EB579E9F1F1CD3FA002E31A7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1275,13 +1248,13 @@
 				);
 				IBSC_WARNINGS = NO;
 				INFOPLIST_FILE = TestSkill/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.mahjongcalculator;
 				PRODUCT_NAME = myjongso;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/Support/SignInExampleSwift-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1305,13 +1278,13 @@
 				);
 				IBSC_WARNINGS = NO;
 				INFOPLIST_FILE = TestSkill/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.mahjongcalculator;
 				PRODUCT_NAME = myjongso;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "TestSkill/Support/SignInExampleSwift-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
