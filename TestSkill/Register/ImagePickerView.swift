@@ -15,14 +15,10 @@ struct ImagePicker: UIViewControllerRepresentable {
     
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UINavigationController {
-//        print("In Make")
-//        print(self.closeFlag)
+
         let libraryViewController = CameraViewController.imagePickerViewController(croppingParameters: croppingParameters) { image, asset in
-//            print(image)
-//            print(asset)
             let abc = image?.copy() as? UIImage
             self.image = abc
-            
                 self.closeFlag = false
             
         }
@@ -30,7 +26,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UINavigationController, context: UIViewControllerRepresentableContext<ImagePicker>) {
-        print("In update: \(self.closeFlag)")
+//        print("In update: \(self.closeFlag)")
     }
     
 }

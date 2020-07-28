@@ -1,7 +1,7 @@
 platform :ios, '13.0'
 use_frameworks! 
 
-target ‘TestSkill’ do
+target 'TestSkill' do
 	pod 'GoogleSignIn'
 	pod 'Firebase'
 	pod 'Firebase/Auth'

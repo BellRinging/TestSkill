@@ -20,30 +20,6 @@ struct SocialLogin: UIViewRepresentable {
         GIDSignIn.sharedInstance()?.presentingViewController = UIApplication.shared.windows.last?.rootViewController
         GIDSignIn.sharedInstance()?.signIn()
     }
-//
-//    func attemptLoginApple() {
-//        let appleIDProvider = ASAuthorizationAppleIDProvider()
-//        let request = appleIDProvider.createRequest()
-//        request.requestedScopes = [.fullName, .email]
-//
-//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-//        authorizationController.delegate = self
-//        authorizationController.presentationContextProvider = self
-//        authorizationController.performRequests()
-//    }
-    
-//    func performExistingAccountSetupFlows() {
-//        // Prepare requests for both Apple ID and password providers.
-//        let requests = [ASAuthorizationAppleIDProvider().createRequest(), ASAuthorizationPasswordProvider().createRequest()]
-//
-//        // Create an authorization controller with the given requests.
-//        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
-//        authorizationController.delegate = self
-//        authorizationController.presentationContextProvider = self
-//        authorizationController.performRequests()
-//    }
-//
-  
     
     func attemptLoginFb(){
         if let vc = UIApplication.shared.windows.last?.rootViewController{

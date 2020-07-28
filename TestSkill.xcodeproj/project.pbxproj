@@ -67,6 +67,7 @@
 		E785A69F23BCD6C7003F0A78 /* GameDetailPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A69E23BCD6C7003F0A78 /* GameDetailPopUp.swift */; };
 		E785A6A223BE3110003F0A78 /* RegisterPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A6A123BE3110003F0A78 /* RegisterPage.swift */; };
 		E785A6A423BEE5E0003F0A78 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A6A323BEE5E0003F0A78 /* LoginView.swift */; };
+		E791DED724CFCF9F00343682 /* GoogleDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E791DED624CFCF9F00343682 /* GoogleDelegates.swift */; };
 		E79ADFFA23F922F100FD1282 /* GameDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79ADFF923F922F100FD1282 /* GameDetailViewModel.swift */; };
 		E79ADFFF23FBC92B00FD1282 /* GameViewUpperArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79ADFFE23FBC92B00FD1282 /* GameViewUpperArea.swift */; };
 		E79AE00123FBCA3B00FD1282 /* GameViewListHistoryArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AE00023FBCA3B00FD1282 /* GameViewListHistoryArea.swift */; };
@@ -237,6 +238,7 @@
 		E785A69E23BCD6C7003F0A78 /* GameDetailPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailPopUp.swift; sourceTree = "<group>"; };
 		E785A6A123BE3110003F0A78 /* RegisterPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPage.swift; sourceTree = "<group>"; };
 		E785A6A323BEE5E0003F0A78 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		E791DED624CFCF9F00343682 /* GoogleDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDelegates.swift; sourceTree = "<group>"; };
 		E79ADFF923F922F100FD1282 /* GameDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailViewModel.swift; sourceTree = "<group>"; };
 		E79ADFFE23FBC92B00FD1282 /* GameViewUpperArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewUpperArea.swift; sourceTree = "<group>"; };
 		E79AE00023FBCA3B00FD1282 /* GameViewListHistoryArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewListHistoryArea.swift; sourceTree = "<group>"; };
@@ -685,6 +687,7 @@
 				E77381A023D0331A002344FE /* SocialLogin.swift */,
 				E73F5F00243AEA2500B8FC83 /* SignInWithApple.swift */,
 				E73F5F02243AEBBC00B8FC83 /* SignInWithAppleDelegates.swift */,
+				E791DED624CFCF9F00343682 /* GoogleDelegates.swift */,
 			);
 			path = "Social Login";
 			sourceTree = "<group>";
@@ -1026,6 +1029,7 @@
 				E7CF804D24388DC400B7D882 /* FdsRequest.swift in Sources */,
 				E79AE0542410CA7900FD1282 /* MenuPageViewModel.swift in Sources */,
 				E79AE09024150D9F00FD1282 /* GameDetailListView.swift in Sources */,
+				E791DED724CFCF9F00343682 /* GoogleDelegates.swift in Sources */,
 				E7C8DB1C248E7CF30003FB1E /* ResultViewModel.swift in Sources */,
 				E7AD43DB242E1E1800B1200C /* RKViewController.swift in Sources */,
 				E73F5F09243AF1FB00B8FC83 /* UserData.swift in Sources */,
@@ -1234,7 +1238,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 490B503289F94BA60C70C937 /* Pods-TestSkill.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TestSkill/Support/TestSkill.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1264,7 +1268,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7C4780E1E86C4DAA59C16EAF /* Pods-TestSkill.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TestSkill/Support/TestSkill.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";

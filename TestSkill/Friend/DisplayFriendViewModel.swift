@@ -80,8 +80,14 @@ class DisplayFriendViewModel: ObservableObject {
     func addToSelectedList(user : User){
 //        print("add to row")
         if maxSelection == 1{
-            selectedUser = []
-            selectedUser.append(user)
+            
+            if selectedUser.count > 0 && user.id == selectedUser[0].id {
+                selectedUser = []
+            }else{
+                selectedUser = []
+                selectedUser.append(user)
+            }
+            
         }else{
             if let index = selectedUser.firstIndex(of:user){
                 selectedUser.remove(at: index)

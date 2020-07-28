@@ -18,42 +18,24 @@ import UserNotificationsUI
 import FirebaseMessaging
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate ,GIDSignInDelegate ,UNUserNotificationCenterDelegate ,MessagingDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate ,UNUserNotificationCenterDelegate ,MessagingDelegate{
     
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         //Firebase
         FirebaseApp.configure()
+        
         //Message & notification
         attemptRegisterForNotification(application:application)
         //Google API
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        GIDSignIn.sharedInstance().delegate  = self
+        GIDSignIn.sharedInstance().delegate  = GoogleDelegates()
         //Facebook Config
         LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
         return true
     }
 
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        if error != nil {
-            return
-        }else{
-            guard let authentication = user.authentication else { return }
-            print("Signed In by Google")
-            var tempUser = ProviderUser()
-            tempUser.userName = user.profile.name
-            tempUser.firstName = user.profile.givenName
-            tempUser.lastName = user.profile.familyName
-            tempUser.email = user.profile.email
-            tempUser.imgUrl = user.profile.imageURL(withDimension: 100)?.absoluteString
-            let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                           accessToken: authentication.accessToken)
-            let tokenDict:[String: Any] = ["token": credential , "user": tempUser ]
-            NotificationCenter.default.post(name: .loginCompleted, object: nil,userInfo: tokenDict)
-      
-        }
-    }
     func attemptRegisterForNotification(application : UIApplication){
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
