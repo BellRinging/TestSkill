@@ -269,6 +269,22 @@ extension User {
         }
     }
     
+    func removeFriend(userId:String) -> Promise<User> {
+        return Promise<User> { (resolve , reject) in
+            let db = Firestore.firestore()
+            let data = ["friends" : FieldValue.arrayRemove([userId])]
+            let ref = db.collection("users").document(self.id)
+            ref.updateData(data) { (err) in
+                guard err == nil  else {
+                    return reject(err!)
+                }
+            }
+            print("Remove friends \(userId) from \(self.id)")
+            resolve(self)
+        }
+    }
+    
+    
     func updateFdsRequest(userId:String) -> Promise<User> {
         return Promise<User> { (resolve , reject) in
             let db = Firestore.firestore()

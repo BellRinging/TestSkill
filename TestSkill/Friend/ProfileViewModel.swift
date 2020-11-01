@@ -12,17 +12,17 @@ import SwiftUI
 
 class ProfileViewModel: ObservableObject {
    
-    @Published var player : User
+    @Binding var player : User
     @Published var firend : [User] = []
     var showEditButton = false
     @Published var showEditPage : Bool = false
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
   
     
-    init(player : User){
-        self.player = player
+    init(player : Binding<User>){
+        self._player = player
         let uid = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
-        if player.owner == uid {
+        if player.wrappedValue.owner == uid {
             showEditButton = true
         }else{
             showEditButton = false
@@ -53,8 +53,22 @@ class ProfileViewModel: ObservableObject {
             list.append(User.getById(id: fds))
         }
         Promises.all(list).then{ users in
-            let users = users.compactMap{$0}
-            self.firend.append(contentsOf: users)
+            let users2 = users.compactMap{$0}
+            print("User total/find" , users.count , users2.count)
+            self.firend.append(contentsOf: users2 )
+            //clean up the friend list
+            for i in (0..<users.count).reversed() {
+                if  users[i] == nil {
+                    print(self.player.friends[i])
+                    self.player.removeFriend(userId: self.player.friends[i])
+                    self.player.friends.remove(at: i)
+                }
+            }
+            
+            
+//            player.removeFriend(userId: <#T##String#>)
+            
+            
         }.catch{ err in
             Utility.showAlert(message: err.localizedDescription)
         }

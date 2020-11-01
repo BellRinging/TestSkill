@@ -9,12 +9,15 @@
 import SwiftUI
 import Promises
 
+
+
+
 struct DisplayFriendView: View {
 
     @ObservedObject var viewModel: DisplayFriendViewModel
     
-    init(closeFlag : Binding<Bool> , users : Binding<[User]> ,maxSelection : Int = 999 ,includeSelfInReturn : Bool = true , onlyInUserGroup : Bool = false,hasDetail : Bool = false,acceptNoReturn : Bool = false , showSelectAll : Bool = true,showAddButton:Bool = false,includeSelfInSeletion:Bool = false) {
-        viewModel = DisplayFriendViewModel(closeFlag: closeFlag, users: users,maxSelection: maxSelection ,includeSelfInReturn : includeSelfInReturn,onlyInUserGroup:onlyInUserGroup,hasDetail: hasDetail,acceptNoReturn:acceptNoReturn,showSelectAll:showSelectAll,showAddButton:showAddButton,includeSelfInSeletion:includeSelfInSeletion)
+    init(option : DisplayFriendViewOption) {
+        viewModel = DisplayFriendViewModel(option:option)
     }
     
     
@@ -35,33 +38,46 @@ struct DisplayFriendView: View {
                             .padding([.horizontal,.top])
                     }
                 }
-                List(viewModel.users) { user in
-                    self.rowLogic(user:user)
+                List(0..<self.viewModel.users.count ,id:\.self) { index in
+                    self.rowLogic(user:self.$viewModel.users[index])
            
-                }
+                }.listStyle(PlainListStyle())
+                navigationArea
             }
             .navigationBarTitle("Display Friend", displayMode: .inline)
             .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: CButton())
-        }.modal(isShowing: self.$viewModel.showAddFriend) {
-            AddFriendView(closeFlag: self.$viewModel.showAddFriend)
-        }.modal(isShowing: self.$viewModel.showFriendRequest) {
-            FriendRequestView(closeFlag: self.$viewModel.showFriendRequest)
-        }.modal(isShowing: self.$viewModel.showAddDummyFriend) {
-            RegisterPage(closeFlag: self.$viewModel.showAddDummyFriend ,userType: "dummy")
         }
     }
     
-    func rowLogic(user:User) -> some View{
+    var navigationArea : some View{
+        VStack{
+            EmptyView()
+                .fullScreenCover(isPresented:  self.$viewModel.showAddFriend) {
+                    AddFriendView(closeFlag: self.$viewModel.showAddFriend)
+                }
+            EmptyView()
+                .fullScreenCover(isPresented:self.$viewModel.showFriendRequest) {
+                    FriendRequestView(closeFlag: self.$viewModel.showFriendRequest)
+                }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showAddDummyFriend) {
+                    LazyView(RegisterPage(closeFlag: self.$viewModel.showAddDummyFriend ,userType: "dummy").equatable())
+                }
+            
+        }
+    }
+    
+    func rowLogic(user:Binding<User>) -> some View{
         VStack{
             if self.viewModel.hasDetail == false {
-                DisplayFriendRow(user: user, isSelected: self.viewModel.selectedUser.contains(user))
+                DisplayFriendRow(user: user.wrappedValue, isSelected: self.viewModel.selectedUser.contains(user.wrappedValue))
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        self.viewModel.addToSelectedList(user: user)
+                        self.viewModel.addToSelectedList(user: user.wrappedValue)
                 }
             }else{
                 NavigationLink(destination:LazyView(ProfileView(player: user))){
-                    DisplayFriendRow(user: user,isSelected:false)
+                    DisplayFriendRow(user: user.wrappedValue,isSelected:false)
                 }
             }
         }
@@ -82,9 +98,9 @@ struct DisplayFriendView: View {
             ActionSheet(
                 title: Text("Friend Type"),
                 buttons: [
-                    .cancel { print("Cancel")},
-                    .default(Text("Add Dummy Friend"),action: {self.viewModel.showAddDummyFriend = true}),
-                    .default(Text("Search by Network"),action: {self.viewModel.showAddFriend = true}),
+                    .cancel { },
+                    .default(Text("Add Dummy Friend"),action: { withAnimation {self.viewModel.showAddDummyFriend = true}}),
+                    .default(Text("Search by Network"),action: {withAnimation {self.viewModel.showAddFriend = true}}),
                 ]
             )
         }

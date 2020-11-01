@@ -69,7 +69,7 @@ struct TabbarView: View {
                     self.tabbarItem(text: "Game", image: "book.fill")
             }.tag(Tab.game)
             
-            LazyView(MenuPage())
+            LazyView(MenuPage().equatable())
                 .tabItem{
                     self.tabbarItem(text: "Menu", image: "list.bullet")
             }.tag(Tab.menu)

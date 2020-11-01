@@ -1,6 +1,7 @@
 import UIKit
 import Promises
 import Firebase
+import FirebaseFirestore
 
 struct GameDetail : Codable {
     var id : String
@@ -111,6 +112,7 @@ extension GameDetail {
     
     static func getLastDetailByGameId(gameId: String , detailNo : Int) -> Promise<GameDetail?>  {
         let p = Promise<GameDetail?> { (resolve , reject) in
+//            print("GameId",gameId, detailNo)
             let db = Firestore.firestore()
             let ref = db.collection("gameDetails").whereField("gameId",isEqualTo: gameId).whereField("detailNo",isEqualTo: detailNo).limit(to: 1)
             ref.getDocuments { (snapshot, err) in
@@ -197,7 +199,7 @@ extension GameDetail {
                      do {
                          let data = try JSONSerialization.data(withJSONObject: doc.data(), options: .prettyPrinted)
                          let  group = try JSONDecoder.init().decode(GameDetail.self, from: data)
-                        print(group.id)
+//                        print(group.id)
                          groups.append(group)
                      }catch{
                         print(error)

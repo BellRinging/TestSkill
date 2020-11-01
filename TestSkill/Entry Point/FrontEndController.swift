@@ -19,6 +19,7 @@ class FrontEndController: UIViewController {
     var mainViewController : UIHostingController<MainTabView>?
     
     override func viewDidLoad() {
+        print("View Did Load")
         super.viewDidLoad()
         addEventListener()
     }
@@ -40,6 +41,7 @@ class FrontEndController: UIViewController {
     }
  
     @objc func showLoginPage(){
+        print("Show Login Page")
         let loginController = UIHostingController(rootView: LoginView())
         loginPageController = loginController
         loginController.modalPresentationStyle = .fullScreen

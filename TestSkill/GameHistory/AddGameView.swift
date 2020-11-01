@@ -8,7 +8,11 @@
 
 import SwiftUI
 
-struct AddGameView: View {
+struct AddGameView: View ,Equatable{
+    static func == (lhs: AddGameView, rhs: AddGameView) -> Bool {
+        return true
+    }
+    
     
     @ObservedObject var viewModel : AddGameViewModel
     
@@ -24,7 +28,7 @@ struct AddGameView: View {
             }
             .navigationBarTitle("Add Game", displayMode: .inline)
             .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag))
-        }.modal(isShowing: self.$viewModel.showLocationView) {
+        }.fullScreenCover(isPresented: self.$viewModel.showLocationView) {
             LocationView(closeFlag: self.$viewModel.showLocationView, location: self.$viewModel.location,singleSelect: true)
         }
     }
@@ -98,7 +102,8 @@ struct AddGameView: View {
         }) {
             AddGameViewRow(players: self.viewModel.players)
         }.sheet(isPresented: self.$viewModel.showSelectPlayer) {
-            DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayer, users: self.$viewModel.players ,maxSelection: 4 ,includeSelfInReturn: false,onlyInUserGroup: true,includeSelfInSeletion: true)
+            let option = DisplayFriendViewOption(closeFlag: self.$viewModel.showSelectPlayer, users: self.$viewModel.players ,maxSelection: 4 ,includeSelfInReturn: true,onlyInUserGroup: true)
+            DisplayFriendView(option: option)
         }
     }
     

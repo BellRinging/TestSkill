@@ -18,7 +18,7 @@ import UserNotificationsUI
 import FirebaseMessaging
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate ,UNUserNotificationCenterDelegate ,MessagingDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate ,UNUserNotificationCenterDelegate ,MessagingDelegate,GIDSignInDelegate{
     
     var window: UIWindow?
     
@@ -30,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UNUserNotificationCenterD
         attemptRegisterForNotification(application:application)
         //Google API
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        GIDSignIn.sharedInstance().delegate  = GoogleDelegates()
+//        GIDSignIn.sharedInstance().delegate  = GoogleDelegates()
+        GIDSignIn.sharedInstance().delegate  = self
         //Facebook Config
         LoginManager.shared.facebookConfiguration(application, didFinishLaunchingWithOptions: launchOptions)
         return true
@@ -43,6 +44,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UNUserNotificationCenterD
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { (geant, err) in}
         application.registerForRemoteNotifications()
     }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+          if error != nil {
+              return
+          }else{
+              guard let authentication = user.authentication else { return }
+              print("Signed In by Google")
+              var tempUser = ProviderUser()
+              tempUser.userName = user.profile.name
+              tempUser.firstName = user.profile.givenName
+              tempUser.lastName = user.profile.familyName
+              tempUser.email = user.profile.email
+              tempUser.imgUrl = user.profile.imageURL(withDimension: 100)?.absoluteString
+              let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                             accessToken: authentication.accessToken)
+              let tokenDict:[String: Any] = ["token": credential , "user": tempUser ]
+              NotificationCenter.default.post(name: .loginCompleted, object: nil,userInfo: tokenDict)
+        
+          }
+      }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard let urlScheme = url.scheme else { return false }

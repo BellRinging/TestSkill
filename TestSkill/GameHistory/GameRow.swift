@@ -23,7 +23,7 @@ struct GameRow: View {
                 Image(viewModel.game.gameType == "Big2" ? "Big2Icon" : "mahjongIcon")
                     .resizable()
                     .scaledToFit()
-                    .frame(width:50)
+                    .frame(width:54)
                 Text(viewModel.date).textStyle(size: 12)
                 Text(viewModel.location).textStyle(size: 10)
             }.layoutPriority(1)
@@ -41,11 +41,12 @@ struct GameRow: View {
             }
             Spacer()
             if self.viewModel.currentPlayerExist {
-                Text("\(viewModel.amount)")
+                Text("\(viewModel.win ? viewModel.amount:viewModel.amount * -1)")
                     .foregroundColor(viewModel.win ? Color.greenColor:Color.redColor)
-                    .textStyle(size: 24)
+                    .textStyle(size: 22)
             }else{
-                Text("N/A").textStyle(size: 20 ,color: Color.redColor)
+//                Text("N/A").textStyle(size: 20 ,color: Color.redColor)
+                EmptyView()
             }
         }
     }

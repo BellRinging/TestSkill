@@ -116,7 +116,7 @@ struct Big2DetailView: View {
         VStack{
             detail()
         }
-        .modal(isShowing: self.$viewModel.showSwapPlayer){
+        .fullScreenCover(isPresented: self.$viewModel.showSwapPlayer){
             LazyView(SwapUser(game: self.viewModel.game,closeFlag:self.$viewModel.showSwapPlayer).environment(\.editMode, Binding.constant(EditMode.active)))
         }.navigationBarTitle("\(viewModel.game.date) \(viewModel.game.location)", displayMode: .inline)
     }

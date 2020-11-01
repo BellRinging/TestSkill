@@ -21,7 +21,7 @@ struct GameDetailListView: View {
     var body: some View {
         NavigationView{
             VStack{
-                self.titleRow(self.viewModel.users).padding(.top , 50)
+                self.titleRow(self.viewModel.users).padding(.top)
                 self.totleRow(self.viewModel.totals).padding(.top)
                 List{
                     if self.viewModel.gameForDisplay.count > 0 {
@@ -35,7 +35,7 @@ struct GameDetailListView: View {
                             Spacer()
                         }
                     }
-                }
+                }.listStyle(PlainListStyle())
             }
             .navigationBarTitle("Match Record", displayMode: .inline)
             .navigationBarItems(leading: cancelButton())
@@ -92,4 +92,28 @@ struct GameDetailListView: View {
             }
         }
     
+}
+
+struct Indexed<Element, Index>
+{
+  var index: Index
+  var offset: Int
+  var element: Element
+}
+
+
+extension RandomAccessCollection
+{
+  func indexed() -> AnyRandomAccessCollection<Indexed<Element, Index>>
+  {
+    AnyRandomAccessCollection(
+      zip(zip(indices, 0...).lazy, self).lazy
+        .map { Indexed(index: $0.0.0, offset: $0.0.1, element: $0.1) }
+    )
+  }
+}
+
+extension Indexed: Identifiable where Element: Identifiable
+{
+  var id: Element.ID { element.id }
 }

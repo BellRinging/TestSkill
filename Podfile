@@ -1,5 +1,6 @@
-platform :ios, '13.0'
+platform :ios, '14.0'
 use_frameworks! 
+
 
 target 'TestSkill' do
 	pod 'GoogleSignIn'
@@ -9,7 +10,6 @@ target 'TestSkill' do
 	pod 'Firebase/Storage'
 	pod 'Firebase/Database'
 	pod 'Firebase/Messaging'
-	pod 'Firebase/Messaging'
 	pod 'Firebase/Firestore'
 	pod 'SwiftEntryKit', '1.2.3'
 	pod 'FBSDKCoreKit'
@@ -18,4 +18,12 @@ target 'TestSkill' do
 	pod 'Introspect'
 	pod 'SwiftUIRefresh'
 	pod 'ALCameraViewController'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+    end
+  end
 end

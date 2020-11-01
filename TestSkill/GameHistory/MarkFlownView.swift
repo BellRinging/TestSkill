@@ -8,9 +8,15 @@
 
 import SwiftUI
 
-struct MarkFlownView: View {
+struct MarkFlownView: View ,Equatable {
+    static func == (lhs: MarkFlownView, rhs: MarkFlownView) -> Bool {
+        return true
+    }
+    
     
     @ObservedObject var viewModel : MarkFlownViewModel
+    
+    
     
     init(closeFlag : Binding<Bool>,game : Game){
         viewModel = MarkFlownViewModel(closeFlag: closeFlag,game:game)

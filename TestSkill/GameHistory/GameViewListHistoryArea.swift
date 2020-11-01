@@ -19,8 +19,8 @@ struct GameViewListHistoryArea: View {
     
     @ObservedObject var viewModel: GameViewListAreaViewModel
 
-    init(games: GameList,status: pageStatus,lastGameDetail:GameDetail?,lastBig2GameDetail:Big2GameDetail?,noMoreGame:Bool){
-        viewModel = GameViewListAreaViewModel(games: games, status: status,lastGameDetail:lastGameDetail,noMoreGame:noMoreGame)
+    init(games: Binding<GameList>){
+        viewModel = GameViewListAreaViewModel(games: games)
     }
     
     func popUpMenu(game: Game) -> some View{
@@ -37,7 +37,8 @@ struct GameViewListHistoryArea: View {
                 }
             }
             Button(action: {
-                NotificationCenter.default.post(name: .deleteGame, object: game)
+                self.viewModel.selectedGame = game
+                self.viewModel.showingDeleteAlert = true
             }){
                 HStack {
                     Text("Remove")
@@ -50,7 +51,6 @@ struct GameViewListHistoryArea: View {
     }
     
     func gameDisplay(game:Game) -> some View{
-        
         GameRow(game: game)
             .frame(height: 60)
             .contextMenu{
@@ -63,24 +63,21 @@ struct GameViewListHistoryArea: View {
 
     var body: some View {
         VStack{
-            if self.viewModel.status == .loading && self.viewModel.games.list.count == 0 {
-                Text(self.viewModel.status == .loading ? "Loading":"No data")
-            }else{
-                List {
-                    ForEach(self.viewModel.games.list) { gamePassingObject in
-                        Section(header: self.sectionArea(gamePassingObject:gamePassingObject)) {
-                            ForEach(gamePassingObject.games) { game in
-                                NavigationLink(destination: self.navDest(game: game)){
-                                    self.gameDisplay(game: game)
+            List {
+                ForEach(0...self.viewModel.games.list.count - 1 ,id:\.self) { index in
+                    Section(header: self.sectionArea(gamePassingObject: self.viewModel.games.list[index])) {
+                        ForEach(0...self.viewModel.games.list[index].games.count - 1 ,id:\.self ) { index2 in
+                            ZStack{
+                                self.gameDisplay(game: self.viewModel.games.list[index].games[index2])
+                                NavigationLink(destination: self.navDest(game: self.$viewModel.games.list[index].games[index2])){
+                                    EmptyView()
                                 }
-                            }.onDelete { (index) in
-                                self.viewModel.selectedGame = gamePassingObject.games[index.first!]
-                                self.viewModel.showingDeleteAlert = true
                             }
                         }
                     }
                 }
             }
+//                .listStyle(PlainListStyle())
         }.alert(isPresented: self.$viewModel.showingDeleteAlert) {
             Alert(title: Text("Confirm delete"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete")) {
                 NotificationCenter.default.post(name: .deleteGame, object:  self.viewModel.selectedGame!)
@@ -89,12 +86,13 @@ struct GameViewListHistoryArea: View {
         }
     }
     
-    func navDest(game:Game) -> some View{
-        VStack{
-            if game.gameType == "Big2" {
-                LazyView(Big2DetailView(game: game,lastGameDetail : self.viewModel.lastBig2GameDetail))
+    func navDest(game:Binding<Game>) -> some View{
+        return VStack{
+            if game.wrappedValue.gameType == "Big2" {
+                EmptyView()
+//                LazyView(Big2DetailView(game: game,lastGameDetail : self.viewModel.lastBig2GameDetail))
             }else{
-                LazyView(GameDetailView(game: game ,lastGameDetail : self.viewModel.lastGameDetail))
+                LazyView(GameDetailView(game: game ))
             }
         }
     }

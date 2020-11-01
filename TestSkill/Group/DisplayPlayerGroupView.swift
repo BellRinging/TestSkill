@@ -30,8 +30,26 @@ struct DisplayPlayerGroupView: View {
         }
     }
     
+    var navigationArea : some View{
+        VStack{
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showAddingGroup) {
+                    if self.viewModel.isAdd {
+                        AddPlayGroupView(closeFlag: self.$viewModel.showAddingGroup)
+                    }else{
+                        AddPlayGroupView(closeFlag: self.$viewModel.showAddingGroup, editGroup: self.$viewModel.selectedGroup)
+                    }
+                }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showStatistic) {
+                    ResultView(closeFlag: self.$viewModel.showStatistic)
+                }
+        }
+    }
+    
     var body : some View {
          NavigationView {
+            VStack{
             List{
                 ForEach(0..<viewModel.groups.count , id:\.self) { row in
                     self.displayRow(group:self.viewModel.groups[row])
@@ -41,20 +59,13 @@ struct DisplayPlayerGroupView: View {
                     self.viewModel.showingDeleteAlert = true
                 }
                 }
+                navigationArea
+            }
 
-            .navigationBarTitle("Game Group", displayMode: .inline)
+            .navigationBarTitle("PlayGroup", displayMode: .inline)
             .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: RightButton())
-            }
-         .modal(isShowing: self.$viewModel.showAddingGroup) {
-            if self.viewModel.isAdd {
-                AddPlayGroupView(closeFlag: self.$viewModel.showAddingGroup)
-            }else{
-                AddPlayGroupView(closeFlag: self.$viewModel.showAddingGroup, editGroup: self.$viewModel.selectedGroup)
-            }
-        }
-         .modal(isShowing: self.$viewModel.showStatistic) {
-            ResultView(closeFlag: self.$viewModel.showStatistic)
          }
+         .listStyle(PlainListStyle())
         .alert(isPresented: self.$viewModel.showingDeleteAlert) {
             Alert(title: Text("Confirm delete"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete")) {
                 self.viewModel.deleteGroup(index:self.viewModel.selectedIndex)

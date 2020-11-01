@@ -46,8 +46,6 @@ class GameViewModel: ObservableObject {
          }
      }
     @Published var balanceObject : UpperResultObject = UpperResultObject()
-    var noMoreUpdate : Bool = false
-    var startAgain : Bool = false
     final var pagingSize : Int = 50
     var lastGameDetail : GameDetail? //for detailView
     var lastBig2GameDetail : Big2GameDetail? //for detailView
@@ -55,7 +53,6 @@ class GameViewModel: ObservableObject {
     var actAsUser : User?
     
     init() {
-        print("GameView Model init")
         addObservor()
     }
     
@@ -130,7 +127,6 @@ class GameViewModel: ObservableObject {
         }else{
             print("no group")
             let uid = Auth.auth().currentUser!.uid
-//            print("uid",uid)
             PlayGroup.getByUserId(id: uid).then { (groups) in
                 if groups.count == 0 {
                     print("no group was setup up")
@@ -145,7 +141,7 @@ class GameViewModel: ObservableObject {
     }
     
     func loadUserFromGroup(group : PlayGroup){
-        print("load User Group")
+//        print("load User Group")
         if let currentGroupUser = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser){
             self.groupUsers = currentGroupUser
             self.status = .completed
@@ -200,22 +196,18 @@ class GameViewModel: ObservableObject {
     }
     
     func loadGame(){
-        print("call load Game")
-    
-        if !noMoreUpdate{
+        if !self.games.noMoreGame{
 
-            let actAsUser = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser)
-            var uid = actAsUser == nil ? Auth.auth().currentUser!.uid:actAsUser!.id
-            
-            if startAgain {
+            if self.games.startAgain {
                 self.games = GameList(list: [])
-                startAgain.toggle()
+                self.games.startAgain.toggle()
             }
+            var uid = Utility.getUserId()
             Game.getItemWithGroupId(groupId: self.group!.id ,pagingSize: pagingSize, lastDoc: lastDoc).then { (gameList,lastDoc)  in
                 
                 if gameList.count > 0 {
                     if gameList.count < self.pagingSize {
-                        self.noMoreUpdate = true
+                        self.games.noMoreGame = true
                     }
                     var list = self.games.list.count == 0 ? [] : self.games.list.flatMap{$0.games}
                     list += gameList
@@ -230,7 +222,6 @@ class GameViewModel: ObservableObject {
                     print("Total Game : \(list.count)")
                     var sorted = list.sorted { $0.date > $1.date }
                     let dictionary = Dictionary(grouping: sorted) { $0.period }
-//                    DispatchQueue.main.async {
                     var result : [GamePassingObject] = []
                         let sectionHeader = dictionary.keys.sorted(by: >)
                         for period in sectionHeader{
@@ -244,20 +235,19 @@ class GameViewModel: ObservableObject {
                         self.games = GameList(list: result)
                         self.lastDoc = lastDoc
                 }else{
-                    self.noMoreUpdate = true
+                    self.games.noMoreGame = true
                     print("Set noMoreUpdate to true2")
                 }
             }.catch { (error) in
                 print(error.localizedDescription)
                 Utility.showAlert(message: error.localizedDescription)
             }.always {
-                
                 Utility.hideProgress()
             }
         }else{
-            noMoreUpdate.toggle()
+            self.games.noMoreGame.toggle()
             lastDoc = nil
-            startAgain = true
+            self.games.startAgain = true
             Utility.showAlert(message: "no more update , next refresh will refresh from begining ")
         }
             loadGameBalance()
@@ -304,7 +294,7 @@ class GameViewModel: ObservableObject {
         }
         
         User.getById(id: uid).then{ user in
-            print("after get")
+//            print("after get")
             if let user = user {
                 self.balanceObject.balance = user.yearBalance[Utility.getCurrentYear()]!
                 if let actAsUser = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser){
@@ -319,7 +309,7 @@ class GameViewModel: ObservableObject {
     func onInitialCheck(){
         UIApplication.shared.statusBarUIView?.backgroundColor = UIColor.rgb(red: 225, green: 0, blue: 0)
         self.actAsUser = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser)
-        print("actAsUser",actAsUser?.id)
         self.loadUserGroup()
     }
 }
+

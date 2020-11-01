@@ -35,7 +35,7 @@ class LoginViewModel: ObservableObject {
                  }
          }.store(in: &tickets)
      }
-    
+
     func normalLogin(){
         print("SignIn by Email")
         if self.validField() {
@@ -49,20 +49,20 @@ class LoginViewModel: ObservableObject {
             }
         }
     }
-    
+
     func validField() -> Bool{
         if email == "" {
             Utility.showAlert( message: "Email is required.Please enter your email")
             return false
         }
-        
+
         if password == "" {
             Utility.showAlert(message: "Password is required.Please enter your number")
             return false
         }
         return true
     }
-    
+
     func normalLoginByUser(email:String,password:String) ->Promise<FirebaseAuth.User>{
          let p = Promise<FirebaseAuth.User> { (resolve , reject) in
              Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
@@ -73,14 +73,14 @@ class LoginViewModel: ObservableObject {
                     return
                  }
                  print("login by email success ,show main page")
-          
+
                 UserDefaults.standard.set(1, forKey: UserDefaultsKey.LoginFlag)
                 resolve(result!.user)
              }
          }
          return p
      }
-    
+
     func showAppleLogin() {
         let nonce = Utility.randomNonceString()
         Utility.currentNonce = nonce
@@ -94,11 +94,11 @@ class LoginViewModel: ObservableObject {
         let controller = ASAuthorizationController(authorizationRequests: requests)
         controller.delegate = appleSignInDelegates
         //        controller.presentationContextProvider = appleSignInDelegates
-        
+
         controller.performRequests()
     }
 
-    
+
     private func sha256(_ input: String) -> String {
       let inputData = Data(input.utf8)
       let hashedData = SHA256.hash(data: inputData)

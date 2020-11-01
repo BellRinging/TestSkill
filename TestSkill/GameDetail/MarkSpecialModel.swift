@@ -22,18 +22,20 @@ class MarkSpecialViewModel : ObservableObject {
     var lose1xPosition : Int = -30
     var win1xPosition : Int = 0
     var win2xPosition : Int = 30
-    var game : Game
+    @Binding var game : Game
+    @Binding var lastGame : GameDetail?
     var hasLoser : Bool = false
     var group : PlayGroup?
     var specialItemAmt : Int = 50
     
     
-    init(closeFlag : Binding<Bool>,game : Game){
+    init(closeFlag : Binding<Bool>,game : Binding<Game> , lastGame : Binding<GameDetail?>){
         self._closeFlag = closeFlag
-        self.game = game
+        self._game = game
+        self._lastGame = lastGame
         print("init Special")
         if let userInGroup = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser){
-            for playerId in game.playersId {
+            for playerId in game.wrappedValue.playersId {
                 let player = userInGroup.filter{$0.id == playerId}.first!
                 self.players.append(player)
             }
@@ -153,37 +155,30 @@ class MarkSpecialViewModel : ObservableObject {
             
             let uid = Auth.auth().currentUser!.uid
             var updateAmount = 0
-            
-//            for i in 0...3 {
-//                let amount = self.game.result[self.players[i].id]! + winnerAmount
-//                if self.players[i].id == uid {
-//                    updateAmount = updateAmount + winnerAmount
-//                }
-//                self.game.result[self.players[i].id]! = amount
-//            }
-//
+            var tempGame = self.game
             whoWinList.map {
                 let amount = self.game.result[$0]! + winnerAmount
                 if $0 == uid {
                     updateAmount = updateAmount + winnerAmount
                 }
-                self.game.result[$0] = amount
+                tempGame.result[$0] = amount
             }
             whoLoseList.map {
                 let amount = self.game.result[$0]! + loserAmount
                 if $0 == uid {
                     updateAmount = updateAmount + loserAmount
                 }
-                self.game.result[$0]! = amount
+                tempGame.result[$0]! = amount
             }
             
             
             let detailCount = self.game.detailCount
-            self.game.detailCount = detailCount + 1
+            tempGame.detailCount = detailCount + 1
             let year = Int(period.prefix(4))!
             NotificationCenter.default.post(name: .updateUserBalance, object:  (year,updateAmount))
-            NotificationCenter.default.post(name: .updateLastGameRecord, object:  gameDetail)
-            NotificationCenter.default.post(name: .updateGame, object:  self.game)
+            self.game = tempGame
+            self.lastGame = gameDetail
+            Utility.hideProgress()
             self.closeFlag.toggle()
         }.catch { (error) in
             Utility.showAlert(message: error.localizedDescription)

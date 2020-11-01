@@ -8,11 +8,19 @@
 
 import SwiftUI
 
-struct RegisterPage: View {
+struct RegisterPage: View ,Equatable {
+    
+    static func == (lhs: RegisterPage, rhs: RegisterPage) -> Bool {
+        return true
+    }
+    
+    
+    
     
    @ObservedObject var viewModel: RegisterViewModel
     
     init(closeFlag : Binding<Bool> , user : User? = nil , userType : String = "real"){
+        print("init Register Page")
         viewModel = RegisterViewModel(closeFlag: closeFlag , user : user ,userType: userType)
     }
     
@@ -67,16 +75,15 @@ struct RegisterPage: View {
                 }
                 Spacer()
             }
-            .keyboardResponsive()
+//            .keyboardResponsive()
             .navigationBarTitle("\(self.viewModel.title)", displayMode: .inline)
             .navigationBarItems(leading:  CancelButton(self.viewModel.$closeFlag), trailing: ConfirmButton(){
                 self.viewModel.handleRegister()
             })
-
         }
-        .sheet(isPresented: self.$viewModel.showingImagePicker,onDismiss: self.viewModel.loadImage){
-            ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker)
-        }
+//        .sheet(isPresented: self.$viewModel.showingImagePicker,onDismiss: self.viewModel.loadImage){
+//            ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker)
+//        }
     }
 
 }

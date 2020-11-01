@@ -11,12 +11,15 @@ import SwiftUI
 
 struct GameDetailView: View {
     
+    
     @ObservedObject private var viewModel: GameDetailViewModel
     
-    init(game: Game ,lastGameDetail : GameDetail?){
-        viewModel = GameDetailViewModel(game: game, lastGameDetail: lastGameDetail)
+    init(game: Binding<Game>){
+        print("init gameDetail" )
+        viewModel = GameDetailViewModel(game: game)
         viewModel.onInitial()
     }
+    
     
     
     func normalView() -> some View{
@@ -120,7 +123,7 @@ struct GameDetailView: View {
     
     func topView() -> some View{
         HStack{
-            Text("Round: \(self.viewModel.game.detailCount)")
+            Text("Round: \(self.viewModel.detailCount)")
                 .titleFont(size: 24)
             Spacer()
             if self.viewModel.game.flown == 0{
@@ -161,10 +164,15 @@ struct GameDetailView: View {
             }else{
                 detail()
             }
-        }.sheet(isPresented:self.$viewModel.showSpecialView){
-            LazyView(MarkSpecialView(closeFlag: self.$viewModel.showSpecialView, game: self.viewModel.game))
-        }.modal(isShowing: self.$viewModel.showSwapPlayer){
-            LazyView(SwapUser(game: self.viewModel.game,closeFlag:self.$viewModel.showSwapPlayer).environment(\.editMode, Binding.constant(EditMode.active)))
+            EmptyView()
+                .fullScreenCover(isPresented:self.$viewModel.showSpecialView){
+                   MarkSpecialView(closeFlag: self.$viewModel.showSpecialView, game: self.$viewModel.game ,lastGame: self.$viewModel.lastGameDetail)
+                }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showSwapPlayer){
+                    SwapUser(game: self.viewModel.game,closeFlag:self.$viewModel.showSwapPlayer).environment(\.editMode, Binding.constant(EditMode.active))
+                }
+        
         }.navigationBarTitle("\(viewModel.game.date) \(viewModel.game.location)", displayMode: .inline)
     }
     
@@ -185,7 +193,7 @@ struct GameDetailView: View {
             }
             HStack{
                 if self.viewModel.enableBonusPerDraw && self.viewModel.game.flown != 1{
-                    Text("\(self.viewModel.game.bonus ?? 0)" ).textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
+                    Text("\(self.viewModel.bonus ?? 0)" ).textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
                 }
                 Spacer()
                 Text("Mark By:").textStyle(size: 10).padding(.top,5)
@@ -199,7 +207,7 @@ struct GameDetailView: View {
             }
             HStack{
                 if self.viewModel.enableCalimWater && self.viewModel.game.flown != 1{
-                    Text("\(self.viewModel.game.water ?? 0)").textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
+                    Text("\(self.viewModel.water ?? 0)").textStyle(size: 18,color: Color.greenColor).padding(.leading,5)
                 }
                 Spacer()
                 

@@ -61,21 +61,30 @@ struct AdminView: View {
                         Utility.showAlert(message: "Confirm?", callBack: self.viewModel.removeActUser)
                     }
                 }
-                        
+                navigationArea
                 
             }.padding()
             transferData().padding()
             Button("UpdateUserBalance"){
                               Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateUser)
                           }
-        }.modal(isShowing: self.$viewModel.isShowGameLK) {
-            GameLK(closeFlag: self.$viewModel.isShowGameLK,gameObj:self.$viewModel.gameTemp)
         }
-        .modal(isShowing: self.$viewModel.isShowPlayer1) {
-            DisplayFriendView(closeFlag:  self.$viewModel.isShowPlayer1, users: self.$viewModel.player1, maxSelection: 1, includeSelfInReturn: false)
-        }
-        .modal(isShowing: self.$viewModel.isShowPlayer2) {
-            DisplayFriendView(closeFlag:  self.$viewModel.isShowPlayer2, users: self.$viewModel.player2, maxSelection: 1, includeSelfInReturn: false)
+    }
+    
+    var navigationArea : some View{
+        VStack{
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.isShowGameLK) {
+                GameLK(closeFlag: self.$viewModel.isShowGameLK,gameObj:self.$viewModel.gameTemp)
+            }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.isShowPlayer1) {
+                DisplayFriendView(option: DisplayFriendViewOption(closeFlag:  self.$viewModel.isShowPlayer1, users: self.$viewModel.player1, maxSelection: 1, includeSelfInReturn: false))
+            }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.isShowPlayer2) {
+                DisplayFriendView(option: DisplayFriendViewOption(closeFlag:  self.$viewModel.isShowPlayer2, users: self.$viewModel.player2, maxSelection: 1, includeSelfInReturn: false))
+            }
         }
     }
     

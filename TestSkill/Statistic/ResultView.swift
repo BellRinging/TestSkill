@@ -85,9 +85,10 @@ struct ResultView: View {
                     
                 }
             }
+            .listStyle(PlainListStyle())
             .navigationBarTitle("", displayMode: .inline)
                 .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag))
-        }.modal(isShowing: self.$viewModel.showSelect) {
+        }.fullScreenCover(isPresented: self.$viewModel.showSelect) {
             PlayerSelectionView(returnItem: self.$viewModel.selectedPeriod,closeFlag: self.$viewModel.showSelect)
         }.onAppear(){
             self.viewModel.selectedPeriod = Utility.getCM()

@@ -8,31 +8,22 @@ class GameViewListAreaViewModel: ObservableObject {
 
     
     var groupUsers : [User]
-    var games : GameList
-    var status : pageStatus
+    @Binding var games : GameList
     var selectedGame : Game? = nil
-    var lastGameDetail : GameDetail?
-    var lastBig2GameDetail : Big2GameDetail?
     var gameForFlown : Game?
     @Published var showingDeleteAlert = false
     @Published var showingFlowView = false
     @Published var isShowing = false
     @Published var isLoading = false
-    var noMoreGame = false
-    
+//    var noMoreGame = false
+//    var lastBig2GameDetail : Big2GameDetail? = nil
+//    var lastGameDetail : GameDetail? = nil
     
     init(
-         games: GameList,
-         status: pageStatus,
-         lastGameDetail:GameDetail?,
-          noMoreGame:Bool){
+         games: Binding<GameList>){
         self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
-        self.games = games
-        self.status = status
-        self.lastGameDetail = lastGameDetail
-        self.noMoreGame = noMoreGame
+        self._games = games
     }
-    
 
     func islastItemReached(game:Game) -> Bool {
         if self.games.list.count > 0 {
@@ -41,9 +32,10 @@ class GameViewListAreaViewModel: ObservableObject {
             return false
         }
      }
+    
     func itemAppears(game:Game) {
         if islastItemReached(game:game) {
-            if !noMoreGame {
+            if !self.games.noMoreGame {
                 print("Load More Game")
                 NotificationCenter.default.post(name: .loadMoreGame, object:  nil)
             }

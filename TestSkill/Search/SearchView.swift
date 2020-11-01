@@ -157,7 +157,7 @@ struct SearchView: View {
   
                 
                 }
-               
+                navigationArea
             }
      
             .navigationBarTitle("Search", displayMode: .inline)
@@ -168,25 +168,38 @@ struct SearchView: View {
             self.viewModel.initPeriod()
             self.viewModel.initFan()
         }
-        .modal(isShowing: self.$viewModel.showSelectPlayerDetailLevel) {
-            DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerDetailLevel, users: self.$viewModel.playersDetailLevel, maxSelection: 1 ,includeSelfInReturn: false, acceptNoReturn: true ,showSelectAll: false,includeSelfInSeletion : true)
-        }.modal(isShowing: self.$viewModel.showSelectPlayerGameLevel) {
-            DisplayFriendView(closeFlag: self.$viewModel.showSelectPlayerGameLevel, users: self.$viewModel.playersGameLevel, maxSelection: 4 ,includeSelfInReturn: false, acceptNoReturn: true, showSelectAll: false,includeSelfInSeletion : true)
-        }
-        .modal(isShowing: self.$viewModel.showExcludePlayer) {
-            DisplayFriendView(closeFlag: self.$viewModel.showExcludePlayer, users: self.$viewModel.playersExclude, includeSelfInReturn: false, acceptNoReturn: true, showSelectAll: false,includeSelfInSeletion : true)
-        }
-        .modal(isShowing: self.$viewModel.showSearchGame) {
-            SearchGameView(closeFlag:self.$viewModel.showSearchGame,games:self.viewModel.games)
-        }
-        .modal(isShowing: self.$viewModel.showSearchGameDetail) {
-            SearchGameDetailView(closeFlag:self.$viewModel.showSearchGameDetail,gameDetails:self.viewModel.gameDetails,refUser: self.viewModel.refUser)
-        }
-        .modal(isShowing: self.$viewModel.showSelectGame) {
-            GameLK(closeFlag:self.$viewModel.showSelectGame,gameObj : self.$viewModel.selectedGame)
-        }
+       
     }
     
+    
+    var navigationArea : some View {
+        VStack{
+            
+            EmptyView().fullScreenCover(isPresented: self.$viewModel.showSelectPlayerDetailLevel) {
+                DisplayFriendView(option:DisplayFriendViewOption(closeFlag: self.$viewModel.showSelectPlayerDetailLevel, users: self.$viewModel.playersDetailLevel, maxSelection: 1 ,includeSelfInReturn: false, acceptNoReturn: true ,showSelectAll: false,includeSelfInSeletion : true))
+            }
+            EmptyView()
+                .fullScreenCover(isPresented:self.$viewModel.showSelectPlayerGameLevel) {
+                DisplayFriendView(option:DisplayFriendViewOption(closeFlag: self.$viewModel.showSelectPlayerGameLevel, users: self.$viewModel.playersGameLevel, maxSelection: 4 ,includeSelfInReturn: false, acceptNoReturn: true, showSelectAll: false,includeSelfInSeletion : true))
+            }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showExcludePlayer) {
+                DisplayFriendView(option:DisplayFriendViewOption(closeFlag: self.$viewModel.showExcludePlayer, users: self.$viewModel.playersExclude, includeSelfInReturn: false, acceptNoReturn: true, showSelectAll: false,includeSelfInSeletion : true))
+            }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showSearchGame) {
+                SearchGameView(closeFlag:self.$viewModel.showSearchGame,games:self.viewModel.games)
+            }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showSearchGameDetail) {
+                SearchGameDetailView(closeFlag:self.$viewModel.showSearchGameDetail,gameDetails:self.viewModel.gameDetails,refUser: self.viewModel.refUser)
+            }
+            EmptyView()
+                .fullScreenCover(isPresented: self.$viewModel.showSelectGame) {
+                GameLK(closeFlag:self.$viewModel.showSelectGame,gameObj : self.$viewModel.selectedGame)
+            }
+        }
+    }
  
     
 

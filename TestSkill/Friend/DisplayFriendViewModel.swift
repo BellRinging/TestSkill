@@ -29,15 +29,12 @@ class DisplayFriendViewModel: ObservableObject {
             .sink { [unowned self] (_) in
                  self.loadUser()
         }.store(in: &tickets)
-        
         NotificationCenter.default.publisher(for: .deleteFriend)
             .map{$0.object as! User}
             .sink { [unowned self] (user) in
                 let index = self.users.firstIndex{$0.id == user.id}!
                 self.users.remove(at: index)
         }.store(in: &tickets)
-        
-        
         NotificationCenter.default.publisher(for: .updateUser)
                 .map{$0.object as! User}
                .sink { [unowned self] (user) in
@@ -49,20 +46,20 @@ class DisplayFriendViewModel: ObservableObject {
     }
     
     
-    init(closeFlag : Binding<Bool> , users : Binding<[User]>, maxSelection : Int ,includeSelfInReturn: Bool ,onlyInUserGroup : Bool,hasDetail : Bool ,acceptNoReturn:Bool,showSelectAll:Bool , showAddButton: Bool ,includeSelfInSeletion: Bool){
+    init(option : DisplayFriendViewOption){
         self.selectedUser = []
-        self._closeFlag = closeFlag
-        self._players = users
+        self._closeFlag = option.closeFlag
+        self._players = option.users
         let uid = Auth.auth().currentUser!.uid
-        let abc = users.wrappedValue
-        self.maxSelection = maxSelection
-        self.includeSelfInReturn = includeSelfInReturn
-        self.onlyInUserGroup = onlyInUserGroup
-        self.hasDetail = hasDetail
-        self.acceptNoReturn = acceptNoReturn
-        self.showSelectAll = showSelectAll
-        self.showAddButton = showAddButton
-        self.includeSelfInSeletion = includeSelfInSeletion
+        let abc = option.users.wrappedValue
+        self.maxSelection = option.maxSelection
+        self.includeSelfInReturn = option.includeSelfInReturn
+        self.onlyInUserGroup = option.onlyInUserGroup
+        self.hasDetail = option.hasDetail
+        self.acceptNoReturn = option.acceptNoReturn
+        self.showSelectAll = option.showSelectAll
+        self.showAddButton = option.showAddButton
+        self.includeSelfInSeletion = option.includeSelfInSeletion
         self.loadUser()
         abc.map {
             if includeSelfInSeletion {
@@ -119,7 +116,6 @@ class DisplayFriendViewModel: ObservableObject {
     
     func loadUser(){
         User.getFriends().then { [unowned self] (users)  in
-            print(users.map{$0.id})
             var list : [User] = []
             if self.onlyInUserGroup {
                 let groupUser = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)

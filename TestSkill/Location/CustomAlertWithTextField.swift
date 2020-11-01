@@ -4,16 +4,13 @@ import SwiftEntryKit
 struct CustomAlertWithTextField: View{
     var title : String
     @Binding var returnText: String
-    @Binding var closeFlag: Bool
     typealias PostAction = (() -> Void)
     var action: PostAction?
     
-    init(title:String , returnText : Binding<String>, closeFlag : Binding<Bool>,action: PostAction? = nil){
+    init(title:String , returnText : Binding<String>,action: PostAction? = nil){
         self.title = title
         self._returnText = returnText
-        self._closeFlag = closeFlag
         self.action = action
-        
     }
     
     
@@ -21,40 +18,39 @@ struct CustomAlertWithTextField: View{
     var body: some View{
         ZStack{
             VStack{
-                Text(title).font(.headline).padding()
-                TextField("Type text here", text: self.$text).textFieldStyle(RoundedBorderTextFieldStyle()).padding()
+                Text(title).font(.headline).padding([.horizontal,.top])
+                TextField("Type text here", text: self.$text)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+//                    .frame(height: 50)
                 Divider()
-                HStack{
+                HStack(alignment: .center){
                     Spacer()
                     Button(action: {
                         self.returnText = self.text
-//                        if let action = self.action {
                         self.action?()
-//                        }
-                        self.closeFlag.toggle()
                         SwiftEntryKit.dismiss()
                     }) {
 
-                        Text("Done")
+                        Text("Confirm").textStyle(size: 16,color: Color.primary)
                     }
                     Spacer()
 
                     Divider()
-
                     Spacer()
                     Button(action: {
-                        self.closeFlag.toggle()
+                        SwiftEntryKit.dismiss()
                     }) {
-                        Text("Cancel")
+                        Text("Cancel").textStyle(size: 16, color: Color.red)
                     }
                     Spacer()
-                }
+                }.frame(height: 40)
             }.onAppear(){
                 self.text = self.returnText 
             }
         }
-        .background(Color(white: 0.9))
-        .frame(width: 300, height: 200)
+        .background(Color(white: 1))
+        .frame(width: 300)
         .cornerRadius(20)
     }
     

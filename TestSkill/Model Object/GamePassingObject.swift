@@ -11,13 +11,17 @@ import Foundation
 
 struct GameList {
     var list : [GamePassingObject] = []
+    var noMoreGame: Bool = false
+    var startAgain: Bool = false
     
     mutating func updateGame(game: Game){
         let period = game.period
         let index = list.firstIndex { $0.id ==  period}
         if index != nil && list.count > 0 {
+            
             let gameList = self.list[index!].games
             let index2 = gameList.firstIndex { $0.id == game.id }
+//            print("game is in the list index:",index2)
             if  index2 != nil {
                 self.list[index!].updateGame(game:game,index:index2!)
             }else{
@@ -25,6 +29,7 @@ struct GameList {
                 self.list[index!].addNewGame(game: game)
             }
         }else{
+            print("game is not in the list")
             let uid =  UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
             let temp = GamePassingObject(id: period , games : [game] , periodAmt : game.result[uid] ?? 0)
             list.append(temp)
@@ -59,6 +64,7 @@ struct GamePassingObject : Identifiable {
     
     mutating func updateGame(game: Game , index : Int){
         self.games[index] = game
+//        print("after game:",self.games[index].result)
     }
     
     mutating func addNewGame(game: Game ){

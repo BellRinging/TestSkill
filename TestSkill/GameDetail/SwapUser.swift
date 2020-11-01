@@ -37,10 +37,11 @@ struct SwapUser: View {
                                 Text("\(self.viewModel.users[index].userName ?? "")").textStyle(size: 10).frame(width: 60)
                             }
                             Text(self.viewModel.text[index])
+                            Spacer()
                         }
-                        
                     }.onMove(perform: self.viewModel.move)
-                }.frame(height: 350)
+                }
+                .listStyle(PlainListStyle())
                 Spacer()
 
             }

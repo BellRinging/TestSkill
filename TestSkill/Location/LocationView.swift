@@ -10,7 +10,12 @@ import SwiftUI
 import UIKit
 import SwiftEntryKit
 
-struct LocationView: View {
+struct LocationView: View ,Equatable{
+    
+    static func == (lhs: LocationView, rhs: LocationView) -> Bool {
+        return true
+    }
+    
     
     @ObservedObject var viewModel : LocationViewModel
     
@@ -41,7 +46,7 @@ struct LocationView: View {
                     self.viewModel.showingDeleteAlert = true
                 }
                 
-            }
+            }.listStyle(PlainListStyle())
             .navigationBarTitle("Location", displayMode: .inline)
             .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: CButton())
         }
@@ -67,11 +72,9 @@ struct LocationView: View {
     func AddButton() -> some View{
         Button(action: {
 
-            let popup = CustomAlertWithTextField(title: "Add Location", returnText: self.$viewModel.textContent, closeFlag: self.$viewModel.isShowAddAlert){
+            let popup = CustomAlertWithTextField(title: "Add Location", returnText: self.$viewModel.textContent){
                 self.viewModel.add()
             }
-                
-            
             let customView = UIHostingController(rootView: popup)
             var attributes = EKAttributes()
             attributes.windowLevel = .normal
@@ -100,7 +103,7 @@ struct LocationView: View {
                 self.viewModel.selectedForAction = loc
                 self.viewModel.textContent = loc.name
                 let index = self.viewModel.locations.firstIndex { $0.id == loc.id }!
-                let popup = CustomAlertWithTextField(title: "Edit Location", returnText: self.$viewModel.textContent, closeFlag: self.$viewModel.isShowAddAlert){
+                let popup = CustomAlertWithTextField(title: "Edit Location", returnText: self.$viewModel.textContent){
                     self.viewModel.edit(index:index)
                 }
                     

@@ -206,7 +206,10 @@ struct GameDetailPopUp: View {
                 let winType = self.selectedPlayer?.id == self.viewModel.winner?.id ? "Self" :"Other"
                 let byError = self.selectedPlayer?.id == nil ? 1: 0
                 let fan = self.selectedFan
-                self.viewModel.saveDetail(whoWin: self.viewModel.winner!.id, whoLose: self.selectedPlayer?.id  ?? "", winType: winType, fan: fan, loserRespond: loserRe, byErrorFlag: byError)
+                
+                
+                let para = gameDetailPassing(whoWin: self.viewModel.winner!.id, whoLose: self.selectedPlayer?.id  ?? "", winType: winType, fan: fan, loserRespond: loserRe, byErrorFlag: byError)
+                self.viewModel.saveDetail(p: para)
                 self.dismiss()
             }, label:{
                 ZStack{

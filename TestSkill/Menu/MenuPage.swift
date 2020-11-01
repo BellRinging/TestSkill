@@ -8,9 +8,15 @@
 
 import SwiftUI
 
-struct MenuPage: View {
+struct MenuPage: View ,Equatable {
+    static func == (lhs: MenuPage, rhs: MenuPage) -> Bool {
+        return true
+    }
+    
     
     @ObservedObject var viewModel: MenuPageViewModel
+    
+    
 
     
     init(){
@@ -38,7 +44,7 @@ struct MenuPage: View {
                         .onTapGesture {
                             self.viewModel.performAction(action: item.action)
                     }
-                }
+                }.listStyle(PlainListStyle())
                 HStack(alignment:.center){
                     Text("Term of use")
                     Spacer()
@@ -56,29 +62,39 @@ struct MenuPage: View {
                     Text("v\(self.viewModel.version)")
                 }.padding()
                 Spacer()
+                VStack{
+                    EmptyView()
+                        .fullScreenCover(isPresented: self.$viewModel.isShowAccount){
+                            LazyView(RegisterPage(closeFlag: self.$viewModel.isShowAccount ,user:self.viewModel.user).equatable())
+                        }
+                    EmptyView()
+                        .fullScreenCover(isPresented: self.$viewModel.isShowUpdateBalance) {
+                            UpdateBalanceView(closeFlag: self.$viewModel.isShowUpdateBalance)
+                        }
+                    EmptyView()
+                        .fullScreenCover(isPresented: self.$viewModel.isShowContactUs){
+                            ContactUsView(closeFlag: self.$viewModel.isShowContactUs)
+                        }
+                    EmptyView()
+                        .fullScreenCover(isPresented: self.$viewModel.isShowTerm){
+                            Terms(closeFlag: self.$viewModel.isShowTerm)
+                        }
+                    EmptyView()
+                        .fullScreenCover(isPresented:  self.$viewModel.isShowFriend ){
+                            DisplayFriendView(option: DisplayFriendViewOption(closeFlag: self.$viewModel.isShowFriend ,users:self.$viewModel.tempUser ,hasDetail: true,showSelectAll: false ,showAddButton: true))
+                        }
+                    EmptyView()
+                        .fullScreenCover(isPresented:self.$viewModel.isShowPlayGroup) {
+                            DisplayPlayerGroupView(closeFlag: self.$viewModel.isShowPlayGroup)
+                        }
+                    EmptyView()
+                        .fullScreenCover(isPresented: self.$viewModel.isShowLocation) {
+                            LazyView(LocationView(closeFlag: self.$viewModel.isShowLocation).equatable())
+                        }
+                }
             }
-            .navigationBarTitle("Menu", displayMode: .inline)
+            .navigationBarTitle("Menu", displayMode: .inline)       
         }
-        .modal(isShowing: self.$viewModel.isShowPlayGroup) {
-            DisplayPlayerGroupView(closeFlag: self.$viewModel.isShowPlayGroup)
-        }
-            .modal(isShowing: self.$viewModel.isShowFriend ){
-                DisplayFriendView(closeFlag: self.$viewModel.isShowFriend ,users:self.$viewModel.tempUser ,hasDetail: true,showSelectAll: false ,showAddButton: true)
-            }
-            .modal(isShowing: self.$viewModel.isShowTerm){
-                Terms(closeFlag: self.$viewModel.isShowTerm)
-            }
-            .modal(isShowing: self.$viewModel.isShowContactUs){
-                ContactUsView(closeFlag: self.$viewModel.isShowContactUs)
-            }
-            .modal(isShowing: self.$viewModel.isShowAccount){
-                RegisterPage(closeFlag: self.$viewModel.isShowAccount ,user:self.viewModel.user)
-            }
-            .modal(isShowing: self.$viewModel.isShowUpdateBalance) {
-                UpdateBalanceView(closeFlag: self.$viewModel.isShowUpdateBalance)
-            }
-        .modal(isShowing: self.$viewModel.isShowLocation) {
-            LocationView(closeFlag: self.$viewModel.isShowLocation)
-              }
     }
+     
 }

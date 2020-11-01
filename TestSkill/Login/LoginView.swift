@@ -2,7 +2,9 @@ import SwiftUI
 
 struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
+    
     init(){
+        print("init Login Page")
         viewModel = LoginViewModel()
     }
     
@@ -20,13 +22,19 @@ struct LoginView: View {
                 appleButton
                 Spacer()
             }.padding()
+            
+            VStack{
+                EmptyView()
+                    .fullScreenCover(isPresented: self.$viewModel.showRegisterPage){
+                        RegisterPage(closeFlag: self.$viewModel.showRegisterPage)
+                    }
+                EmptyView()
+                    .fullScreenCover(isPresented: self.$viewModel.showForgetPassword){
+                        LazyView(ForgetPasswordView(closeFlag: self.$viewModel.showForgetPassword))
+                    }
             }
-        .modal(isShowing: self.$viewModel.showRegisterPage, content: {
-            LazyView(RegisterPage(closeFlag: self.$viewModel.showRegisterPage))
-        })
-            .modal(isShowing: self.$viewModel.showForgetPassword, content: {
-            LazyView(ForgetPasswordView(closeFlag: self.$viewModel.showForgetPassword))
-        })
+        }
+        
         
     }
     
@@ -44,7 +52,7 @@ struct LoginView: View {
             .padding()
             .shadow(radius: 5)
     }
-    
+
     var loginArea : some View{
         VStack{
             TextField("Email", text: $viewModel.email)
@@ -68,6 +76,7 @@ struct LoginView: View {
                     .onTapGesture {
                         withAnimation {                       
                             self.viewModel.showRegisterPage = true
+//                            self.isShow = true
                         }
                     }
                 Spacer()
@@ -82,11 +91,11 @@ struct LoginView: View {
             }
             .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
         }
-        .keyboardResponsive()
+//        .keyboardResponsive()
         .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
     }
     
-    func upperArea() -> some View{
+    func upperArea() -> some View {
         VStack{
             PageView(viewModel.sampleDataForPageView)
                 .aspectRatio(contentMode: ContentMode.fit)

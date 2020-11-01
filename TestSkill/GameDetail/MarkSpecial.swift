@@ -13,8 +13,8 @@ struct MarkSpecialView: View {
     @ObservedObject var viewModel : MarkSpecialViewModel
     
     
-    init(closeFlag : Binding<Bool>,game : Game){
-        viewModel = MarkSpecialViewModel(closeFlag: closeFlag,game:game)
+    init(closeFlag : Binding<Bool>,game : Binding<Game> , lastGame : Binding<GameDetail?>){
+        viewModel = MarkSpecialViewModel(closeFlag: closeFlag,game:game,lastGame: lastGame)
     }
     
     var body: some View {

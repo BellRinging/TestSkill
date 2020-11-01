@@ -21,40 +21,40 @@ struct AddPlayGroupView: View {
     var body: some View {
         NavigationView{
             ScrollView{
-            VStack(alignment: .center){
-                Text("").textStyle(size: 8)
-                TextField("Group name", text: $viewModel.groupName)
-                    .introspectTextField { textField in
-                        textField.becomeFirstResponder()
+                VStack(alignment: .center){
+                    Text("").textStyle(size: 8)
+                    TextField("Group name", text: $viewModel.groupName)
+                        .introspectTextField { textField in
+                            textField.becomeFirstResponder()
+                        }
+                        .padding()
+                        .textFieldStyle(BottomLineTextFieldStyle())
+                    AddPlayGroupPlayerRow(players: viewModel.players)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            withAnimation {
+                                self.viewModel.showPlayerSelection.toggle()
+                            }
+                        }
+                    
+                    Picker("", selection: self.$viewModel.selectedTab) {
+                        Text("Mahjooh").tag(0)
+                        Text("Big2").tag(1)
                     }
-                    .padding()
-                    .textFieldStyle(BottomLineTextFieldStyle())
-                AddPlayGroupPlayerRow(players: viewModel.players)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    withAnimation {
-                        self.viewModel.showPlayerSelection.toggle()
+                    .pickerStyle(SegmentedPickerStyle()).padding(.horizontal)
+                    if self.viewModel.selectedTab == 0 {
+                        rule.padding()
+                    } else {
+                        ruleBig2.padding()
                     }
+                    Spacer()
                 }
-                
-                Picker("", selection: self.$viewModel.selectedTab) {
-                    Text("Mahjooh").tag(0)
-                    Text("Big2").tag(1)
-                }
-                .pickerStyle(SegmentedPickerStyle()).padding(.horizontal)
-                if self.viewModel.selectedTab == 0 {
-                    rule.padding()
-                } else {
-                    ruleBig2.padding()
-                }
-                Spacer()
             }
-            }
-            .keyboardResponsive()
+//            .keyboardResponsive()
             .navigationBarTitle(self.viewModel.editGroup == nil ? "Add Game Group" : "Edit Game Group", displayMode: .inline)
             .navigationBarItems(leading: CancelButton(self.$viewModel.closeFlag), trailing: ConfirmButton(){self.viewModel.addGroup()})
-        }.modal(isShowing: self.$viewModel.showPlayerSelection) {
-            DisplayFriendView(closeFlag: self.$viewModel.showPlayerSelection, users: self.$viewModel.players)
+        }.fullScreenCover(isPresented: self.$viewModel.showPlayerSelection) {
+            DisplayFriendView(option: DisplayFriendViewOption(closeFlag: self.$viewModel.showPlayerSelection, users: self.$viewModel.players))
         }
     }
     
