@@ -18,7 +18,6 @@ struct GameView: View {
             }
             Spacer()
         }
-        
     }
 
     var body: some View {
@@ -33,18 +32,19 @@ struct GameView: View {
                                 Text("loading...")
                         }
                     }else{
-                        GameViewUpperArea(balanceObj: self.viewModel.balanceObject,showPercent:self.viewModel.showPercent).onTapGesture {
-                            self.viewModel.showPercent.toggle()
+                        GameViewUpperArea(balanceObj: self.viewModel.balanceObject)
+                            .onTapGesture {
+                                self.viewModel.balanceObject.showPercent.toggle()
                         }
                         .overlay(self.actAsUser)
                         if (self.viewModel.games.list.count > 0) {
-                        GameViewListHistoryArea(games: self.$viewModel.games)
-                            .pullToRefresh(isShowing: self.$isShowing) {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                self.viewModel.loadGame()
-                                self.isShowing = false
-                            }
-                        }
+                            GameViewListHistoryArea(games: self.$viewModel.games)
+                                .pullToRefresh(isShowing: self.$isShowing) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        self.viewModel.loadGame()
+                                        self.isShowing = false
+                                    }
+                                }
                         }
                         Spacer()
                     }
@@ -52,9 +52,7 @@ struct GameView: View {
                 }
                 .navigationBarItems(leading: self.dropDown.padding(.leading , (geometry.size.width-200-20) / 2.0), trailing: self.rightImg)
                 .navigationBarTitle("", displayMode: .inline)
-                
             }
-//            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
     
@@ -104,15 +102,6 @@ struct GameView: View {
                 .frame(width: 20,height: 20)
         }
     }
-}
-
-struct UpperResultObject {
-    var balance: Int = 0
-    var currentMth: Int = 0
-    var lastMth: Int = 0
-    var lastYTM: Int = 0
-    var mtlm : String = "N/A"
-    var mtly : String = "N/A"
 }
 
 

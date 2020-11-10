@@ -14,14 +14,11 @@ struct SelectAllView<T:Any>: View {
     var availableList : [T]
     var maxSelection : Int
     
-    
     init(_ selectedObj : Binding<[T]> , availableList : [T],maxSelection: Int = 999){
         self._selectedObj = selectedObj
         self.availableList = availableList
         self.maxSelection = maxSelection
     }
-    
-    
     
     var body: some View {
         HStack{

@@ -11,24 +11,18 @@ import FirebaseAuth
 
 struct MainTabView: View {
         
-
     @ObservedObject var viewModel: MainTabViewModel
-    
     
     init() {
         viewModel = MainTabViewModel()
     }
-    
 
-    
     var body: some View {
-        
         if self.viewModel.status == .loading {
             return AnyView(Text("Loading..."))
         }else{
             return AnyView(TabbarView(showAdmin: self.viewModel.userId == self.viewModel.uid).accentColor(Color.redColor))
         }
-        
     }
 }
 

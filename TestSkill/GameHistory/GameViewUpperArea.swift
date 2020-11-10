@@ -14,8 +14,8 @@ struct GameViewUpperArea: View {
     
     @ObservedObject var viewModel: GameUpperViewModel
     
-    init(balanceObj : UpperResultObject,showPercent:Bool) {
-        viewModel = GameUpperViewModel(balanceObj: balanceObj,showPercent:showPercent)
+    init(balanceObj : UpperResultObject) {
+        viewModel = GameUpperViewModel(balanceObj: balanceObj)
     }
     
     
@@ -24,8 +24,6 @@ struct GameViewUpperArea: View {
             self.amountArea()
                 .frame(maxWidth:.infinity)
                 .padding()
-        }.onTapGesture {
-//            self.showPercent.toggle()
         }
         .background(Color.redColor)
     }

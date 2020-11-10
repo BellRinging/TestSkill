@@ -133,7 +133,6 @@ struct LocationView: View ,Equatable{
             }
             Button(action: {
                 self.viewModel.selectedForAction = loc
-//                let index = self.viewModel.locations.firstIndex { $0.id == loc.id}!
                 self.viewModel.delete()
             }){
                 HStack {
@@ -149,20 +148,5 @@ struct LocationView: View ,Equatable{
 }
 
 
-
-struct LocationRow: View {
-    var text : String
-    var isSelected : Bool
-    
-    var body: some View {
-        HStack{
-            Text(text)
-            Spacer()
-            if self.isSelected {
-                Image(systemName: "checkmark")
-            }
-        }.padding()
-    }
-}
 
 

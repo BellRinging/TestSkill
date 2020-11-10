@@ -19,3 +19,8 @@ enum GameType : String  {
     case mahjong
     case big2
 }
+
+enum pageStatus {
+    case loading
+    case completed
+}

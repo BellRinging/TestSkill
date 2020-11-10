@@ -4,20 +4,13 @@ import  SwiftEntryKit
 
 class MainTabViewModel: ObservableObject {
 
-
     @Published var status : pageStatus = .loading
     var userId : String = ""
     var uid = "8QfQrvQEklaD9tKfksXrbmOaYo53"
 
-   
     init(){
         saveCurrentUser()
     }
-    
-    lazy var background: DispatchQueue = {
-        return DispatchQueue.init(label: "background.queue" , attributes: .concurrent)
-    }()
-    
 
     func saveCurrentUser(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -36,5 +29,4 @@ class MainTabViewModel: ObservableObject {
             }
         }
     }
-   
 }

@@ -17,8 +17,8 @@ struct GameList {
     mutating func updateGame(game: Game){
         let period = game.period
         let index = list.firstIndex { $0.id ==  period}
+        
         if index != nil && list.count > 0 {
-            
             let gameList = self.list[index!].games
             let index2 = gameList.firstIndex { $0.id == game.id }
 //            print("game is in the list index:",index2)
@@ -32,7 +32,7 @@ struct GameList {
             print("game is not in the list")
             let uid =  UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!.id
             let temp = GamePassingObject(id: period , games : [game] , periodAmt : game.result[uid] ?? 0)
-            list.append(temp)
+            list.insert(temp, at: 0)
         }
     }
     

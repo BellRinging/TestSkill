@@ -28,10 +28,9 @@ class GameViewModel: ObservableObject {
     var lastDoc : DocumentSnapshot?
     @Published var showGroupDisplay: Bool = false
     @Published var showAddGameDisplay: Bool = false
-    @Published var showPercent: Bool = true
     @Published var showingFlownView = false
     @Published var games: GameList = GameList(list: [])
-    
+    var isLoading : Bool = false
     
     @Published var groupUsers: [User] =  []
     @Published var status : pageStatus = .loading
@@ -197,6 +196,11 @@ class GameViewModel: ObservableObject {
     
     func loadGame(){
         if !self.games.noMoreGame{
+            
+            if self.isLoading {
+                return
+            }
+            self.isLoading = true
 
             if self.games.startAgain {
                 self.games = GameList(list: [])
@@ -242,6 +246,7 @@ class GameViewModel: ObservableObject {
                 print(error.localizedDescription)
                 Utility.showAlert(message: error.localizedDescription)
             }.always {
+                self.isLoading = false
                 Utility.hideProgress()
             }
         }else{
@@ -255,9 +260,7 @@ class GameViewModel: ObservableObject {
 
     func updateGame(game:Game){
         print("Trigger the game update \(game.result)")
-//        print("before",self.games.list[0].games.count)
         self.games.updateGame(game: game)
-//        print("after",self.games.list[0].games.count)
         Utility.hideProgress()
     }
     

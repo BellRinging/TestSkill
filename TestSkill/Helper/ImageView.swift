@@ -27,7 +27,6 @@ class ImageLoader: ObservableObject {
                 guard let data = data else { return }
                 let image = UIImage(data: data) ?? UIImage()
                 ImageLoader.cache.insertImage(image, for: url)
-//                print("Add to cache ")
                 DispatchQueue.main.async {
                     self.dataIsValid = true
                     self.image = image
@@ -51,9 +50,7 @@ struct ImageView: View {
             Image(uiImage: imageLoader.dataIsValid ? imageLoader.image! : UIImage())
                 .renderingMode(.original)
                 .resizable()
-//                .aspectRatio(contentMode: .fit)
                 .clipShape(Circle())
-//                .scaledToFit()
         }
     }
 }

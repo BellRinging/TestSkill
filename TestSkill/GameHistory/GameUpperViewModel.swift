@@ -14,23 +14,18 @@ class GameUpperViewModel: ObservableObject {
     var mtlm : String = "N/A"
     var mtly : String = "N/A"
     
-    init(balanceObj: UpperResultObject, showPercent:Bool){
+    init(balanceObj: UpperResultObject){
         self.balance = balanceObj.balance
         self.currentMth = balanceObj.currentMth
         self.lastMth = balanceObj.lastMth
         self.lastYTM = balanceObj.lastYTM
-        self.showPercent = showPercent
+        self.showPercent = balanceObj.showPercent
         
         if showPercent {
             var diff = currentMth - lastMth
             if lastMth != 0 {
                 var percent = Int(Float(diff) / abs(Float(lastMth))  * 100)
                 self.mtlm = diff > 0 ? "+\(percent)%" : "\(percent)%"
-//                print("mtlm",mtlm)
-                //                print("diff",diff)
-                //                print("currentMth",currentMth)
-                //                print("lastMth",lastMth)
-                //                print("percent",percent)
             }
             diff = balance - lastYTM
             if lastYTM != 0 {

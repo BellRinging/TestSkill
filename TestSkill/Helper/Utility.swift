@@ -8,14 +8,12 @@ typealias Action = () -> ()
 class Utility {
     
     static var currentNonce : String?
-    
     static func getUserId() -> String {
         
         let actAsUser = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser)
         var uid = actAsUser == nil ? Auth.auth().currentUser!.uid:actAsUser!.id
         return uid
     }
-    
     
     static func showProgress(){
 

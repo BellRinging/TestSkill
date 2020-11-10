@@ -33,7 +33,6 @@ struct ForgetPasswordView: View {
                               .cornerRadius(10)
                               .background(Color.whiteGaryColor)
                           .autocapitalization(.none)
-//
                 Button(action: {
                     self.forgetPassword()
                 }){
@@ -68,10 +67,3 @@ struct ForgetPasswordView: View {
     }
 }
 
-
-
-//struct Terms_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Terms()
-//    }
-//}

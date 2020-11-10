@@ -12,9 +12,6 @@ import SwiftUI
 typealias MainFont = Font2.HelveticaNeue
 typealias ChineseFont = Font2.PingFangHK
 
-
-
-
 enum Font2 {
     enum HelveticaNeue: String {
         case ultraLightItalic = "UltraLightItalic"

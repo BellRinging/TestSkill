@@ -10,10 +10,7 @@ import SwiftUI
 import Combine
 import SwiftUIRefresh
 
-enum pageStatus {
-    case loading
-    case completed
-}
+
 
 struct GameViewListHistoryArea: View {
     

@@ -16,23 +16,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
+        setColorScheme()
+        if let windowScene = scene as? UIWindowScene {
+            self.window = UIWindow(windowScene: windowScene)
+            window?.rootViewController =
+                FrontEndController()
+            self.window!.makeKeyAndVisible()
+        }
+    }
+    
+    func setColorScheme() {
         let newAppearance = UINavigationBarAppearance()
         newAppearance.shadowColor = .clear
         newAppearance.configureWithOpaqueBackground()
         newAppearance.backgroundColor = UIColor.rgb(red: 225, green: 0, blue: 0)
         newAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
         UINavigationBar.appearance().standardAppearance = newAppearance
         UINavigationBar.appearance().tintColor =  UIColor.white
-        if let windowScene = scene as? UIWindowScene {
-            self.window = UIWindow(windowScene: windowScene)
-            window?.rootViewController =
-//                UIHostingController(rootView: TestButton())
-                FrontEndController()
-            
-//             UIApplication.shared.statusBarUIView?.backgroundColor = UIColor.rgb(red: 225, green: 0, blue: 0)
-            self.window!.makeKeyAndVisible()
-        }
-      
     }
 }
