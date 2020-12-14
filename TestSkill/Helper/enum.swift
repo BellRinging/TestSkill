@@ -23,4 +23,5 @@ enum GameType : String  {
 enum pageStatus {
     case loading
     case completed
+    case error
 }

@@ -124,6 +124,7 @@ class MenuPageViewModel: ObservableObject {
         UserDefaults.standard.removeObject(forKey: UserDefaultsKey.CurrentGroup)
         UserDefaults.standard.removeObject(forKey: UserDefaultsKey.CurrentGroupUser)
         UserDefaults.standard.removeObject(forKey: UserDefaultsKey.LoginFlag)
+//        UserDefaults.standard.removeObject(forKey: "stored_info")
         NotificationCenter.default.post(name: .dismissMainView ,object: nil)
         print("Completed logout")
     }

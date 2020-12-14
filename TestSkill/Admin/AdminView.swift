@@ -12,64 +12,87 @@ struct AdminView: View {
     
  @ObservedObject var viewModel = AdminViewModel()
     
-    var body: some View {
+    
+    
+    var gameArea : some View {
         VStack{
-            VStack{
-                
-                HStack{
-                    Text("Game:").textStyle(size: 12,color: Color.blue)
-                    if self.viewModel.gameTemp != nil{
-                        VStack{
+            HStack{
+                Text("Game Level").titleFont(size: 16)
+                Spacer()
+            }.padding(.bottom,5)
+            HStack{
+                Spacer()
+                if self.viewModel.gameTemp != nil{
+                    VStack{
+                        Button {
+                            self.viewModel.gameTemp = nil
+                        } label: {
                             Text("\(self.viewModel.gameTemp!.date) \(self.viewModel.gameTemp!.location)").textStyle(size: 12)
                         }
-                    }else{
-                        Text("No Selection").textStyle(size: 12)
+                    }
+                }else{
+                    Button {
+                        self.viewModel.isShowGameLK = true
+                    } label: {
+                        Text("Select Game").textStyle(size: 12,color: Color.grayColor)
+                    }
+                }
+                Spacer()
+            }.padding(.bottom,5)
+            if self.viewModel.gameTemp != nil{
+                HStack{
+                    Spacer()
+                    Button {
+                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.unFlownGame)
+                    } label: {
+                        Text("UnFlown").textStyle(size: 12,color: Color.greenColor)
                     }
                     Spacer()
-                    if self.viewModel.gameTemp == nil{
-                        Button("Select Game"){
-                            self.viewModel.isShowGameLK = true
-                        }.textStyle(size: 12)
-                    }else{
-                        Button("Clear Selection"){
-                            self.viewModel.gameTemp = nil
-                        }.textStyle(size: 12,color: Color.redColor)
+                    Button {
+                    } label: {
+                        Text("Delete").textStyle(size: 12,color: Color.redColor)
                     }
-                }.padding()
-                
-                
-                
-                HStack{
-                    Button("UnFlown"){
-                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.unFlownGame)
-                    }
-                    Button("Delete"){
-//                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.DeleteGame)
-                    }
+                    Spacer()
                 }
-                Button("UpdateGameDetail"){
-                    Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateGame)
-                }
-                Button("deleteGame"){
-                    Utility.showAlert(message: "Confirm?", callBack: self.viewModel.deleteGame)
-                }
-                HStack{
-                    Button("SetActUser"){
-                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.setActUser)
-                    }
-                    Button("Remove ActUser"){
-                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.removeActUser)
-                    }
-                }
-                navigationArea
-                
-            }.padding()
-            transferData().padding()
-            Button("UpdateUserBalance"){
-                              Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateUser)
-                          }
+            }
+            Divider()
         }
     }
+    var body: some View {
+        NavigationView{
+            VStack{
+                gameArea
+                transferData()
+                navigationArea
+                Spacer()
+            }.padding()
+            .navigationBarTitle("Admin Page", displayMode: .inline)
+        }
+        
+    }
+
+                    
+//
+//                    Button("UpdateGameDetail"){
+//                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateGame)
+//                    }
+//
+//                    HStack{
+//                        Button("SetActUser"){
+//                            Utility.showAlert(message: "Confirm?", callBack: self.viewModel.setActUser)
+//                        }
+//                        Button("Remove ActUser"){
+//                            Utility.showAlert(message: "Confirm?", callBack: self.viewModel.removeActUser)
+//                        }
+//                    }
+//                    navigationArea
+                    
+                
+//                Button("UpdateUserBalance"){
+//                    Utility.showAlert(message: "Confirm?", callBack: self.viewModel.updateUser)
+//                }
+//                Spacer()
+//    }
     
     var navigationArea : some View{
         VStack{
@@ -91,6 +114,10 @@ struct AdminView: View {
     func transferData() -> some View{
         VStack{
             HStack{
+                Text("User").titleFont(size: 16)
+                Spacer()
+            }
+            HStack{
                 Button(action: {
                     self.viewModel.isShowPlayer1 = true
                 }) {
@@ -101,7 +128,21 @@ struct AdminView: View {
                                 Text("\(self.viewModel.player1[0].userName)").textStyle(size: 10).frame(width: 50)
                             }
                         }else{
-                            Text("Player1")
+                    
+                            
+                            VStack{
+                                Circle()
+                                    .fill(Color.greenColor)
+                                    .standardImageStyle()
+                                    .overlay(
+                                        Image(systemName: "pencil")
+                                            .resizable()
+                                            .aspectRatio(contentMode: ContentMode.fit)
+                                            .frame(width: 20 , height: 20)
+                                ).shadow(radius: 5)
+                                Text("Player1")
+                                    .textStyle(size: 10).frame(width: 50)
+                            }
                         }
                     }
                 }
@@ -115,13 +156,26 @@ struct AdminView: View {
                                 Text("\(self.viewModel.player2[0].userName)").textStyle(size: 10).frame(width: 50)
                             }
                         }else{
-                            Text("Player2")
+                            VStack{
+                                Image(systemName: "pencil")
+                                    .standardImageStyle()
+                                Text("Player2")
+                                    .textStyle(size: 10).frame(width: 50)
+                            }
                         }
                     }
                 }
+                Spacer()
             }
-            Button("UpDateID"){
-                Utility.showAlert(message: "Confirm?", callBack: self.viewModel.transfer)
+            if self.viewModel.player1.count > 0 {
+                HStack{
+                    Button("SetActUser"){
+                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.setActUser)
+                    }
+                    Button("UpDateID"){
+                        Utility.showAlert(message: "Confirm?", callBack: self.viewModel.transfer)
+                    }
+                }
             }
         }
     }

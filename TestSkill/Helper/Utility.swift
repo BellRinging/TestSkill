@@ -15,6 +15,14 @@ class Utility {
         return uid
     }
     
+    static func getCurrentDate() -> String {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "dd-MM-yyyy"
+        return formatter.string(from: date)
+    }
+    
     static func showProgress(){
 
         DispatchQueue.main.async {
@@ -44,7 +52,7 @@ class Utility {
     
    
     static func showAlert(message : String , callBack : (Action)?  = nil){
-           
+        print(message)
         var alertView = CustomAlertView(message: message)
         if let callBack = callBack{
             alertView = CustomAlertView(message: message,callBack: callBack)

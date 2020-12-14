@@ -15,9 +15,14 @@ class MarkFlownViewModel : ObservableObject {
     @Published var game : Game
     @Binding var closeFlag : Bool
     @Published var players : [User] = []
-    @Published var playersAmtInString : [String] = ["0","0","0","0"]
+    @Published var playersAmtInString : [String] = ["0","0","0","0"]{
+        didSet{
+            self.changeBalance()
+        }
+    }
     @Published var showAlert : Bool = false
     var playersAmt : [Int] = [0,0,0,0]
+    @Published var balanceLeft : Int = 0
     
     init(closeFlag : Binding<Bool>,game : Game){
         self._closeFlag = closeFlag
@@ -32,6 +37,13 @@ class MarkFlownViewModel : ObservableObject {
             }
         }
     }
+    
+    func changeBalance(){
+        self.balanceLeft = playersAmtInString.reduce(0){ oldValue ,newValue in
+            oldValue + (Int(newValue) ?? 0)
+        }
+    }
+    
     
     func confirm(){
         print("update Amount ")

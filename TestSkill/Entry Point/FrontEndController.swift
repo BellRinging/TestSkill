@@ -32,11 +32,13 @@ class FrontEndController: UIViewController {
         NotificationCenter.default.publisher(for: .dismissSwiftUI)
             .sink {[weak self] (_) in
             self?.loginPageController?.dismiss(animated: true, completion: nil)
+                self?.loginPageController = nil
         }.store(in: &tickets)
         
         NotificationCenter.default.publisher(for: .dismissMainView)
             .sink { [weak self] (_) in
             self?.mainViewController?.dismiss(animated: true, completion: nil)
+                self?.mainViewController = nil
         }.store(in: &tickets)
     }
  

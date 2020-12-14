@@ -4,6 +4,7 @@ import Firebase
 import Combine
 import AuthenticationServices
 import CryptoKit
+import LocalAuthentication
 
 class LoginViewModel: ObservableObject {
 
@@ -14,8 +15,12 @@ class LoginViewModel: ObservableObject {
     @Published  var appleSignInDelegates: SignInWithAppleDelegates! = nil
     var sampleDataForPageView : [PageViewArea]
     private var tickets: [AnyCancellable] = []
+    @Published var showAlertForFaceID : Bool = false
+//    @AppStorage("stored_info") var Stored_Info : Bool = true
+    @AppStorage("stored_loginType") var Stored_LoginType = "Normal"
+    @AppStorage("stored_User") var Stored_User = ""
+    @AppStorage("stored_Password") var Stored_Password = ""
 
-    
     init(){
         let dao = [
              Page(title: "Majhong recorder", image: Image("fontPageImage3"), massage: "無籌碼 都可以輕鬆MARK 數"),
@@ -24,6 +29,8 @@ class LoginViewModel: ObservableObject {
          ]
         sampleDataForPageView  = dao.map{PageViewArea(inputDO: $0)}
         addNotification()
+        
+        checkFaceIDAtStart()
     }
     
     func addNotification(){
@@ -66,8 +73,6 @@ class LoginViewModel: ObservableObject {
     func normalLoginByUser(email:String,password:String) ->Promise<FirebaseAuth.User>{
          let p = Promise<FirebaseAuth.User> { (resolve , reject) in
              Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
-//                print(error)
-//                print(result)
                  if let err = error {
                      reject(err)
                     return
@@ -108,5 +113,37 @@ class LoginViewModel: ObservableObject {
 
       return hashString
     }
+    
+    
+    func getBioMetricStatus()->Bool{
+         
+         let scanner = LAContext()
+         if Stored_User != "" && scanner.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: .none){
+             return true
+         }
+         return false
+     }
+     
+    func checkFaceIDAtStart(){
+        if getBioMetricStatus() && self.Stored_User != "" && self.Stored_Password != ""{
+            authenticateUser()
+        }
+    }
+    
+    func authenticateUser(){
+          
+        let scanner = LAContext()
+        scanner.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "To Unlock \(self.Stored_User)") { (status, err) in
+            if err != nil{
+                print(err!.localizedDescription)
+                return
+            }
+            DispatchQueue.main.async {
+                self.email = self.Stored_User
+                self.password = self.Stored_Password
+                self.normalLogin()
+            }
+        }
+      }
     
 }

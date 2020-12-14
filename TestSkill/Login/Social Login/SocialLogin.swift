@@ -8,6 +8,7 @@ import AuthenticationServices
 
 struct SocialLogin: UIViewRepresentable {
     
+
     func makeUIView(context: UIViewRepresentableContext<SocialLogin>) -> UIView {
         return UIView()
     }
@@ -72,7 +73,4 @@ struct SocialLogin: UIViewRepresentable {
         return p
     }
 
-    
-
-//
 }

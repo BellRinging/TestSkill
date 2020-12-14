@@ -13,10 +13,7 @@ struct RegisterPage: View ,Equatable {
     static func == (lhs: RegisterPage, rhs: RegisterPage) -> Bool {
         return true
     }
-    
-    
-    
-    
+
    @ObservedObject var viewModel: RegisterViewModel
     
     init(closeFlag : Binding<Bool> , user : User? = nil , userType : String = "real"){
@@ -80,10 +77,9 @@ struct RegisterPage: View ,Equatable {
             .navigationBarItems(leading:  CancelButton(self.viewModel.$closeFlag), trailing: ConfirmButton(){
                 self.viewModel.handleRegister()
             })
+        }.fullScreenCover(isPresented: self.$viewModel.showingImagePicker, onDismiss: self.viewModel.loadImage) {
+            ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker)
         }
-//        .sheet(isPresented: self.$viewModel.showingImagePicker,onDismiss: self.viewModel.loadImage){
-//            ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker)
-//        }
     }
 
 }

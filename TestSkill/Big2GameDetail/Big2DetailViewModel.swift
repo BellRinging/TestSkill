@@ -4,7 +4,7 @@ import  SwiftEntryKit
 
 class Big2DetailViewModel: ObservableObject {
     
-    var game : Game
+    @Binding var game : Game
     var groupUsers : [User]
     var winner : DisplayBoardForBig2?
     var amtPerCard : Int = 10
@@ -28,9 +28,8 @@ class Big2DetailViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var displayBoard : [DisplayBoardForBig2]  = []
     
-    init(game:Game,lastGameDetail:Big2GameDetail?){
-        self.game = game
-        self.lastGameDetail = lastGameDetail
+    init(game:Binding<Game>){
+        self._game = game
         self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
         let playGroup = UserDefaults.standard.retrieve(object: PlayGroup.self, fromKey: UserDefaultsKey.CurrentGroup)!
         self.countDouble = playGroup.double

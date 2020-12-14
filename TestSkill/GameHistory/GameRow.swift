@@ -45,7 +45,6 @@ struct GameRow: View {
                     .foregroundColor(viewModel.win ? Color.greenColor:Color.redColor)
                     .textStyle(size: 22)
             }else{
-//                Text("N/A").textStyle(size: 20 ,color: Color.redColor)
                 EmptyView()
             }
         }

@@ -74,7 +74,7 @@
 		E791DED724CFCF9F00343682 /* GoogleDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E791DED624CFCF9F00343682 /* GoogleDelegates.swift */; };
 		E79ADFFA23F922F100FD1282 /* GameDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79ADFF923F922F100FD1282 /* GameDetailViewModel.swift */; };
 		E79ADFFF23FBC92B00FD1282 /* GameViewUpperArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79ADFFE23FBC92B00FD1282 /* GameViewUpperArea.swift */; };
-		E79AE00123FBCA3B00FD1282 /* GameViewListHistoryArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AE00023FBCA3B00FD1282 /* GameViewListHistoryArea.swift */; };
+		E79AE00123FBCA3B00FD1282 /* GameViewListArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AE00023FBCA3B00FD1282 /* GameViewListArea.swift */; };
 		E79AE00723FE57DE00FD1282 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AE00623FE57DE00FD1282 /* ImageCache.swift */; };
 		E79AE04F240F991B00FD1282 /* DisplayFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AE04E240F991B00FD1282 /* DisplayFriendView.swift */; };
 		E79AE051240F993700FD1282 /* DisplayFriendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79AE050240F993700FD1282 /* DisplayFriendViewModel.swift */; };
@@ -244,7 +244,7 @@
 		E791DED624CFCF9F00343682 /* GoogleDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDelegates.swift; sourceTree = "<group>"; };
 		E79ADFF923F922F100FD1282 /* GameDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailViewModel.swift; sourceTree = "<group>"; };
 		E79ADFFE23FBC92B00FD1282 /* GameViewUpperArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewUpperArea.swift; sourceTree = "<group>"; };
-		E79AE00023FBCA3B00FD1282 /* GameViewListHistoryArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewListHistoryArea.swift; sourceTree = "<group>"; };
+		E79AE00023FBCA3B00FD1282 /* GameViewListArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewListArea.swift; sourceTree = "<group>"; };
 		E79AE00623FE57DE00FD1282 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		E79AE04E240F991B00FD1282 /* DisplayFriendView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayFriendView.swift; sourceTree = "<group>"; };
 		E79AE050240F993700FD1282 /* DisplayFriendViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayFriendViewModel.swift; sourceTree = "<group>"; };
@@ -471,7 +471,7 @@
 				E77E3CF423C0901A0039F223 /* GameView.swift */,
 				E79ADFFE23FBC92B00FD1282 /* GameViewUpperArea.swift */,
 				E75B86FD248FC483002B0682 /* GameUpperViewModel.swift */,
-				E79AE00023FBCA3B00FD1282 /* GameViewListHistoryArea.swift */,
+				E79AE00023FBCA3B00FD1282 /* GameViewListArea.swift */,
 				E7D94527242608B8008EEED0 /* GameViewListAreaViewModel.swift */,
 				E75D6B062555A74F00E677A3 /* UpperResultObject.swift */,
 				E77E3CF623C095EE0039F223 /* GameRow.swift */,
@@ -973,7 +973,7 @@
 				E7C8DB1C248E7CF30003FB1E /* ResultViewModel.swift in Sources */,
 				E7AD43DB242E1E1800B1200C /* RKViewController.swift in Sources */,
 				E73F5F09243AF1FB00B8FC83 /* UserData.swift in Sources */,
-				E79AE00123FBCA3B00FD1282 /* GameViewListHistoryArea.swift in Sources */,
+				E79AE00123FBCA3B00FD1282 /* GameViewListArea.swift in Sources */,
 				E7AD43DC242E1E1800B1200C /* RKDate.swift in Sources */,
 				E774CC5F24CE67960067C35B /* GamePassingObject.swift in Sources */,
 				E7AD43CA242E074400B1200C /* SelectAllView.swift in Sources */,
@@ -1198,7 +1198,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 8.0;
+				MARKETING_VERSION = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.mahjongcalculator;
 				PRODUCT_NAME = myjongso;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1231,7 +1231,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 8.0;
+				MARKETING_VERSION = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bellringing.kmconcept.mahjongcalculator;
 				PRODUCT_NAME = myjongso;
 				PROVISIONING_PROFILE_SPECIFIER = "";

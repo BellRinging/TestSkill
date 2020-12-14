@@ -1,6 +1,11 @@
 import SwiftUI
 
-struct PageView<Page: View>: View {
+struct PageView<Page: View>: View ,Equatable {
+    
+    static func == (lhs: PageView<Page>, rhs: PageView<Page>) -> Bool {
+        return true
+    }
+    
     var viewControllers: [UIHostingController<Page>]
     @State var currentPage = 0
 

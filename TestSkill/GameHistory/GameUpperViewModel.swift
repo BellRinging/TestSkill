@@ -23,13 +23,13 @@ class GameUpperViewModel: ObservableObject {
         
         if showPercent {
             var diff = currentMth - lastMth
-            if lastMth != 0 {
-                var percent = Int(Float(diff) / abs(Float(lastMth))  * 100)
+            if lastMth > 0 {
+                let percent = Int(Float(diff) / Float(lastMth)  * 100)
                 self.mtlm = diff > 0 ? "+\(percent)%" : "\(percent)%"
             }
             diff = balance - lastYTM
-            if lastYTM != 0 {
-                var percent = Int(Float(balance) / abs(Float(lastYTM))  * 100)
+            if lastYTM > 0 {
+                let percent = Int(Float(balance) / Float(lastYTM)  * 100)
                 self.mtly = diff > 0 ? "+\(percent)%" : "\(percent)%"
             }
         }else{
@@ -38,7 +38,6 @@ class GameUpperViewModel: ObservableObject {
             diff = balance - lastYTM
             self.mtly = diff > 0 ? "+\(diff)" : "\(diff)"
         }
-    
     }
 
 }

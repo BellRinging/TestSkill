@@ -32,7 +32,6 @@ struct Terms: View {
                         Text("Warning :")
                             .textStyle(size: 20)
                             .padding()
-                        
                         Text("You need to accept the term of use before you using this app ,otherwise please delete")
                             .lineLimit(nil).fixedSize(horizontal: false, vertical: true)
                             .padding()

@@ -62,9 +62,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We have to access your camera in order to capture the image</string>
+	<string>We have to access your camera in order to capture the image for your profile pic</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>We have to access your Face ID detector to retrieve back the login information you perviously stored on this app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We have to access your Photo Library in order to get  the image</string>
+	<string>We have to access your Photo Library in order to get  a image for your profile pic</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>American Captain.otf</string>

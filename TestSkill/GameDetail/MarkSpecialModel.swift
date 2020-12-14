@@ -156,15 +156,16 @@ class MarkSpecialViewModel : ObservableObject {
             let uid = Auth.auth().currentUser!.uid
             var updateAmount = 0
             var tempGame = self.game
+//            print("WinList ", whoWinList.count)
             whoWinList.map {
-                let amount = self.game.result[$0]! + winnerAmount
+                let amount = tempGame.result[$0]! + winnerAmount
                 if $0 == uid {
                     updateAmount = updateAmount + winnerAmount
                 }
                 tempGame.result[$0] = amount
             }
             whoLoseList.map {
-                let amount = self.game.result[$0]! + loserAmount
+                let amount = tempGame.result[$0]! + loserAmount
                 if $0 == uid {
                     updateAmount = updateAmount + loserAmount
                 }

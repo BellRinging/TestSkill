@@ -7,4 +7,3 @@ struct UpperResultObject {
     var mtly : String = "N/A"
     var showPercent: Bool = true
 }
-

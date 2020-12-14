@@ -13,8 +13,8 @@ struct Big2DetailView: View {
     @ObservedObject private var viewModel: Big2DetailViewModel
     
     
-    init(game : Game ,lastGameDetail : Big2GameDetail? ){
-        viewModel = Big2DetailViewModel(game : game,lastGameDetail:lastGameDetail )
+    init(game : Binding<Game> ){
+        viewModel = Big2DetailViewModel(game : game)
     }
  
     func bottomArea() -> some View{

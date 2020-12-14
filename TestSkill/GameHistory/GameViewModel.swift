@@ -46,8 +46,6 @@ class GameViewModel: ObservableObject {
      }
     @Published var balanceObject : UpperResultObject = UpperResultObject()
     final var pagingSize : Int = 50
-    var lastGameDetail : GameDetail? //for detailView
-    var lastBig2GameDetail : Big2GameDetail? //for detailView
     var gameForFlown : Game?
     var actAsUser : User?
     
@@ -69,18 +67,6 @@ class GameViewModel: ObservableObject {
                 self.loadGame()
            }.store(in: &tickets)
         
-        //Pass to the detail view
-        NotificationCenter.default.publisher(for: .updateLastGameRecord)
-            .map{$0.object as! GameDetail?}
-            .sink { [unowned self] (gameDetail) in
-                self.lastGameDetail = gameDetail
-        }.store(in: &tickets)
-        
-        NotificationCenter.default.publisher(for: .updateLastBig2GameRecord)
-            .map{$0.object as! Big2GameDetail?}
-            .sink { [unowned self] (big2GameDetail) in
-                self.lastBig2GameDetail = big2GameDetail
-        }.store(in: &tickets)
         
         NotificationCenter.default.publisher(for: .deleteGame)
             .map{$0.object as! Game}
@@ -129,7 +115,7 @@ class GameViewModel: ObservableObject {
             PlayGroup.getByUserId(id: uid).then { (groups) in
                 if groups.count == 0 {
                     print("no group was setup up")
-                    self.showGroupDisplay = true
+                    self.status = .error
                 }else{
                     self.group = groups[0]
                 }
@@ -140,7 +126,6 @@ class GameViewModel: ObservableObject {
     }
     
     func loadUserFromGroup(group : PlayGroup){
-//        print("load User Group")
         if let currentGroupUser = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser){
             self.groupUsers = currentGroupUser
             self.status = .completed
@@ -151,12 +136,7 @@ class GameViewModel: ObservableObject {
                     promiseList.append(User.getById(id: $0))
                 }
                 Promises.all(promiseList).then{ users in
-                    var result : [User] = []
-                    for user in users {
-                        if user != nil {
-                            result.append(user!)
-                        }
-                    }
+                    let result = users.compactMap{$0}
                     DispatchQueue.main.async {
                         self.groupUsers = result
                         UserDefaults.standard.save(customObject: self.groupUsers, inKey: UserDefaultsKey.CurrentGroupUser)
@@ -170,28 +150,33 @@ class GameViewModel: ObservableObject {
     
     
     func loadPerviousBalance(){
-        var user = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!
-        if let actUser = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser){
-            user = actUser
-        }
-        user.getGamesWithin2Year(groupId: group!.id).then { games in
-                       
+        let uid = Utility.getUserId()
+        User.getGamesWithin2Year(groupId: group!.id ,uid: uid).then { games in
             let previousYear = games.filter{$0.date.prefix(4) == String(Utility.getPerviousYear())}
             let lastYearUpToMth = previousYear.filter{ $0.date.prefix(6) <= Utility.getPYTM()}
             let lastMth = games.filter{ $0.date.prefix(6) == Utility.getLM()}
             var yearBalance = 0
             var mthBalance = 0
             lastYearUpToMth.map{
-                yearBalance += $0.result[user.id]!
+                yearBalance += $0.result[uid]!
             }
             lastMth.map{
-                mthBalance += $0.result[user.id]!
+                mthBalance += $0.result[uid]!
             }
             
             
             self.balanceObject.lastYTM = yearBalance
             self.balanceObject.lastMth = mthBalance
         }
+    }
+    
+    func calculateCurrentMonth(_ list:[Game],_ uid: String){
+        let currentMthGame = list.filter{$0.date.prefix(6) == Utility.getCM()}
+        var cMB = 0
+        for game in currentMthGame {
+            cMB += game.result[uid] ?? 0
+        }
+        self.balanceObject.currentMth = cMB
     }
     
     func loadGame(){
@@ -201,12 +186,11 @@ class GameViewModel: ObservableObject {
                 return
             }
             self.isLoading = true
-
             if self.games.startAgain {
                 self.games = GameList(list: [])
                 self.games.startAgain.toggle()
             }
-            var uid = Utility.getUserId()
+            let uid = Utility.getUserId()
             Game.getItemWithGroupId(groupId: self.group!.id ,pagingSize: pagingSize, lastDoc: lastDoc).then { (gameList,lastDoc)  in
                 
                 if gameList.count > 0 {
@@ -215,35 +199,27 @@ class GameViewModel: ObservableObject {
                     }
                     var list = self.games.list.count == 0 ? [] : self.games.list.flatMap{$0.games}
                     list += gameList
-
-                    let currentMthGame = list.filter{$0.date.prefix(6) == Utility.getCM()}
-                    var cMB = 0
-                    for game in currentMthGame {
-                        cMB += game.result[uid] ?? 0
-                    }
-                    self.balanceObject.currentMth = cMB
-                    
                     print("Total Game : \(list.count)")
-                    var sorted = list.sorted { $0.date > $1.date }
+                    self.calculateCurrentMonth(list,uid)
+                    let sorted = list.sorted { $0.date > $1.date }
                     let dictionary = Dictionary(grouping: sorted) { $0.period }
                     var result : [GamePassingObject] = []
-                        let sectionHeader = dictionary.keys.sorted(by: >)
-                        for period in sectionHeader{
-                            let list = dictionary[period]!
-                            var amt : Int = list.reduce(0) { abc, item in
-                                abc + (item.result[uid] ?? 0)
-                            }
-                            let gameObj = GamePassingObject(id: period, games: list, periodAmt: amt)
-                            result.append(gameObj)
+                    let sectionHeader = dictionary.keys.sorted(by: >)
+                    for period in sectionHeader{
+                        let list = dictionary[period]!
+                        let amt : Int = list.reduce(0) { oldValue, item in
+                            oldValue + (item.result[uid] ?? 0)
                         }
-                        self.games = GameList(list: result)
-                        self.lastDoc = lastDoc
+                        let gameObj = GamePassingObject(id: period, games: list, periodAmt: amt)
+                        result.append(gameObj)
+                    }
+                    self.games = GameList(list: result)
+                    self.lastDoc = lastDoc
+                    self.loadGameBalance()
                 }else{
                     self.games.noMoreGame = true
-                    print("Set noMoreUpdate to true2")
                 }
             }.catch { (error) in
-                print(error.localizedDescription)
                 Utility.showAlert(message: error.localizedDescription)
             }.always {
                 self.isLoading = false
@@ -255,7 +231,7 @@ class GameViewModel: ObservableObject {
             self.games.startAgain = true
             Utility.showAlert(message: "no more update , next refresh will refresh from begining ")
         }
-            loadGameBalance()
+       
     }
 
     func updateGame(game:Game){
@@ -291,18 +267,11 @@ class GameViewModel: ObservableObject {
     }
       
     func loadGameBalance(){
-        var uid = Auth.auth().currentUser!.uid
-        if let actAsUser = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser){
-            uid = actAsUser.id
-        }
-        
+        let uid = Utility.getUserId()
         User.getById(id: uid).then{ user in
-//            print("after get")
             if let user = user {
                 self.balanceObject.balance = user.yearBalance[Utility.getCurrentYear()]!
-                if let actAsUser = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser){
-                    //       uid = actAsUser == nil ? currentUser!.id : actAsUser.id
-                }else{
+                if UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser) == nil {
                     UserDefaults.standard.save(customObject: user, inKey: UserDefaultsKey.CurrentUser)
                 }
             }

@@ -14,18 +14,14 @@ class AddGameViewModel: ObservableObject {
     @Binding var closeFlag : Bool
     var userA : Int = 0
     var userB : Int = 0
+    var calenderManager = RKManager(calendar: Calendar.current, minimumDate: Date().addingTimeInterval(60*60*24*30 * 5 * -1), maximumDate: Date().addingTimeInterval(60*60*24*30), mode: 0)
     
     init(closeFlag : Binding<Bool>){
         self._closeFlag = closeFlag
         loadLocation()
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.locale = .current
-        formatter.dateFormat = "dd-MM-yyyy"
-        displayDate = formatter.string(from: date)
+        displayDate = Utility.getCurrentDate()
     }
     
-    var calenderManager = RKManager(calendar: Calendar.current, minimumDate: Date().addingTimeInterval(60*60*24*30 * 5 * -1), maximumDate: Date().addingTimeInterval(60*60*24*30), mode: 0)
    
 
     func getTextFromDate(date: Date!) -> String {

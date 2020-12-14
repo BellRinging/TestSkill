@@ -11,14 +11,6 @@ struct GameView: View {
         viewModel.onInitialCheck()
     }
     
-    var actAsUser : some View {
-        HStack{
-            if self.viewModel.actAsUser != nil {
-                UserDisplay(url: self.viewModel.actAsUser!.imgUrl, name: self.viewModel.actAsUser!.userName)
-            }
-            Spacer()
-        }
-    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -35,10 +27,10 @@ struct GameView: View {
                         GameViewUpperArea(balanceObj: self.viewModel.balanceObject)
                             .onTapGesture {
                                 self.viewModel.balanceObject.showPercent.toggle()
-                        }
-                        .overlay(self.actAsUser)
+                            }
+                            .overlay(self.actAsUser)
                         if (self.viewModel.games.list.count > 0) {
-                            GameViewListHistoryArea(games: self.$viewModel.games)
+                            GameViewListArea(games: self.$viewModel.games)
                                 .pullToRefresh(isShowing: self.$isShowing) {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                         self.viewModel.loadGame()
@@ -90,7 +82,6 @@ struct GameView: View {
     }
     
     var rightImg : some View {
-        
         Button(action: {
             withAnimation {
                 self.viewModel.showAddGameDisplay = true
@@ -102,6 +93,16 @@ struct GameView: View {
                 .frame(width: 20,height: 20)
         }
     }
+    
+    var actAsUser : some View {
+        HStack{
+            if self.viewModel.actAsUser != nil {
+                UserDisplay(url: self.viewModel.actAsUser!.imgUrl, name: self.viewModel.actAsUser!.userName)
+            }
+            Spacer()
+        }
+    }
+
 }
 
 

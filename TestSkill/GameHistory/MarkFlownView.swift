@@ -34,8 +34,15 @@ struct MarkFlownView: View ,Equatable {
                             .frame(width: 100)
                     }
                 }
-                Text("Water : \(self.viewModel.game.water ?? 0)")
-                    .textStyle(size: 18,color: Color.redColor)
+                HStack{
+                    Text("Water : ").textStyle(size: 18)
+                    Text("\(self.viewModel.game.water ?? 0)")
+                        .textStyle(size: 18,color: Color.redColor)
+                    Text("balance : ")
+                        .textStyle(size: 18)
+                    Text("\(self.viewModel.balanceLeft ?? 0)")
+                        .textStyle(size: 18,color: Color.redColor)
+                }
                 Spacer()
             }.padding(.top)
         }

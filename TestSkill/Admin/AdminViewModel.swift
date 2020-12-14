@@ -67,10 +67,8 @@ class AdminViewModel: ObservableObject {
     }
     
     func removeActUser(){
-        
         UserDefaults.standard.removeObject(forKey: UserDefaultsKey.ActAsUser)
         Utility.showAlert(message: "Remove Complete")
-         
     }
     
     func updateUser(){

@@ -18,7 +18,6 @@ struct GameViewUpperArea: View {
         viewModel = GameUpperViewModel(balanceObj: balanceObj)
     }
     
-    
     var body: some View {
         VStack{
             self.amountArea()
@@ -36,10 +35,8 @@ struct GameViewUpperArea: View {
             HStack{
                 Text("vLM: \(self.viewModel.mtlm)")
                     .textStyle(size: 10,color: Color.white)
-//                    .padding([.leading,.trailing,.top])
                 Text("vLY: \(self.viewModel.mtly)")
                     .textStyle(size: 10,color: Color.white)
-//                    .padding([.leading,.trailing,.bottom])
             }
             Text("Total Balance")
                 .font(.footnote)

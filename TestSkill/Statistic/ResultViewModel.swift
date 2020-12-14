@@ -47,7 +47,7 @@ class ResultViewModel: ObservableObject {
         result = []
         let group = UserDefaults.standard.retrieve(object: PlayGroup.self, fromKey: UserDefaultsKey.CurrentGroup)!
         for user in users {
-            user.getGamesWithin2Year(groupId: group.id).then { games in
+            User.getGamesWithin2Year(groupId: group.id,uid: user.id).then { games in
                 
                 let sorted = games.sorted{$0.date > $1.date}
 //                print("sorted",sorted.count)

@@ -1,4 +1,5 @@
 import SwiftUI
+import LocalAuthentication
 
 struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
@@ -6,6 +7,34 @@ struct LoginView: View {
     init(){
         print("init Login Page")
         viewModel = LoginViewModel()
+    }
+    
+    
+    var touchOrFaceID : some View {
+        VStack{
+            if self.viewModel.getBioMetricStatus(){
+             
+                Circle()
+                    .fill(Color("green"))
+                    .frame(width: 70, height: 70)
+                    .overlay(
+                        Image(systemName: LAContext().biometryType == .faceID ? "faceid" : "touchid")
+                            .frame(width: 70, height: 70)
+                            .aspectRatio(contentMode: ContentMode.fill)
+                            .font(.title)
+                            .foregroundColor(.black)
+                            .background(Color("green"))
+                            .clipShape(Circle())
+                    )
+                    .shadow(radius: 5)
+                    .onTapGesture {
+                        self.viewModel.authenticateUser()
+                    }
+            
+            }else{
+                EmptyView()
+            }
+        }
     }
     
     var body: some View {
@@ -20,6 +49,7 @@ struct LoginView: View {
                 facebookButton
                 googleButton
                 appleButton
+                touchOrFaceID
                 Spacer()
             }.padding()
             
@@ -33,24 +63,44 @@ struct LoginView: View {
                         LazyView(ForgetPasswordView(closeFlag: self.$viewModel.showForgetPassword))
                     }
             }
-        }
+        }.alert(isPresented: self.$viewModel.showAlertForFaceID, content: {
+            Alert(title: Text("Message"), message: Text("Store Information For Future Login Using BioMetric Authentication ???"), primaryButton: .default(Text("Accept"), action: {
+//                self.viewModel.Stored_Info = true
+                self.viewModel.Stored_User = self.viewModel.email
+                self.viewModel.Stored_Password = self.viewModel.password
+                self.viewModel.Stored_LoginType = "Nomarl"
+                self.viewModel.normalLogin()
+            }), secondaryButton: .cancel({
+//                self.viewModel.Stored_Info = false
+                self.viewModel.Stored_User = ""
+                self.viewModel.Stored_Password = ""
+                self.viewModel.normalLogin()
+            }))
+        })
         
         
     }
     
     var loginButton : some View{
-        Button(action: {
-            self.viewModel.normalLogin()
-        }){
-            HStack(alignment: .center) {
-                Text("Login")
-                    .textStyle(size: 16 , color: Color.white)
-                    .frame(maxWidth:.infinity)
-            }.padding()
-        }
-        .background(Color.greenColor)
+        HStack{
+            Button(action: {
+//                print("Stored_Info" ,self.viewModel.Stored_Info)
+//                if self.viewModel.Stored_Info == false {
+//                    self.viewModel.normalLogin()
+//                }else{
+                    withAnimation{self.viewModel.showAlertForFaceID = true}
+//                }
+            }){
+                HStack(alignment: .center) {
+                    Text("Login")
+                        .textStyle(size: 16 , color: Color.white)
+                        .frame(maxWidth:.infinity)
+                }.padding()
+            }
+            .background(Color.greenColor)
             .padding()
             .shadow(radius: 5)
+        }
     }
 
     var loginArea : some View{
@@ -97,8 +147,8 @@ struct LoginView: View {
     
     func upperArea() -> some View {
         VStack{
-            PageView(viewModel.sampleDataForPageView)
-                .aspectRatio(contentMode: ContentMode.fit)
+            PageView(viewModel.sampleDataForPageView).equatable()
+//                .aspectRatio(contentMode: ContentMode.fit)
 
             Text("Vietnam Mahjong")
                 .foregroundColor(SwiftUI.Color.textColor)

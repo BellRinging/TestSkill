@@ -14,14 +14,11 @@ class GameViewListAreaViewModel: ObservableObject {
     @Published var showingDeleteAlert = false
     @Published var showingFlowView = false
     @Published var isShowing = false
-    @Published var isLoading = false
-//    var noMoreGame = false
-//    var lastBig2GameDetail : Big2GameDetail? = nil
-//    var lastGameDetail : GameDetail? = nil
+
     
     init(
          games: Binding<GameList>){
-        self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser)!
+        self.groupUsers = UserDefaults.standard.retrieve(object: [User].self, fromKey: UserDefaultsKey.CurrentGroupUser) ?? []
         self._games = games
     }
 

@@ -156,14 +156,14 @@ extension User {
     }
     
     
-    func getGamesWithin2Year(groupId : String ) -> Promise<[Game]> {
+    static func getGamesWithin2Year(groupId : String ,uid: String) -> Promise<[Game]> {
         let p = Promise<[Game]> { (resolve , reject) in
             
             let db = Firestore.firestore()
             let year = Utility.getPerviousYear()
             var query = db.collection("games").order(by: "date", descending: true)
             query = query.whereField("groupId", isEqualTo: groupId)
-            query = query.whereField("playersId", arrayContains: self.id)
+            query = query.whereField("playersId", arrayContains: uid)
             query = query.whereField("date",isGreaterThan: "\(year)0000")
             var groups : [Game] = []
             query.getDocuments { (snap, error) in
