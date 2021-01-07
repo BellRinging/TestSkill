@@ -1,6 +1,7 @@
 import UIKit
 import Firebase
 import Promises
+import FirebaseFirestore
 
 struct FdsRequest : Codable ,Identifiable {
     let id : String

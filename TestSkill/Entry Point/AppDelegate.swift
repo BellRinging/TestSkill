@@ -8,6 +8,8 @@ import Promises
 import UserNotifications
 import UserNotificationsUI
 import FirebaseMessaging
+import FirebaseFirestore
+import FirebaseCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate ,UNUserNotificationCenterDelegate ,MessagingDelegate,GIDSignInDelegate{

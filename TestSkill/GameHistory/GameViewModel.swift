@@ -270,7 +270,7 @@ class GameViewModel: ObservableObject {
         let uid = Utility.getUserId()
         User.getById(id: uid).then{ user in
             if let user = user {
-                self.balanceObject.balance = user.yearBalance[Utility.getCurrentYear()]!
+                self.balanceObject.balance = user.yearBalance[Utility.getCurrentYear()] ?? 0 
                 if UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.ActAsUser) == nil {
                     UserDefaults.standard.save(customObject: user, inKey: UserDefaultsKey.CurrentUser)
                 }

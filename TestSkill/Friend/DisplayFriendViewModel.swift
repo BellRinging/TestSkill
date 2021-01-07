@@ -27,6 +27,7 @@ class DisplayFriendViewModel: ObservableObject {
     func addObservor(){
         NotificationCenter.default.publisher(for: .addFriend)
             .sink { [unowned self] (_) in
+//                print("received add friend")
                  self.loadUser()
         }.store(in: &tickets)
         NotificationCenter.default.publisher(for: .deleteFriend)

@@ -1,6 +1,8 @@
 import Promises
 import Firebase
-
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseStorage
 
 struct RegisterHelper{
     

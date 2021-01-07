@@ -1,6 +1,7 @@
 import UIKit
 import Promises
 import Firebase
+import FirebaseFirestore
 
 struct Big2GameDetail : Codable {
     var id : String

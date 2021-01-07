@@ -4,6 +4,7 @@ import AuthenticationServices
 import Contacts
 import Promises
 import Firebase
+import FirebaseAuth
 
 class SignInWithAppleDelegates: NSObject , ASAuthorizationControllerDelegate {
    // private let signInSucceeded: (Bool) -> Void

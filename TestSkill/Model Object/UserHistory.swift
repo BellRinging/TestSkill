@@ -1,6 +1,7 @@
 import UIKit
 import Promises
 import Firebase
+import FirebaseFirestore
 
 public struct UserHistory : Codable{
     let period : String

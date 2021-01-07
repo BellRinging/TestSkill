@@ -77,7 +77,7 @@ struct RegisterPage: View ,Equatable {
             .navigationBarItems(leading:  CancelButton(self.viewModel.$closeFlag), trailing: ConfirmButton(){
                 self.viewModel.handleRegister()
             })
-        }.fullScreenCover(isPresented: self.$viewModel.showingImagePicker, onDismiss: self.viewModel.loadImage) {
+        }.sheet(isPresented: self.$viewModel.showingImagePicker, onDismiss: self.viewModel.loadImage) {
             ImagePicker(image: self.$viewModel.inputImage,closeFlag: self.$viewModel.showingImagePicker)
         }
     }

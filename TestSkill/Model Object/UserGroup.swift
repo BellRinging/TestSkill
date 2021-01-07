@@ -1,6 +1,7 @@
 import UIKit
 import Promises
 import Firebase
+import FirebaseFirestore
 
 public struct UserGroup : Codable ,Hashable {
     public var group_id : String

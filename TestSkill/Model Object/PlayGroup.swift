@@ -1,6 +1,8 @@
 import UIKit
 import Promises
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 struct PlayGroup :  Identifiable,Codable,Equatable,Hashable  {
     

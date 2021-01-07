@@ -8,6 +8,7 @@
 
 import Firebase
 import Promises
+import FirebaseFirestore
 
 struct Location: Codable ,Identifiable {
     var id : String

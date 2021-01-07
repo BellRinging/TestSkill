@@ -3,6 +3,9 @@ import SwiftUI
 import Promises
 import Firebase
 import Combine
+import FirebaseAuth
+import FirebaseFirestore
+//import FIRAnalyticsConnector
 
 class RegisterViewModel: ObservableObject {
   
@@ -67,6 +70,7 @@ class RegisterViewModel: ObservableObject {
     }
 
     func loadImage() {
+        print("loadImage")
         guard let inputImage = inputImage else { return }
         image = Image(uiImage: inputImage)
     }
@@ -137,6 +141,7 @@ class RegisterViewModel: ObservableObject {
                 }
             }else{
                 registerDummyUserIntoDatabase()
+        
             }
         }else if !editMode{
 
@@ -174,11 +179,9 @@ class RegisterViewModel: ObservableObject {
     }
     
     func registerDummyUserIntoDatabase() {
-        print("AAA")
         let uid = Auth.auth().currentUser!.uid
         let uuid = UUID().uuidString
         RegisterHelper.uploadImage(uid: uuid, inputImage: self.inputImage).then { (url) in
-            print("after AAA")
             var value = ["email": "\(uuid)@dummy.com" ,
                 "id": uuid,
                 "userName": self.userName ,
@@ -192,13 +195,17 @@ class RegisterViewModel: ObservableObject {
                 "userType" : "dummy",
                 "owner" : uid
                 ] as [String : Any]
-            var dict : [Int:Int] = [:]
-            dict[Utility.getCurrentYear()] = Int(self.balance) ?? 0
+            
+            var dict : [String:Int] = [:]
+            dict["\(Utility.getCurrentYear())"] = Int(self.balance) ?? 0
             value["yearBalance"] = dict
+        
+  
             let ref = Firestore.firestore()
             let usersReference = ref.collection("users").document(uuid)
+            print("create id",uuid,value)
             usersReference.setData(value)
-            
+            print("create success")
             var user = UserDefaults.standard.retrieve(object: User.self, fromKey: UserDefaultsKey.CurrentUser)!
             user.updateFriend(userId: uuid).then { _ in
                 var fds = user.friends
@@ -207,6 +214,7 @@ class RegisterViewModel: ObservableObject {
                 UserDefaults.standard.save(customObject: user, inKey: UserDefaultsKey.CurrentUser)
                 self.closeFlag.toggle()
             }
+            NotificationCenter.default.post(name: .addFriend, object: nil)
         }.catch { (err) in
             Utility.showAlert(message: "Error : \(err.localizedDescription)")
         }.always {
@@ -227,8 +235,8 @@ class RegisterViewModel: ObservableObject {
         
         print("list \(list)")
         if updateBalance {
-            var dict : [Int:Int] = [:]
-            dict[Utility.getCurrentYear()] = Int(self.balance) ?? 0
+            var dict : [String:Int] = [:]
+            dict["\(Utility.getCurrentYear())"] = Int(self.balance) ?? 0
             list["yearBalance"] = dict
         }
         

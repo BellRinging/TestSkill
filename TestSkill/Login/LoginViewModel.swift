@@ -5,6 +5,7 @@ import Combine
 import AuthenticationServices
 import CryptoKit
 import LocalAuthentication
+import FirebaseAuth
 
 class LoginViewModel: ObservableObject {
 

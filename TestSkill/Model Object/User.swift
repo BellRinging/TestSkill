@@ -2,6 +2,7 @@ import UIKit
 import Firebase
 import Promises
 import FirebaseFirestore
+import FirebaseAuth
 
 
 struct User : Identifiable,Codable,Equatable,Hashable  {
